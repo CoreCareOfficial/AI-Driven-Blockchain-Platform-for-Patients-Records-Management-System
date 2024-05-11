@@ -4,8 +4,8 @@ import HomeSection2 from'../component/homedetails/HomeSection2';
 import HomeSection3 from'../component/homedetails/HomeSection3';
 import HomeSection4 from'../component/homedetails/HomeSection4';
 import HomeSection5 from'../component/homedetails/HomeSection5';
+import FormFooter from "../component/FormFooter";
 import Header from "../component/Header";
-// import '../css/home.css';
 function HomePage(){
     return(
         <>
@@ -15,6 +15,8 @@ function HomePage(){
         <HomeSection3/>
         <HomeSection4/>
         <HomeSection5/>
+        <FormFooter/>
+        
         </>
     );
 }

@@ -13,6 +13,9 @@ section{
     padding: 10px;
     overflow: hidden;
 }
+button:hover{
+    transform: scale(1.05);
+}
 .H_section1{
     background-color: var(--lightBlack);
 
@@ -41,6 +44,7 @@ section{
 }
 .H_section1_card button{
     width: 35%;
+    transition: 0.7s ease;
 }
 .H_section1 .img_div{
     width: 40%;
@@ -55,7 +59,6 @@ section{
     justify-content:baseline;
     align-items: center;
     text-align: center;
-
 }
 .H_title{
     margin-top: 6%;
@@ -84,13 +87,22 @@ section{
 }
 .H_section3_card{
     background-color: var(--darkBlack-color);
-    margin: 15px;
+    margin: 15px auto;
     border-radius: 15px;
 }
 .H_section3 .H_title{
     color: var(--white-color);
     font-size: 2em;
 }
+.H_section3 .overview{
+    width: 90%;
+}
+.H_section3 .my_container{
+    display: flex;
+    justify-content:left ;
+    text-indent: 10px;
+}
+
 .H_section3 P{
     color: var(--white-color);
     display: block;
@@ -100,10 +112,11 @@ section{
 }
 .H_section3 .H_section3_card img{
     width: 40px;height: 40px;
-    margin: 10px;
+    margin: 10px 2px;
 }
 .H_section3 .H_section3_card p{
     margin-top: 10px;
+    width: 100%;
     color: var(--lightGray);
     font-size: 17px;
 }
@@ -111,6 +124,7 @@ section{
     color: var(--white-color);
     font-size: 1.2em;
     margin: 1%;
+    text-align: center;
 }
 /* =============================== */
 .H_section4{
@@ -124,11 +138,14 @@ section{
 .H_section4 .my_container{
     display: flex;
     justify-content:left;
-
 }
+.H_section4 .overview{
+    width: 80%;
+}
+
 .H_section4_card{
     background-color: var(--darkBlack-color);
-    margin: 0px;
+    margin: 1px auto;
     margin-left:8%;
     border: none;
 }
@@ -169,7 +186,93 @@ section{
     margin-bottom: 20px;
     padding: 10px;
 }
-
+.H_section5 .my_container{
+    margin-top: 0%;
+    display: flex;
+    justify-content:space-around;
+}
 .H_section5 .H_section5_card{
-    margin:5px ;
+    background-color: var(--darkBlack-color);
+    border: none;
+    margin-top: 5%;
+}
+.H_section5 .step{
+    background-color: var(--darkBlack-color);
+    border: none;
+}
+
+.H_section5 .H_section5_card .h5{
+    color: var(--white-color);
+    font-size: 3.5em;
+    margin-bottom: 10%;
+}
+.H_section5 .H_section5_card p{
+    color: var(--white-color);
+    font-size: 1em;
+    margin-bottom: 10%;
+    width: 80%;
+}
+.H_section5 .step .h5{
+    font-size: 2em;
+    margin-bottom: 5%;
+}
+.H_section5 .step p{
+    font-size: 1em;
+    margin-bottom: 0%;
+    width: 70%;
+}
+.H_section5 hr{
+    height: 3px;
+    color: var(--white-color);
+}
+.H_section5 img{
+    position: absolute;
+    width: 400px;height: 400px;
+    left: 18%;
+    top: 2%;
+}
+@media screen and (max-width: 1200px) {
+    .H_section5 img{
+        position: absolute;
+        width: 400px;height: 400px;
+        left: 10%;
+        top: 2%;
+    }
+}
+@media screen and (max-width: 990px) {
+    .H_section5 img{
+        position: absolute;
+        width: 350px;height: 350px;
+        left: 10%;
+        top: 2%;
+    }
+}
+@media screen and (max-width: 880px) {
+    .H_section5 img{
+        position: absolute;
+        width: 300px;height: 300px;
+        left: 10%;
+        top: 5%;
+    }
+}
+@media screen and (max-width: 760px) {
+    .H_section5 img{
+        position: absolute;
+        width: 280px;height:280px;
+        left: 10%;
+        top: 10%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .H_section5 img{
+        visibility: hidden;
+    }
+    .H_section5 .my_container{
+        margin-top: 0%;
+        display: flex;
+        flex-direction: column-reverse;
+        
+    }
+    
 }

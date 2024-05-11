@@ -11,7 +11,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     gap: '7px',
     border: '0',
     boxSizing: 'border-box',

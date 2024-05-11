@@ -7,16 +7,21 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import iconAccess from '../../assets/Icon accessibility.png';
 import iconFolder from '../../assets/Icon folder closed.png';
+import iconSecurity from '../../assets/Icon security.png';
+import iconSaving from '../../assets/Icon savings.png';
+import iconHealth from '../../assets/Icon health and safety.png';
+
 function Section3(){
     const disc = <p>
     Electronic Health Records (EHRs) play a crucial role in modern healthcare systems,
-    offering numerous benefits for both healthcare providers and<br/> patients. Here are some key reasons highlighting the importance of electronic health records:
+    offering numerous benefits for both healthcare providers and 
+    patients. Here are some key reasons highlighting the importance of electronic health records:
     </p>
     return(
         <>
         <section className="H_section3">
             <H1 name="H_title" title="# The importance of E-Healthcare Records (EHRs)"/>
-            <P  className="H_P" title={disc}/>
+            <div className="overview"><P className="H_P" title={disc}/></div>
             <Container>
                 <Row>
                     <Col xs={{ order: 'first' }}>
@@ -24,23 +29,23 @@ function Section3(){
                         name="H_section3_card"
                         title="Improved Accessibility and Efficiency1"
                         path={iconAccess}
-                        disc={disc}
+                        disc="EHRs provide quick access to patient information, improving decision-making and care coordination."
                     />
                     </Col>
                     <Col xs>
                     <CardIcon 
                         name="H_section3_card"
                         title="Enhanced Patient Care and Safety"
-                        path={iconFolder}
-                        disc={disc}
+                        path={iconHealth}
+                        disc="Comprehensive patient data reduces errors and enhances treatment outcomes."
                     />
                     </Col>
                     <Col xs={{ order: 'last' }}>
                     <CardIcon 
                         name="H_section3_card"
-                        title="Improved Accessibility and Efficiency1"
-                        path={iconAccess}
-                        disc={disc}
+                        title="Security and Privacy"
+                        path={iconSecurity}
+                        disc="EHRs ensure the security and privacy of patient information across multiple providers."
                     />
                     </Col>
                 </Row>
@@ -48,25 +53,25 @@ function Section3(){
                     <Col xs={{ order: 'first' }}>
                     <CardIcon 
                         name="H_section3_card"
-                        title="Improved Accessibility and Efficiency1"
+                        title="Data Accuracy and Legibility"
                         path={iconAccess}
-                        disc={disc}
+                        disc="Eliminates errors associated with illegible handwriting and improves documentation accuracy."
                     />
                     </Col>
                     <Col xs>
                     <CardIcon 
                         name="H_section3_card"
-                        title="Improved Accessibility and Efficiency1"
+                        title="Reduced Duplication"
                         path={iconFolder}
-                        disc={disc}
+                        disc="EHRs information reduces unnecessary tests and procedures, saving time and resources."
                     />
                     </Col>
                     <Col xs={{ order: 'last' }}>
                     <CardIcon 
                         name="H_section3_card"
-                        title="Improved Accessibility and Efficiency1"
-                        path={iconAccess}
-                        disc={disc}
+                        title="Cost Savings"
+                        path={iconSaving}
+                        disc="EHR implementation lowers business-related costs over time through streamlined processes."
                     />
                     </Col>
                 </Row>

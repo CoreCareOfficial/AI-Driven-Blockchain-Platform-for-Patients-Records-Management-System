@@ -7,12 +7,14 @@ import Col from 'react-bootstrap/Col';
 import IconCircle from '../../assets/Circle.png';
 import CardRisk from "../bootcomponent/CardRisk";
 function Section4(){
-    const disc = <p>There are some problems and risks associated with the paper-based patient records (Traditional Healthcare Records)<br/> management system, including:</p>
+    const disc = <p>There are some problems and risks associated with the paper-based patient records (Traditional Healthcare Records) management system, including:</p>
     return(
         <>
         <section className="H_section4">
             <H1 name="H_title" title="# The Risks of Traditional Healthcare Records (THRs)"/>
-            <P  className="H_P" title={disc}/>
+            <div className="overview">
+            <P title={disc}/>
+            </div>
             <Container>
                 <Row >
                     <Col >
