@@ -1,0 +1,138 @@
+:root {
+    --mainBlue-color: #3146ff;
+    --altBlue-color: #1787e0;
+    --darkBlack-color:#181a1f;
+    --lightBlack:#272c34;
+    --lightGray:#eaeaea;
+    --white-color:#fff;
+    --main-transition-duration: 0.6s;
+}
+section{
+    max-width: 100%;
+    min-height: 100vh;
+    padding: 10px;
+    overflow: hidden;
+}
+button:hover{
+    transform: scale(1.05);
+}
+.A_section1{
+    background-color: var(--lightBlack);
+    display: flex;
+    flex-direction: column;
+    justify-content:baseline;
+    align-items: center;
+    text-align: center ;
+}
+.A_section1 .H_title{
+    margin-top: 10%;
+    margin-bottom: 10px;
+    color: var(--white-color);
+    font-size: 3em;
+}
+.A_section1 .overview{
+    margin-top: 5px;
+    padding: 20px;
+    max-width: 50%;
+}
+.A_section1 img{
+    margin: auto;
+}
+.A_section1 .overview p{
+    font-size: 1em;
+    color: var(--lightGray);
+}
+.A_section1 .overview hr{
+    height: 15px;
+    color: var(--white-color);
+    display: block;
+}
+.A_section1 .my_container{
+    margin-top: 0px;
+}
+.A_section1 .A_section2_card{
+    width: 30%;
+    background-color: var(--lightBlack);
+    border: none;
+}
+.A_section1 .A_section2_card .h5{
+    font-size: 2em;
+    color: var(--white-color);
+}
+/* ============================ */
+
+.A_section1 .A_section3_card{
+    background-color: var(--darkBlack-color);
+    width: 20rem;
+    margin: 15px auto;
+    border-radius: 15px;
+}
+.A_section1 .A_section3_card .h5{
+    color: var(--white-color);
+    margin-top: 4%;
+}
+.A_section1 .A_section3_card p{
+    color: var(--white-color);
+    margin-top: 4%;
+    font-size: 1em;
+}
+.A_section1 .A_section3_card img{
+    width: 200px;
+    height: 200px;
+    margin: auto;
+}
+/* ======================== */
+
+.A_section4{
+    background-color: var(--lightBlack);
+    display: flex;
+    flex-direction: column;
+    justify-content:baseline;
+    align-items: center;
+}
+.A_section4 .A_section4_card{
+    background-color: var(--darkBlack-color);
+    border:none ;
+}
+.A_section4_card .h5{
+    color: var(--white-color);
+    font-size: 2.5em;
+}
+.A_section4_card p{
+    color: var(--lightGray);
+    font-size: 1.2em;
+    padding: 10px;
+}
+.A_section4_card button{
+    width: 40%;
+    transition: 0.7s ease;
+} 
+
+
+/* ============================ */
+@media screen and (max-width: 994px) {
+    .A_section1 .A_section2_card{
+        width: 100%;
+    }
+    .A_section1 .my_container{
+        margin-top: 0%;
+        display: flex;
+        flex-direction: column;
+    }
+    .A_section4 .my_container{
+        flex-direction: column-reverse;
+    }
+    .A_section4 .A_section4_card{
+        width: 80% !important;
+    }
+}
+@media screen and (max-width: 850px) {
+    .A_section1 .A_section2_card{
+        width: 100%;
+    }
+    .A_section1 .my_container{
+        margin-top: 0%;
+        display: flex;
+        flex-direction: column;
+    }
+} 
