@@ -1,0 +1,58 @@
+:root {
+    --mainBlue-color: #3146ff;
+    --altBlue-color: #1787e0;
+    --darkBlack-color:#181a1f;
+    --lightBlack:#272c34;
+    --lightGray:#eaeaea;
+    --white-color:#fff;
+    --main-transition-duration: 0.6s;
+}
+.S_section1{
+    background-color: var(--lightBlack);
+    display: flex;
+    flex-direction: column;
+    justify-content:baseline;
+    align-items: center;
+    text-align: center;
+}
+.S_section1 .H_title{
+    margin-top: 6%;
+    margin-bottom: 30px;
+    width: 70%;
+}
+.S_section1 .H_title{
+    color: var(--white-color);
+    font-size: 2.5em;
+}
+.S_section1 .overview{
+    color: var(--lightGray);
+    margin-top: 10px;
+    padding: 20px;
+    max-width: 70%;
+    font-size: 1.2em;
+}
+.S_section1 .S_section3_card{
+    background-color: var(--darkBlack-color);
+    border-radius: 20px;
+    width: 30rem;
+    /* margin-top: 10%;
+    margin-bottom: 5%; */
+    margin: 10% auto;
+}
+.S_section1 .S_section3_card img{
+    width: 300px;height: 250px;
+    margin: auto;
+}
+.S_section1 .S_section3_card p{
+    margin-bottom: 4%;
+    width: 100%;
+    color: var(--lightGray);
+    font-size: 17px;
+    text-align: left;
+}
+.S_section1 .S_section3_card .h5{
+    color: var(--white-color);
+    font-size: 1.5em;
+    margin-bottom: 3%;
+    text-align: left;
+}
