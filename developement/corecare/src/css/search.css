@@ -1,0 +1,124 @@
+:root {
+    --mainBlue-color: #3146ff;
+    --altBlue-color: #1787e0;
+    --darkBlack-color:#181a1f;
+    --lightBlack:#272c34;
+    --darkGray:#3f4652;
+    --lightGray:#eaeaea;
+    --white-color:#fff;
+    --main-transition-duration: 0.6s;
+}
+.Search_sec{
+    background-color: var(--darkBlack-color);
+    padding: 0px;
+    min-height: 60vh;
+}
+.Search_sec .my_container{
+    padding: 1%;
+    margin-top: 1%;
+}
+.Search_sec .H_title{
+    margin-top: 10%;
+}
+.Search_sec form{
+    position: relative;
+    padding: 1%;
+}
+.Search_sec .Search_sec_SI{
+    color: aliceblue;
+    font-size: 1.3em;
+    position: absolute;
+    left:96%;
+    top:12%;
+    text-align: right;
+}
+.Search_sec .Search_sec_dotI{
+    color: aliceblue;
+    font-size: 1.3em;
+    position: absolute;
+    left: 52%;
+    text-align: right;
+}
+.Search_sec .Search_sec_calI{
+    color: aliceblue;
+    font-size: 1.3em;
+    position: absolute;
+    left: 82%;
+    text-align: right;
+}
+.Search_sec button{
+    min-width: 100px;
+}
+.Search_sec ::placeholder{
+    color: aliceblue;
+    font-weight: bold;
+}
+.Search_sec .form-control{
+    color: var(--white-color);
+    margin-left: -1px;
+    background-color: var(--darkGray);
+    border: none;
+    margin: 0% 1%;
+}
+.Search_sec select{
+    background-color: var(--darkGray);
+    color: #eaeaea;
+    font-weight: 600;
+    height: 35px;
+    border-radius: 7px;
+    outline: none;
+}
+
+/* ============================== */
+.Search_sec2{
+    background-color: var(--lightBlack);
+    text-align: left;
+    flex-direction: row;
+    align-items: start;
+}
+.Search_sec2 .container{
+    /* background-color: red; */
+    padding-bottom: 30px;
+}
+.Search_sec2 aside{
+    min-height:inherit;
+    padding: 5px;
+    width: 40%;
+    /* background-color: #1787e0; */
+}
+.Search_sec2 .row{
+    margin: 0% 6%;
+}
+.Search_sec2 .col{
+    flex: 0 0;
+}
+.Search_sec2 .Search_sec2_card{
+    padding-top: 10%;
+    width: 15rem;
+    border-radius: 15px;
+    text-align: center;
+    margin: 4% auto;
+    height: 230px;
+}
+.Search_sec2 .Search_sec2_card img{
+    width: 80px;
+    height: 80px;
+    margin: auto;
+}
+.Search_sec2 .Search_sec2_card .h5{
+    font-size: 1em;
+}
+.Search_sec2 .Search_sec2_card p{
+    color: var(--white-color);
+    margin-top: 4%;
+    font-size: 1em;
+}
+.carousel .carousel-indicators{
+    bottom: -23px;
+}
+.carousel-control-next, .carousel-control-prev {
+    top:95%;
+    max-height: 50px;
+    width: 50%;
+}
+

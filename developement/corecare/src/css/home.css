@@ -26,7 +26,7 @@ button:hover{
     justify-content:space-around ;
     align-items:center;
     padding: 2%;
-    /* background-color: red; */
+    /* background-color: greenyellow; */
 }
 .H_section1_card{
     background-color: var(--lightBlack) !important;
