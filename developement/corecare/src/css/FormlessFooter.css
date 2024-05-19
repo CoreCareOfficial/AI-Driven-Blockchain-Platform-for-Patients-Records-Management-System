@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
+
+.FooterContainer {
+    background-color: #272c34;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-height: fit-content;
+}
+
+.contact {
+    max-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    margin: auto;
+
+}
+
+.contact .email {
+    margin: auto;
+    margin-bottom: 0px;
+}
+
+.contact .email a {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    font-size: large;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.contact .phone {
+    color: white;
+    text-align: center;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: large;
+    padding: 0px;
+    margin: 0px;
+}
+
+.contact .phone a {
+    text-decoration: none;
+    color: white;
+}
+
+.logoContainer {
+    max-width: fit-content;
+    max-height: fit-content;
+    align-content: center;
+    margin: auto;
+}
+
+.textLogo {
+    color: white;
+    padding: 10px;
+    display: flex;
+    text-align: center;
+    font-size: large;
+    margin: auto;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.followContainer {
+    /* background-color: green; */
+    display: flex;
+    flex-direction: column;
+    max-height: fit-content;
+    align-content: center;
+    padding: 10px;
+    margin: 0px auto;
+}
+
+.followContainer h2,
+.followContainer .iconContainer a {
+    color: white;
+    text-align: center;
+    align-items: center;
+    font-size: large;
+    margin: auto;
+    text-decoration: none;
+    padding: 5px;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+.followContainer .iconContainer a:hover {
+    color: blue;
+}
+
+.iconContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    margin: auto 10px;
+    padding: 5px;
+}
