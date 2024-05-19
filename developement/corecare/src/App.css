@@ -1,3 +1,13 @@
+:root {
+  --mainBlue-color: #3146ff;
+  --altBlue-color: #1787e0;
+  --darkBlack-color:#181a1f;
+  --lightBlack:#272c34;
+  --darkGray:#3f4652;
+  --lightGray:#eaeaea;
+  --white-color:#fff;
+  --main-transition-duration: 0.6s;
+}
 .App {
   text-align: center;
 }

@@ -43,7 +43,7 @@
     color: var(--white-color);
     margin-top: 13%;
 }
-.Footer_section .footer_form_card2 i {
+.Footer_section .footer_form_card2 i a {
     margin-right: 5%;
     font-size: 2em;
     color: var(--white-color);

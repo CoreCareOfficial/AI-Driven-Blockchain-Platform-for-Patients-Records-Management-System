@@ -1,0 +1,91 @@
+.contact1{
+    min-height: 80vh;
+    background-image: url("../assets/contact1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+    padding: 0px;
+}
+.contact1 .contact1_card{
+    margin: 0% ;
+    width: 100%;
+    background-color: rgba(24, 26, 31, 0.5);
+    min-height:inherit;
+    
+}
+.contact1_card .h5{
+    margin-top: 15%;
+    font-size: 3em;
+    color: var(--white-color);
+}
+.contact1_card p{
+    width: 50%;
+    font-size: 2em;
+    color: var(--white-color);
+    margin: auto;
+}
+/* ================= */
+.contact2_card{
+    background-color: var(--darkBlack-color);
+    margin-top: 5%;
+}
+.contact2_card .h5{
+    font-size: 2em;
+    color: var(--white-color);
+}
+.contact2_card p{
+    font-size: 1.2em;
+    color: var(--white-color);
+    text-align: left;
+}
+.contact2_card li{
+    list-style-type: circle;
+}
+/* =============== */
+.contact .my_container{
+    margin-top: 5%;
+    width: 90%;
+}
+.contact .my_container img{
+    width: 500px;
+    height: 450px;
+}
+.contact .contact_card{
+    width: 30rem;
+    background-color:var(--darkBlack-color) ;
+    text-align:left;
+    border-radius: 15PX;
+}
+.contact .contact_card .h5{
+    color: var(--white-color);
+}
+.contact .contact_card p{
+    color: var(--white-color);
+    margin-bottom: 10%;
+}
+.contact .contact_card label{
+    color: var(--white-color);
+}
+.contact .contact_card ::placeholder{
+    color: aliceblue;
+}
+.contact .contact_card .form-control{
+    color: var(--white-color);
+}
+.contact .contact_card textarea.form-control{
+    resize: none;
+}
+
+@media screen and (max-width: 920px) {
+
+    .contact .my_container img{
+        margin: 5% auto;
+    }
+    .contact .my_container{
+        margin-top: 0%;
+        display: flex;
+        flex-direction: column;
+    }
+} 
