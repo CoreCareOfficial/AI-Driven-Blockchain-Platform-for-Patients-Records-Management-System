@@ -1,0 +1,42 @@
+.button {
+    cursor: pointer;
+    width: 100%;
+    padding: 0px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row-reverse;
+    gap: 8px;
+    border: 0;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+    font-size: 16px;
+    font-family: "DM Sans";
+    font-weight: 700;
+    line-height: 21px;
+    text-align: center;
+    outline: none;
+    margin: 10px auto;
+}
+
+.logout {
+    gap: 7px;
+    border-radius: 25px;
+    box-shadow: 0px 0px 10px rgba(3, 3, 3, 0.1);
+    background-color: #272c34;
+    color: #ffffff;
+    font-size: 14px;
+    font-family: "Roboto";
+    line-height: 16px;
+}
+
+.primary {
+    background-color: #3146ff;
+    color: #ffffff;
+}
+
+.secondary {
+    background-color: #ffffff;
+    color: #3146ff;
+}

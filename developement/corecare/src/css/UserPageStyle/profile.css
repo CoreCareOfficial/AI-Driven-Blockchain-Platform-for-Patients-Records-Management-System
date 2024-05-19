@@ -1,0 +1,72 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.profile-header-icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    color: white;
+    padding: 10px;
+}
+
+.profile-header-icon div {
+    padding: 10px;
+    cursor: pointer;
+    max-width: fit-content;
+}
+
+.profile-header-icon div:hover {
+    color: blue;
+}
+
+.image-name-container {
+    display: flex;
+    flex-direction: row;
+    color: white;
+
+}
+
+.image-container {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background-color: red;
+    margin: 40px;
+    position: relative;
+}
+
+img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
+
+.name-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto 0px;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.info-container a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.info-container a:hover {
+    color: blue;
+}
+
+hr {
+    color: white;
+}

@@ -1,0 +1,31 @@
+.sideBtn {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    min-width: 90%;
+    max-height: 30%;
+    align-content: center;
+    border-radius: 10px;
+    margin-left: 10%;
+    margin-bottom: 10px;
+}
+
+.btn {
+    color: white;
+    background-color: black;
+}
+
+.active {
+    background-color: #eaeaea70;
+}
+
+.sideBtn p {
+    color: white;
+    padding: 5px;
+    text-align: center;
+    align-items: center;
+    margin: auto 10px;
+    font-size: 13px;
+    font-weight: 400;
+}
