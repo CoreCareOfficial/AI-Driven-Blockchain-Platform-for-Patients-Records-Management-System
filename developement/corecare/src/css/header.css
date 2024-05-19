@@ -37,7 +37,7 @@ li{
     width: 90%;
     list-style: none;
 }
-a{
+header a{
     color: white !important;
     text-decoration: none !important;
     font-size:1em !important;

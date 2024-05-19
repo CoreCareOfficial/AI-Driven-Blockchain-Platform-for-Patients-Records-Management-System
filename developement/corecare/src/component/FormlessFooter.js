@@ -11,11 +11,11 @@ function FormlessFooter(props) {
         <>
             <footer className="FooterContainer">
                 <div className="contact">
-                    <h1 className="email">
-                        <a href={mail}>{props.mail}</a>
+                    <h1 className="email-container">
+                        <a className="email" href={mail}>{props.mail}</a>
                     </h1>
-                    <p className="phone">
-                        <a href={number}>{props.phoneNumber}</a>
+                    <p className="phone-container">
+                        <a className="phone" href={number}>{props.phoneNumber}</a>
                     </p>
                 </div>
 

@@ -18,12 +18,12 @@
 
 }
 
-.contact .email {
+.contact .email-container {
     margin: auto;
     margin-bottom: 0px;
 }
 
-.contact .email a {
+.contact .email-container .email {
     text-decoration: none;
     color: white;
     padding: 10px;
@@ -33,7 +33,7 @@
     font-style: normal;
 }
 
-.contact .phone {
+.contact .phone-container {
     color: white;
     text-align: center;
     font-family: "Poetsen One", sans-serif;
@@ -44,7 +44,7 @@
     margin: 0px;
 }
 
-.contact .phone a {
+.contact .phone-container .phone {
     text-decoration: none;
     color: white;
 }
