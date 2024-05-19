@@ -1,0 +1,29 @@
+.Container {
+    background-color: #272c34;
+    max-width: 100%;
+    min-height: fit-content;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+.Container .Wrapper .Title {
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.Wrapper {
+    max-width: 100%;
+    min-height: 100%;
+    margin: 5px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+    scrollbar-color: inherit;
+}
