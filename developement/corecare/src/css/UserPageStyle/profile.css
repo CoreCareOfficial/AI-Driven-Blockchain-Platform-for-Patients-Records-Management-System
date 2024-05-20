@@ -27,7 +27,7 @@
     border-radius: 50%;
     background-color: red;
     position: relative;
-    margin: auto 0px;
+    margin: auto 1%;
 }
 
 .profile-header-icon div:hover {
@@ -123,6 +123,8 @@
 
 .profile-body-right h3 {
     color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
     /* margin: auto 1%; */
 }
 
@@ -143,6 +145,8 @@
 
 .general-info h3 {
     margin: auto 3%;
+    font-weight: bold;
+    font-size: 1.5rem;
 }
 
 
@@ -187,12 +191,17 @@
     gap: 10%;
     color: white;
     justify-content: space-between;
-    margin: 1% 0%;
+    margin: 3% 0% 0% 0%;
 }
 
 .profile-body-left-bottom ul {
     padding-left: 10%;
-    /* margin: auto; */
+}
+
+.profile-body-left-bottom h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: auto 3%;
 }
 
 .profile-body-left-bottom .current-medication {
@@ -216,13 +225,16 @@
 .profile-body-bottom {
     color: white;
     padding: 10px;
+    border-radius: 10px;
     background-color: #272C34;
-    margin-bottom: 10px;
+    margin-bottom: 3%;
     grid-column: span 2
 }
 
 .profile-body-bottom h3 {
     margin: auto 1%;
+    font-weight: bold;
+    font-size: 1.5rem;
 }
 
 .profile-body-bottom .previous-doctors-container {

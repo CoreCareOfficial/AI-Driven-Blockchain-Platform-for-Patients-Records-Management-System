@@ -126,7 +126,7 @@ function ProfileBody() {
               </div>
             </div>
             <div className="past-condition">
-              <h5>Past Condition :</h5>
+              <h5 >Past Condition :</h5>
               <div className="past-condition-container">
                 <ul>
                   <li>Condition 1</li>
