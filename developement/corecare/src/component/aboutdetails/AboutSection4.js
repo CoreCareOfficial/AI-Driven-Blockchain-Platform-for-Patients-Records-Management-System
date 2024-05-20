@@ -3,7 +3,8 @@ import image4 from '../../assets/A.png';
 import RectImage from "../bootcomponent/RectImage";
 import { Container } from "react-bootstrap";
 import Flex_Container from "../bootcomponent/flex_Container";
-import CardTitle from'../bootcomponent/CardTitle';
+import DynamicCard from "../bootcomponent/DynamicCard";
+import { Card,Button } from "react-bootstrap";
 
 function Section4(){
 
@@ -16,12 +17,11 @@ function Section4(){
                     marginTop:'10%'
                     }}>
                 <Flex_Container>
-                    <CardTitle 
-                        name="A_section4_card"
-                        title="Get started with Core-care today"
-                        desc="Start organizing your healthcare records today."
-                        btn="sign up now"
-                        />
+                    <DynamicCard name="A_section4_card">
+                        <Card.Title>Get started with Core-care today</Card.Title>
+                        <Card.Text>Start organizing your healthcare records today.</Card.Text>
+                        <Button variant="primary" style={{transition: '0.7s ease'}}>sign up now</Button>{' '}
+                    </DynamicCard>
                     <RectImage path={image4}/>
                 </Flex_Container>
                 </Container>

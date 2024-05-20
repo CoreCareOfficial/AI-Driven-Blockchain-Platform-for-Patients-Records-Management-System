@@ -28,25 +28,25 @@ button:hover{
     padding: 2%;
     /* background-color: greenyellow; */
 }
-.H_section1_card{
-    background-color: var(--lightBlack) !important;
-    border:none !important
+.H_section1 .H_section1_card{
+    background-color: var(--lightBlack) ;
+    border:none 
 }
-.H_section1_card h1{
+.H_section1 .H_section1_card h1{
     color: var(--white-color);
     font-size: 2em;
 }
-.H_section1_card p{
+.H_section1 .H_section1_card p{
     color: var(--lightGray);
     font-size: 1.2em;
     padding: 10px;
     margin-bottom: 20%;
 }
-.H_section1_card button{
+.H_section1 .H_section1_card button{
     width: 35%;
     transition: 0.7s ease;
 }
-.H_section1 .img_div{
+.H_section1 img{
     width: 40%;
     max-height: 20%;
 }
@@ -68,11 +68,18 @@ button:hover{
     color: var(--white-color);
     font-size: 2.5em;
 }
-.H_section2 .overview{
+.H_section2 .H_section2_card{
+    background-color: transparent;
+    border: none;
+    width: 60%;
+    text-align: left;
+}
+.H_section2 .H_section2_card p ,ol,li{
     color: var(--lightGray);
     margin-top: 10px;
-    padding: 20px;
-    max-width: 70%;
+    padding: 10px;
+    max-width: 100%;
+    list-style-type:circle ;
 }
 
 /* ==================== */
@@ -88,6 +95,7 @@ button:hover{
 .H_section3_card{
     background-color: var(--darkBlack-color);
     margin: 15px auto;
+    width: 20rem;
     border-radius: 15px;
 }
 .H_section3 .H_title{
@@ -247,6 +255,15 @@ button:hover{
         top: 2%;
     }
 }
+@media screen and (max-width: 920px) {
+    .H_section1 .my_container{
+        flex-direction: column-reverse;
+    }
+    .H_section1 img{
+        min-width: 60%;
+        max-height: 20%;
+    }
+}
 @media screen and (max-width: 880px) {
     .H_section5 img{
         position: absolute;
@@ -265,6 +282,10 @@ button:hover{
 }
 
 @media screen and (max-width: 700px) {
+    .H_section1 img{
+        min-width: 80%;
+        max-height: 20%;
+    }
     .H_section5 img{
         visibility: hidden;
     }
@@ -272,7 +293,6 @@ button:hover{
         margin-top: 0%;
         display: flex;
         flex-direction: column-reverse;
-        
     }
     
 } 

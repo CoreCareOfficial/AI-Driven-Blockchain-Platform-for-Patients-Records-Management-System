@@ -27,7 +27,9 @@ function Section2(){
                 </Card.Text>
             </DynamicCard>
             <FlexContainer>
+
                 <RectImage path={ContactImage}/>
+                
                 <DynamicCard name="contact_card">
                     <Card.Title>Contact Us</Card.Title>
                     <Card.Text>Explore the future with us. Feel free to get in touch.</Card.Text>

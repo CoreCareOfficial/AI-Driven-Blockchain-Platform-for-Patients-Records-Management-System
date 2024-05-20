@@ -12,17 +12,19 @@ import AboutUsPage from './pages/AboutUs';
 import ServicePage from './pages/ServicePage';
 import SearchPage from './pages/SearchPage';
 import ContactPage from './pages/ContactPage';
+import UserPage from './pages/UserPage';
 
 
 function App() {
   return (
     <>
     <Header/> 
-    <HomePage/>
+    {/* <HomePage/> */}
     {/* <AboutUsPage/> */}
     {/* <ServicePage/> */}
     {/* <SearchPage/> */}
-    {/* <ContactPage/> */}
+    <ContactPage/>
+    {/* <UserPage/> */}
     </>
   );
 }

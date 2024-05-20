@@ -14,24 +14,59 @@ header{
     justify-content: space-between;
     position: fixed;
     z-index: 1000;
-    min-width: 100%;
+    width: 100%;
+    max-height: inherit;
+}
+header .Header_log{
+    /* background-color: red; */
+    color: var(--white-color);
+    font-size: 2em;
+    font-weight: 500;
+    line-height: 42px;
+    font-style: italic;
+    padding: 0px;
+}
+header button{
+    background-color: var(--main-color);
+    height: 35px;
+    width: 100px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 5px;
+    margin:auto 10px auto 0px ;
+    padding: auto 5px;
+    color: var(--white-color);
+    transition: 0.7s ease;
+}
+header button span{
+    margin-left: -25%;
+    font-size: 1.5em;
+    color: var(--white-color);
+}
+header .menu{
+    color: var(--white-color);
+    font-size: 2em;
+    display: none;
+    z-index: 1200px;
 }
 header nav{
-    min-width: 700px;
+    width: 700px;
+    max-height: 35px;
     display: flex;
     justify-content: space-around;
-    padding: 5px;
-    margin: 20px;
+    /* background-color: yellowgreen; */
 }
 header .li_div{
     width: fit-content;
     position: relative;
-    margin: 0px 0px;
-    display: block;
     text-align: center;
+    /* background-color: red; */
 }
 header .li_div li{
     width: 90%;
+    margin: auto;
     list-style: none;
 }
 header .li_div a{
@@ -46,7 +81,7 @@ header .li_div::before{
     width: 0%;
     height: 3px;
     background-color: transparent;
-    top: 25px;
+    top: 35px;
     left: 0;
     transition: var(--main-transition-duration);
 }
@@ -55,6 +90,73 @@ header .li_div:hover::before {
     background-color: var(--main-color);
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 997px) {
+    .header nav{
+        width: 500px;
+    }
+    header .li_div{
+        max-height: inherit;
+    }
+    header .Header_log{
+        color: var(--white-color);
+        font-size: 1.5em;
+        font-weight: 500;
+        line-height: 42px;
+        font-style: italic;
+        padding: 0px;
+    }
+    header button{
+        height: 30px;
+    }
+}
 
+@media screen and (max-width: 966px) {
+    header nav{
+        padding-top: 10%;
+        width: 10rem;
+        min-height: 80%;
+        position: fixed;
+        right: 0;
+        display: block;
+        flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.9);
+        border-radius: 10px 0px 0px 10px;
+    }
+    header .menu{
+        z-index: 2000;
+        display: block;
+    }
+    header .li_div{
+        width: fit-content;
+        text-align: center;
+        margin: 5px auto;
+    }
+    header .li_div li{
+        width: 90%;
+        margin: auto;
+        list-style: none;
+    }
+    header .li_div a{
+        color: white ;
+        text-decoration: none ;
+        font-size:1em ;
+        font-weight: 500 ;
+    }
+    header button{
+        background-color: transparent;
+        height: 35px;
+        width: 100px;
+        display: flex;
+        position: fixed;
+        right: 15px;
+        bottom: 120px;
+        text-align: center;
+        align-items: center;
+        justify-content: space-around;
+        border-radius: 5px;
+        margin:auto 10px auto 0px ;
+        padding: auto 5px;
+        color: var(--white-color);
+        transition: 0.7s ease;
+    }
 }

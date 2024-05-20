@@ -38,7 +38,7 @@
     position: relative;
 }
 
-img {
+.image {
     position: absolute;
     width: 100%;
     height: auto;

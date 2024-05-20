@@ -23,7 +23,7 @@ function Profile() {
                 </div>
                 <div className="image-name-container">
                     <div className="image-container">
-                        <img src={Osama} alt="Profile" />
+                        <img className="image" src={Osama} alt="Profile" />
                     </div>
                     <div className="name-container">
                         <p>Username</p>

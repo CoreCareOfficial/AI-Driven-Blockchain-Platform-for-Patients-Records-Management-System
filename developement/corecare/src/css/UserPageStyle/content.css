@@ -6,10 +6,4 @@
     flex-direction: column;
     flex-grow: 1;
     overflow: auto;
-
-}
-
-h1 {
-    color: white;
-    padding: 10px;
 }

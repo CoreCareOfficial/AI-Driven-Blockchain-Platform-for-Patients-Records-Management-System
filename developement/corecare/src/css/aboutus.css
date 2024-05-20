@@ -39,7 +39,7 @@ button:hover{
     margin: auto;
 }
 .A_section1 .overview p{
-    font-size: 1em;
+    font-size: 1.2em;
     color: var(--lightGray);
 }
 .A_section1 .overview hr{

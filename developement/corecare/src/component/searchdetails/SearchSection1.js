@@ -24,26 +24,32 @@ const defaultProps = {
             <Container style={{
                 backgroundColor:'#272c34',
                 borderRadius:'15px',
-                width:'70%'
+                width:'70%',
+                marginBottom:'10px',
                 }}>
 
                 <Form >
                 <Form.Group  className="mb-2" controlId="exampleForm.ControlInput1">
-                    <Form.Control type="text" placeholder="search"
+                    <div className="input_div_search">
+                    <Form.Control type="text" placeholder="Search"
                     style={{marginLeft:'0px'}}/>
                     <span className="Search_sec_SI"><AiOutlineSearch /></span>
-                <Flex_Container style={{
-                    }}>
+                    </div>
+                <Flex_Container>
                 <select defaultValue="">
                     <option value="" disabled hidden>{defaultProps.label}</option>
                         {(defaultProps.values).map((value) => (
                     <option value={value} key={value}>{value}</option>
                         ))}
                 </select>
-                <Form.Control type="text" placeholder="search"/>
+                <div className="input_div" >
+                    <Form.Control type="text" placeholder="Location"/>
                     <span className="Search_sec_dotI"><BsCrosshair /></span>
-                <Form.Control type="text" placeholder="search" />
+                </div>
+                <div className="input_div">
+                    <Form.Control type="text" placeholder="Date" />
                     <span className="Search_sec_calI"><BsCalendar3 /></span>
+                </div>
                     <Button variant="primary" style={{transition: '0.7s ease'}}>search</Button>{' '}
                 </Flex_Container>
                 </Form.Group>

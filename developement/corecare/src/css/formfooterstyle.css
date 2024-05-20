@@ -43,8 +43,13 @@
     color: var(--white-color);
     margin-top: 13%;
 }
-.Footer_section .footer_form_card2 i a {
-    margin-right: 5%;
+.footer_form_card2 .my_container{
+    justify-content: left;
+}
+.Footer_section .footer_form_card2 i {
+    margin-right: 4%;
+}
+.Footer_section .footer_form_card2 i a{
     font-size: 2em;
     color: var(--white-color);
 }
@@ -52,5 +57,9 @@
     .Footer_section .my_container{
         display: flex;
         flex-direction: column-reverse;
+    }
+    .footer_form_card2 .my_container{
+        display: flex;
+        flex-direction: row;
     }
 }

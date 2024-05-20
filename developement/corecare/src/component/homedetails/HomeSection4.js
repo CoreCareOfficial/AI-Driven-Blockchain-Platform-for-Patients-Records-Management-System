@@ -5,7 +5,10 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import IconCircle from '../../assets/Circle.png';
-import CardRisk from "../bootcomponent/CardRisk";
+import DynamicCard from '../bootcomponent/DynamicCard';
+import { Card } from "react-bootstrap";
+import Flex_Container from "../bootcomponent/flex_Container";
+
 function Section4(){
     const disc = <p>There are some problems and risks associated with the paper-based patient records (Traditional Healthcare Records) management system, including:</p>
     return(
@@ -18,50 +21,60 @@ function Section4(){
             <Container>
                 <Row >
                     <Col >
-                    <CardRisk 
-                        name="H_section4_card"
-                        title="Limited Accessibility and Inefficiency"
-                        path={IconCircle}
-                    />
+                    <DynamicCard name="H_section4_card">
+                        <Flex_Container>
+                        <Card.Img src={IconCircle}/>
+                        <Card.Title>Limited Accessibility and Inefficiency</Card.Title>
+                        </Flex_Container>
+                    </DynamicCard>
                     </Col>
+
                     <Col >
-                    <CardRisk 
-                        name="H_section4_card"
-                        title="Data Redundancy and Errors"
-                        path={IconCircle}
-                    />
+                    <DynamicCard name="H_section4_card">
+                        <Flex_Container>
+                        <Card.Img src={IconCircle}/>
+                        <Card.Title>Data Redundancy and Errors</Card.Title>
+                        </Flex_Container>
+                    </DynamicCard>
                     </Col>
                 </Row>
+
                 <Row >
                     <Col >
-                    <CardRisk 
-                        name="H_section4_card"
-                        title="Security and Privacy Concerns"
-                        path={IconCircle}
-                    />
+                    <DynamicCard name="H_section4_card">
+                        <Flex_Container>
+                        <Card.Img src={IconCircle}/>
+                        <Card.Title>Security and Privacy Concerns</Card.Title>
+                        </Flex_Container>
+                    </DynamicCard>
                     </Col>
+
                     <Col >
-                    <CardRisk 
-                        name="H_section4_card"
-                        title="Interoperability Challenges"
-                        path={IconCircle}
-                    />
+                    <DynamicCard name="H_section4_card">
+                        <Flex_Container>
+                        <Card.Img src={IconCircle}/>
+                        <Card.Title>Interoperability Challenges</Card.Title>
+                        </Flex_Container>
+                    </DynamicCard>
                     </Col>
                 </Row>
                 <Row>
                     <Col >
-                    <CardRisk 
-                        name="H_section4_card"
-                        title="Inefficiency and Time-Consuming"
-                        path={IconCircle}
-                    />
+                    <DynamicCard name="H_section4_card">
+                        <Flex_Container>
+                        <Card.Img src={IconCircle}/>
+                        <Card.Title>Inefficiency and Time-Consuming</Card.Title>
+                        </Flex_Container>
+                    </DynamicCard>
                     </Col>
+                    
                     <Col >
-                    <CardRisk 
-                        name="H_section4_card"
-                        title="Financial Implications"
-                        path={IconCircle}
-                    />
+                    <DynamicCard name="H_section4_card">
+                        <Flex_Container>
+                        <Card.Img src={IconCircle}/>
+                        <Card.Title>Financial Implications</Card.Title>
+                        </Flex_Container>
+                    </DynamicCard>
                     </Col>
                 </Row>
             </Container>

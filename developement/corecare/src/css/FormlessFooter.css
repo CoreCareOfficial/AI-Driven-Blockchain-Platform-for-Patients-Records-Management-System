@@ -9,7 +9,7 @@
     max-height: fit-content;
 }
 
-.contact {
+.FooterContainer .contact {
     max-width: fit-content;
     display: flex;
     flex-direction: column;
@@ -18,12 +18,12 @@
 
 }
 
-.contact .email-container {
+.FooterContainer .contact .email-container {
     margin: auto;
     margin-bottom: 0px;
 }
 
-.contact .email-container .email {
+.FooterContainer .contact .email-container .email {
     text-decoration: none;
     color: white;
     padding: 10px;
@@ -33,7 +33,7 @@
     font-style: normal;
 }
 
-.contact .phone-container {
+.FooterContainer .contact .phone-container {
     color: white;
     text-align: center;
     font-family: "Poetsen One", sans-serif;
@@ -44,19 +44,19 @@
     margin: 0px;
 }
 
-.contact .phone-container .phone {
+.FooterContainer .contact .phone-container .phone {
     text-decoration: none;
     color: white;
 }
 
-.logoContainer {
+.FooterContainer .logoContainer {
     max-width: fit-content;
     max-height: fit-content;
     align-content: center;
     margin: auto;
 }
 
-.textLogo {
+.FooterContainer .textLogo {
     color: white;
     padding: 10px;
     display: flex;
@@ -68,7 +68,7 @@
     font-style: normal;
 }
 
-.followContainer {
+.FooterContainer .followContainer {
     /* background-color: green; */
     display: flex;
     flex-direction: column;

@@ -5,7 +5,12 @@ import Button from 'react-bootstrap/Button';
 import '../css/formfooterstyle.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faInstagram, faLinkedin, faTwitter, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-
+import { AiOutlineX } from "react-icons/ai";
+import { AiFillInstagram } from "react-icons/ai";
+import { AiFillLinkedin } from "react-icons/ai";
+import { AiFillFacebook } from "react-icons/ai";
+import { AiOutlineWhatsApp } from "react-icons/ai";
+import Flex_Container from "./bootcomponent/flex_Container";
 function FormFooter(){
     return(
         <>
@@ -34,11 +39,37 @@ function FormFooter(){
                         <Card.Title>corecareofficial@gmail.com</Card.Title>
                         <Card.Title>+9677774714500</Card.Title>
                         <Card.Text>Follow us in social media</Card.Text>
-                        <i><a href="#"><FontAwesomeIcon  icon={faInstagram}/></a></i>
-                        <i><a href="#"><FontAwesomeIcon  icon={faLinkedin}/></a></i>
-                        <i><a href="#"><FontAwesomeIcon  icon={faFacebook}/></a></i>
-                        <i><a href="#"><FontAwesomeIcon  icon={faWhatsapp}/></a></i>
-                        <i><a href="#"><FontAwesomeIcon  icon={faTwitter}/></a></i>
+                        <Flex_Container>
+                        <i>
+                        <a href="https://www.x.com" rel="noreferrer" target="_blank">
+                            <AiOutlineX />
+                        </a>
+                        </i>
+                        
+                        <i>
+                        <a href="https://www.instagram.com" rel="noreferrer" target="_blank">
+                            <AiFillInstagram />
+                        </a>
+                        </i>
+
+                        <i>
+                        <a href="https://www.linkedin.com" rel="noreferrer" target="_blank">
+                            <AiFillLinkedin />
+                        </a>
+                        </i>
+
+                        <i>
+                        <a href="https://www.fb.com" rel="noreferrer" target="_blank">
+                            <AiFillFacebook />
+                        </a>
+                        </i>
+
+                        <i>
+                        <a href="https://www.whatsapp.com" rel="noreferrer" target="_blank">
+                            <AiOutlineWhatsApp />
+                        </a>
+                        </i>
+                        </Flex_Container>
                     </Card.Body>
                 </Card>
             </div>
