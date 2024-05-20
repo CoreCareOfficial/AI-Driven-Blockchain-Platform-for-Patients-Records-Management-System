@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 0;
 }
 
 .profile-header-icon {
@@ -12,10 +13,21 @@
     padding: 10px;
 }
 
+
 .profile-header-icon div {
-    padding: 10px;
+    padding: 13px;
     cursor: pointer;
     max-width: fit-content;
+
+}
+
+.profile-header-icon .mini-profile-icon {
+    width: auto;
+    height: auto;
+    border-radius: 50%;
+    background-color: red;
+    position: relative;
+    margin: auto 0px;
 }
 
 .profile-header-icon div:hover {
@@ -30,11 +42,12 @@
 }
 
 .image-container {
-    width: 160px;
-    height: 160px;
+    padding: 100px;
+    width: auto;
+    height: auto;
     border-radius: 50%;
     background-color: red;
-    margin: 40px;
+    margin: auto 15px auto 150px;
     position: relative;
 }
 
@@ -43,6 +56,8 @@
     width: 100%;
     height: auto;
     border-radius: 50%;
+    top: 0px;
+    left: 0px;
 }
 
 .name-container {
@@ -51,10 +66,21 @@
     margin: auto 0px;
 }
 
+.name-container p:not(:first-child) {
+    line-height: 20px;
+    font-weight: lighter;
+}
+
+.name-container p:first-child {
+    font-weight: bold;
+    font-style: italic;
+}
+
 .info-container {
     display: flex;
     flex-direction: row;
     justify-content: end;
+    margin-right: 100px;
 }
 
 .info-container a {
@@ -67,6 +93,161 @@
     color: blue;
 }
 
-hr {
+.profile-container hr {
     color: white;
+    margin: 10px 2%;
+}
+
+/*  */
+
+.profile-body {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2%;
+    margin: 1% 2%;
+}
+
+.profile-body .profile-body-left {
+    grid-column: 1;
+    border-radius: 10px;
+}
+
+.profile-body .profile-body-right {
+    grid-column: 2;
+    background-color: #272C34;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.profile-body-right h3 {
+    color: white;
+    /* margin: auto 1%; */
+}
+
+.profile-body .profile-body-left .profile-body-left-top {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.general-info {
+    display: flex;
+    flex-direction: column;
+    background-color: #272C34;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.general-info h3 {
+    margin: auto 3%;
+}
+
+
+.general-info-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin: 10px;
+    flex-wrap: wrap;
+}
+
+.general-info-item {
+    background-color: #3F4652;
+    border-radius: 20px;
+    width: 30%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    margin: 0.5%;
+    height: auto;
+}
+
+.general-info-item-icon {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+}
+
+.general-info-item .value {
+    font-weight: bold;
+    text-align: center;
+}
+
+.general-info-item-icon .icon {
+    font-size: 20px;
+}
+
+.profile-body-left-bottom {
+    display: flex;
+    flex-direction: row;
+    gap: 10%;
+    color: white;
+    justify-content: space-between;
+    margin: 1% 0%;
+}
+
+.profile-body-left-bottom ul {
+    padding-left: 10%;
+    /* margin: auto; */
+}
+
+.profile-body-left-bottom .current-medication {
+    background-color: #272C34;
+    border-radius: 10px;
+    padding: 10px;
+    width: 50%;
+}
+
+.profile-body-left-bottom .past-condition {
+    background-color: #272C34;
+    border-radius: 10px;
+    padding: 10px;
+    width: 50%;
+}
+
+.profile-body-left-bottom li {
+    list-style: disc;
+}
+
+.profile-body-bottom {
+    color: white;
+    padding: 10px;
+    background-color: #272C34;
+    margin-bottom: 10px;
+    grid-column: span 2
+}
+
+.profile-body-bottom h3 {
+    margin: auto 1%;
+}
+
+.profile-body-bottom .previous-doctors-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    flex-wrap: wrap;
+}
+
+.previous-doctor-card {
+    width: 22%;
+    margin: 1%;
+    background-color: #3F4652;
+}
+
+.previous-doctor-card .h5,
+.previous-doctor-card p {
+    text-align: center;
+    margin-top: 3%;
+}
+
+.previous-doctor-card .h5 {
+    color: #27616E;
+}
+
+.previous-doctor-card p {
+    color: #F0F0F0;
 }
