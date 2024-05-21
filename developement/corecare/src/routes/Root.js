@@ -10,6 +10,7 @@ import AboutUsPage from '../pages/AboutUs';
 import ServicePage from '../pages/ServicePage';
 import SearchPage from '../pages/SearchPage';
 import ContactPage from '../pages/ContactPage';
+import UserPage from '../pages/UserPage';
 
 function Root() {
     return (
@@ -23,6 +24,7 @@ function Root() {
                 {/* <Route path='/' element={<HomePage />} /> */}
                 {/* <Route path='home' element={<HomePage />} /> */}
                 <Route path='login' element={<LoginPage />} />
+                <Route path='userprofile' element={<UserPage/>}/>
                 {/* <Route path='signup' element={<><Outlet /></>}>
                     <Route path="step-1" element={<SignupPage1 />} />
                     <Route path="step-2" element={<SignupPage />} />

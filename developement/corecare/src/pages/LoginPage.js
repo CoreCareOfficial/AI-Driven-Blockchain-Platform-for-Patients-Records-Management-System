@@ -15,7 +15,7 @@ function LoginPage() {
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-100px' }}>
                     <TitlePage title="Login" />
                     <TextPage text='Fill out your personal details' />
-                    <FormLogin buttonName='Login' path='/signup/step-1'>
+                    <FormLogin buttonName='Login' path='/userprofile'>
                         <TextInputField label='Username, Email' placeholder='Enter your username or email' />
                         <PasswordInputField label='Password' placeholder="Enter your password" />
                     </FormLogin>
