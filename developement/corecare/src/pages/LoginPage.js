@@ -11,7 +11,7 @@ function LoginPage() {
 
     return (
         <>
-            <CardLogin backPath=''>
+            <CardLogin backPath='/'>
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-100px' }}>
                     <TitlePage title="Login" />
                     <TextPage text='Fill out your personal details' />

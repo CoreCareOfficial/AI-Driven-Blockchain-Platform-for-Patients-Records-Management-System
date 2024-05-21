@@ -33,7 +33,8 @@ function CardLogin(props) {
                             color: 'white',
                             fontFamily: 'Caladea',
                             fontWeight: 700,
-                            paddingTop: '5px'
+                            paddingTop: '5px',
+                            position: 'relative'
                         }}>
                             Core-Care
                         </Link>

@@ -1,13 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=DM+Sans:weight,style&subset=latin,latin-ext');
+@import url('https://fonts.googleapis.com/css2?family=Caladea&display=swap');
+
 :root {
   --mainBlue-color: #3146ff;
   --altBlue-color: #1787e0;
-  --darkBlack-color:#181a1f;
-  --lightBlack:#272c34;
-  --darkGray:#3f4652;
-  --lightGray:#eaeaea;
-  --white-color:#fff;
+  --darkBlack-color: #181a1f;
+  --lightBlack: #272c34;
+  --darkGray: #3f4652;
+  --lightGray: #eaeaea;
+  --white-color: #fff;
   --main-transition-duration: 0.6s;
 }
+
 .App {
   text-align: center;
 }
@@ -42,6 +46,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

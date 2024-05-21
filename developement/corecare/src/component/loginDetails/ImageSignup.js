@@ -1,5 +1,5 @@
 import { Image } from "react-bootstrap";
-import user_signup from '../../images/user_signup.png';
+import user_signup from '../../assets/user_signup.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import React, { useRef, useState } from 'react';
