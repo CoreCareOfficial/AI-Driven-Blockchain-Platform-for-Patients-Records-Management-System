@@ -1,3 +1,4 @@
+import "../../css/UserPageStyle/profile.css"
 function ImageNameContainer(props) {
     return (
         <div className="image-name-container">

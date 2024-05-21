@@ -1,6 +1,7 @@
 import ImageNameContainer from "./ImageNameContainer"
 import InfoContainer from "./InfoContainer"
 import ProfileHeaderIcon from "./ProfileHeaderIcon"
+import "../../css/UserPageStyle/profile.css"
 
 function ProfileHeader(props) {
     return (

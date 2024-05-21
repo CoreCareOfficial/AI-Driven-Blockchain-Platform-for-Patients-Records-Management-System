@@ -2,6 +2,7 @@ import { CiSettings } from "react-icons/ci";
 import { IoMdNotifications } from "react-icons/io";
 import { MdErrorOutline } from "react-icons/md";
 import { IconContext } from "react-icons";
+import "../../css/UserPageStyle/profile.css"
 
 
 function ProfileHeaderIcon(props) {

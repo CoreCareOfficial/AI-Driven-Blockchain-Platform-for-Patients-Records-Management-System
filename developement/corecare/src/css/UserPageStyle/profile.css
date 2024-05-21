@@ -25,7 +25,7 @@
     width: auto;
     height: auto;
     border-radius: 50%;
-    background-color: red;
+    background-color: #3F4652;
     position: relative;
     margin: auto 1%;
 }
@@ -46,7 +46,7 @@
     width: auto;
     height: auto;
     border-radius: 50%;
-    background-color: red;
+    background-color: #3F4652;
     margin: auto 15px auto 150px;
     position: relative;
 }
@@ -204,19 +204,19 @@
     margin: auto 3%;
 }
 
-.profile-body-left-bottom .current-medication {
+.profile-body-left-bottom .card-list-container {
     background-color: #272C34;
     border-radius: 10px;
     padding: 10px;
     width: 50%;
 }
 
-.profile-body-left-bottom .past-condition {
+/* .profile-body-left-bottom .past-condition {
     background-color: #272C34;
     border-radius: 10px;
     padding: 10px;
     width: 50%;
-}
+} */
 
 .profile-body-left-bottom li {
     list-style: disc;

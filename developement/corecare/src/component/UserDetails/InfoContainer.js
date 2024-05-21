@@ -4,6 +4,7 @@ import { AiFillLinkedin } from "react-icons/ai";
 import { AiFillFacebook } from "react-icons/ai";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 import { IconContext } from "react-icons";
+import "../../css/UserPageStyle/profile.css"
 
 function InfoContainer(props) {
     const XIcon =
