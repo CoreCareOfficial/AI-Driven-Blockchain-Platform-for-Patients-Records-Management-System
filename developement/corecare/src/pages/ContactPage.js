@@ -2,9 +2,12 @@ import React from "react";
 import  Section1 from '../component/contactdetails/ContactusSection1';
 import  Section2 from '../component/contactdetails/ContactusSection';
 import FormlessFooter from "../component/FormlessFooter";
+import Header from '../component/Header';
+
 function ContactPage(){
     return(
         <>
+        <Header/>
         <Section1/>
         <Section2/>
         <FormlessFooter mail="corecareofficial@gmail.com" 

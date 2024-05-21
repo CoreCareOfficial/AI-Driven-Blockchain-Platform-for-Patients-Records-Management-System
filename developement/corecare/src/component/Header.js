@@ -5,20 +5,18 @@ import Links from './Links';
 import '../css/header.css';
 import { CiLogin } from "react-icons/ci";
 import { MdMenu } from "react-icons/md";
+import { Link } from 'react-router-dom';
 function Header() {
 
   const listOfNav = {
-    "Home": "index.html",
-    "About": "about.html",
-    "Services": "services.html",
-    "Search": "search.html",
-    "Contact": "contact.html",
+    "Home": "/",
+    "About": "/about_us",
+    "Services": "/services",
+    "Search": "/search",
+    "Contact": "/contact",
   }
 
-  // const [expandedIcon, setExpandedIcon] = useState(false);
-
   const [expandedList, setExpandedList] = useState(true);
-  // const [expanded, setExpanded] = useState(false);
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth  > 966) {
@@ -40,10 +38,10 @@ function Header() {
       <Logo />
       <nav style={{ display: `${expandedList ? 'flex' : 'none'}` }}><Links listOfLink={listOfNav} /></nav>
 
-      <button style={{ display: `${expandedList ? 'flex' : 'none'}` }}>
+      <Link className='link_route' style={{ display: `${expandedList ? 'flex' : 'none'}` }}>
         login
         <span><CiLogin /></span>
-      </button>
+      </Link>
 
       <span className='menu'
         onClick={handleClick}><MdMenu />

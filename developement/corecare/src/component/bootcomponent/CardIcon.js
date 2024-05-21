@@ -12,6 +12,7 @@ function CardIcon(props) {
         </Flex_Container>
         <Card.Text>{props.disc}</Card.Text>
         </Card.Body>
+        
     </Card>
     );
 }

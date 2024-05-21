@@ -25,7 +25,7 @@ header .Header_log{
     font-style: italic;
     padding: 0px;
 }
-header button{
+header .link_route{
     background-color: var(--main-color);
     height: 35px;
     width: 100px;
@@ -39,7 +39,7 @@ header button{
     color: var(--white-color);
     transition: 0.7s ease;
 }
-header button span{
+header .link_route span{
     margin-left: -25%;
     font-size: 1.5em;
     color: var(--white-color);
@@ -102,7 +102,7 @@ header .li_div:hover::before {
         font-style: italic;
         padding: 0px;
     }
-    header button{
+    header .link_route{
         height: 30px;
     }
 }
@@ -140,7 +140,7 @@ header .li_div:hover::before {
         font-size:1em ;
         font-weight: 500 ;
     }
-    header button{
+    header .link_route{
         background-color: transparent;
         height: 35px;
         width: 100px;

@@ -1,9 +1,9 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 
 function createLink(Title,Src){
     return (
-        <a href={Src}>{Title}</a>
+        <Link to={Src}>{Title}</Link>
     );
 }
 

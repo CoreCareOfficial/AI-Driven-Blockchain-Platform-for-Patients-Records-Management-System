@@ -7,54 +7,44 @@
     --white-color: #fff;
     --main-transition-duration: 0.6s;
 }
-
 section {
     max-width: 100%;
     min-height: 100vh;
     padding: 10px;
     overflow: hidden;
 }
-
-button:hover {
+button:hover, .link_route:hover {
     transform: scale(1.05);
 }
-
 .H_section1 {
     background-color: var(--lightBlack);
 
 }
-
 .my_container {
     margin-top: 4%;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 2%;
-    /* background-color: greenyellow; */
 }
-
 .H_section1 .H_section1_card {
     background-color: var(--lightBlack);
     border: none
 }
-
 .H_section1 .H_section1_card h1 {
     color: var(--white-color);
     font-size: 2em;
 }
-
 .H_section1 .H_section1_card p {
     color: var(--lightGray);
     font-size: 1.2em;
     padding: 10px;
     margin-bottom: 20%;
 }
-
 .H_section1 .H_section1_card button {
     width: 35%;
     transition: 0.7s ease;
 }
-
 .H_section1 img {
     width: 40%;
     max-height: 20%;
@@ -69,24 +59,20 @@ button:hover {
     align-items: center;
     text-align: center;
 }
-
 .H_title {
     margin-top: 6%;
     margin-bottom: 30px;
 }
-
 .H_section2 .H_title {
     color: var(--white-color);
     font-size: 2.5em;
 }
-
 .H_section2 .H_section2_card {
     background-color: transparent;
     border: none;
     width: 60%;
     text-align: left;
 }
-
 .H_section2 .H_section2_card p,
 ol,
 li {
@@ -96,9 +82,11 @@ li {
     max-width: 100%;
     list-style-type: circle;
 }
+.H_section2 .H_section2_card li {
+    margin-left: 5%;
+}
 
 /* ==================== */
-
 .H_section3 {
     background-color: var(--lightBlack);
     padding: 10px;
@@ -107,29 +95,24 @@ li {
     justify-content: baseline;
     align-items: center;
 }
-
 .H_section3_card {
     background-color: var(--darkBlack-color);
     margin: 15px auto;
     width: 20rem;
     border-radius: 15px;
 }
-
 .H_section3 .H_title {
     color: var(--white-color);
     font-size: 2em;
 }
-
 .H_section3 .overview {
     width: 90%;
 }
-
 .H_section3 .my_container {
     display: flex;
     justify-content: left;
     text-indent: 10px;
 }
-
 .H_section3 P {
     color: var(--white-color);
     display: block;
@@ -137,20 +120,17 @@ li {
     line-height: 26px;
     max-width: 100%;
 }
-
 .H_section3 .H_section3_card img {
     width: 40px;
     height: 40px;
     margin: 10px 2px;
 }
-
 .H_section3 .H_section3_card p {
     margin-top: 10px;
     width: 100%;
     color: var(--lightGray);
     font-size: 17px;
 }
-
 .H_section3 .H_section3_card .h5 {
     color: var(--white-color);
     font-size: 1.2em;
@@ -167,28 +147,23 @@ li {
     justify-content: baseline;
     align-items: center;
 }
-
 .H_section4 .my_container {
     display: flex;
     justify-content: left;
 }
-
 .H_section4 .overview {
     width: 80%;
 }
-
 .H_section4_card {
     background-color: var(--darkBlack-color);
     margin: 1px auto;
     margin-left: 8%;
     border: none;
 }
-
 .H_section4 .H_title {
     color: var(--white-color);
     font-size: 2em;
 }
-
 .H_section4 P {
     color: var(--white-color);
     display: block;
@@ -196,12 +171,10 @@ li {
     line-height: 26px;
     max-width: 100%;
 }
-
 .H_section4 .H_section4_card img {
     width: 30px;
     height: 30px;
 }
-
 .H_section4 .H_section4_card .h5 {
     color: var(--white-color);
     font-size: 1.3em;
@@ -216,7 +189,6 @@ li {
     justify-content: center;
     align-items: center;
 }
-
 .H_section5 .H_container5_div {
     background-color: var(--darkBlack-color);
     border-radius: 15px;
@@ -227,54 +199,45 @@ li {
     margin-bottom: 20px;
     padding: 10px;
 }
-
 .H_section5 .my_container {
     margin-top: 0%;
     display: flex;
     justify-content: space-around;
 }
-
 .H_section5 .H_section5_card {
     background-color: var(--darkBlack-color);
     border: none;
     margin-top: 5%;
 }
-
 .H_section5 .step {
     background-color: var(--darkBlack-color);
     border: none;
 }
-
 .H_section5 .H_section5_card .h5 {
     color: var(--white-color);
     font-size: 3.5em;
     margin-bottom: 10%;
 }
-
 .H_section5 .H_section5_card p {
     color: var(--white-color);
     font-size: 1em;
     margin-bottom: 10%;
     width: 80%;
 }
-
 .H_section5 .step .h5 {
     font-size: 2em;
     margin-bottom: 5%;
 }
-
 .H_section5 .step p {
     font-size: 1em;
     margin-bottom: 0%;
     width: 70%;
 }
-
 .H_section5 hr {
     height: 3px;
     color: var(--white-color);
     margin-top: 1rem;
 }
-
 .H_section5 img {
     position: absolute;
     width: 400px;
@@ -282,7 +245,6 @@ li {
     left: 18%;
     top: 2%;
 }
-
 @media screen and (max-width: 1200px) {
     .H_section5 img {
         position: absolute;
@@ -292,7 +254,6 @@ li {
         top: 2%;
     }
 }
-
 @media screen and (max-width: 990px) {
     .H_section5 img {
         position: absolute;
@@ -302,7 +263,6 @@ li {
         top: 2%;
     }
 }
-
 @media screen and (max-width: 920px) {
     .H_section1 .my_container {
         flex-direction: column-reverse;
@@ -313,7 +273,6 @@ li {
         max-height: 20%;
     }
 }
-
 @media screen and (max-width: 880px) {
     .H_section5 img {
         position: absolute;
@@ -323,7 +282,6 @@ li {
         top: 5%;
     }
 }
-
 @media screen and (max-width: 760px) {
     .H_section5 img {
         position: absolute;
@@ -333,7 +291,6 @@ li {
         top: 10%;
     }
 }
-
 @media screen and (max-width: 700px) {
     .H_section1 img {
         min-width: 80%;
