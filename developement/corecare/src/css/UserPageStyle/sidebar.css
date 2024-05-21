@@ -1,12 +1,16 @@
 .Container {
     background-color: #272c34;
     max-width: 100%;
-    min-height: fit-content;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    position: relative;
+    /* overflow: hidden; */
+    /* position: relative; */
     flex-wrap: wrap;
+}
+
+.Wrapper .sidebar-content {
+    min-height: 512.6px;
 }
 
 .Container .Wrapper .Title {
@@ -17,13 +21,16 @@
 
 .Wrapper {
     max-width: 100%;
-    min-height: 100%;
+    /* min-height: 100%; */
     margin: 5px;
     padding: 5px;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
-    overflow-y: auto;
+    flex-wrap: wrap;
     scrollbar-width: none;
     scrollbar-color: inherit;
+    position: sticky;
+    /* overflow-x: hidden; */
+    /* overflow-y: auto; */
+    /* top: 40%; */
 }

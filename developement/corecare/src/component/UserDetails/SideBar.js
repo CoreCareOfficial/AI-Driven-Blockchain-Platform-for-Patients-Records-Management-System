@@ -38,22 +38,26 @@ function SideBar() {
         </IconContext.Provider>
     return (
         <div className="Container">
-            <div className="Wrapper">
-                <H1 name="Title" title="Core Care" />
-                <SideBtn name="sideBtn active" icon={<BsPerson />} text="Profile" />
-                <DropDownButton icon={<FaFileMedical />} text="Patient Records" >
-                    <SideBtn name="sideBtn" icon={<FaFolderOpen />} text="All Records" />
-                    <SideBtn name="sideBtn" icon={<MdOutlineReceiptLong />} text="Reports" />
-                    <SideBtn name="sideBtn" icon={<FaRegFileLines />} text="Examinations" />
-                    <SideBtn name="sideBtn" icon={<FaXRay />} text="X Rays" />
-                    <SideBtn name="sideBtn" icon={<FaFilePrescription />} text="Prescription" />
-                    <SideBtn name="sideBtn" icon={<LuFolderPlus />} text="Additional Records" />
-                </DropDownButton>
-                <SideBtn name="sideBtn" icon={<MdEventNote />} text="Appointment Schedule" />
-                <SideBtn name="sideBtn" icon={<AiFillSetting />} text="Settings" />
-                <Button name="button secondary" label="Summarize Records" IconComponent={SummarizeIcon} />
-                <Button name="button primary" label="Create Access Key" IconComponent={plusIcon} />
-                <Button name="button logout" label="Logout" IconComponent={logoutIcon} />
+            <div className="Wrapper top-0">
+                <div className="sidebar-content">
+                    <H1 name="Title" title="Core Care" />
+                    <SideBtn name="sideBtn active" icon={<BsPerson />} text="Profile" />
+                    <DropDownButton icon={<FaFileMedical />} text="Patient Records" >
+                        <SideBtn name="sideBtn" icon={<FaFolderOpen />} text="All Records" />
+                        <SideBtn name="sideBtn" icon={<MdOutlineReceiptLong />} text="Reports" />
+                        <SideBtn name="sideBtn" icon={<FaRegFileLines />} text="Examinations" />
+                        <SideBtn name="sideBtn" icon={<FaXRay />} text="X Rays" />
+                        <SideBtn name="sideBtn" icon={<FaFilePrescription />} text="Prescription" />
+                        <SideBtn name="sideBtn" icon={<LuFolderPlus />} text="Additional Records" />
+                    </DropDownButton>
+                    <SideBtn name="sideBtn" icon={<MdEventNote />} text="Appointment Schedule" />
+                    <SideBtn name="sideBtn" icon={<AiFillSetting />} text="Settings" />
+                </div>
+                <div className="flex flex-col flex-wrap max-w-full">
+                    <Button name="button secondary" label="Summarize Records" IconComponent={SummarizeIcon} />
+                    <Button name="button primary" label="Create Access Key" IconComponent={plusIcon} />
+                    <Button name="button logout" label="Logout" IconComponent={logoutIcon} />
+                </div>
             </div>
         </div>
 

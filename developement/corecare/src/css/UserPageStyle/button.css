@@ -40,3 +40,9 @@
     background-color: #ffffff;
     color: #3146ff;
 }
+
+.logout,
+.primary,
+.secondary {
+    max-width: 100%;
+}

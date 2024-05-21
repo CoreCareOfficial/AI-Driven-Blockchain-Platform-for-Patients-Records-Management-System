@@ -11,6 +11,14 @@ import { MdWorkOutline } from "react-icons/md";
 import DynamicCard from "../bootcomponent/DynamicCard";
 import { Card, Image } from "react-bootstrap";
 import ahmed from "../../assets/ahmed.jpg";
+import blood from "../../assets/blood.png";
+import sugar from "../../assets/suger.png";
+import weight from "../../assets/weight.png";
+import height from "../../assets/height.png";
+import pressure from "../../assets/pressure.png";
+import respiratory from "../../assets/respiratory.png";
+import heart from "../../assets/heart.png";
+import allergies from "../../assets/allergies.png";
 
 function ProfileBody() {
   return (
@@ -140,10 +148,86 @@ function ProfileBody() {
       </div>
       <div className="profile-body-right">
         <h3>Health Information :</h3>
-        <div className="health-info-container">
-          <div className="health-info-item">
-            <p>Height :</p>
-            <p>170 cm</p>
+        <div className="flex flex-col my-1">
+          <div className="flex flex-row justify-between border-b border-slate-500">
+            <div className="my-2 bg-slate-600 mr-2 rounded-xl">
+              <img src={blood} alt="ahmed" className="w-10 h-auto md:w-20 md:h-auto md:rounded-none rounded-full"></img>
+            </div>
+            <div className="flex flex-col text-white my-auto">
+              <h5 className="font-bold">Blood (HP) :</h5>
+              <p className="text-slate-500">2 weeks ago</p>
+            </div>
+            <div className="m-auto text-white">11</div>
+          </div>
+          <div className="flex flex-row justify-between border-b border-slate-500">
+            <div className="my-2 bg-slate-600 mr-2 rounded-xl">
+              <img src={sugar} alt="ahmed" className="w-10 h-auto md:w-20 md:h-auto md:rounded-none rounded-full"></img>
+            </div>
+            <div className="flex flex-col text-white my-auto">
+              <h5 className="font-bold">Blood Sugar :</h5>
+              <p className="text-slate-500">3 weeks ago</p>
+            </div>
+            <div className="m-auto text-white">90</div>
+          </div>
+          <div className="flex flex-row justify-between border-b border-slate-500">
+            <div className="my-2 bg-slate-600 mr-2 rounded-xl">
+              <img src={pressure} alt="ahmed" className="w-10 h-auto md:w-20 md:h-auto md:rounded-none rounded-full"></img>
+            </div>
+            <div className="flex flex-col text-white my-auto">
+              <h5 className="font-bold">Blood Pressure :</h5>
+              <p className="text-slate-500">2 years ago</p>
+            </div>
+            <div className="m-auto text-white">115</div>
+          </div>
+          <div className="flex flex-row justify-between border-b border-slate-500">
+            <div className="my-2 bg-slate-600 mr-2 rounded-xl">
+              <img src={heart} alt="ahmed" className="w-10 h-auto md:w-20 md:h-auto md:rounded-none rounded-full"></img>
+            </div>
+            <div className="flex flex-col text-white my-auto">
+              <h5 className="font-bold">Heart Rate (Pulse):</h5>
+              <p className="text-slate-500">5 Years Ago ago</p>
+            </div>
+            <div className="m-auto text-white">70/m</div>
+          </div>
+          <div className="flex flex-row justify-between border-b border-slate-500">
+            <div className="my-2 bg-slate-600 mr-2 rounded-xl">
+              <img src={respiratory} alt="ahmed" className="w-10 h-auto md:w-20 md:h-auto md:rounded-none rounded-full"></img>
+            </div>
+            <div className="flex flex-col text-white my-auto">
+              <h5 className="font-bold">Respiratory Rate :</h5>
+              <p className="text-slate-500">3 Years ago</p>
+            </div>
+            <div className="m-auto text-white">15/m</div>
+          </div>
+          <div className="flex flex-row justify-between border-b border-slate-500">
+            <div className="my-2 bg-slate-600 mr-2 rounded-xl">
+              <img src={allergies} alt="ahmed" className="w-10 h-auto md:w-20 md:h-auto md:rounded-none rounded-full"></img>
+            </div>
+            <div className="flex flex-col text-white my-auto">
+              <h5 className="font-bold">Allergies :</h5>
+              <p className="text-slate-500">0 weeks ago</p>
+            </div>
+            <div className="m-auto text-white">null</div>
+          </div>
+          <div className="flex flex-row justify-between border-b border-slate-500">
+            <div className="my-2 bg-slate-600 mr-2 rounded-xl">
+              <img src={weight} alt="ahmed" className="w-10 h-auto md:w-20 md:h-auto md:rounded-none rounded-full"></img>
+            </div>
+            <div className="flex flex-col text-white my-auto">
+              <h5 className="font-bold">Weight :</h5>
+              <p className="text-slate-500">3 months ago</p>
+            </div>
+            <div className="m-auto text-white">54 kg</div>
+          </div>
+          <div className="flex flex-row justify-between border-b border-slate-500">
+            <div className="my-2 bg-slate-600 mr-2 rounded-xl">
+              <img src={height} alt="ahmed" className="w-10 h-auto md:w-20 md:h-auto md:rounded-none rounded-full"></img>
+            </div>
+            <div className="flex flex-col text-white my-auto">
+              <h5 className="font-bold">Height :</h5>
+              <p className="text-slate-500">4 Years ago</p>
+            </div>
+            <div className="m-auto text-white">170 cm</div>
           </div>
         </div>
       </div>
@@ -160,11 +244,7 @@ function ProfileBody() {
             <Card.Title>Ahmed Qahtan</Card.Title>
             <Card.Text>Software Engineer</Card.Text>
           </DynamicCard>
-          <DynamicCard name="previous-doctor-card">
-            <Image src={ahmed} roundedCircle />
-            <Card.Title>Ahmed Qahtan</Card.Title>
-            <Card.Text>Software Engineer</Card.Text>
-          </DynamicCard>
+
         </div>
       </div>
     </div>
