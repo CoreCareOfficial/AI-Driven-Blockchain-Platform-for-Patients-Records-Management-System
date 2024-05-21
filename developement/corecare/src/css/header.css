@@ -18,7 +18,6 @@ header{
     max-height: inherit;
 }
 header .Header_log{
-    /* background-color: red; */
     color: var(--white-color);
     font-size: 2em;
     font-weight: 500;
@@ -49,20 +48,18 @@ header .menu{
     color: var(--white-color);
     font-size: 2em;
     display: none;
-    z-index: 1200px;
+    z-index: 1200;
 }
 header nav{
     width: 700px;
     max-height: 35px;
     display: flex;
     justify-content: space-around;
-    /* background-color: yellowgreen; */
 }
 header .li_div{
     width: fit-content;
     position: relative;
     text-align: center;
-    /* background-color: red; */
 }
 header .li_div li{
     width: 90%;
@@ -112,27 +109,28 @@ header .li_div:hover::before {
 
 @media screen and (max-width: 966px) {
     header nav{
-        padding-top: 10%;
         width: 10rem;
         min-height: 80%;
         position: fixed;
+        gap: 20px;
         right: 0;
         display: block;
         flex-direction: column;
+        justify-content: center;
         background-color: rgba(0, 0, 0, 0.9);
         border-radius: 10px 0px 0px 10px;
     }
     header .menu{
-        z-index: 2000;
         display: block;
     }
     header .li_div{
         width: fit-content;
         text-align: center;
-        margin: 5px auto;
+        margin: 0px auto;
     }
     header .li_div li{
         width: 90%;
+        max-height: inherit ;
         margin: auto;
         list-style: none;
     }
@@ -143,7 +141,6 @@ header .li_div:hover::before {
         font-weight: 500 ;
     }
     header button{
-        background-color: transparent;
         height: 35px;
         width: 100px;
         display: flex;

@@ -15,17 +15,19 @@ function Header() {
         "Contact": "contact.html",  
         }
 
-        // const [expandedIcon, setExpandedIcon] = useState(false);
-
         const [expandedList, setExpandedList] = useState(false);
         // const [expanded, setExpanded] = useState(false);
+
         useEffect(()=>{
           const handleResize = () => {
-            if((window.innerWidth * 0.9) > 966) {
+            if(window.innerWidth > 966) {
               setExpandedList(true);
+              
+              // setExpanded(false);
             }
             else{
               setExpandedList(false);
+              // setExpanded(true);
             }
           };
           window.addEventListener('resize', handleResize);
@@ -46,7 +48,7 @@ function Header() {
         </button>
 
         <span className='menu' 
-        onClick={handleClick}><MdMenu />
+        onClick={handleClick} ><MdMenu />
         </span>
 
     </header>
