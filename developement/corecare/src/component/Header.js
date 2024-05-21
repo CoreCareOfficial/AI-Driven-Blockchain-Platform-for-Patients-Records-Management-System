@@ -19,7 +19,7 @@ function Header() {
   const [expandedList, setExpandedList] = useState(true);
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth  > 966) {
+      if (window.innerWidth > 966) {
         setExpandedList(true);
       }
       else {
@@ -38,7 +38,7 @@ function Header() {
       <Logo />
       <nav style={{ display: `${expandedList ? 'flex' : 'none'}` }}><Links listOfLink={listOfNav} /></nav>
 
-      <Link className='link_route' style={{ display: `${expandedList ? 'flex' : 'none'}` }}>
+      <Link to='/login' className='link_route' style={{ display: `${expandedList ? 'flex' : 'none'}` }}>
         login
         <span><CiLogin /></span>
       </Link>

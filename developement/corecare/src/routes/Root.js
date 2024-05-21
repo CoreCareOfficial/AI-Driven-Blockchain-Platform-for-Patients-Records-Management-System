@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import HomePage from '../pages/HomePage'
-// import LoginPage from '../pages/LoginPage';
+import LoginPage from '../pages/LoginPage';
 // import SignupPage from '../pages/SignupPage';
 // import SignupPage1 from '../pages/SignupPage1';
 // import SignupPage2 from '../pages/SignupPage2';
@@ -22,7 +22,7 @@ function Root() {
                 <Route path='contact' element={<ContactPage />} />
                 {/* <Route path='/' element={<HomePage />} /> */}
                 {/* <Route path='home' element={<HomePage />} /> */}
-                {/* <Route path='login' element={<LoginPage />} /> */}
+                <Route path='login' element={<LoginPage />} />
                 {/* <Route path='signup' element={<><Outlet /></>}>
                     <Route path="step-1" element={<SignupPage1 />} />
                     <Route path="step-2" element={<SignupPage />} />
