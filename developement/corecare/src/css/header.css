@@ -141,6 +141,7 @@ header .li_div:hover::before {
         font-weight: 500 ;
     }
     header button{
+        background-color: transparent;
         height: 35px;
         width: 100px;
         display: flex;

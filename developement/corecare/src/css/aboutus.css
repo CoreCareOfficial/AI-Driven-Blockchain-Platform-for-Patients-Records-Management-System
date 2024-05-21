@@ -61,6 +61,12 @@ button:hover{
 }
 /* ============================ */
 
+.A_section1 .curs_con{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 10px;
+}
 .A_section1 .A_section3_card{
     background-color: var(--darkBlack-color);
     width: 20rem;
@@ -90,6 +96,9 @@ button:hover{
     justify-content:baseline;
     align-items: center;
 }
+.A_section4 .my_container{
+    margin-top: 0px;
+}
 .A_section4 .A_section4_card{
     background-color: var(--darkBlack-color);
     border:none ;
@@ -110,6 +119,15 @@ button:hover{
 
 
 /* ============================ */
+@media screen and (max-width: 1210px) {
+    .A_section1 .curs_con{
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 0px;
+    }
+}
+
+    
 @media screen and (max-width: 994px) {
     .A_section1 .A_section2_card{
         width: 100%;
@@ -126,6 +144,7 @@ button:hover{
         width: 80% !important;
     }
 }
+
 @media screen and (max-width: 850px) {
     .A_section1 .A_section2_card{
         width: 100%;
@@ -136,3 +155,10 @@ button:hover{
         flex-direction: column;
     }
 } 
+@media screen and (max-width: 776px) {
+    .A_section1 .curs_con{
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 0px;
+    }
+}

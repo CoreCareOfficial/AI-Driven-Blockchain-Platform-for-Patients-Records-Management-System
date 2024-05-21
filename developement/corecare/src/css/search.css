@@ -80,6 +80,7 @@
     border-radius: 7px;
     outline: none;
     width: inherit;
+    
 }
 
 /* ============================== */
@@ -92,6 +93,7 @@
 .Search_sec2 .container{
     padding-bottom: 30px;
 }
+
 .Search_sec2 aside{
     min-height:inherit;
     padding: 5px;
@@ -124,13 +126,19 @@
     margin-top: 4%;
     font-size: 1em;
 }
+/* .carousel{
+    width: inherit;
+    height: 95vh;
+    overflow: scroll;
+    scrollbar-width: none;
+} */
 .carousel .carousel-indicators{
-    bottom: -23px;
+    top: -10px;
 }
 .carousel-control-next, .carousel-control-prev {
-    top:96%;
+    top:50%;
     max-height: 50px;
-    width: 50%;
+    width: 5%;
 }
 /* ================ */
 .curs_con{
@@ -138,14 +146,19 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
+    /* background-color: red; */
+    width: inherit;
+    height: 95vh;
+    overflow: scroll;
+    scrollbar-width: none;
 }
 /* ==================== */
-
 @media screen and (max-width: 1050px) {
     .curs_con{
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, 1fr);
         gap: 10px;
+        overflow: scroll;
     }
 }
 @media screen and (max-width: 1125px) {
@@ -160,6 +173,9 @@
     }
 }
 @media screen and (max-width: 780px) {
+    .Search_sec2 aside{
+        display: none;
+    }
     .curs_con{
         grid-template-columns: repeat(1, 1fr);
         grid-template-rows: repeat(1, 1fr);

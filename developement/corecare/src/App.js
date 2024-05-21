@@ -16,15 +16,16 @@ import UserPage from './pages/UserPage';
 
 
 function App() {
+  // <AboutUsPage />
+  // <ServicePage />
+  // <SearchPage />
+  // <ContactPage />
+  // <UserPage />
   return (
     <>
-    <Header/> 
-    {/* <HomePage/> */}
-    {/* <AboutUsPage/> */}
-    {/* <ServicePage/> */}
-    {/* <SearchPage/> */}
-    <ContactPage/>
-    {/* <UserPage/> */}
+      <Header />
+      <ContactPage />
+
     </>
   );
 }

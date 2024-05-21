@@ -31,13 +31,13 @@ function Section2(){
         <Container style={{
             backgroundColor:'#3f4652',
             borderRadius:'8px',
-            minHeight:'inherit',
+            minHeight:'100vh',
             marginTop:'-10px',
             marginBottom:'-10px'}}>
 
                 <H1 name="Search_sec2_result" title={result}/>
             <MyCarousel>
-                <Carousel.Item> 
+                <Carousel.Item > 
                 <Container className="curs_con" style={{backgroundColor:'#3f4652'}}>
                 <DynamicCard name="Search_sec2_card">
                     <Image src={person} roundedCircle />
