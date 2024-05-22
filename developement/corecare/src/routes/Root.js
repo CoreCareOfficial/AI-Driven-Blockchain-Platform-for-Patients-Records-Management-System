@@ -12,6 +12,7 @@ import SearchPage from '../pages/SearchPage';
 import ContactPage from '../pages/ContactPage';
 import UserPage from '../pages/UserPage';
 import EndSignupPage from '../pages/EndSignupPage';
+import VerifyCodePage from '../pages/VerifyCodePage';
 
 
 function Root() {
@@ -31,6 +32,7 @@ function Root() {
                     <Route path='step-3' element={<SignupPage2 />} />
                     <Route path='step-4' element={<SignupPage3 />} />
                     <Route path='step-5' element={<SignupPage4 />} />
+                    <Route path='verify-code' element={<VerifyCodePage />} />
                     <Route path='end_step' element={<EndSignupPage />} />
                 </Route>
             </Routes>

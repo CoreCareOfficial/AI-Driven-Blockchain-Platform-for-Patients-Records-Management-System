@@ -40,7 +40,7 @@ function CardLogin(props) {
                         </Link>
                         <div style={styleStep} className='col col-lg-3'>
                             {
-                                stepN ? `Step ${props.step}/5` : ''
+                                stepN ? `Step ${props.step}/6` : ''
                             }
                         </div>
                     </div>

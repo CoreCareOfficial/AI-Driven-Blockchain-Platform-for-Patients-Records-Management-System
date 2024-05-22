@@ -12,7 +12,7 @@ function SignupPage4() {
                 style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <TextPage text='Now set up your password , but make it storing' />
-                <FormLogin buttonName='Continue' path='/signup/end_step'>
+                <FormLogin buttonName='Continue' path='/signup/verify-code'>
                     <PasswordInputField label='Password' placeholder='Enter your password' />
                     <PasswordInputField label='Confirm Password' placeholder='Enter your password again' />
                 </FormLogin>
