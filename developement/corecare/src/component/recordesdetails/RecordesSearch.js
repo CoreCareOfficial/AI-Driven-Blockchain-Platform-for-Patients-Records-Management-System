@@ -1,24 +1,18 @@
 import React from "react";
-import ProfileHeaderIcon from'../UserDetails/ProfileHeaderIcon';
 import Flex_Container from '../bootcomponent/flex_Container';
 import Form from 'react-bootstrap/Form';
 import { MdGridView } from "react-icons/md";
 import { MdSummarize } from "react-icons/md";
 import { HiPlus } from "react-icons/hi2";
-import ahmed from '../../assets/ahmed.jpg';
 import DynamicCard from "../bootcomponent/DynamicCard";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import RecordesTable from './RecordesTable';
 
 function RecordesSearch(){
 
     return(
         <>
-        <div style={{width:'100%', height:'100px', padding:'10px'}}>
-            <ProfileHeaderIcon image={ahmed}/>
-        </div>
         <DynamicCard name="RecordesSearch">
         <Flex_Container>
             <Form className="RecordesSearch_form">
@@ -55,8 +49,6 @@ function RecordesSearch(){
             </div>
         </Flex_Container>
         </DynamicCard>
-
-        <RecordesTable/>
         </>
     );
 }

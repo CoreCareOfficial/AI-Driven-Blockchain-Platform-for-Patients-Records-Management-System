@@ -134,3 +134,45 @@ position: relative;
     color: var(--mainBlue-color);
     margin:0% 5% 0% 0%;
 }
+/* =================== */
+.RecordesGride{
+    background-color: var(--darkBlack-color);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+.RecordesGride .RecordesGride_card{
+    background-color: var(--lightBlack);
+    max-height: 238px;
+    margin: 5% 0%;
+    width: 15rem;
+}
+.RecordesGride_innerCard{
+    background-color: var(--darkBlack-color);
+    position: relative;
+    padding: 7% 0%;
+    align-items: center;
+}
+.RecordesGride_card p{
+    color: var(--white-color);
+}
+.RecordesGride_innerCard .RecordesGride_Ic_menu{
+    color: var(--white-color);
+    position: absolute;
+    top:5px;
+    right: 5px;
+}
+.RecordesGride_innerCard .RecordesGride_icon{
+    color: var(--white-color);
+    font-size: 4em;
+}
+@media screen and (max-width: 1300px) {
+    .RecordesGride{
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0px;
+    }
+}
+@media screen and (max-width: 1020px) {
+    .RecordesGride{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -144,7 +144,7 @@
 .curs_con{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    /* grid-template-rows: repeat(3, 1fr); */
     gap: 10px;
     /* background-color: red; */
     width: inherit;
@@ -156,9 +156,9 @@
 @media screen and (max-width: 1050px) {
     .curs_con{
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        /* grid-template-rows: repeat(2, 1fr);
         gap: 10px;
-        overflow: scroll;
+        overflow: scroll; */
     }
 }
 @media screen and (max-width: 1125px) {

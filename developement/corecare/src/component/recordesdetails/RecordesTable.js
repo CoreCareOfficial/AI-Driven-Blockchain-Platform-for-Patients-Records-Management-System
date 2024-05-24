@@ -10,7 +10,7 @@ import H1 from '../H1';
 import P from '../P';
 import RecordesMenu from './RecordesMenu';
 
-function RecordesSearch(){
+function RecordesTable(){
 
     const [dateTime, setDateTime] = useState(new Date());
 // ========================================
@@ -173,9 +173,9 @@ return () => clearInterval(intervalId); // Cleanup function to prevent memory le
                 ))}   
 
             </tbody>
-        </table>
         {isOpen&&<RecordesMenu id={idSelected} top={itemTop} open = {true}/>}
+        </table>
         </>
     );
 }
-export default RecordesSearch;
+export default RecordesTable;

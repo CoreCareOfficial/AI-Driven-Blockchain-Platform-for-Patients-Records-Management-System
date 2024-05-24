@@ -64,7 +64,7 @@ button:hover{
 .A_section1 .A_section3_curs_con{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    /* grid-template-rows: repeat(2, 1fr); */
     gap: 5px;
 }
 .A_section1 .A_section3_card{
@@ -122,7 +122,7 @@ button:hover{
 @media screen and (max-width: 1210px) {
     .A_section1 .A_section3_curs_con{
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        /* grid-template-rows: repeat(2, 1fr); */
         gap: 0px;
     }
 }
@@ -157,7 +157,7 @@ button:hover{
 @media screen and (max-width: 776px) {
     .A_section1 .A_section3_curs_con{
         grid-template-columns: repeat(1, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        /* grid-template-rows: repeat(2, 1fr); */
         gap: 0px;
     }
 }
