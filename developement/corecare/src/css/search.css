@@ -148,9 +148,9 @@
     gap: 10px;
     /* background-color: red; */
     width: inherit;
-    height: 95vh;
-    overflow: scroll;
-    scrollbar-width: none;
+    height: inherit;
+    /* overflow: scroll;
+    scrollbar-width: none; */
 }
 /* ==================== */
 @media screen and (max-width: 1050px) {

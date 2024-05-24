@@ -61,11 +61,11 @@ button:hover{
 }
 /* ============================ */
 
-.A_section1 .curs_con{
+.A_section1 .A_section3_curs_con{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 10px;
+    gap: 5px;
 }
 .A_section1 .A_section3_card{
     background-color: var(--darkBlack-color);
@@ -120,13 +120,12 @@ button:hover{
 
 /* ============================ */
 @media screen and (max-width: 1210px) {
-    .A_section1 .curs_con{
+    .A_section1 .A_section3_curs_con{
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, 1fr);
         gap: 0px;
     }
 }
-
     
 @media screen and (max-width: 994px) {
     .A_section1 .A_section2_card{
@@ -156,7 +155,7 @@ button:hover{
     }
 } 
 @media screen and (max-width: 776px) {
-    .A_section1 .curs_con{
+    .A_section1 .A_section3_curs_con{
         grid-template-columns: repeat(1, 1fr);
         grid-template-rows: repeat(2, 1fr);
         gap: 0px;

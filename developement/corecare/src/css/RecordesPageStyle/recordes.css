@@ -1,0 +1,136 @@
+:root {
+    --mainBlue-color: #3146ff;
+    --altBlue-color: #1787e0;
+    --darkBlack-color:#181a1f;
+    --lightBlack:#272c34;
+    --minGray:#3f4652;
+    --lightGray:#eaeaea;
+    --white-color:#fff;
+    --main-transition-duration: 0.6s;
+}
+.RecordesSearch{
+    background-color: transparent; 
+    border-top: 1px solid var(--lightBlack);
+    border-bottom: 1px solid var(--lightBlack);
+    border-radius: 0px;
+    max-height: 100px;
+    position: relative;
+}
+.RecordesSearch .my_container{
+    /* background-color: greenyellow; */
+    margin-top: 0%;
+    padding: 0%;
+    height: inherit;
+}
+.RecordesSearch_form{
+    width: 40%;
+}
+.RecordesSearch .form-control{
+    color: var(--white-color);
+    width: 100%;
+}
+.RecordesSearch_button{
+    /* background-color: red; */
+    width: 50%;
+    display: flex;
+    justify-content:flex-end;
+    gap: 0px 10px;
+}
+.RecordesSearch_button button{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1em;
+    font-weight: 600;
+}
+.RecordesSearch_button span{
+    font-size: 1.3em;
+    margin:1% 5% 0% 0%;
+}
+.RecordesSearch_form_div{
+    position: relative;
+    padding: 1%;
+}
+.RecordesSearch_form_div .record_sec_SI{
+    color: aliceblue;
+    font-size: 1.3em;
+    position: absolute;
+    left: 10px;
+    bottom: 25%;
+}
+/* ================= */
+.Recordes_result{
+    width:100%;
+    height:45px;
+    display: flex;
+    justify-content: space-between;
+    padding:5px 45px;
+    border-bottom: 1px solid var(--lightBlack);
+}
+.Recordes_result .result_title{
+    font-size: 1.5em;
+    color: var(--white-color);
+}
+.Recordes_result .result_text{
+    font-size: 1em;
+    color: var(--white-color) ;   
+}
+/* =============================== */
+.records_table{
+    color: var(--white-color);
+    height: auto;
+}
+.tbody_tr{
+    height: 50px;
+}
+.tbody_tr td{
+    border: 4px solid transparent;
+}
+.records_thead tr{
+    /* border-bottom: 1px solid var(--lightBlack); */
+    height: 30px;
+    /* border: 4px solid transparent; */
+}
+.tbody_tr span{
+    font-size: 1.1em;
+}
+/* ====================== */
+.RecordesMen{
+    background-color: var(--minGray);
+    position: absolute;
+    min-width: 15%;
+    border-radius: 15px;
+    right: 2.5%;
+}
+.RecordesMen_card{
+background-color: transparent;
+position: relative;
+}
+.RecordesMen_close{
+    color:var(--white-color);
+    font-size: 1em;
+    position: absolute;
+    top:10px;
+    right: 20px;
+    cursor:grab;
+}
+.RecordesMen button{
+    display: flex;
+    margin: 3% 0%;
+    justify-content: left;
+    font-size: 0.9em;
+    width: 90%;
+    font-weight: 600;
+    color: var(--white-color);
+}
+.RecordesMen button:hover{
+    color: var(--white-color);
+}
+.RecordesMen .span{
+    font-size: 1.1em;
+    border-radius: 50%;
+    padding: 2px;
+    background-color: var(--white-color);
+    border: 1px solid var(--mainBlue-color);
+    color: var(--mainBlue-color);
+    margin:0% 5% 0% 0%;
+}

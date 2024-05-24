@@ -19,7 +19,7 @@ function Section3(){
         <section className="A_section1">
             <H1 name="H_title" title="Team"/>
             <div className="overview"><P className="H_P" title={disc}/></div>
-            <Container className="curs_con">
+            <Container className="A_section3_curs_con">
                 <DynamicCard name="A_section3_card" size="20rem">
                     <Image src={person} roundedCircle />
                     <Card.Title>DR. AHMED ALSHAMERI</Card.Title>
