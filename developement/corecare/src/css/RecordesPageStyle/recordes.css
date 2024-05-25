@@ -28,6 +28,7 @@
 .RecordesSearch .form-control{
     color: var(--white-color);
     width: 100%;
+    padding: 0px 30px;
 }
 .RecordesSearch_button{
     /* background-color: red; */
@@ -72,7 +73,7 @@
 }
 .Recordes_result .result_text{
     font-size: 1em;
-    color: var(--white-color) ;   
+    color: var(--white-color);   
 }
 /* =============================== */
 .records_table{
@@ -86,9 +87,7 @@
     border: 4px solid transparent;
 }
 .records_thead tr{
-    /* border-bottom: 1px solid var(--lightBlack); */
     height: 30px;
-    /* border: 4px solid transparent; */
 }
 .tbody_tr span{
     font-size: 1.1em;
@@ -99,11 +98,12 @@
     position: absolute;
     min-width: 15%;
     border-radius: 15px;
-    right: 2.5%;
+    /* right: 35px; */
 }
 .RecordesMen_card{
 background-color: transparent;
 position: relative;
+max-height: 220px;
 }
 .RecordesMen_close{
     color:var(--white-color);
@@ -134,7 +134,7 @@ position: relative;
     color: var(--mainBlue-color);
     margin:0% 5% 0% 0%;
 }
-/* =================== */
+/* =================================== */
 .RecordesGride{
     background-color: var(--darkBlack-color);
     display: grid;
@@ -142,13 +142,22 @@ position: relative;
 }
 .RecordesGride .RecordesGride_card{
     background-color: var(--lightBlack);
-    max-height: 238px;
+    min-height: 238px;
     margin: 5% 0%;
     width: 15rem;
+    position: relative;
+}
+.RecordesGride_card .RecordesMen{
+    z-index: 1200;
+    width: 12rem;
+    max-height: 220px; 
+    bottom: 0;
+    right: 15%;
 }
 .RecordesGride_innerCard{
     background-color: var(--darkBlack-color);
     position: relative;
+    height: 70%;
     padding: 7% 0%;
     align-items: center;
 }
@@ -159,7 +168,12 @@ position: relative;
     color: var(--white-color);
     position: absolute;
     top:5px;
-    right: 5px;
+    right: 0px;
+}
+/* three point icon */
+.RecordesGride_Ic{ 
+    margin: 5px;
+    cursor: pointer;
 }
 .RecordesGride_innerCard .RecordesGride_icon{
     color: var(--white-color);

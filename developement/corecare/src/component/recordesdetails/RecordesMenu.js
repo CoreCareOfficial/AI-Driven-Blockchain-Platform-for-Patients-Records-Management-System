@@ -11,22 +11,23 @@ import { IoClose } from "react-icons/io5";
 
 
 function RecordesMenu(props){
-    const place = props.id;
+    // const place = props.id;
 
     const [isOpen , setIsOpen] = useState(props.open);
+
     const handleClickOutside = ((e) => {
-        // if(e.target !== e.currentTarget){
-            setIsOpen(false);
-        // }
-    });
-    
+            setIsOpen(false)
+            });
+
     return(
         <>
         <div className="RecordesMen" style={{top:`${props.top}px`,
+        right:`${props.right}px`,
         display: `${isOpen ? 'block' : 'none'}`}}>
             
         <DynamicCard name="RecordesMen_card">
             <span onClick={handleClickOutside} className="RecordesMen_close"><IoClose /></span>
+            
             <Link to="" className="link_route">
                 <Button variant="" style={{transition: '0.7s ease'}}>
                     <span className="span"><MdOutlineFileOpen /></span> Open

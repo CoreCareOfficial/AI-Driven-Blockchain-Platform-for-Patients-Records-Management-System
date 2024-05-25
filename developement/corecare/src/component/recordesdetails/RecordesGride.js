@@ -1,61 +1,51 @@
-import React from "react";
+import React ,{ useState } from "react";
 import DynamicCard from "../bootcomponent/DynamicCard";
 import { Card,Container} from "react-bootstrap";
-import { MdOutlineReceiptLong } from "react-icons/md";
-import { FaRegFileLines } from "react-icons/fa6";
-import { FaXRay } from "react-icons/fa6";
-import { FaFilePrescription } from "react-icons/fa";
-import { FaFileLines } from "react-icons/fa6";
+import { IconContext } from "react-icons";
+import RecordesMenu from './RecordesMenu';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import H1 from '../H1';
 import P from '../P';
 
-function RecordesGride(){
-    const icons = [
-        {name:"Repotr",val: <MdOutlineReceiptLong />},
-        {name:"Summary",val: <FaRegFileLines />},
-        {name:"Ray",val: <FaXRay />},
-        {name:"Prescripation",val: <FaFilePrescription />},
-        {name:"Lab test",val:<FaFileLines />},
+function RecordesGride(props){
 
-        {name:"Repotr",val: <MdOutlineReceiptLong />},
-        {name:"Summary",val: <FaRegFileLines />},
-        {name:"Ray",val: <FaXRay />},
-        {name:"Prescripation",val: <FaFilePrescription />},
-        {name:"Lab test",val:<FaFileLines />},
-        {name:"Repotr",val: <MdOutlineReceiptLong />},
-        {name:"Summary",val: <FaRegFileLines />},
-        {name:"Ray",val: <FaXRay />},
-        {name:"Prescripation",val: <FaFilePrescription />},
-        {name:"Lab test",val:<FaFileLines />},
-        {name:"Repotr",val: <MdOutlineReceiptLong />},
-        {name:"Summary",val: <FaRegFileLines />},
-        {name:"Ray",val: <FaXRay />},
-        {name:"Prescripation",val: <FaFilePrescription />},
-        {name:"Lab test",val:<FaFileLines />},
-    ];
-
-    const Result =  Object.keys(icons).length;
-    const RecordsResult ="Showing "+Result+" Records Result";
+    const [idSelected, setIdSelected] = useState(0);
+    const [isOpen , setIsOpen] = useState(false);
+        // =================================
+    const handleMenuClick = ((e) => {
+    setIdSelected(e.target.id);
+    console.log(e.target.id);
+    setIsOpen(!isOpen);
+        });
+        // =================================
 
     return(
         <>
         <div className="Recordes_result">
             <H1 name="result_title" title="All Records"/>
-            <P name="result_text"  title={RecordsResult}/>
+            <P name="result_text"  title={props.RecordsResult}/>
         </div>
         <Container className = "RecordesGride">
-        {icons.map((icon) => (
-            <DynamicCard name="RecordesGride_card">
+        {Object.keys(props.allRecords).map((record) => (
+            <DynamicCard name="RecordesGride_card" key={props.allRecords[record]['id']}>
                 <DynamicCard name="RecordesGride_innerCard">
-                    <span className="RecordesGride_Ic_menu"><BsThreeDotsVertical /></span>
+                    <span className="RecordesGride_Ic_menu" >
+                        <IconContext.Provider value={{ className: "RecordesGride_Ic", size: "1.3rem" }}>
+                            <BsThreeDotsVertical id={props.allRecords[record]['id']} onClick={handleMenuClick} />
+                        </IconContext.Provider>
+                    </span>
+                        {/* ======================== */}
                     <span className="RecordesGride_icon">
-                    {icon.val}
+                    {props.icons[props.allRecords[record]["Type"]]}
                     </span>
                 </DynamicCard>
-                <Card.Text>DR. AHMED ALSHAMERIDR. AHMED ALSHAMERIDR. AHMED ALSHAMERI</Card.Text>
+                <Card.Text>{props.allRecords[record]["Name Of Record"]}</Card.Text>
+                {
+                isOpen&&idSelected==props.allRecords[record]['id'] &&
+                <RecordesMenu id={idSelected}  open = {true}/>
+                }
             </DynamicCard>
-        ))}
+        ))} 
         </Container>
         </>
     );
