@@ -11,8 +11,12 @@
     margin-bottom: 10px;
 }
 
+.sideBtn:hover {
+    background-color: #eaeaea70;
+}
 
-.active {
+
+#active {
     background-color: #eaeaea70;
 }
 
@@ -21,7 +25,15 @@
     padding: 5px;
     text-align: center;
     align-items: center;
-    margin: auto 10px;
-    font-size: 13px;
+    margin: auto 5px;
+    font-size: 12px;
     font-weight: 400;
+}
+
+.sideBtn .notification {
+    background-color: #3146FF;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 10%;
+    font-size: 10px;
 }

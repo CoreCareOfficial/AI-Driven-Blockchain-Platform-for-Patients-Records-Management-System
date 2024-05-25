@@ -5,11 +5,11 @@ import ProfileBody from "./ProfileBody";
 
 
 
-function Profile() {
+function Profile(props) {
     return (
         <div className="profile-container">
             <ProfileHeader image={Osama} username="osama" name="Osama Alathwari" gender="Male" age="29" twitter="osama" insta="osama" linkedin="osama" fb="osama" whatsapp="osama" />
-            <ProfileBody />
+            <ProfileBody isDoctor={props.isDoctor} />
         </div>
     )
 }

@@ -6,7 +6,7 @@
     border-radius: 10px;
     max-height: 100%;
     margin-bottom: 10px;
-    margin-left: 4%;
+    margin-left: 2%;
 }
 
 .dropdown-button {
@@ -20,9 +20,9 @@
 .dropdown-button p {
     align-self: center;
     padding: 5px 0px;
-    font-size: 13px;
+    font-size: 12px;
     gap: 10px;
-    margin: auto 10px;
+    margin: auto 4%;
     display: flex;
 
 }

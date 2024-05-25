@@ -1,8 +1,9 @@
 .profile-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     gap: 0;
+    min-height: 100%;
 }
 
 .profile-header-icon {
@@ -98,7 +99,7 @@
     margin: 10px 2%;
 }
 
-/*  */
+/* ################ Profile Body Styles ################# */
 
 .profile-body {
     display: grid;
@@ -119,6 +120,7 @@
     display: flex;
     flex-direction: column;
     padding: 10px;
+    margin-bottom: 3%;
 }
 
 .profile-body-right h3 {
@@ -211,12 +213,6 @@
     width: 50%;
 }
 
-/* .profile-body-left-bottom .past-condition {
-    background-color: #272C34;
-    border-radius: 10px;
-    padding: 10px;
-    width: 50%;
-} */
 
 .profile-body-left-bottom li {
     list-style: disc;
@@ -227,7 +223,7 @@
     padding: 10px;
     border-radius: 10px;
     background-color: #272C34;
-    margin-bottom: 3%;
+    margin-bottom: 5%;
     grid-column: span 2
 }
 
@@ -257,9 +253,9 @@
 }
 
 .previous-doctor-card .h5 {
-    color: #27616E;
+    color: #fff;
 }
 
 .previous-doctor-card p {
-    color: #F0F0F0;
+    color: #6f6f6f;
 }

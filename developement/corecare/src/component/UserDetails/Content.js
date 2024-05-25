@@ -1,12 +1,14 @@
 import "../../css/UserPageStyle/content.css"
-import Profile from "./Profile";
-import  RecordesPage from '../../pages/RecordesPage';
-function Content() {
+// import Profile from "./Profile";
+import PatientAccessManagement from "./PatientAccessManagement"
+import RecordesPage from "../../pages/RecordesPage"
+function Content(props) {
+    // <PatientAccessManagement />
+    // <Profile isDoctor={props.isDoctor} />
     return (
         <>
             <div className="contentContainer">
-                {/* <Profile /> */}
-                <RecordesPage/>
+                <RecordesPage />
             </div>
         </>
 

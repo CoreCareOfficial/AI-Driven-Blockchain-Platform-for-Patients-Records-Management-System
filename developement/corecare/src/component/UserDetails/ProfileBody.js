@@ -1,15 +1,32 @@
-import ProfileBodyLeft from "./ProfileBodyLeft";
-import ProfileBodyRight from "./ProfileBodyRight";
-import ProfileBodyBottom from "./ProfileBodyBottom";
 import "../../css/UserPageStyle/profile.css"
+import PersonalInformation from "./PersonalIformation";
+import PublicInformation from "./PuplicInformation";
+import PersonalPublicContainer from "./PersonalPublicContainer";
+import { useState } from "react";
 
-function ProfileBody() {
+function ProfileBody(props) {
+  const [active, setActive] = useState('personal');
+
+  const handlePersonalClick = () => {
+    setActive('personal');
+  };
+
+  const handlePublicClick = () => {
+    setActive('public');
+  };
+
   return (
-    <div className="profile-body">
-      <ProfileBodyLeft />
-      <ProfileBodyRight />
-      <ProfileBodyBottom />
-    </div>
+    <>
+      <PersonalPublicContainer
+        isDoctor={props.isDoctor}
+        active={active}
+        handlePersonalClick={handlePersonalClick}
+        handlePublicClick={handlePublicClick}
+      />
+      <div className="profile-body">
+        {active === 'personal' || !props.isDoctor ? <PersonalInformation /> : <PublicInformation />}
+      </div>
+    </>
   );
 }
 
