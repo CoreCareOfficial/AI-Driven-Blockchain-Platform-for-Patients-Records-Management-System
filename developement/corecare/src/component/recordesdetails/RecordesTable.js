@@ -52,7 +52,8 @@ const handleMenuClick = ((e) => {
                     <td>{props.allRecords[record]["Type"]}</td>
                     <td>{props.allRecords[record]["Name Of Health Provider"]}</td>
                     <td>{props.allRecords[record]["Date Of Upload"]}</td>
-                    <td><span><MdMoreHoriz id={props.allRecords[record]['id']} onClick={handleMenuClick} /></span></td>
+                    <td><span style={{cursor:'pointer'}}
+                    ><MdMoreHoriz id={props.allRecords[record]['id']} onClick={handleMenuClick} /></span></td>
                 </tr>
                 ))}   
 
