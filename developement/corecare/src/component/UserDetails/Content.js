@@ -3,12 +3,12 @@ import "../../css/UserPageStyle/content.css"
 import PatientAccessManagement from "./PatientAccessManagement"
 import RecordesPage from "../../pages/RecordesPage"
 function Content(props) {
-    // <PatientAccessManagement />
     // <Profile isDoctor={props.isDoctor} />
+    // <RecordesPage />
     return (
         <>
-            <div className="contentContainer">
-                <RecordesPage />
+        <div className="contentContainer">
+        <PatientAccessManagement />
             </div>
         </>
 

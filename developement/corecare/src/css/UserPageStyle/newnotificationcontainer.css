@@ -5,3 +5,8 @@
 .slick-dots li.slick-active button:before {
     color: #3146FF;
 }
+
+.slick-prev:hover,
+.slick-next:hover {
+    transform: translate(0, -50%);
+}
