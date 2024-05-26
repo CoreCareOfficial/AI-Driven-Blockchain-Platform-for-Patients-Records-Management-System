@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Link } from "react-router-dom";
 import Slider from 'react-slick';
 import { Button } from 'primereact/button';
 import { MdContentCopy } from 'react-icons/md';
@@ -43,16 +44,19 @@ function NewNotificationContainer(props) {
                                     </div>
                                     <div className="text-white text-center align-middle text-xl m-auto cursor-pointer"><MdContentCopy /></div>
                                 </div>
-                                <div className="flex flex-row justify-end gap-2 m-2">
-                                    <Button label="Accept" icon="pi pi-check" className="bg-[#3146FF] text-white rounded-[10px] p-2 " />
-                                    <Button label="Ignore" icon="pi pi-times" className="bg-[#3146FF] text-white rounded-[10px] p-2" onClick={handleIgnoreClick} />
+                                <div className="flex flex-row justify-end gap-4 m-4">
+                                    <Link to="/doctor" className='w-1/6'>
+                                        <Button label="Accept" icon="pi pi-check" className="bg-[#3146FF] text-white rounded-[10px] p-2 w-full" />
+                                    </Link>
+                                    <Button label="Ignore" icon="pi pi-times" className="bg-[#3146FF] text-white rounded-[10px] p-2 w-1/6" onClick={handleIgnoreClick} />
                                 </div>
                             </div>
                         ))
                     }
                 </Slider> : <div className='new-notif-container flex flex-row justify-center bg-[#3F4652] p-4 my-3 rounded-xl max-w-full text-white'>
                     <div className=''>You Have No notifications</div>
-                </div>}
+                </div>
+            }
 
         </div>
     );

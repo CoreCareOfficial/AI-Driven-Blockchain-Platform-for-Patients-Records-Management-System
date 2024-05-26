@@ -6,7 +6,7 @@ function PatientsTable(props) {
 
 
     return (
-        <>
+        <div className='flex flex-col flex-wrap'>
             <div className="Recordes_result">
                 <H1 name="result_title" title="Previous Patients" />
                 <P name="result_text" title={"Showing : " + Object.keys(props.patients).length + " patient records"} />
@@ -35,7 +35,7 @@ function PatientsTable(props) {
 
                 </tbody>
             </table>
-        </>
+        </div>
     );
 }
 export default PatientsTable;

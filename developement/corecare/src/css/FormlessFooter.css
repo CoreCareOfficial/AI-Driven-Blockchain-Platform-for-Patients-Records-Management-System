@@ -5,9 +5,12 @@
     max-width: 100%;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     max-height: fit-content;
-    border-top: 1px solid #eaeaea ;
+    border-top: 1px solid #eaeaea;
+    overflow: hidden;
+    scrollbar-width: none;
 }
 
 .FooterContainer .contact {

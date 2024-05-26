@@ -4,27 +4,25 @@ import { AiFillInstagram } from "react-icons/ai";
 import { AiFillLinkedin } from "react-icons/ai";
 import { AiFillFacebook } from "react-icons/ai";
 import { AiOutlineWhatsApp } from "react-icons/ai";
-function FormlessFooter(props) {
-    const mail = "mailto:" + props.mail;
-    const number = "tel:" + props.phoneNumber;
+function FormlessFooter() {
     return (
         <>
             <footer className="FooterContainer">
                 <div className="contact">
                     <h1 className="email-container">
-                        <a className="email" href={mail}>{props.mail}</a>
+                        <a className="email" href="mailto:corecareofficial@gmail.com">corecareofficial@gmail.com</a>
                     </h1>
                     <p className="phone-container">
-                        <a className="phone" href={number}>{props.phoneNumber}</a>
+                        <a className="phone" href="tel:+967711379934">+967 711 379 934</a>
                     </p>
                 </div>
 
                 <div className="logoContainer">
-                    <h2 className="textLogo">{props.textLogo}</h2>
+                    <h2 className="textLogo">@corecare 2024</h2>
                 </div>
 
                 <div className="followContainer">
-                    <h2>{props.followText}</h2>
+                    <h2>Follow for more</h2>
                     <div className="iconContainer">
                         <a href="https://www.x.com" rel="noreferrer" target="_blank">
                             <AiOutlineX />

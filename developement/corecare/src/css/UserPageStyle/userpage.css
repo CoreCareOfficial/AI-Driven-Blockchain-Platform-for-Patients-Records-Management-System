@@ -1,10 +1,10 @@
 .user {
-    /* position: relative; */
     display: grid;
     grid-template-columns: 0.8fr 3fr;
     gap: 0px;
     min-height: 100%;
     min-width: 100%;
-    /* grid-template-columns: auto; */
-    /* grid-column: 1fr 1fr; */
+    overflow: auto;
+    overflow-wrap: break-word;
+    scrollbar-width: none;
 }

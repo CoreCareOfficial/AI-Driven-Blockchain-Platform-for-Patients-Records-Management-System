@@ -1,5 +1,5 @@
 import "../../css/UserPageStyle/content.css"
-// import Profile from "./Profile";
+import Profile from "./Profile";
 import PatientAccessManagement from "./PatientAccessManagement"
 import RecordesPage from "../../pages/RecordesPage"
 function Content(props) {
@@ -7,8 +7,8 @@ function Content(props) {
     // <RecordesPage />
     return (
         <>
-        <div className="contentContainer">
-        <PatientAccessManagement />
+            <div className="contentContainer">
+                <PatientAccessManagement />
             </div>
         </>
 
