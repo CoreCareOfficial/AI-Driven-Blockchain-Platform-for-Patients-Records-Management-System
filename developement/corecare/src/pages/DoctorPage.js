@@ -6,7 +6,7 @@ import FormlessFooter from "../component/FormlessFooter"
 function DoctorPage() {
     return (
 
-        <div className="doctor bg-[#181a1f] flex flex-col text-white min-h-[100vh]">
+        <div className="doctor bg-[#181a1f] flex flex-col text-white overflow-auto">
             <DoctorHeader />
             <DoctorBody />
             <FormlessFooter />

@@ -196,29 +196,29 @@
     margin: 3% 0% 0% 0%;
 }
 
-.profile-body-left-bottom ul {
+.card-list-container-list ul {
     padding-left: 10%;
 }
 
-.profile-body-left-bottom h5 {
+.card-list-container h5 {
     font-size: 1.2rem;
     font-weight: bold;
     margin: auto 3%;
 }
 
-.profile-body-left-bottom .card-list-container {
+.card-list-container {
     background-color: #272C34;
     border-radius: 10px;
     padding: 10px;
     width: 50%;
 }
 
-.profile-body-left-bottom .card-list-container .card-list-container-list ul li::marker {
+.card-list-container .card-list-container-list ul li::marker {
     color: blue;
 }
 
 
-.profile-body-left-bottom li {
+.card-list-container-list li {
     list-style: disc;
 }
 
