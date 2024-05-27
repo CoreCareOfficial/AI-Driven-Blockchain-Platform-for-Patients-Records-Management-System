@@ -3,8 +3,8 @@ import Profile from "./Profile";
 import PatientAccessManagement from "./PatientAccessManagement"
 import RecordesPage from "../../pages/RecordesPage"
 function Content(props) {
-    // <Profile isDoctor={props.isDoctor} />
     // <RecordesPage />
+    // <Profile isDoctor={props.isDoctor} />
     return (
         <>
             <div className="contentContainer">

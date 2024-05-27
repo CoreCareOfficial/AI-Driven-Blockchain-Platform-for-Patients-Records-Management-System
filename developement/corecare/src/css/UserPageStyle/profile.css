@@ -213,6 +213,10 @@
     width: 50%;
 }
 
+.profile-body-left-bottom .card-list-container .card-list-container-list ul li::marker {
+    color: blue;
+}
+
 
 .profile-body-left-bottom li {
     list-style: disc;

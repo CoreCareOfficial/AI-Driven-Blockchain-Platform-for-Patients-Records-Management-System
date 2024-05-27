@@ -13,7 +13,7 @@ import ContactPage from '../pages/ContactPage';
 import UserPage from '../pages/UserPage';
 import EndSignupPage from '../pages/EndSignupPage';
 import VerifyCodePage from '../pages/VerifyCodePage';
-import Doctor from '../pages/Doctor';
+import DoctorPage from '../pages/DoctorPage';
 
 
 function Root() {
@@ -27,7 +27,7 @@ function Root() {
                 <Route path='contact' element={<ContactPage />} />
                 <Route path='login' element={<LoginPage />} />
                 <Route path='userprofile' element={<UserPage />} />
-                <Route path='doctor' element={<Doctor />} />
+                <Route path='doctor' element={<DoctorPage />} />
                 <Route path='signup' element={<><Outlet /></>}>
                     <Route path="step-1" element={<SignupPage1 />} />
                     <Route path="step-2" element={<SignupPage />} />
