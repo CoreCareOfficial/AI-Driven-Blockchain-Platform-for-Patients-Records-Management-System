@@ -18,7 +18,7 @@ function RecordesPage(){
             };
 //========================================
 const icons = {
-    "Repotr": <MdOutlineReceiptLong />,
+    "Report": <MdOutlineReceiptLong />,
     "Summary": <FaRegFileLines />,
     "Ray":<FaXRay />,
     "Prescripation":<FaFilePrescription />,   
@@ -30,7 +30,7 @@ const allRecords={
         "id":1,
         "fav":true,
         "Name Of Record":"Report-12 of patient's heart.form",
-        "Type":"Repotr",
+        "Type":"Report",
         "Name Of Health Provider":"Dr : Ahmed Fahed Al-mojahed",
         "Date Of Upload":"22/5/2024"
     },
