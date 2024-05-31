@@ -1,17 +1,23 @@
 
 import { IconContext } from "react-icons";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 
-function BackButton(props) {
+
+function BackButton() {
+    const navigate = useNavigate();
+
+    const handleGoBack = () => {
+        navigate(-1); // Go back one level in the hierarchy
+    };
 
     return (
-        <Link to={props.backPath} style={{ backgroundColor: 'red', width: '80px', height: '70px', position: 'relative' }}>
+        <button onClick={handleGoBack} style={{ position: 'relative', left: '-15px' }}>
             <IconContext.Provider value={{ color: "#3146FF", size: '1.2em' }}>
                 <FaArrowLeftLong />
             </IconContext.Provider>
-        </Link>
+        </button>
     );
 };
 

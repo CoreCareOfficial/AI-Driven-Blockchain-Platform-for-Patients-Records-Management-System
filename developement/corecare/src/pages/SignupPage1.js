@@ -9,7 +9,7 @@ import { Outlet } from 'react-router-dom';
 function SignupPage1() {
 
     return (
-        <CardLogin step={1} backPath='/login'>
+        <CardLogin step={1}>
             <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <FormLogin buttonName='Continue' path='/signup/step-2'>

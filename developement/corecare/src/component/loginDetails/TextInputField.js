@@ -4,6 +4,9 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './password.css';
 import Gender from './Gender';
 import CountrySelector from './CountrySelector';
+import MultiSelectField from './MultiSelectField';
+import { useSetRecoilState } from 'recoil';
+import { userInfo } from '../../Recoil/Atom';
 
 const styleInput = {
     backgroundColor: '#ffffff',
@@ -27,18 +30,6 @@ const styleLabel = {
     margin: '4px 0 0 0'
 }
 
-const styleSmallInput = {
-    backgroundColor: '#ffffff',
-    width: '90%',
-    minWidth: '20px',
-    height: '40px',
-    borderRadius: '50PX',
-    fontFamily: 'DM Sans',
-    fontSize: '12px',
-    margin: "4px 0 12px 0",
-    paddingLeft: '12px',
-};
-
 const styleDate = {
     backgroundColor: '#ffffff',
     width: '100%',
@@ -56,9 +47,7 @@ const styleLabelRadio = {
     color: '#ffffff',
     fontSize: '14px',
     fontFamily: 'DM Sans',
-    // fontWeight: 700,
     textAlign: 'left',
-    // margin: '4px 0 0 0'
 };
 
 const styleRadio = {
@@ -67,21 +56,35 @@ const styleRadio = {
     marginRight: '6px'
 };
 
+// function SetUser({ name, newValue }) {
+//     const setUserInfo = useSetRecoilState(userInfo);
+
+//     setUserInfo((prevUserInfo) => ({
+//         ...prevUserInfo,
+//         [name]: newValue
+//     }));
+// }
+
 export function TextInputField(props) {
-    const [inputValue, setInputValue] = useState('');
+    // const handleChange1 = (event) => {
+    //     SetUser(props.name, event.target.value)
+    // }
+    const setUserInfo = useSetRecoilState(userInfo);
+    const handleChange = (event) => {
 
-    const handleInputChange = (event) => {
-        setInputValue(event.target.value);
-    };
-
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: event.target.value
+        }));
+    }
     return (
         <div>
             <label style={styleLabel}>{props.label}</label>
             <input
                 style={styleInput}
-                type={inputValue.includes('@') && inputValue.length > 2 ? 'email' : 'text'}
-                value={inputValue}
-                onChange={handleInputChange}
+                type={props.type}
+                name={props.name}
+                onChange={handleChange}
                 required={props.required}
                 placeholder={props.placeholder} />
         </div>
@@ -93,6 +96,16 @@ export function PasswordInputField(props) {
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
+    const setUserInfo = useSetRecoilState(userInfo);
+
+    const handleChange = (event) => {
+        setPassword(event.target.value)
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: event.target.value
+        }));
+        // SetUser('password', event.target.value)
+    }
 
     return (
         <div>
@@ -101,8 +114,9 @@ export function PasswordInputField(props) {
                 <input
                     style={styleInput}
                     type={isVisible ? "text" : "password"}
+                    name={props.name}
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={handleChange}
                     placeholder={props.placeholder}
                     required
                 />
@@ -118,34 +132,32 @@ export function PasswordInputField(props) {
     );
 };
 
-export function SmallTextInputField(props) {
-
-    return (
-        <div>
-            <label style={styleLabel}>{props.label}</label>
-            <input style={styleSmallInput} type="text" placeholder={props.placeholder} />
-        </div>
-    );
-};
-
 export function SelectInputField(props) {
+    const options = props.optionsList.map((option) => {
+        return (
+            <option>{option}</option>
+        );
+    });
     return (
         <div>
             <label style={styleLabel}>{props.label}</label>
             <select style={styleInput} placeholder={props.placeholder} required={props.required}>
-                <option disabled selected hidden>Select your blood type...</option>
-                <option>A+</option>
-                <option>A-</option>
-                <option>B+</option>
-                <option>B-</option>
-                <option>AB+</option>
-                <option>AB-</option>
-                <option>O+</option>
-                <option>O-</option>
+                <option disabled selected hidden style={{ textAlign: 'left' }}>{props.placeholder}</option>
+                {options}
             </select>
         </div>
     );
 };
+
+export function SelectMultiInputField(props) {
+    return (
+        <div>
+            <label style={styleLabel}>{props.label}</label>
+            <MultiSelectField placeholder={props.placeholder} style={styleInput} />
+        </div>
+    );
+};
+
 
 export function DateInputField(props) {
 
@@ -178,16 +190,26 @@ export function CountrySelectorField() {
 };
 
 export function RadioField(props) {
+    // const handleChange = (event) => {
+    //     SetUser('typeUser', event.target.value)
+    // }
+    const setUserInfo = useSetRecoilState(userInfo);
+    const handleChange = (event) => {
 
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            'typeUser': event.target.value
+        }));
+    }
     return (
         <div className='row' style={{ marginLeft: '12px' }}>
             <div className='col col-lg-6' style={{ textAlign: 'left' }}>
-                <input type='radio' name={props.name} style={styleRadio} />
+                <input type='radio' name={props.name} style={styleRadio} value={props.label1} onChange={handleChange} />
                 <label style={styleLabelRadio}>{props.label1}</label>
             </div>
             {props.label2 ?
                 <div className='col col-lg-6' style={{ textAlign: 'left' }}>
-                    <input type='radio' name={props.name} style={styleRadio} />
+                    <input type='radio' name={props.name} style={styleRadio} value={props.label2} onChange={handleChange} />
                     <label style={styleLabelRadio}>{props.label1}</label>
                 </div>
                 : null

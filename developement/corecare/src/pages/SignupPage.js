@@ -8,22 +8,57 @@ import { Outlet } from 'react-router-dom';
 
 function SignupPage() {
 
-
     return (
-        <CardLogin step={2} backPath='/signup/step-1'>
+        <CardLogin step={2}>
             <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <TextPage text='Who are you?' />
                 <FormLogin buttonName='Continue' path='/signup/step-3'>
                     <div className='row' style={{ marginTop: '-15px' }}>
-                        <div className='col col-lg-6'><TextInputField label='First Name' placeholder='Enter your first name' required={true} /></div>
-                        <div className='col col-lg-6'><TextInputField label='Second Name' placeholder='Enter your second name' /></div>
+                        <div className='col col-lg-6'>
+                            <TextInputField
+                                label='First Name'
+                                type='text'
+                                name='firstName'
+                                placeholder='Enter your first name'
+                                required={true}
+                            />
+                        </div>
+                        <div className='col col-lg-6'>
+                            <TextInputField
+                                label='Second Name'
+                                type='text'
+                                name='secondName'
+                                placeholder='Enter your second name'
+                            />
+                        </div>
                     </div>
                     <div className='row'>
-                        <div className='col col-lg-6'><TextInputField label='Third Name' placeholder='Enter your third name' /></div>
-                        <div className='col col-lg-6'><TextInputField label='Last Name' placeholder='Enter your last name' required={true} /></div>
+                        <div className='col col-lg-6'>
+                            <TextInputField
+                                label='Third Name'
+                                type='text'
+                                name='thirdName'
+                                placeholder='Enter your third name'
+                            />
+                        </div>
+                        <div className='col col-lg-6'>
+                            <TextInputField
+                                label='Last Name'
+                                type='text'
+                                name='lastName'
+                                placeholder='Enter your last name'
+                                required={true}
+                            />
+                        </div>
                     </div>
-                    <TextInputField label='Email' placeholder='Enter your email' required={true} />
+                    <TextInputField
+                        label='Email'
+                        type='email'
+                        name='email'
+                        placeholder='Enter your email'
+                        required={true}
+                    />
                     <DateInputField label='Date of Birth' placeholder='Select your Birth date' />
                     <GenderInputField label='Gender' option1='Male' option2='Female' />
                 </FormLogin>

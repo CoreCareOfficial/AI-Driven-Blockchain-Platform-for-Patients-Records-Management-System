@@ -9,6 +9,7 @@ function TitlePage(props) {
             fontWeight: 700,
             // lineHeight: '52px',
             textAlign: 'center',
+            marginBottom: '12px'
         }}>
             {props.title}
         </dev>

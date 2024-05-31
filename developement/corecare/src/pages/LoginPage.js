@@ -11,12 +11,18 @@ function LoginPage() {
 
     return (
         <>
-            <CardLogin backPath='/'>
+            <CardLogin>
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-100px' }}>
                     <TitlePage title="Login" />
                     <TextPage text='Fill out your personal details' />
                     <FormLogin buttonName='Login' path='/userprofile'>
-                        <TextInputField label='Username, Email' placeholder='Enter your username or email' />
+                        <TextInputField
+                            label='Username, Email'
+                            type='text'
+                            placeholder='Enter your username or email'
+                            required={true}
+                            name='userName'
+                        />
                         <PasswordInputField label='Password' placeholder="Enter your password" />
                     </FormLogin>
                     <ForgotButton />
