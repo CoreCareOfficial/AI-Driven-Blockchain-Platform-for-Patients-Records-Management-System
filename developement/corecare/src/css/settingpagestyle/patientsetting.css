@@ -1,0 +1,172 @@
+:root {
+    --mainBlue-color: #3146ff;
+    --altBlue-color: #1787e0;
+    --darkBlack-color:#181a1f;
+    --lightBlack:#272c34;
+    --lightGray:#eaeaea;
+    --white-color:#fff;
+    --darkGray:#3f4652;
+    --main-transition-duration: 0.6s;
+}
+.PatientSettingPage{
+    height: inherit;
+    display: flex;
+}
+.PatientSettingPage_right{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    height: inherit;
+}
+.UserContact{
+    background-color: transparent;
+    border: 2px solid var(--white-color);
+    margin-top: 20px;
+}
+
+.PatientSettingPage_right .UserContact p{
+    color: var(--white-color);
+    /* background-color: greenyellow; */
+    width: 85%;
+    max-height: 20px;
+    padding: 0;
+    text-align: left;
+    /* overflow:hidden; */
+}
+.PatientSettingPage_right .UserContact span{
+    color: var(--white-color);
+
+}
+/* ==================EmergencyContact======================= */
+.PatientSettingPage_right .EmergencyContact{
+    width: 95%;
+    margin:5px ;
+    padding: 0px 5px;
+    background-color: var(--darkGray);
+    border-radius: 8px;
+}
+.addUserContact{
+    border: 2px solid var(--white-color);
+    margin: 5px 0px;
+    background-color: var(--darkBlack-color);
+}
+
+.addUserContact input {
+    width: 75%;
+    margin: 0px 4px;
+    padding-left: 5px;
+    background-color: var(--lightBlack);
+    color: var(--white-color);
+    outline: none;
+    border-bottom: 3px solid var(--lightBlack) ;
+    border-radius: 8px;
+}
+/* =========================================== */
+
+
+.PatientSettingPage_right .mid_right{
+    /* background-color: #1787e0; */
+    display: flex;
+    height: inherit;
+}
+.PatientSettingPage_right .mid_right .SettingBodyRight,.SettingBodyMid{
+    width: 50%;
+    margin: 5px;
+    background-color: var(--darkGray);
+    max-height: inherit;
+}
+.PatientSettingPage .SettingBodyLift{
+    background-color: var(--darkGray);
+    width: 50%;
+    margin:5px 0px;
+    padding: 0px;
+}
+.SettingBodyLift .card-body,.SettingBodyRight .card-body,.SettingBodyMid .card-body,.addUserContact .card-body {
+    padding: 7px 4px;
+}
+
+.SettingForm_form{
+    /* background-color: var(--mainBlue-color); */
+    margin: 20px 0px;
+    position: relative;
+    padding: 4px;
+    border-radius: 8px;
+    border: 2px solid white;
+}
+.SettingForm_form legend{
+    font-size: 1.2em;
+}
+/* ========================== */
+
+.PasswordSettingInput{
+    /* background-color: red; */
+    display: flex;
+    position: relative;
+    width: 53%;
+}
+.SocialSettingInput{
+    display: flex;
+    position: relative;
+    width: 70%;
+}
+.PasswordSettingInput input{
+    flex: 1;
+    margin: 0px;
+    width: 100%;
+    margin: 0px 4px;
+    padding-left: 5px;
+    background-color: var(--darkBlack-color);
+    color: var(--white-color);
+    outline: none;
+    border-bottom: 3px solid var(--lightBlack) ;
+}
+.SocialSettingInput input{
+    /* flex: 1; */
+    margin: 0px;
+    width: 100%;
+    margin: 0px 4px;
+    padding-left: 17px;
+    background-color: var(--darkBlack-color);
+    color: var(--white-color);
+    outline: none;
+    border-bottom: 3px solid var(--lightBlack) ;
+}
+.PasswordSettingInput span{
+    color: var(--white-color);
+    /* background-color: #1787e0; */
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.SocialSettingInput span{
+    color: var(--white-color);
+    /* background-color: #1787e0; */
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+/* =========================*/
+.SettingForm_form .SettingInput,.SettingSelect,.SettingCountry,.PasswordSetting{
+    /* background-color: greenyellow; */
+    justify-content: space-between;
+    display: flex;
+    padding: 2px;
+    margin: 4px 1px;
+}
+.SettingForm_form .SettingInput label ,
+.SettingSelect label,.EmergencyContact_form label,
+.PasswordSetting label,.addUserContact label,.SettingCountry label{
+    color: var(--white-color);
+    font-weight: 600;
+}
+.SettingForm_form .SettingInput input, .SettingSelect select,.SettingCountry select{
+    width: 60%;
+    margin: 0px 4px;
+    padding-left: 5px;
+    background-color: var(--darkBlack-color);
+    color: var(--white-color);
+    outline: none;
+    border-bottom: 3px solid var(--lightBlack) ;
+}
+/* ========================== */  

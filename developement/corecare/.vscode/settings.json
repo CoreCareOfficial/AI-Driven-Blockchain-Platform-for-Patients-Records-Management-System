@@ -21,6 +21,7 @@
         "mojahed",
         "Muthanna",
         "osama",
+        "patientsetting",
         "Prescripation",
         "Printshop",
         "Qahtan",
@@ -29,6 +30,8 @@
         "Repotr",
         "searchdetails",
         "servicedetails",
-        "Servise"
+        "Servise",
+        "settingdetails",
+        "settingpagestyle"
     ]
 }
