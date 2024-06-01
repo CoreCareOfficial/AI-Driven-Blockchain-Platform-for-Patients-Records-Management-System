@@ -1,16 +1,27 @@
 import React,{ useState } from "react";
-import Button from 'react-bootstrap/Button';
+// import {Button} from 'react-bootstrap/Button';
 import { FaEye } from "react-icons/fa";
 import { IoIosEyeOff } from "react-icons/io";
-import SettingCountrySelector from './SettingCountrySelector'
+import SettingCountrySelector from './SettingCountrySelector';
+import { Button } from "primereact/button";
+
 export function SettingForm(props) {
     return (
             <form className={props.name}>
                 <fieldset name="general-info">
                     <legend style={{color:'white'}}>{props.legend}</legend>
                     {props.children}
-                    <Button variant="primary" style={{transition: '0.7s ease',height:'30px',paddingTop:'0px'}}>{props.btn}</Button>{' '}
+                    <Button label={props.btn} className="bg-[#3146FF] my-2 text-white  rounded-[8px] p-1 self-center"/>
                 </fieldset>
+            </form>
+    );
+};
+
+export function DynamicForm(props) {
+    return (
+            <form className={props.name}>
+                    {props.children}
+                    <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 self-center"/>
             </form>
     );
 };
@@ -77,9 +88,9 @@ export function SocialSettingInput(props) {
 
 export function SettingInput(props) {
     return (
-        <div className="SettingInput">
+        <div className={props.name}>
             <label >{props.label}</label>
-            <input  type={props.type} placeholder={props.placeholder} />
+            <input  type={props.type} placeholder={props.placeholder} onChange={props.onChange}/>
         </div>
     );
 };

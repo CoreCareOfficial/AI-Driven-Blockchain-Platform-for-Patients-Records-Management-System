@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import countryList from 'react-select-country-list';
 function SettingCountrySelector(props) {
 
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState('Yemen');
     const [options, setOptions] = useState([]); // Initialize options state
     const [isLoading, setIsLoading] = useState(false); // Track loading state
     const [error, setError] = useState(null); // Store any errors
@@ -23,8 +23,8 @@ function SettingCountrySelector(props) {
         fetchData(); // Fetch data on component mount
     }, []);
 
-    const changeHandler = (value) => {
-        setValue(value);
+    const changeHandler = (e) => {
+        setValue(e.target.value);
     };
 
     return (
@@ -32,9 +32,9 @@ function SettingCountrySelector(props) {
             {isLoading && <p>Loading countries...</p>}
             {error && <p>Error fetching countries: {error.message}</p>}
             {!isLoading && !error && (
-                <select value={value} onChange={changeHandler}>
-                    <option value="">
-                    
+                <select onChange={changeHandler}>
+                    <option selected value={value}>
+                    {value}
                     </option> {/* Default option */}
                     {options.map((country) => (
                     <option key={country.value} value={country.value}>
