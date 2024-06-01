@@ -151,7 +151,7 @@ function DoctorBodyRight() {
                     handlePrescriptionClick={handlePrescriptionClick}
                 />
                     : active === 'lab' ? <div>lab</div>
-                        : active === 'xray' ? <div>ray</div>
+                        : active === 'xray' ? <Radiology />
                             : <Prescription />
             }
         </div>
