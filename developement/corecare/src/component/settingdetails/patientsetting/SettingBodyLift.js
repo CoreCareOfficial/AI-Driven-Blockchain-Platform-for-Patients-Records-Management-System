@@ -28,12 +28,12 @@ function SettingBodyLift(){
                     cursor:'pointer',
                 }}
                 ><MdModeEdit/></span>
-                <SettingInput type="text" label="FullName:" placeholder=""/>
-                <SettingInput type="text" label="Phone Number:" placeholder=""/>
-                <SettingInput type="text" label="Address:" placeholder=""/>
-                <SettingInput type="text" label="Job:" placeholder=""/>
+                <SettingInput name="SettingInput" type="text" label="FullName:" placeholder=""/>
+                <SettingInput name="SettingInput" type="text" label="Phone Number:" placeholder=""/>
+                <SettingInput name="SettingInput" type="text" label="Address:" placeholder=""/>
+                <SettingInput name="SettingInput" type="text" label="Job:" placeholder=""/>
                 <SettingSelect items={['Male' ,'Female']} label="Sex:"/>
-                <SettingInput type="date" label="Date Of Birth:" placeholder=""/>
+                <SettingInput name="SettingInput" type="date" label="Date Of Birth:" placeholder=""/>
                 <SettingCountry  label="Country:"/>
                 <SettingSelect items={['Single' ,'Married']} label="Status:"/>
             </SettingForm>
@@ -51,9 +51,9 @@ function SettingBodyLift(){
                 }}
                 ><MdModeEdit/></span>
                 <SettingSelect items={['A+' ,'A-','B+','B-','AB+','AB-','O+','O-']} label="Bold Type:"/>
-                <SettingInput type="number" label="Weight:" placeholder=""/>
-                <SettingInput type="number" label="Height:" placeholder=""/>
-                <SettingInput type="text" label="Allergies:" placeholder=""/>
+                <SettingInput name="SettingInput" type="number" label="Weight:" placeholder=""/>
+                <SettingInput name="SettingInput" type="number" label="Height:" placeholder=""/>
+                <SettingInput name="SettingInput" type="text" label="Allergies:" placeholder=""/>
             </SettingForm>
 
         </DynamicCard>

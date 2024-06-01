@@ -2,6 +2,7 @@ import { MdOutlineReceiptLong } from "react-icons/md";
 import DoctorNavContainer from "./DoctorNavContainer";
 import MediCondiContainer from "./MediCondiContainer";
 import SharedRecords from "./SharedRecords";
+import Prescription from "./Prescription";
 import { FaFileLines, FaFilePrescription, FaRegFileLines, FaXRay } from "react-icons/fa6";
 import { useState } from "react";
 import Diagnosis from "./Diagnosis";
@@ -139,13 +140,27 @@ function DoctorBodyRight() {
                 handleXrayClick={handleXrayClick}
                 handlePrescriptionClick={handlePrescriptionClick}
             />
-            {active === 'records' ? <SharedRecords RecordsResult={RecordsResult}
+            {active === 'records' ? <SharedRecords
+                RecordsResult={RecordsResult}
                 icons={icons}
+<<<<<<< HEAD
                 allRecords={allRecords} />
                 : active === 'diagnosis' ? <Diagnosis />
                     : active === 'lab' ? <div>lab</div>
                         : active === 'xray' ? <div><Radiology /></div>
                             : <div>prescription</div>
+=======
+                allRecords={allRecords}
+            />
+                : active === 'diagnosis' ? <Diagnosis
+                    handleLabClick={handleLabClick}
+                    handleXrayClick={handleXrayClick}
+                    handlePrescriptionClick={handlePrescriptionClick}
+                />
+                    : active === 'lab' ? <div>lab</div>
+                        : active === 'xray' ? <div><Radiology/></div>
+                            :  <Prescription/>
+>>>>>>> origin/dev
             }
         </div>
     );

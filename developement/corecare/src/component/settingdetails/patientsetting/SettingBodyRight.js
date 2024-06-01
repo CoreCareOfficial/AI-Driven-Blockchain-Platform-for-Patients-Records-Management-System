@@ -16,21 +16,19 @@ function SettingBodyRight({handleAddContact}){
     const usercontact=[
         {id:1,'name':"ahmed qahtan"},
         {id:2,'name':"ahmed qahtan"},
-        // {id:3,'name':"ahmed qahtan"},
+        {id:3,'name':"ahmed qahtan"},
     ]
-
-    // const [addIconShow , setAddIconShow] = useState(false);
-
-    // const handleAddIconShow =()=> {
-    //     setAddIconShow(!addIconShow);
-    // };
 
     return(
         <>
         <DynamicCard name = "SettingBodyRight">
             
             <DynamicCard name="UserContact">
-            <Card.Title style={{color:'white'}}>Emergency Contact</Card.Title>
+            <Card.Title style={{color:'white',
+            fontSize:'1.2em',
+            fontWeight:'500',
+            fontFamily:'DM Sans'
+            }}>Emergency Contact</Card.Title>
             {
             usercontact.map((EmergencyContact) => (
                 <div style={{

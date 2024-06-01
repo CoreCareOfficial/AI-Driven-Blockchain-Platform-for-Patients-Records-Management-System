@@ -1,87 +1,87 @@
+import { useState } from 'react';
+import '../../css/DoctorPageStyle/diagonsis.css';
 import { MdOutlineVaccines } from "react-icons/md";
-import { FaVial } from "react-icons/fa";
-import { FaXRay } from "react-icons/fa";
+import { FaVial, FaXRay } from "react-icons/fa";
+import { Button } from "primereact/button";
+import InputField from './InputField';
+import TextareaField from './TextareaField';
+import PrescribedItem from './PrescribedItem';
+import NextVisit from './NextVisit';
 
+const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick }) => {
+    const [diagnosis, setDiagnosis] = useState('');
+    const [notes, setNotes] = useState('');
+    const [nextVisit, setNextVisit] = useState('');
+    const prescribedItems = ['Augmen', 'Augmen', 'Augmen']; // Example items
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const formData = {
+            diagnosis,
+            notes,
+            prescribedMedicine: prescribedItems, // This would come from your state
+            prescribedLabTests: prescribedItems, // This would come from your state
+            prescribedXrays: prescribedItems, // This would come from your state
+            nextVisit
+        };
 
-function Diagnosis() {
+        // Send formData to the backend
+        console.log(formData);
+    };
+
     return (
-        <form id="main">
+        <form id="main" onSubmit={handleSubmit}>
             <div className="flex flex-col justify-around gap-2 h-full">
-                <div className="flex flex-row justify-between bg-[#3F4652] rounded-md p-3 gap-2 mx-5 my-3">
-                    <label className="self-center font-bold font-serif">Diagnosis</label>
-                    <input className="bg-transparent border-1 border-[#272C34] outline-none rounded-md w-full h-[5vh] p-4" placeholder="Write your diagnosis" autoFocus type="text" name="diagnosis" id="diagnosis" />
+                <InputField
+                    label="Diagnosis"
+                    placeholder="Write your diagnosis"
+                    type="text"
+                    name="diagnosis"
+                    id="diagnosis"
+                    required
+                    autoFocus
+                    value={diagnosis}
+                    onChange={(e) => setDiagnosis(e.target.value)}
+                />
+
+                <TextareaField
+                    label="Notes"
+                    placeholder="Write your notes"
+                    rows={13}
+                    name="notes"
+                    id="notes"
+                    required
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                />
+
+                <div className="doctor-body-bottom flex flex-row gap-5 justify-between mx-5 my-3">
+                    <PrescribedItem
+                        icon={<MdOutlineVaccines />}
+                        title="The Prescribed Medicine"
+                        items={prescribedItems}
+                        handleClick={handlePrescriptionClick}
+                    />
+                    <PrescribedItem
+                        icon={<FaVial />}
+                        title="The Prescribed Lab Test"
+                        items={prescribedItems}
+                        handleClick={handleLabClick}
+                    />
+                    <PrescribedItem
+                        icon={<FaXRay />}
+                        title="The Prescribed X-rays"
+                        items={prescribedItems}
+                        handleClick={handleXrayClick}
+                    />
                 </div>
 
-                <div className="flex flex-col justify-between bg-[#3F4652] rounded-md p-3 gap-2 mx-5 my-3">
-                    <label className=" font-bold font-serif">Notes</label>
-                    <textarea className="bg-transparent border-1 border-[#272C34] outline-none rounded-md w-full p-4" form="main" rows={13} autoComplete="on" autoCorrect="on" placeholder="Write your notes" name="notes" id="diagnosis" />
-                </div>
+                <NextVisit
+                    value={nextVisit}
+                    onChange={(e) => setNextVisit(e.target.value)}
+                />
 
-
-                <div className="doctor-body-bottom p-2 flex flex-row justify-between mx-5">
-                    <div className="flex flex-col bg-[#3F4652] p-2 rounded-md">
-                        <div className="flex flex-row justify-between gap-2 border-b p-2 border-[#272C34] ">
-                            <span className="text-xl"><MdOutlineVaccines /></span>
-                            <h5>The Prescribed Midicine</h5>
-                        </div>
-                        <div className="flex flex-col my-1">
-                            <div className="flex flex-row justify-start">
-                                <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">1</div>
-                                <div className=" text-center self-center">Augmen</div>
-                            </div>
-                            <div className="flex flex-row justify-start">
-                                <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">1</div>
-                                <div className=" text-center self-center">Augmen</div>
-                            </div>
-                            <div className="flex flex-row justify-start">
-                                <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">1</div>
-                                <div className=" text-center self-center">Augmen</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col bg-[#3F4652] p-2 rounded-md">
-                        <div className="flex flex-row justify-between gap-2 border-b p-2 border-[#272C34] ">
-                            <span className="text-xl"><FaVial /></span>
-                            <h5>The Prescribed Lab Test</h5>
-                        </div>
-                        <div className="flex flex-col my-1">
-                            <div className="flex flex-row justify-start">
-                                <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">1</div>
-                                <div className=" text-center self-center">Augmen</div>
-                            </div>
-                            <div className="flex flex-row justify-start">
-                                <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">1</div>
-                                <div className=" text-center self-center">Augmen</div>
-                            </div>
-                            <div className="flex flex-row justify-start">
-                                <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">1</div>
-                                <div className=" text-center self-center">Augmen</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col bg-[#3F4652] p-2 rounded-md">
-                        <div className="flex flex-row justify-between gap-2 border-b p-2 border-[#272C34] ">
-                            <span className="text-xl"><FaXRay /></span>
-                            <h5>The Prescribed X-rays</h5>
-                        </div>
-                        <div className="flex flex-col my-1">
-                            <div className="flex flex-row justify-start">
-                                <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">1</div>
-                                <div className=" text-center self-center">Augmen</div>
-                            </div>
-                            <div className="flex flex-row justify-start">
-                                <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">1</div>
-                                <div className=" text-center self-center">Augmen</div>
-                            </div>
-                            <div className="flex flex-row justify-start">
-                                <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">1</div>
-                                <div className=" text-center self-center">Augmen</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
+                <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 mx-5 font-bold text-white rounded-[10px] p-2 w-1/6 self-end" />
             </div>
         </form>
     );
