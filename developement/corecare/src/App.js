@@ -7,6 +7,11 @@ import './css/service.css';
 import './css/search.css';
 import './css/contact.css';
 import './css/RecordesPageStyle/recordes.css';
+import 'primereact/resources/themes/saga-blue/theme.css';  // Theme
+import 'primereact/resources/primereact.min.css';          // Core CSS
+import 'primeicons/primeicons.css';                        // Icons
+import 'primeflex/primeflex.css';                          // PrimeFlex
+
 
 import Root from './routes/Root';
 

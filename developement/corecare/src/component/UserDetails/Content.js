@@ -7,11 +7,11 @@ import PatientSettingPage from "../../pages/PatientSettingPage";
 function Content(props) {
     // <RecordesPage />
     // <Profile isDoctor={props.isDoctor} />
-    // <PatientAccessManagement />
+    // <PatientSettingPage/>
     return (
         <>
             <div className="contentContainer">
-                <PatientSettingPage/>
+                <PatientAccessManagement />
             </div>
         </>
 
