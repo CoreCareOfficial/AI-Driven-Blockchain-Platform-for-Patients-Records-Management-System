@@ -5,6 +5,7 @@ import SharedRecords from "./SharedRecords";
 import { FaFileLines, FaFilePrescription, FaRegFileLines, FaXRay } from "react-icons/fa6";
 import { useState } from "react";
 import Diagnosis from "./Diagnosis";
+import Radiology from "./Radiology";
 
 function DoctorBodyRight() {
     const [active, setActive] = useState('records')
@@ -141,9 +142,9 @@ function DoctorBodyRight() {
             {active === 'records' ? <SharedRecords RecordsResult={RecordsResult}
                 icons={icons}
                 allRecords={allRecords} />
-                : active === 'diagnosis' ? <Diagnosis/>
+                : active === 'diagnosis' ? <Diagnosis />
                     : active === 'lab' ? <div>lab</div>
-                        : active === 'xray' ? <div>ray</div>
+                        : active === 'xray' ? <div><Radiology /></div>
                             : <div>prescription</div>
             }
         </div>
