@@ -143,13 +143,6 @@ function DoctorBodyRight() {
             {active === 'records' ? <SharedRecords
                 RecordsResult={RecordsResult}
                 icons={icons}
-<<<<<<< HEAD
-                allRecords={allRecords} />
-                : active === 'diagnosis' ? <Diagnosis />
-                    : active === 'lab' ? <div>lab</div>
-                        : active === 'xray' ? <div><Radiology /></div>
-                            : <div>prescription</div>
-=======
                 allRecords={allRecords}
             />
                 : active === 'diagnosis' ? <Diagnosis
@@ -158,9 +151,8 @@ function DoctorBodyRight() {
                     handlePrescriptionClick={handlePrescriptionClick}
                 />
                     : active === 'lab' ? <div>lab</div>
-                        : active === 'xray' ? <div><Radiology/></div>
-                            :  <Prescription/>
->>>>>>> origin/dev
+                        : active === 'xray' ? <div>ray</div>
+                            : <Prescription />
             }
         </div>
     );
