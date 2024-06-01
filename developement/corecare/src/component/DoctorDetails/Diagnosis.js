@@ -1,6 +1,7 @@
 import { MdOutlineVaccines } from "react-icons/md";
 import { FaVial } from "react-icons/fa";
 import { FaXRay } from "react-icons/fa";
+import { Button } from "primereact/button";
 
 
 
@@ -19,9 +20,9 @@ function Diagnosis() {
                 </div>
 
 
-                <div className="doctor-body-bottom p-2 flex flex-row justify-between mx-5">
-                    <div className="flex flex-col bg-[#3F4652] p-2 rounded-md">
-                        <div className="flex flex-row justify-between gap-2 border-b p-2 border-[#272C34] ">
+                <div className="doctor-body-bottom p-2 flex flex-row gap-4 justify-between mx-5">
+                    <div className="flex flex-col bg-[#3F4652] p-2 rounded-md w-full">
+                        <div className="flex flex-row justify-start gap-2 border-b p-2 border-[#272C34] ">
                             <span className="text-xl"><MdOutlineVaccines /></span>
                             <h5>The Prescribed Midicine</h5>
                         </div>
@@ -38,10 +39,12 @@ function Diagnosis() {
                                 <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">1</div>
                                 <div className=" text-center self-center">Augmen</div>
                             </div>
+                            <Button label="Add Medicine" icon="pi pi-plus" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 w-3/4 self-center"/>
                         </div>
                     </div>
-                    <div className="flex flex-col bg-[#3F4652] p-2 rounded-md">
-                        <div className="flex flex-row justify-between gap-2 border-b p-2 border-[#272C34] ">
+
+                    <div className="flex flex-col bg-[#3F4652] p-2 rounded-md w-full">
+                        <div className="flex flex-row justify-start gap-2 border-b p-2 border-[#272C34] ">
                             <span className="text-xl"><FaVial /></span>
                             <h5>The Prescribed Lab Test</h5>
                         </div>
@@ -59,9 +62,11 @@ function Diagnosis() {
                                 <div className=" text-center self-center">Augmen</div>
                             </div>
                         </div>
+                        <Button label="Add Lab Test" icon="pi pi-plus" className="bg-[#3146FF] my-2 font-bold text-white rounded-[10px] p-2 w-3/4 self-center"/>
                     </div>
-                    <div className="flex flex-col bg-[#3F4652] p-2 rounded-md">
-                        <div className="flex flex-row justify-between gap-2 border-b p-2 border-[#272C34] ">
+
+                    <div className="flex flex-col bg-[#3F4652] p-2 rounded-md w-full">
+                        <div className="flex flex-row justify-start gap-2 border-b p-2 border-[#272C34] ">
                             <span className="text-xl"><FaXRay /></span>
                             <h5>The Prescribed X-rays</h5>
                         </div>
@@ -79,8 +84,12 @@ function Diagnosis() {
                                 <div className=" text-center self-center">Augmen</div>
                             </div>
                         </div>
+                        <Button label="Add Radiology Test" icon="pi pi-plus" className="bg-[#3146FF] my-2 font-bold text-white rounded-[10px] p-2 w-3/4 self-center"/>
                     </div>
-                    
+                </div>
+
+                <div className="next-visit bg">
+                
                 </div>
             </div>
         </form>
