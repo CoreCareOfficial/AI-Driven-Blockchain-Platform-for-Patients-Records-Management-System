@@ -84,20 +84,20 @@ function Radiology() {
         <div className="row justify-content-evenly" style={{ marginTop: '4px', padding: '10px' }}>
             <div className="col-4" style={styleCol}>
                 <div style={styleDiv}>
-                    <DynamicCheckboxes categories={ComputedTomography} title='Computed Tomography (CT)' />
-                    <DynamicCheckboxes categories={PositronEmissionTomography} title='Positron Emission Tomography (PET)' />
+                    <DynamicCheckboxes categories={ComputedTomography} title='Computed Tomography (CT)' key='CT' />
+                    <DynamicCheckboxes categories={PositronEmissionTomography} title='Positron Emission Tomography (PET)' key='PET' />
                 </div>
             </div>
             <div className="col-4" style={styleCol}>
                 <div style={styleDiv}>
-                    <DynamicCheckboxes categories={MagneticResonantImaging} title='Magnetic Resonant Imaging (MRI)' />
-                    <DynamicCheckboxes categories={Ultrasound} title='Ultrasound' />
+                    <DynamicCheckboxes categories={MagneticResonantImaging} title='Magnetic Resonant Imaging (MRI)' key='MRI' />
+                    <DynamicCheckboxes categories={Ultrasound} title='Ultrasound' key='U' />
                 </div>
             </div>
             <div className="col-4" style={styleCol}>
                 <div style={styleDiv}>
-                    <DynamicCheckboxes categories={XRay} title='X-Ray' />
-                    <DynamicCheckboxes categories={HybridModalities} title='Hybrid Modalities' />
+                    <DynamicCheckboxes categories={XRay} title='X-Ray' key='XR' />
+                    <DynamicCheckboxes categories={HybridModalities} title='Hybrid Modalities' key='HM' />
                 </div>
             </div>
         </div>

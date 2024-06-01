@@ -7,6 +7,7 @@ import { FaFileLines, FaFilePrescription, FaRegFileLines, FaXRay } from "react-i
 import { useState } from "react";
 import Diagnosis from "./Diagnosis";
 import Radiology from "./Radiology";
+import LabTest from "./LabTest";
 
 function DoctorBodyRight() {
     const [active, setActive] = useState('records')
@@ -150,7 +151,7 @@ function DoctorBodyRight() {
                     handleXrayClick={handleXrayClick}
                     handlePrescriptionClick={handlePrescriptionClick}
                 />
-                    : active === 'lab' ? <div>lab</div>
+                    : active === 'lab' ? <LabTest />
                         : active === 'xray' ? <Radiology />
                             : <Prescription />
             }
