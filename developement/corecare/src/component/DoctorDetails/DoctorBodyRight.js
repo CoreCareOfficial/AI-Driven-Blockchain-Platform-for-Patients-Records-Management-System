@@ -139,10 +139,16 @@ function DoctorBodyRight() {
                 handleXrayClick={handleXrayClick}
                 handlePrescriptionClick={handlePrescriptionClick}
             />
-            {active === 'records' ? <SharedRecords RecordsResult={RecordsResult}
+            {active === 'records' ? <SharedRecords
+                RecordsResult={RecordsResult}
                 icons={icons}
-                allRecords={allRecords} />
-                : active === 'diagnosis' ? <Diagnosis/>
+                allRecords={allRecords}
+            />
+                : active === 'diagnosis' ? <Diagnosis
+                    handleLabClick={handleLabClick}
+                    handleXrayClick={handleXrayClick}
+                    handlePrescriptionClick={handlePrescriptionClick}
+                />
                     : active === 'lab' ? <div>lab</div>
                         : active === 'xray' ? <div>ray</div>
                             :  <Prescription/>
