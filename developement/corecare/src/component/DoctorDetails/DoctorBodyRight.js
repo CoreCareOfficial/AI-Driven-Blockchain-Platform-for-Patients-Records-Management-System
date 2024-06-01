@@ -144,7 +144,7 @@ function DoctorBodyRight() {
                 : active === 'diagnosis' ? <Diagnosis/>
                     : active === 'lab' ? <div>lab</div>
                         : active === 'xray' ? <div>ray</div>
-                            : <div>prescription</div>
+                            : <Prescription/>
             }
         </div>
     );
