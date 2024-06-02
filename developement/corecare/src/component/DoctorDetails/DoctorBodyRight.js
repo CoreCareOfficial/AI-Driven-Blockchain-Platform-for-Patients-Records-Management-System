@@ -153,7 +153,9 @@ function DoctorBodyRight() {
                 />
                     : active === 'lab' ? <LabTest />
                         : active === 'xray' ? <Radiology />
-                            : <Prescription />
+                            : <Prescription
+                                handleDiagnosisClick={handleDiagnosisClick}
+                            />
             }
         </div>
     );

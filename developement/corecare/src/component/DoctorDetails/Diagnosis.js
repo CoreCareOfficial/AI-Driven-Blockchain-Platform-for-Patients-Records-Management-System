@@ -7,21 +7,23 @@ import InputField from './InputField';
 import TextareaField from './TextareaField';
 import PrescribedItem from './PrescribedItem';
 import NextVisit from './NextVisit';
+import { useRecoilValue } from 'recoil';
+import { userHealthInfo } from '../../Recoil/Atom';
 
 const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick }) => {
+    const healthInfo = useRecoilValue(userHealthInfo);
     const [diagnosis, setDiagnosis] = useState('');
     const [notes, setNotes] = useState('');
     const [nextVisit, setNextVisit] = useState('');
-    const prescribedItems = ['Augmen', 'Augmen', 'Augmen']; // Example items
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = {
             diagnosis,
             notes,
-            prescribedMedicine: prescribedItems, // This would come from your state
-            prescribedLabTests: prescribedItems, // This would come from your state
-            prescribedXrays: prescribedItems, // This would come from your state
+            prescribedMedicine: healthInfo.prescription,
+            prescribedLabTests: healthInfo[0].labTests.selectedList,
+            prescribedXrays: healthInfo[0].radiology.selectedList,
             nextVisit
         };
 
@@ -38,11 +40,10 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                     type="text"
                     name="diagnosis"
                     id="diagnosis"
-                    required
                     autoFocus
                     value={diagnosis}
                     onChange={(e) => setDiagnosis(e.target.value)}
-                    cname='mx-5 my-3 bg-[#3F4652]'
+                    cname="mx-5 my-2 bg-[#3F4652]"
                 />
 
                 <TextareaField
@@ -51,7 +52,6 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                     rows={13}
                     name="notes"
                     id="notes"
-                    required
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     cname="mx-5 bg-[#3F4652]"
@@ -61,19 +61,19 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                     <PrescribedItem
                         icon={<MdOutlineVaccines />}
                         title="The Prescribed Medicine"
-                        items={prescribedItems}
+                        items={healthInfo.prescription}
                         handleClick={handlePrescriptionClick}
                     />
                     <PrescribedItem
                         icon={<FaVial />}
                         title="The Prescribed Lab Test"
-                        items={prescribedItems}
+                        items={healthInfo[0].labTests.selectedList}
                         handleClick={handleLabClick}
                     />
                     <PrescribedItem
                         icon={<FaXRay />}
                         title="The Prescribed X-rays"
-                        items={prescribedItems}
+                        items={healthInfo[0].radiology.selectedList}
                         handleClick={handleXrayClick}
                     />
                 </div>

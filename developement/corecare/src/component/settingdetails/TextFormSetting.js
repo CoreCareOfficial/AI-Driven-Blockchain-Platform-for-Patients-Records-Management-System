@@ -20,12 +20,15 @@ export function SettingForm(props) {
 
 export function DynamicForm(props) {
     const setUserHealthInfo = useSetRecoilState(userHealthInfo);
-    const handleSubmit = (event) => {
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
         setUserHealthInfo((prevUserInfo) => ({
             ...prevUserInfo,
             'prescription': props.cards
         }));
+        props.handleDiagnosisClick();
+        console.log(props.cards)
     }
     return (
             <form className={props.name}>
