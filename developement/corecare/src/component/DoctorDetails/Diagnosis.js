@@ -42,6 +42,7 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                     autoFocus
                     value={diagnosis}
                     onChange={(e) => setDiagnosis(e.target.value)}
+                    cname='mx-5 my-3'
                 />
 
                 <TextareaField
@@ -53,6 +54,7 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                     required
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
+                    cname="mx-5"
                 />
 
                 <div className="doctor-body-bottom flex flex-row gap-5 justify-between mx-5 my-3">

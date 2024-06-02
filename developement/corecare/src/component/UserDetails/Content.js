@@ -8,11 +8,11 @@ function Content(props) {
     // <RecordesPage />
     // <Profile isDoctor={props.isDoctor} />
     // <PatientSettingPage/>
+    // <PatientSettingPage/>
     return (
         <>
             <div className="contentContainer">
-                <PatientSettingPage/>
-                {/* <PatientAccessManagement /> */}
+                <PatientAccessManagement />
             </div>
         </>
 

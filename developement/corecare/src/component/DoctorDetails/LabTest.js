@@ -156,6 +156,7 @@ function LabTest() {
                         required
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
+                        cname="mx-0 bg-[#272C34]"
                     />
                 </div>
             </div>
