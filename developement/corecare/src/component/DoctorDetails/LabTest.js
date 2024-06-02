@@ -1,5 +1,7 @@
 import { Checkbox } from "primereact/checkbox";
 import DynamicCheckboxes from "./DynamicCheckboxes";
+import TextareaField from "./TextareaField";
+import { useState } from "react";
 
 
 function LabTest() {
@@ -102,6 +104,8 @@ function LabTest() {
         { name: 'HBA1C', key: 'HBA1C' },
     ];
 
+    const [notes, setNotes] = useState('');
+
     return (
         <div className="row justify-content-evenly" style={{ marginTop: '4px', padding: '10px' }}>
             <div className="col-3" style={styleCol}>
@@ -143,6 +147,16 @@ function LabTest() {
                         <label htmlFor="AntibioticsSensetivity" className="ml-1"
                             style={{ color: '#ffffff', marginTop: '-8px', fontSize: '16px' }}>Antibiotics Sensetivity</label>
                     </div>
+                    <TextareaField
+                        label="Notes"
+                        placeholder="Write your notes"
+                        rows={13}
+                        name="notes"
+                        id="notes"
+                        required
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                    />
                 </div>
             </div>
         </div>
