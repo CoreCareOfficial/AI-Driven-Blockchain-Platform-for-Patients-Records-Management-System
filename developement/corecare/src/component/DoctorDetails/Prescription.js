@@ -34,7 +34,9 @@ function Prescription() {
     return (
         <>
             <Container className="prescriptionPage" style={{ backgroundColor: '#181a1f' }}>
+
                 <DynamicForm name="prescriptionForm" btn="Submit">
+
                     {cards.map((card, index) => (
                         <DynamicCard key={card.id} name="prescriptionCard">
                             <SettingInput

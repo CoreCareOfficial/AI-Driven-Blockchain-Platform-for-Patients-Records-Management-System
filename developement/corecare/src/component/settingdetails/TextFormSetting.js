@@ -34,7 +34,7 @@ export function AddEmergency(props) {
                 alignItems:'center',
                 padding:'0px 5px',
             }}>
-                <input  type={props.type} placeholder={props.placeholder} name={props.name} />
+                <input  type={props.type} placeholder={props.placeholder} name={props.name} disabled={props.disabled}/>
                 <Button label={props.btn} className="bg-[#3146FF] my-2 text-white w-[20%] rounded-[8px] p-1 self-center"/>
             </form>
     );
@@ -58,6 +58,7 @@ export function PasswordSettingInput(props) {
                     placeholder={props.placeholder}
                     required
                     name={props.name}
+                    disabled={props.disabled}
                 />
                 {isVisible ? 
                     <span><FaEye onClick={toggleVisibility}/></span> :
@@ -78,6 +79,7 @@ export function SocialSettingInput(props) {
                     type="text"
                     placeholder={props.placeholder}
                     name={props.name}
+                    disabled={props.disabled}
                 />
                     <span>{props.icon}</span>
             </div>
@@ -95,6 +97,7 @@ export function SettingInput(props) {
             placeholder={props.placeholder} 
             onChange={props.onChange}
             name={props.name}
+            disabled={props.disabled}
             />
         </div>
     );
@@ -110,7 +113,7 @@ export function SettingSelect(props) {
     return (
         <div className="SettingSelect">
             <label>{props.label}</label>
-            <select  placeholder="" name={props.name}>
+            <select  placeholder="" name={props.name} disabled={props.disabled}>
                 <option disabled selected hidden>{hidtext}</option>
                 {listItems}
             </select>
@@ -122,7 +125,7 @@ export function SettingCountry(props) {
     return (
         <div className="SettingCountry">
             <label>{props.label}</label>
-            <SettingCountrySelector/>
+            <SettingCountrySelector disabled={props.disabled}/>
         </div>
     );
 };

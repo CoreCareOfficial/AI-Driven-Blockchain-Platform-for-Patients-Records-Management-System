@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import DynamicCard from '../../bootcomponent/DynamicCard';
 import {Card, Image } from "react-bootstrap";
 import ahmed from '../../../assets/ahmed.jpg';
@@ -6,6 +6,16 @@ import { SettingForm, SettingInput, SettingSelect,SettingCountry } from "../Text
 import { MdModeEdit } from "react-icons/md";
 
 function SettingBodyLift(){
+
+    const [General, setGeneral] = useState(true);
+    const toggleEditGeneral = () => {
+        setGeneral(!General);
+    };
+    const [Health, setHealth] = useState(true);
+    const toggleEditHealth = () => {
+        setHealth(!Health);
+    };
+
     return(
         <>
         <DynamicCard name = "SettingBodyLift">
@@ -26,16 +36,16 @@ function SettingBodyLift(){
                     padding:'5px',
                     backgroundColor:'#272c34',
                     cursor:'pointer',
-                }}
+                }} onClick={toggleEditGeneral}
                 ><MdModeEdit/></span>
-                <SettingInput class_name="SettingInput" type="text" name="full-name" label="FullName:" placeholder="" />
-                <SettingInput class_name="SettingInput" type="text" name="phone-number" label="Phone Number:" placeholder=""/>
-                <SettingInput class_name="SettingInput" type="text" name="address" label="Address:" placeholder=""/>
-                <SettingInput class_name="SettingInput" type="text" name="job" label="Job:" placeholder=""/>
-                <SettingSelect items={['Male' ,'Female']} label="Sex:"/>
-                <SettingInput class_name="SettingInput" type="date" name="date" label="Date Of Birth:" placeholder=""/>
-                <SettingCountry  label="Country:" name="country"/>
-                <SettingSelect items={['Single' ,'Married']} label="Status:" name="status"/>
+                <SettingInput class_name="SettingInput" type="text" name="full-name" label="FullName:" placeholder="" disabled={General}/>
+                <SettingInput class_name="SettingInput" type="text" name="phone-number" label="Phone Number:" placeholder="" disabled={General}/>
+                <SettingInput class_name="SettingInput" type="text" name="address" label="Address:" placeholder="" disabled={General}/>
+                <SettingInput class_name="SettingInput" type="text" name="job" label="Job:" placeholder="" disabled={General}/>
+                <SettingSelect items={['Male' ,'Female']} label="Sex:" disabled={General}/>
+                <SettingInput class_name="SettingInput" type="date" name="date" label="Date Of Birth:" placeholder="" disabled={General}/>
+                <SettingCountry  label="Country:" name="country" disabled={General}/>
+                <SettingSelect items={['Single' ,'Married']} label="Status:" name="status" disabled={General}/>
             </SettingForm>
 
 
@@ -48,12 +58,12 @@ function SettingBodyLift(){
                     padding:'5px',
                     backgroundColor:'#272c34',
                     cursor:'pointer',
-                }}
+                }} onClick={toggleEditHealth}
                 ><MdModeEdit/></span>
-                <SettingSelect items={['A+' ,'A-','B+','B-','AB+','AB-','O+','O-']} name="bold-type" label="Bold Type:"/>
-                <SettingInput class_name="SettingInput" type="number" name="weight" label="Weight:" placeholder=""/>
-                <SettingInput class_name="SettingInput" type="number" name="height" label="Height:" placeholder=""/>
-                <SettingInput class_name="SettingInput" type="text" name="allergies" label="Allergies:" placeholder=""/>
+                <SettingSelect items={['A+' ,'A-','B+','B-','AB+','AB-','O+','O-']} name="bold-type" label="Bold Type:" disabled={Health}/>
+                <SettingInput class_name="SettingInput" type="number" name="weight" label="Weight:" placeholder="" disabled={Health}/>
+                <SettingInput class_name="SettingInput" type="number" name="height" label="Height:" placeholder="" disabled={Health}/>
+                <SettingInput class_name="SettingInput" type="text" name="allergies" label="Allergies:" placeholder="" disabled={Health}/>
             </SettingForm>
 
         </DynamicCard>

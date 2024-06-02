@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import DynamicCard from '../../bootcomponent/DynamicCard';
 import { SettingForm,SocialSettingInput,PasswordSettingInput } from "../TextFormSetting";
 import { AiOutlineX } from "react-icons/ai";
@@ -9,6 +9,16 @@ import { AiOutlineWhatsApp } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
 
 function SettingBodyMid(){
+    const [Password, setPassword] = useState(true);
+    const toggleEditPassword = () => {
+        setPassword(!Password);
+    };
+
+    const [Social, setSocial] = useState(true);
+    const toggleEditSocial = () => {
+        setSocial(!Social);
+    };
+
     return(
         <>
         <DynamicCard name = "SettingBodyMid">
@@ -21,11 +31,11 @@ function SettingBodyMid(){
                     padding:'5px',
                     backgroundColor:'#272c34',
                     cursor:'pointer',
-                }}
+                }} onClick={toggleEditPassword}
                 ><MdModeEdit/></span>
-                <PasswordSettingInput name="old-password" label="Old Password:"/>
-                <PasswordSettingInput name="new-password" label="New Password:"/>
-                <PasswordSettingInput name="confirm-password" label="Confirm Password:"/>
+                <PasswordSettingInput name="old-password" label="Old Password:" disabled={Password}/>
+                <PasswordSettingInput name="new-password" label="New Password:" disabled={Password}/>
+                <PasswordSettingInput name="confirm-password" label="Confirm Password:" disabled={Password}/>
             </SettingForm>
 
 
@@ -38,13 +48,13 @@ function SettingBodyMid(){
                     padding:'5px',
                     backgroundColor:'#272c34',
                     cursor:'pointer',
-                }}
+                }} onClick={toggleEditSocial}
                 ><MdModeEdit/></span>
-                <SocialSettingInput name="facebook" label="Facebook:" icon={<AiFillFacebook/>} placeholder=""/>
-                <SocialSettingInput name="twitter" label="Twitter:" icon={<AiOutlineX/>} placeholder=""/>
-                <SocialSettingInput name="linkedin" label="Linkedin:" icon={<AiFillLinkedin/>} placeholder=""/>
-                <SocialSettingInput name="instagram" label="Instagram:" icon={<AiFillInstagram/>} placeholder=""/>
-                <SocialSettingInput name="whatsapp" label="WhatsApp:" icon={<AiOutlineWhatsApp/>} placeholder=""/>
+                <SocialSettingInput name="facebook" label="Facebook:" icon={<AiFillFacebook/>} placeholder="" disabled={Social}/>
+                <SocialSettingInput name="twitter" label="Twitter:" icon={<AiOutlineX/>} placeholder="" disabled={Social}/>
+                <SocialSettingInput name="linkedin" label="Linkedin:" icon={<AiFillLinkedin/>} placeholder="" disabled={Social}/>
+                <SocialSettingInput name="instagram" label="Instagram:" icon={<AiFillInstagram/>} placeholder="" disabled={Social}/>
+                <SocialSettingInput name="whatsapp" label="WhatsApp:" icon={<AiOutlineWhatsApp/>} placeholder="" disabled={Social}/>
             </SettingForm>
         </DynamicCard>
         </>
