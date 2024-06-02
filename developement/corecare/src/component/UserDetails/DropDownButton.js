@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../../css/UserPageStyle/dropdownbutton.css"
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { MdKeyboardArrowDown, MdKeyboardArrowRight } from "react-icons/md";
 function DropDownButton(props) {
 
     const [expanded, setExpanded] = useState(false);
@@ -12,7 +12,7 @@ function DropDownButton(props) {
     return (
         <div className="warapper">
             <div className="dropdown-button" onClick={handleClick}>
-                <p>{expanded ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />} {props.icon}</p>
+                <p>{expanded ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />} {props.icon}</p>
                 <p>{props.text}</p>
             </div>
 

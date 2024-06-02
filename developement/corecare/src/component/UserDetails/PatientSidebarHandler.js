@@ -25,6 +25,7 @@ function PatientSidebarHandler(props) {
 
     const handleButtonClick = (buttonText) => {
         setActiveButton(buttonText);
+        props.handleButtonClick(buttonText);
     };
 
     const logoutIcon =
