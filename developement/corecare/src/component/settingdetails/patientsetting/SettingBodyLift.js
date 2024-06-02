@@ -28,14 +28,14 @@ function SettingBodyLift(){
                     cursor:'pointer',
                 }}
                 ><MdModeEdit/></span>
-                <SettingInput name="SettingInput" type="text" label="FullName:" placeholder=""/>
-                <SettingInput name="SettingInput" type="text" label="Phone Number:" placeholder=""/>
-                <SettingInput name="SettingInput" type="text" label="Address:" placeholder=""/>
-                <SettingInput name="SettingInput" type="text" label="Job:" placeholder=""/>
+                <SettingInput class_name="SettingInput" type="text" name="full-name" label="FullName:" placeholder="" />
+                <SettingInput class_name="SettingInput" type="text" name="phone-number" label="Phone Number:" placeholder=""/>
+                <SettingInput class_name="SettingInput" type="text" name="address" label="Address:" placeholder=""/>
+                <SettingInput class_name="SettingInput" type="text" name="job" label="Job:" placeholder=""/>
                 <SettingSelect items={['Male' ,'Female']} label="Sex:"/>
-                <SettingInput name="SettingInput" type="date" label="Date Of Birth:" placeholder=""/>
-                <SettingCountry  label="Country:"/>
-                <SettingSelect items={['Single' ,'Married']} label="Status:"/>
+                <SettingInput class_name="SettingInput" type="date" name="date" label="Date Of Birth:" placeholder=""/>
+                <SettingCountry  label="Country:" name="country"/>
+                <SettingSelect items={['Single' ,'Married']} label="Status:" name="status"/>
             </SettingForm>
 
 
@@ -50,10 +50,10 @@ function SettingBodyLift(){
                     cursor:'pointer',
                 }}
                 ><MdModeEdit/></span>
-                <SettingSelect items={['A+' ,'A-','B+','B-','AB+','AB-','O+','O-']} label="Bold Type:"/>
-                <SettingInput name="SettingInput" type="number" label="Weight:" placeholder=""/>
-                <SettingInput name="SettingInput" type="number" label="Height:" placeholder=""/>
-                <SettingInput name="SettingInput" type="text" label="Allergies:" placeholder=""/>
+                <SettingSelect items={['A+' ,'A-','B+','B-','AB+','AB-','O+','O-']} name="bold-type" label="Bold Type:"/>
+                <SettingInput class_name="SettingInput" type="number" name="weight" label="Weight:" placeholder=""/>
+                <SettingInput class_name="SettingInput" type="number" name="height" label="Height:" placeholder=""/>
+                <SettingInput class_name="SettingInput" type="text" name="allergies" label="Allergies:" placeholder=""/>
             </SettingForm>
 
         </DynamicCard>

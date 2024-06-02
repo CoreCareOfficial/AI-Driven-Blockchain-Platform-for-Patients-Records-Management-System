@@ -23,9 +23,9 @@ function SettingBodyMid(){
                     cursor:'pointer',
                 }}
                 ><MdModeEdit/></span>
-                <PasswordSettingInput label="Old Password:"/>
-                <PasswordSettingInput label="New Password:"/>
-                <PasswordSettingInput label="Confirm Password:"/>
+                <PasswordSettingInput name="old-password" label="Old Password:"/>
+                <PasswordSettingInput name="new-password" label="New Password:"/>
+                <PasswordSettingInput name="confirm-password" label="Confirm Password:"/>
             </SettingForm>
 
 
@@ -40,11 +40,11 @@ function SettingBodyMid(){
                     cursor:'pointer',
                 }}
                 ><MdModeEdit/></span>
-                <SocialSettingInput label="Facebook:" icon={<AiFillFacebook/>} placeholder=""/>
-                <SocialSettingInput label="Twitter:" icon={<AiOutlineX/>} placeholder=""/>
-                <SocialSettingInput label="Linkedin:" icon={<AiFillLinkedin/>} placeholder=""/>
-                <SocialSettingInput label="Instagram:" icon={<AiFillInstagram/>} placeholder=""/>
-                <SocialSettingInput label="WhatsApp:" icon={<AiOutlineWhatsApp/>} placeholder=""/>
+                <SocialSettingInput name="facebook" label="Facebook:" icon={<AiFillFacebook/>} placeholder=""/>
+                <SocialSettingInput name="twitter" label="Twitter:" icon={<AiOutlineX/>} placeholder=""/>
+                <SocialSettingInput name="linkedin" label="Linkedin:" icon={<AiFillLinkedin/>} placeholder=""/>
+                <SocialSettingInput name="instagram" label="Instagram:" icon={<AiFillInstagram/>} placeholder=""/>
+                <SocialSettingInput name="whatsapp" label="WhatsApp:" icon={<AiOutlineWhatsApp/>} placeholder=""/>
             </SettingForm>
         </DynamicCard>
         </>

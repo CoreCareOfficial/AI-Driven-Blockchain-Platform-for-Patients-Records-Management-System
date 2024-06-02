@@ -16,7 +16,7 @@ function SettingBodyRight({handleAddContact}){
     const usercontact=[
         {id:1,'name':"ahmed qahtan"},
         {id:2,'name':"ahmed qahtan"},
-        {id:3,'name':"ahmed qahtan"},
+        // {id:3,'name':"ahmed qahtan"},
     ]
 
     return(

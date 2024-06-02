@@ -11,8 +11,8 @@ function Content(props) {
     return (
         <>
             <div className="contentContainer">
-                {/* <PatientSettingPage/> */}
-                <PatientAccessManagement />
+                <PatientSettingPage/>
+                {/* <PatientAccessManagement /> */}
             </div>
         </>
 

@@ -1,5 +1,4 @@
 import React,{ useState } from "react";
-// import {Button} from 'react-bootstrap/Button';
 import { FaEye } from "react-icons/fa";
 import { IoIosEyeOff } from "react-icons/io";
 import SettingCountrySelector from './SettingCountrySelector';
@@ -29,14 +28,14 @@ export function DynamicForm(props) {
 
 export function AddEmergency(props) {
     return (
-            <form className={props.name}
+            <form 
             style={{display:'flex',
                 justifyContent:'space-between',
                 alignItems:'center',
                 padding:'0px 5px',
             }}>
-                <input  type={props.type} placeholder={props.placeholder} />
-                <Button variant="primary" style={{transition: '0.7s ease',width:'20%',height:'30px',paddingTop:'0px'}}>{props.btn}</Button>{' '}
+                <input  type={props.type} placeholder={props.placeholder} name={props.name} />
+                <Button label={props.btn} className="bg-[#3146FF] my-2 text-white w-[20%] rounded-[8px] p-1 self-center"/>
             </form>
     );
 };
@@ -58,6 +57,7 @@ export function PasswordSettingInput(props) {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={props.placeholder}
                     required
+                    name={props.name}
                 />
                 {isVisible ? 
                     <span><FaEye onClick={toggleVisibility}/></span> :
@@ -77,6 +77,7 @@ export function SocialSettingInput(props) {
                 <input
                     type="text"
                     placeholder={props.placeholder}
+                    name={props.name}
                 />
                     <span>{props.icon}</span>
             </div>
@@ -88,9 +89,13 @@ export function SocialSettingInput(props) {
 
 export function SettingInput(props) {
     return (
-        <div className={props.name}>
+        <div className={props.class_name}>
             <label >{props.label}</label>
-            <input  type={props.type} placeholder={props.placeholder} onChange={props.onChange}/>
+            <input  type={props.type} 
+            placeholder={props.placeholder} 
+            onChange={props.onChange}
+            name={props.name}
+            />
         </div>
     );
 };
@@ -105,7 +110,7 @@ export function SettingSelect(props) {
     return (
         <div className="SettingSelect">
             <label>{props.label}</label>
-            <select  placeholder="" >
+            <select  placeholder="" name={props.name}>
                 <option disabled selected hidden>{hidtext}</option>
                 {listItems}
             </select>

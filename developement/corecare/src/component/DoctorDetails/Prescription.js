@@ -38,7 +38,8 @@ function Prescription() {
                     {cards.map((card, index) => (
                         <DynamicCard key={card.id} name="prescriptionCard">
                             <SettingInput
-                                name="prescriptionInput"
+                                class_name="prescriptionInput"
+                                name="name"
                                 label="Name"
                                 type="text"
                                 value={card.name}
@@ -46,7 +47,8 @@ function Prescription() {
                                 placeholder=""
                             />
                             <SettingInput
-                                name="prescriptionInput"
+                                class_name="prescriptionInput"
+                                name="dosage"
                                 label="Dosage"
                                 type="text"
                                 value={card.dosage}
@@ -54,7 +56,8 @@ function Prescription() {
                                 placeholder=""
                             />
                             <SettingInput
-                                name="prescriptionInput"
+                                class_name="prescriptionInput"
+                                name="notes"
                                 label="Notes"
                                 type="text"
                                 value={card.notes}

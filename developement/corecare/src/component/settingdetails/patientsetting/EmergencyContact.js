@@ -10,7 +10,7 @@ function EmergencyContact({isOpen}){
         style={isOpen?{display:"block"}:{display:"none"}}>
             <DynamicCard name="addUserContact">
             <Card.Title style={{color:'white'}}>Add Emergency Contact</Card.Title>
-                <AddEmergency type="text" btn="Add" />
+                <AddEmergency name="addUserContact" type="text" btn="Add" />
             </DynamicCard>
         </div>
         </>
