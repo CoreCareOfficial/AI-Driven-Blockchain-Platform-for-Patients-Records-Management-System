@@ -3,6 +3,8 @@ import { FaEye } from "react-icons/fa";
 import { IoIosEyeOff } from "react-icons/io";
 import SettingCountrySelector from './SettingCountrySelector';
 import { Button } from "primereact/button";
+import { useSetRecoilState } from "recoil";
+import { userHealthInfo } from "../../Recoil/Atom";
 
 export function SettingForm(props) {
     return (
@@ -17,10 +19,18 @@ export function SettingForm(props) {
 };
 
 export function DynamicForm(props) {
+    const setUserHealthInfo = useSetRecoilState(userHealthInfo);
+    const handleSubmit = (event) => {
+
+        setUserHealthInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            'prescription': props.cards
+        }));
+    }
     return (
             <form className={props.name}>
                     {props.children}
-                    <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 self-center"/>
+                    <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 self-center" onClick={handleSubmit}/>
             </form>
     );
 };

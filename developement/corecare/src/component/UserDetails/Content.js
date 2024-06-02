@@ -16,7 +16,6 @@ function Content(props) {
                                 : props.active === "Appointment Schedule" ? <div className="text-white">Appointment</div>
                                     : props.active === "Settings" ? <PatientSettingPage />
                                         : null
-
                 }
             </div>
         </>
