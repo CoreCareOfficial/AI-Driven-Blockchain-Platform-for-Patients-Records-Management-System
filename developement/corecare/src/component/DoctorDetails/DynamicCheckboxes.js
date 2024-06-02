@@ -20,8 +20,8 @@ function DynamicCheckboxes(props) {
     return (
         <div className="card flex justify-content-center" style={{ backgroundColor: 'inherit', border: 'none' }}>
             {props.title && <div className="flex align-items-center ml-2 mt-2">
-                <Checkbox inputId={props.key} name={props.key} value={props.title} />
-                <label htmlFor={props.key} className="ml-1"
+                <Checkbox inputId={props.k} name={props.k} value={props.title} />
+                <label htmlFor={props.k} className="ml-1"
                     style={{ color: '#ffffff', marginTop: '-8px', fontSize: '16px' }}>{props.title}</label>
             </div>}
             <div className="flex flex-column" style={{
@@ -37,7 +37,7 @@ function DynamicCheckboxes(props) {
                         <div key={category.key} className="flex align-items-center">
                             <Checkbox
                                 inputId={category.key}
-                                name={props.key}
+                                name={props.k}
                                 value={category}
                                 onChange={onCategoryChange}
                                 checked={selectedCategories.some((item) => item.key === category.key)}

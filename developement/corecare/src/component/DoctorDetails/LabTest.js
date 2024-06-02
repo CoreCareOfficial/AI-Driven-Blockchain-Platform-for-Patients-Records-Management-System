@@ -22,7 +22,7 @@ function LabTest() {
         { name: 'S.typhi O', key: 'SO' },
         { name: 'S.typhi H', key: 'SH' },
         { name: 'S.paratyphi A', key: 'SA' },
-        { name: 'Neutrophil', key: 'N' },
+        { name: 'Neutrophil', key: 'NE' },
     ];
 
     const BRUCELLOSIOD = [
@@ -110,12 +110,12 @@ function LabTest() {
         <div className="row justify-content-evenly" style={{ marginTop: '4px', padding: '10px' }}>
             <div className="col-3" style={styleCol}>
                 <div style={styleDiv}>
-                    <DynamicCheckboxes categories={Hematology} title='Hematology' key='H' />
+                    <DynamicCheckboxes categories={Hematology} title='Hematology' k='H' />
                 </div>
             </div>
             <div className="col-3" style={styleCol}>
                 <div style={styleDiv}>
-                    <DynamicCheckboxes categories={Boichemistry} title='Boichemistry' key='B' />
+                    <DynamicCheckboxes categories={Boichemistry} title='Boichemistry' k='B' />
                 </div>
             </div>
             <div className="col-3" style={styleCol}>
@@ -126,10 +126,10 @@ function LabTest() {
                             style={{ color: '#ffffff', marginTop: '-8px', fontSize: '16px' }}>Serology</label>
                     </div>
                     <div style={{ width: '90%', margin: "auto" }}>
-                        <DynamicCheckboxes categories={WIDALTest} title='WIDALTest :' key='W' />
-                        <DynamicCheckboxes categories={BRUCELLOSIOD} title='BRUCELLOSIOD :' key='BRUCELLOSIOD' />
-                        <DynamicCheckboxes categories={ToxoplasmaAg} title='Toxoplasma Ag :' key='TA' />
-                        <DynamicCheckboxes categories={Serology} key='S' />
+                        <DynamicCheckboxes categories={WIDALTest} title='WIDALTest :' k='W' />
+                        <DynamicCheckboxes categories={BRUCELLOSIOD} title='BRUCELLOSIOD :' k='BRUCELLOSIOD' />
+                        <DynamicCheckboxes categories={ToxoplasmaAg} title='Toxoplasma Ag :' k='TA' />
+                        <DynamicCheckboxes categories={Serology} k='S' />
                     </div>
                 </div>
             </div>
@@ -140,8 +140,8 @@ function LabTest() {
                         <label htmlFor="Stool" className="ml-1"
                             style={{ color: '#ffffff', marginTop: '-8px', fontSize: '16px' }}>Stool</label>
                     </div>
-                    <DynamicCheckboxes categories={Urine} title='Urine' key='U' />
-                    <DynamicCheckboxes categories={Semen} title='Semen' key='SE' />
+                    <DynamicCheckboxes categories={Urine} title='Urine' k='U' />
+                    <DynamicCheckboxes categories={Semen} title='Semen' k='SE' />
                     <div className="flex align-items-center ml-2 pt-2">
                         <Checkbox inputId="AntibioticsSensetivity" name='AntibioticsSensetivity' value='Antibiotics Sensetivity' />
                         <label htmlFor="AntibioticsSensetivity" className="ml-1"
