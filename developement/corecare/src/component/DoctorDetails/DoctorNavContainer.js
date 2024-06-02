@@ -24,7 +24,7 @@ function DoctorNavContainer({ active, handleRecordslClick, handleDiagnosisClick,
                 className={`p-2 border-b-2 duration-700 cursor-pointer ${active === 'xray' ? 'border-blue-700' : 'border-transparent'}`}
                 onClick={handleXrayClick}
             >
-                X-Ray
+                Radiology
             </div>
             <div
                 className={`p-2 border-b-2 duration-700 cursor-pointer ${active === 'prescription' ? 'border-blue-700' : 'border-transparent'}`}
