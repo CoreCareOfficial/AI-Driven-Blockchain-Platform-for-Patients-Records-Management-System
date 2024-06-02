@@ -6,9 +6,6 @@ import PatientSettingPage from "../../pages/PatientSettingPage";
 
 function Content(props) {
 
-    // <PatientSettingPage/>
-
-
     return (
         <>
             <div className="contentContainer">
