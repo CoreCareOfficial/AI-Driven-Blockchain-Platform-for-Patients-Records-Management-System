@@ -5,7 +5,7 @@ import DynamicCard from '../bootcomponent/DynamicCard';
 import { DynamicForm, SettingInput } from '../settingdetails/TextFormSetting';
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 
-function Prescription({handleDiagnosisClick}) {
+function Prescription({ handleDiagnosisClick }) {
     const [cards, setCards] = useState([{ id: 1, medname: '', dosage: '', notes: '' }]);
 
     const handleInputChange = (index, field, value) => {
@@ -41,12 +41,13 @@ function Prescription({handleDiagnosisClick}) {
                         <DynamicCard key={card.id} name="prescriptionCard">
                             <SettingInput
                                 class_name="prescriptionInput"
-                                name="name"
+                                name="medname"
                                 label="Name"
                                 type="text"
                                 value={card.medname}
-                                onChange ={(e) => handleInputChange(index, 'medname', e.target.value)}
+                                onChange={(e) => handleInputChange(index, 'medname', e.target.value)}
                                 placeholder=""
+                                autoFocus
                             />
                             <SettingInput
                                 class_name="prescriptionInput"

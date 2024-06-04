@@ -35,20 +35,21 @@ export const userInfo = atom({
 
 export const userHealthInfo = atom({
     key: 'userHealthInfo',
-    default: [
-        {
-            radiology: {
-                id: '',
-                selectedList: [],
-                notes: ''
-            },
+    default:
+    {
+        radiology: {
+            selectedList: [],
+            notes: ''
+        },
 
-            labTests: {
-                id: '',
-                selectedList: [],
-                notes: ''
-            },
-            prescription: [],
-        }
-    ]
-})
+        labTests: {
+            selectedList: [],
+            notes: ''
+        },
+        prescription: [],
+        diagnosis: '',
+        notes: '',
+        dateOfNextVisit: '',
+    }
+
+});

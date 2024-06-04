@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoIosEyeOff } from "react-icons/io";
 import SettingCountrySelector from './SettingCountrySelector';
@@ -8,13 +8,13 @@ import { userHealthInfo } from "../../Recoil/Atom";
 
 export function SettingForm(props) {
     return (
-            <form className={props.name}>
-                <fieldset name="general-info">
-                    <legend style={{color:'white'}}>{props.legend}</legend>
-                    {props.children}
-                    <Button label={props.btn} className="bg-[#3146FF] my-2 text-white  rounded-[8px] p-1 self-center"/>
-                </fieldset>
-            </form>
+        <form className={props.name}>
+            <fieldset name="general-info">
+                <legend style={{ color: 'white' }}>{props.legend}</legend>
+                {props.children}
+                <Button label={props.btn} className="bg-[#3146FF] my-2 text-white  rounded-[8px] p-1 self-center" />
+            </fieldset>
+        </form>
     );
 };
 
@@ -22,34 +22,43 @@ export function DynamicForm(props) {
     const setUserHealthInfo = useSetRecoilState(userHealthInfo);
 
     const handleSubmit = (event) => {
+        const lastCard = props.cards[props.cards.length - 1];
         event.preventDefault();
-        setUserHealthInfo((prevUserInfo) => ({
-            ...prevUserInfo,
-            'prescription': props.cards
-        }));
-        props.handleDiagnosisClick();
-        console.log(props.cards)
+        if (lastCard.medname && lastCard.dosage) {
+            setUserHealthInfo((prevUserInfo) => ({
+                ...prevUserInfo,
+                prescription: [
+                    ...(Array.isArray(prevUserInfo.prescription) ? prevUserInfo.prescription : []),
+                    ...props.cards
+                ],
+            }));
+            props.handleDiagnosisClick();
+            console.log(props.cards)
+        } else {
+            alert('Please fill all fields before adding a new card.');
+        }
     }
     return (
-            <form className={props.name}>
-                    {props.children}
-                    <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 self-center" onClick={handleSubmit}/>
-            </form>
+        <form className={props.name}>
+            {props.children}
+            <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 self-center" onClick={handleSubmit} />
+        </form>
     );
 };
 
 
 export function AddEmergency(props) {
     return (
-            <form 
-            style={{display:'flex',
-                justifyContent:'space-between',
-                alignItems:'center',
-                padding:'0px 5px',
+        <form
+            style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '0px 5px',
             }}>
-                <input  type={props.type} placeholder={props.placeholder} name={props.name} disabled={props.disabled}/>
-                <Button label={props.btn} className="bg-[#3146FF] my-2 text-white w-[20%] rounded-[8px] p-1 self-center"/>
-            </form>
+            <input type={props.type} placeholder={props.placeholder} name={props.name} disabled={props.disabled} />
+            <Button label={props.btn} className="bg-[#3146FF] my-2 text-white w-[20%] rounded-[8px] p-1 self-center" />
+        </form>
     );
 };
 
@@ -73,9 +82,9 @@ export function PasswordSettingInput(props) {
                     name={props.name}
                     disabled={props.disabled}
                 />
-                {isVisible ? 
-                    <span><FaEye onClick={toggleVisibility}/></span> :
-                    <span><IoIosEyeOff onClick={toggleVisibility}/></span>
+                {isVisible ?
+                    <span><FaEye onClick={toggleVisibility} /></span> :
+                    <span><IoIosEyeOff onClick={toggleVisibility} /></span>
                 }
             </div>
 
@@ -94,7 +103,7 @@ export function SocialSettingInput(props) {
                     name={props.name}
                     disabled={props.disabled}
                 />
-                    <span>{props.icon}</span>
+                <span>{props.icon}</span>
             </div>
 
         </div>
@@ -106,11 +115,12 @@ export function SettingInput(props) {
     return (
         <div className={props.class_name}>
             <label >{props.label}</label>
-            <input  type={props.type} 
-            placeholder={props.placeholder} 
-            onChange={props.onChange}
-            name={props.name}
-            disabled={props.disabled}
+            <input type={props.type}
+                placeholder={props.placeholder}
+                onChange={props.onChange}
+                name={props.name}
+                disabled={props.disabled}
+                autoFocus={props.autoFocus}
             />
         </div>
     );
@@ -118,15 +128,15 @@ export function SettingInput(props) {
 
 export function SettingSelect(props) {
 
-    const hidtext="";
-    
+    const hidtext = "";
+
     const listItems = props.items.map((item, index) => (
         <option key={index}>{item}</option>
-        ));
+    ));
     return (
         <div className="SettingSelect">
             <label>{props.label}</label>
-            <select  placeholder="" name={props.name} disabled={props.disabled}>
+            <select placeholder="" name={props.name} disabled={props.disabled}>
                 <option disabled selected hidden>{hidtext}</option>
                 {listItems}
             </select>
@@ -138,7 +148,7 @@ export function SettingCountry(props) {
     return (
         <div className="SettingCountry">
             <label>{props.label}</label>
-            <SettingCountrySelector disabled={props.disabled}/>
+            <SettingCountrySelector disabled={props.disabled} />
         </div>
     );
 };

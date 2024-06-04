@@ -7,14 +7,61 @@ import InputField from './InputField';
 import TextareaField from './TextareaField';
 import PrescribedItem from './PrescribedItem';
 import NextVisit from './NextVisit';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { userHealthInfo } from '../../Recoil/Atom';
 
 const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick }) => {
-    const healthInfo = useRecoilValue(userHealthInfo);
-    const [diagnosis, setDiagnosis] = useState('');
-    const [notes, setNotes] = useState('');
-    const [nextVisit, setNextVisit] = useState('');
+    const [healthInfo, setHealthInfo] = useRecoilState(userHealthInfo);
+    const resetState = useResetRecoilState(userHealthInfo);
+    const [diagnosis, setDiagnosis] = useState(healthInfo.diagnosis);
+    const [notes, setNotes] = useState(healthInfo.notes);
+    const [nextVisit, setNextVisit] = useState(healthInfo.dateOfNextVisit);
+
+    const handleDiagnosisChange = (e) => {
+        setHealthInfo(prevDiagnosis => {
+            return {
+                ...prevDiagnosis,
+                diagnosis: e,
+            };
+        });
+        setDiagnosis(e)
+    };
+    const handleNotesChange = (e) => {
+        setHealthInfo(prevDiagnosis => {
+            return {
+                ...prevDiagnosis,
+                notes: e,
+            };
+        });
+        setNotes(e)
+    };
+    const handleVisitChange = (e) => {
+        setHealthInfo(prevDiagnosis => {
+            return {
+                ...prevDiagnosis,
+                dateOfNextVisit: e,
+            };
+        });
+        setNextVisit(e)
+    };
+
+    const handleRemovePrescription = (index) => {
+        setHealthInfo(prevInfo => {
+            const updatedPrescriptions = [...prevInfo.prescription];
+            updatedPrescriptions.splice(index, 1);
+            return {
+                ...prevInfo,
+                prescription: updatedPrescriptions
+            };
+        });
+    };
+
+    const Reset = () => {
+        resetState();
+        setDiagnosis('');
+        setNotes('');
+        setNextVisit('');
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -22,13 +69,16 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
             diagnosis,
             notes,
             prescribedMedicine: healthInfo.prescription,
-            prescribedLabTests: healthInfo[0].labTests.selectedList,
-            prescribedXrays: healthInfo[0].radiology.selectedList,
+            // prescribedLabTests: healthInfo[0].labTests.selectedList,
+            // prescribedXrays: healthInfo[0].radiology.selectedList,
             nextVisit
+
         };
 
         // Send formData to the backend
         console.log(formData);
+        Reset();
+
     };
 
     return (
@@ -40,9 +90,10 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                     type="text"
                     name="diagnosis"
                     id="diagnosis"
+                    required
                     autoFocus
                     value={diagnosis}
-                    onChange={(e) => setDiagnosis(e.target.value)}
+                    onChange={(e) => handleDiagnosisChange(e.target.value)}
                     cname="mx-5 my-2 bg-[#3F4652]"
                 />
 
@@ -53,7 +104,7 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                     name="notes"
                     id="notes"
                     value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
+                    onChange={(e) => handleNotesChange(e.target.value)}
                     cname="mx-5 bg-[#3F4652]"
                 />
 
@@ -63,24 +114,30 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                         title="The Prescribed Medicine"
                         items={healthInfo.prescription}
                         handleClick={handlePrescriptionClick}
+                        handleRemove={handleRemovePrescription}
+                        toshow={'medname'}
                     />
                     <PrescribedItem
                         icon={<FaVial />}
                         title="The Prescribed Lab Test"
-                        items={healthInfo[0].labTests.selectedList}
+                        items={healthInfo.labTests.selectedList}
                         handleClick={handleLabClick}
+                        toshow={'main'}
+
                     />
                     <PrescribedItem
                         icon={<FaXRay />}
                         title="The Prescribed X-rays"
-                        items={healthInfo[0].radiology.selectedList}
+                        items={healthInfo.radiology.selectedList}
                         handleClick={handleXrayClick}
+                        toshow={'main'}
+
                     />
                 </div>
 
                 <NextVisit
                     value={nextVisit}
-                    onChange={(e) => setNextVisit(e.target.value)}
+                    onChange={(e) => handleVisitChange(e.target.value)}
                 />
 
                 <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 mx-5 font-bold text-white rounded-[10px] p-2 w-1/6 self-end" />
