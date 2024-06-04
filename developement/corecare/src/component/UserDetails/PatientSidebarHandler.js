@@ -65,24 +65,24 @@ function PatientSidebarHandler(props) {
                         />
                         <SideBtn
                             name="sideBtn"
-                            id={activeButton === "Reports" ? "active" : ""}
+                            id={activeButton === "Report" ? "active" : ""}
                             icon={<MdOutlineReceiptLong />}
                             text="Reports"
-                            onClick={() => handleButtonClick("Reports")}
+                            onClick={() => handleButtonClick("Report")}
                         />
                         <SideBtn
                             name="sideBtn"
-                            id={activeButton === "Examinations" ? "active" : ""}
+                            id={activeButton === "Lab test" ? "active" : ""}
                             icon={<FaRegFileLines />}
-                            text="Examinations"
-                            onClick={() => handleButtonClick("Examinations")}
+                            text="Lab Tests"
+                            onClick={() => handleButtonClick("Lab test")}
                         />
                         <SideBtn
                             name="sideBtn"
-                            id={activeButton === "X Rays" ? "active" : ""}
+                            id={activeButton === "Ray" ? "active" : ""}
                             icon={<FaXRay />}
-                            text="X Rays"
-                            onClick={() => handleButtonClick("X Rays")}
+                            text="Radiology"
+                            onClick={() => handleButtonClick("Ray")}
                         />
                         <SideBtn
                             name="sideBtn"

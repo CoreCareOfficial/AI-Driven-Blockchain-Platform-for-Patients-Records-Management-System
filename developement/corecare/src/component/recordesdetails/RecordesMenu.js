@@ -1,4 +1,4 @@
-import React ,{useState} from "react";
+import React, { useState } from "react";
 import DynamicCard from "../bootcomponent/DynamicCard";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -10,51 +10,53 @@ import { MdOutlineStarBorder } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 
 
-function RecordesMenu(props){
+function RecordesMenu(props) {
     // const place = props.id;
 
-    const [isOpen , setIsOpen] = useState(props.open);
+    // const [isOpen, setIsOpen] = useState(props.open);
 
-    const handleClickOutside = ((e) => {
-            setIsOpen(false)
-            });
+    // const handleClickOutside = ((e) => {
+    //     setIsOpen(false)
+    // });
 
-    return(
+    return (
         <>
-        <div className="RecordesMen" style={{top:`${props.top}px`,
-        right:`${props.right}px`,
-        display: `${isOpen ? 'block' : 'none'}`}}>
-            
-        <DynamicCard name="RecordesMen_card">
-            <span onClick={handleClickOutside} className="RecordesMen_close"><IoClose /></span>
-            
-            <Link to="" className="link_route">
-                <Button variant="" style={{transition: '0.7s ease'}}>
-                    <span className="span"><MdOutlineFileOpen /></span> Open
-                </Button>{' '}
-            </Link>
-            <Link to="" className="link_route">
-                <Button variant="" style={{transition: '0.7s ease'}}>
-                    <span className="span"><MdOutlineSummarize /></span> Summarize
-                </Button>{' '}
-            </Link>
-            <Link to="" className="link_route">
-                <Button variant="" style={{transition: '0.7s ease'}}>
-                    <span className="span"><MdOutlineLocalPrintshop /></span> Print
-                </Button>{' '}
-            </Link>
-            <Link to="" className="link_route">
-                <Button variant="" style={{transition: '0.7s ease'}}>
-                    <span className="span"><MdOutlineNoteAlt /></span> Write Note
-                </Button>{' '}
-            </Link>
-            <Link to="" className="link_route">
-                <Button variant="" style={{transition: '0.7s ease'}}>
-                    <span className="span"><MdOutlineStarBorder /></span> Stars
-                </Button>{' '}
-            </Link>
-        </DynamicCard>
-        </div>
+            <div className="RecordesMen" style={{
+                top: `${props.top}px`,
+                right: `${props.right}px`,
+                display: `${props.open ? 'block' : 'none'}`
+            }}>
+
+                <DynamicCard name="RecordesMen_card">
+                    <span onClick={props.handleMenuClick} className="RecordesMen_close"><IoClose /></span>
+
+                    <Link to="" className="link_route">
+                        <Button variant="" style={{ transition: '0.7s ease' }}>
+                            <span className="span"><MdOutlineFileOpen /></span> Open
+                        </Button>{' '}
+                    </Link>
+                    <Link to="" className="link_route">
+                        <Button variant="" style={{ transition: '0.7s ease' }}>
+                            <span className="span"><MdOutlineSummarize /></span> Summarize
+                        </Button>{' '}
+                    </Link>
+                    <Link to="" className="link_route">
+                        <Button variant="" style={{ transition: '0.7s ease' }}>
+                            <span className="span"><MdOutlineLocalPrintshop /></span> Print
+                        </Button>{' '}
+                    </Link>
+                    <Link to="" className="link_route">
+                        <Button variant="" style={{ transition: '0.7s ease' }}>
+                            <span className="span"><MdOutlineNoteAlt /></span> Write Note
+                        </Button>{' '}
+                    </Link>
+                    <Link to="" className="link_route">
+                        <Button variant="" style={{ transition: '0.7s ease' }}>
+                            <span className="span"><MdOutlineStarBorder /></span> Stars
+                        </Button>{' '}
+                    </Link>
+                </DynamicCard>
+            </div>
         </>
     );
 }
