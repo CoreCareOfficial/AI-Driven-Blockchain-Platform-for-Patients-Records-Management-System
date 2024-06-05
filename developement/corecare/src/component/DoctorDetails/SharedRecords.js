@@ -56,7 +56,7 @@ function SharedRecords(props) {
 
                 </tbody>
             </table>
-            {isOpen && <RecordesMenu id={idSelected} top={itemTop} right={itemRight} open={true} />}
+            {isOpen && <RecordesMenu id={idSelected} top={itemTop} right={itemRight} open={true} handleMenuClick={handleMenuClick} />}
         </>
     );
 }

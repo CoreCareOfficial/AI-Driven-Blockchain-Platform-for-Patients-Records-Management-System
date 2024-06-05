@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Link } from "react-router-dom";
 import Slider from 'react-slick';
 import { Button } from 'primereact/button';
@@ -45,7 +45,7 @@ function NewNotificationContainer(props) {
                                     <div className="text-white text-center align-middle text-xl m-auto cursor-pointer"><MdContentCopy /></div>
                                 </div>
                                 <div className="flex flex-row justify-end gap-4 m-4">
-                                    <Link to="/doctor" className='w-[13%]'>
+                                    <Link to="/doctor" className='w-[13%]' state={{ accessKey: props.notifications[notification].accessKey }}>
                                         <Button label="Accept" icon="pi pi-check" className="bg-[#3146FF] text-white rounded-[10px] p-2 w-full" />
                                     </Link>
                                     <Button label="Ignore" icon="pi pi-times" className="bg-[#3146FF] text-white rounded-[10px] p-2 w-[13%]" onClick={handleIgnoreClick} />

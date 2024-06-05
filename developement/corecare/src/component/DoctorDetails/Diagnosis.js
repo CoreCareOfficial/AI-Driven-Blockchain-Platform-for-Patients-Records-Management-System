@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import '../../css/DoctorPageStyle/diagonsis.css';
 import { MdOutlineVaccines } from "react-icons/md";
 import { FaVial, FaXRay } from "react-icons/fa";
@@ -16,6 +17,7 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
     const [diagnosis, setDiagnosis] = useState(healthInfo.diagnosis);
     const [notes, setNotes] = useState(healthInfo.notes);
     const [nextVisit, setNextVisit] = useState(healthInfo.dateOfNextVisit);
+    const navigate = useNavigate();
 
     const handleDiagnosisChange = (e) => {
         setHealthInfo(prevDiagnosis => {
@@ -69,8 +71,8 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
             diagnosis,
             notes,
             prescribedMedicine: healthInfo.prescription,
-            // prescribedLabTests: healthInfo[0].labTests.selectedList,
-            // prescribedXrays: healthInfo[0].radiology.selectedList,
+            prescribedLabTests: healthInfo.labTests.selectedList,
+            prescribedXrays: healthInfo.radiology.selectedList,
             nextVisit
 
         };
@@ -78,6 +80,7 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
         // Send formData to the backend
         console.log(formData);
         Reset();
+        // navigate(-1);
 
     };
 
