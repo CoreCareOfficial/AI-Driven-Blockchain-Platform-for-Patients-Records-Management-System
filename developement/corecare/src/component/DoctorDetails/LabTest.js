@@ -149,6 +149,7 @@ function LabTest(props) {
 
     return (
         <>
+            <input type="text" autoFocus className="bg-transparent border-[0px] border-transparent outline-none w-0 h-0" />
             <div className="row justify-content-evenly" style={{ marginTop: '4px', padding: '10px' }}>
                 <div className="col-3" style={styleCol}>
                     <div style={styleDiv}>
@@ -162,9 +163,9 @@ function LabTest(props) {
                 </div>
                 <div className="col-3" style={styleCol}>
                     <div style={styleDiv}>
-                        <DynamicCheckboxes categories={WIDALTest} title={{ name: 'WIDALTest :', key: 'W' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
-                        <DynamicCheckboxes categories={BRUCELLOSIOD} title={{ name: 'BRUCELLOSIOD :', key: 'BRUCELLOSIOD' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
-                        <DynamicCheckboxes categories={ToxoplasmaAg} title={{ name: 'Toxoplasma Ag :', key: 'TA' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <DynamicCheckboxes categories={WIDALTest} title={{ name: 'WIDALTest', key: 'W' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <DynamicCheckboxes categories={BRUCELLOSIOD} title={{ name: 'BRUCELLOSIOD', key: 'BRUCELLOSIOD' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <DynamicCheckboxes categories={ToxoplasmaAg} title={{ name: 'Toxoplasma Ag', key: 'TA' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
                         <DynamicCheckboxes categories={Serology} title={{ name: '', key: 'S' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
                     </div>
                 </div>

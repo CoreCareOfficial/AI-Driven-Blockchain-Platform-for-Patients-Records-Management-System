@@ -127,6 +127,7 @@ function Radiology(props) {
 
     return (
         <>
+            <input type="text" autoFocus className="bg-transparent border-[0px] border-transparent outline-none w-0 h-0" />
             <div className="row justify-content-evenly" style={{ marginTop: '4px', padding: '10px' }}>
                 <div className="col-4" style={styleCol}>
                     <div style={styleDiv}>

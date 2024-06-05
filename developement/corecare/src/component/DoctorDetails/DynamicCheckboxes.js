@@ -13,12 +13,12 @@ function DynamicCheckboxes(props) {
         if (e.checked) {
             _selectedCategories.push(e.value);
             if (onSelectionChange) {
-                onSelectionChange({ name: e.value.name, key: e.value.key, mainKey: title.key });
+                onSelectionChange({ name: e.value.name, key: e.value.key, mainKey: title.name });
             }
         } else {
             _selectedCategories = _selectedCategories.filter(category => category.key !== e.value.key);
             if (onRemoveSelect) {
-                onRemoveSelect({ name: e.value.name, key: e.value.key, mainKey: title.key });
+                onRemoveSelect({ name: e.value.name, key: e.value.key, mainKey: title.name });
             }
         }
         setSelectedCategories(_selectedCategories);
@@ -31,14 +31,14 @@ function DynamicCheckboxes(props) {
             setSelectedCategories(categories);
             categories.forEach(element => {
                 if (onSelectionChange) {
-                    onSelectionChange({ name: element.name, key: element.key, mainKey: title.key });
+                    onSelectionChange({ name: element.name, key: element.key, mainKey: title.name });
                 }
             });
         } else {
             setSelectedCategories([]);
             categories.forEach(element => {
                 if (onRemoveSelect) {
-                    onRemoveSelect({ name: element.name, key: element.key, mainKey: title.key });
+                    onRemoveSelect({ name: element.name, key: element.key, mainKey: title.name });
                 }
             });
         }

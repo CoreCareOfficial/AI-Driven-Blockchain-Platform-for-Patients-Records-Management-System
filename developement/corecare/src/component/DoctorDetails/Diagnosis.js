@@ -57,6 +57,33 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
             };
         });
     };
+    const handleRemoveRadiology = (index) => {
+        setHealthInfo(prevInfo => {
+            const updatedRadiologys = [...prevInfo.radiology.selectedList];
+            updatedRadiologys.splice(index, 1);
+            return {
+                ...prevInfo,
+                radiology: {
+                    ...prevInfo.radiology,
+                    selectedList: updatedRadiologys
+                }
+            };
+        });
+    };
+
+    const handleRemoveLabTest = (index) => {
+        setHealthInfo(prevInfo => {
+            const updatedLabTests = [...prevInfo.labTests.selectedList];
+            updatedLabTests.splice(index, 1);
+            return {
+                ...prevInfo,
+                labTests: {
+                    ...prevInfo.labTests,
+                    selectedList: updatedLabTests
+                }
+            };
+        });
+    };
 
     const Reset = () => {
         resetState();
@@ -125,7 +152,9 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                         title="The Prescribed Lab Test"
                         items={healthInfo.labTests.selectedList}
                         handleClick={handleLabClick}
-                        toshow={'main'}
+                        handleRemove={handleRemoveLabTest}
+                        toshow={'name'}
+                        mainKey={'mainKey'}
 
                     />
                     <PrescribedItem
@@ -133,7 +162,9 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                         title="The Prescribed X-rays"
                         items={healthInfo.radiology.selectedList}
                         handleClick={handleXrayClick}
-                        toshow={'main'}
+                        handleRemove={handleRemoveRadiology}
+                        toshow={'name'}
+                        mainKey={'mainKey'}
 
                     />
                 </div>

@@ -23,6 +23,7 @@ function SharedRecords(props) {
 
     return (
         <>
+            <input type="text" autoFocus className="bg-transparent border-[0px] border-transparent outline-none w-0 h-0" />
             <div className="Recordes_result">
                 <H1 name="result_title" title="Shared Records" />
                 <P name="result_text" title={props.RecordsResult} />
