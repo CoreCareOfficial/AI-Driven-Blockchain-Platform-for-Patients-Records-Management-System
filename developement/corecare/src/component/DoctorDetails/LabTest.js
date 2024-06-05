@@ -1,10 +1,11 @@
-import { Checkbox } from "primereact/checkbox";
 import DynamicCheckboxes from "./DynamicCheckboxes";
 import TextareaField from "./TextareaField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Button } from "primereact/button";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userHealthInfo } from "../../Recoil/Atom";
 
-
-function LabTest() {
+function LabTest(props) {
 
     const styleCol = {
         height: 'fitContent',
@@ -105,62 +106,88 @@ function LabTest() {
     ];
 
     const [notes, setNotes] = useState('');
+    const [selectedCategories, setSelectedCategories] = useState([]);
+
+    const setUserHealthInfoLab = useSetRecoilState(userHealthInfo);
+    const userHealthInfoLab = useRecoilValue(userHealthInfo);
+
+    const handleChange = (s) => {
+        setSelectedCategories(prevCategories => [...prevCategories, s]);
+    };
+
+    const handleChangeRemove = (s) => {
+        setSelectedCategories(prevCategories => prevCategories.filter(category => category.key !== s.key));
+    };
+
+    const handleSubmitRadiology = (event) => {
+        event.preventDefault();
+        setUserHealthInfoLab((prevUserInfo) => {
+            const updatedLab = prevUserInfo.labTests;
+            const updatedSelectedList = [
+                ...(Array.isArray(updatedLab.selectedList) ? updatedLab.selectedList : []),
+                ...selectedCategories
+            ];
+
+            return {
+                ...prevUserInfo,
+                labTests: {
+                    ...updatedLab,
+                    selectedList: updatedSelectedList,
+                    notes: notes
+                }
+            };
+
+        });
+        props.handleDiagnosisClick();
+    };
+
+    useEffect(() => {
+        console.log('==========================================================');
+        console.log(`all radiology : ${userHealthInfoLab.labTests.selectedList}`);
+        console.log('==========================================================');
+    }, [userHealthInfoLab]);
 
     return (
-        <div className="row justify-content-evenly" style={{ marginTop: '4px', padding: '10px' }}>
-            <div className="col-3" style={styleCol}>
-                <div style={styleDiv}>
-                    <DynamicCheckboxes categories={Hematology} title='Hematology' k='H' />
-                </div>
-            </div>
-            <div className="col-3" style={styleCol}>
-                <div style={styleDiv}>
-                    <DynamicCheckboxes categories={Boichemistry} title='Boichemistry' k='B' />
-                </div>
-            </div>
-            <div className="col-3" style={styleCol}>
-                <div style={styleDiv}>
-                    <div className="flex align-items-center ml-2 pt-2">
-                        <Checkbox inputId="Serology" name='Serology' value='Serology' />
-                        <label htmlFor="Serology" className="ml-1"
-                            style={{ color: '#ffffff', marginTop: '-8px', fontSize: '16px' }}>Serology</label>
-                    </div>
-                    <div style={{ width: '90%', margin: "auto" }}>
-                        <DynamicCheckboxes categories={WIDALTest} title='WIDALTest :' k='W' />
-                        <DynamicCheckboxes categories={BRUCELLOSIOD} title='BRUCELLOSIOD :' k='BRUCELLOSIOD' />
-                        <DynamicCheckboxes categories={ToxoplasmaAg} title='Toxoplasma Ag :' k='TA' />
-                        <DynamicCheckboxes categories={Serology} k='S' />
+        <>
+            <div className="row justify-content-evenly" style={{ marginTop: '4px', padding: '10px' }}>
+                <div className="col-3" style={styleCol}>
+                    <div style={styleDiv}>
+                        <DynamicCheckboxes categories={Hematology} title={{ name: 'Hematology', key: 'H' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
                     </div>
                 </div>
-            </div>
-            <div className="col-3" style={styleCol}>
-                <div style={styleDiv}>
-                    <div className="flex align-items-center ml-2 pt-2">
-                        <Checkbox inputId="Stool" name='Stool' value='Stool' />
-                        <label htmlFor="Stool" className="ml-1"
-                            style={{ color: '#ffffff', marginTop: '-8px', fontSize: '16px' }}>Stool</label>
+                <div className="col-3" style={styleCol}>
+                    <div style={styleDiv}>
+                        <DynamicCheckboxes categories={Boichemistry} title={{ name: 'Boichemistry', key: 'B' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
                     </div>
-                    <DynamicCheckboxes categories={Urine} title='Urine' k='U' />
-                    <DynamicCheckboxes categories={Semen} title='Semen' k='SE' />
-                    <div className="flex align-items-center ml-2 pt-2">
-                        <Checkbox inputId="AntibioticsSensetivity" name='AntibioticsSensetivity' value='Antibiotics Sensetivity' />
-                        <label htmlFor="AntibioticsSensetivity" className="ml-1"
-                            style={{ color: '#ffffff', marginTop: '-8px', fontSize: '16px' }}>Antibiotics Sensetivity</label>
+                </div>
+                <div className="col-3" style={styleCol}>
+                    <div style={styleDiv}>
+                        <DynamicCheckboxes categories={WIDALTest} title={{ name: 'WIDALTest :', key: 'W' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <DynamicCheckboxes categories={BRUCELLOSIOD} title={{ name: 'BRUCELLOSIOD :', key: 'BRUCELLOSIOD' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <DynamicCheckboxes categories={ToxoplasmaAg} title={{ name: 'Toxoplasma Ag :', key: 'TA' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <DynamicCheckboxes categories={Serology} title={{ name: '', key: 'S' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
                     </div>
-                    <TextareaField
-                        label="Notes"
-                        placeholder="Write your notes"
-                        rows={13}
-                        name="notes"
-                        id="notes"
-                        required
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                        cname="mx-0 bg-[#3F4652]"
-                    />
+                </div>
+                <div className="col-3" style={styleCol}>
+                    <div style={styleDiv}>
+                        <DynamicCheckboxes categories={Urine} title={{ name: 'Urine', key: 'U' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <DynamicCheckboxes categories={Semen} title={{ name: 'Semen', key: 'SE' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <TextareaField
+                            label="Notes"
+                            placeholder="Write your notes"
+                            rows={11}
+                            name="notes"
+                            id="notes"
+                            required
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            cname="mx-0 bg-[#3F4652]"
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
+            <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 mx-5 font-bold text-white rounded-[10px] p-2 w-1/6 self-end" onClick={handleSubmitRadiology} />
+        </>
     );
 };
 

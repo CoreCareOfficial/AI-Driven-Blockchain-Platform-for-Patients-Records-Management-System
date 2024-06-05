@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DynamicCheckboxes from "./DynamicCheckboxes";
 import TextareaField from "./TextareaField";
+import { Button } from "primereact/button";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userHealthInfo } from "../../Recoil/Atom";
 
-
-function Radiology() {
+function Radiology(props) {
     const styleCol = {
         height: 'fitContent',
         padding: '10px'
@@ -82,26 +84,66 @@ function Radiology() {
     ];
 
     const [notes, setNotes] = useState('');
+    const [selectedCategories, setSelectedCategories] = useState([]);
+
+    const setUserHealthInfoRadiology = useSetRecoilState(userHealthInfo);
+    const userHealthInfoRadiology = useRecoilValue(userHealthInfo);
+
+    const handleChange = (s) => {
+        setSelectedCategories(prevCategories => [...prevCategories, s]);
+    }
+
+    const handleChangeRemove = (s) => {
+        setSelectedCategories(prevCategories => prevCategories.filter(category => category.key !== s.key));
+    }
+
+    const handleSubmitRadiology = (event) => {
+        event.preventDefault();
+        setUserHealthInfoRadiology((prevUserInfo) => {
+            const updatedRadiology = prevUserInfo.radiology;
+            const updatedSelectedList = [
+                ...(Array.isArray(updatedRadiology.selectedList) ? updatedRadiology.selectedList : []),
+                ...selectedCategories
+            ];
+
+            return {
+                ...prevUserInfo,
+                radiology: {
+                    ...updatedRadiology,
+                    selectedList: updatedSelectedList,
+                    notes: notes
+                }
+            };
+
+        });
+        props.handleDiagnosisClick();
+    };
+
+    useEffect(() => {
+        console.log('==========================================================');
+        console.log(`all radiology : ${userHealthInfoRadiology.radiology.selectedList}`);
+        console.log('==========================================================');
+    }, [userHealthInfoRadiology]);
 
     return (
         <>
             <div className="row justify-content-evenly" style={{ marginTop: '4px', padding: '10px' }}>
                 <div className="col-4" style={styleCol}>
                     <div style={styleDiv}>
-                        <DynamicCheckboxes categories={ComputedTomography} title='Computed Tomography (CT)' k='CT' />
-                        <DynamicCheckboxes categories={PositronEmissionTomography} title='Positron Emission Tomography (PET)' k='PET' />
+                        <DynamicCheckboxes categories={ComputedTomography} title={{ name: 'Computed Tomography (CT)', key: 'CT' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <DynamicCheckboxes categories={PositronEmissionTomography} title={{ name: 'Positron Emission Tomography (PET)', key: 'PET' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
                     </div>
                 </div>
                 <div className="col-4" style={styleCol}>
                     <div style={styleDiv}>
-                        <DynamicCheckboxes categories={MagneticResonantImaging} title='Magnetic Resonant Imaging (MRI)' k='MRI' />
-                        <DynamicCheckboxes categories={Ultrasound} title='Ultrasound' k='U' />
+                        <DynamicCheckboxes categories={MagneticResonantImaging} title={{ name: 'Magnetic Resonant Imaging (MRI)', key: 'MRI' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <DynamicCheckboxes categories={Ultrasound} title={{ name: 'Ultrasound', key: 'U' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
                     </div>
                 </div>
                 <div className="col-4" style={styleCol}>
                     <div style={styleDiv}>
-                        <DynamicCheckboxes categories={XRay} title='X-Ray' k='XR' />
-                        <DynamicCheckboxes categories={HybridModalities} title='Hybrid Modalities' k='HM' />
+                        <DynamicCheckboxes categories={XRay} title={{ name: 'X-Ray', key: 'XR' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
+                        <DynamicCheckboxes categories={HybridModalities} title={{ name: 'Hybrid Modalities', key: 'HM' }} onSelectionChange={handleChange} onRemoveSelect={handleChangeRemove} />
                     </div>
                 </div>
             </div>
@@ -115,9 +157,10 @@ function Radiology() {
                     required
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    cname="mx-0 rounded-[25px]"
+                    cname="mx-0 rounded-[25px] bg-[#3F4652] flex-row"
                 />
             </div>
+            <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 mx-5 font-bold text-white rounded-[10px] p-2 w-1/6 self-end" onClick={handleSubmitRadiology} />
         </>
     );
 };
