@@ -14,6 +14,9 @@ import UserPage from '../pages/UserPage';
 import EndSignupPage from '../pages/EndSignupPage';
 import VerifyCodePage from '../pages/VerifyCodePage';
 import DoctorPage from '../pages/DoctorPage';
+import DoctorSignupPage from '../pages/DoctorSignupPage';
+import HealthcareFacilitySignupPage from '../pages/HealthcareFacilitySignupPage';
+import HealthcareFacilitySignupPage2 from '../pages/HealthcareFacilitySignupPage2';
 
 
 function Root() {
@@ -29,11 +32,14 @@ function Root() {
                 <Route path='userprofile' element={<UserPage />} />
                 <Route path='doctor' element={<DoctorPage />} />
                 <Route path='signup' element={<><Outlet /></>}>
-                    <Route path="step-1" element={<SignupPage1 />} />
-                    <Route path="step-2" element={<SignupPage />} />
-                    <Route path='step-3' element={<SignupPage2 />} />
-                    <Route path='step-4' element={<SignupPage3 />} />
-                    <Route path='step-5' element={<SignupPage4 />} />
+                    <Route path="" element={<SignupPage1 />} />
+                    <Route path="step-1" element={<SignupPage />} />
+                    <Route path='step-2' element={<SignupPage2 />} />
+                    <Route path='step-3' element={<SignupPage3 />} />
+                    <Route path='step-4' element={<DoctorSignupPage />} />
+                    <Route path='password-step' element={<SignupPage4 />} />
+                    <Route path='HealthcareFacility-step-1' element={<HealthcareFacilitySignupPage />} />
+                    <Route path='HealthcareFacility-step-2' element={<HealthcareFacilitySignupPage2 />} />
                     <Route path='verify-code' element={<VerifyCodePage />} />
                     <Route path='end_step' element={<EndSignupPage />} />
                 </Route>

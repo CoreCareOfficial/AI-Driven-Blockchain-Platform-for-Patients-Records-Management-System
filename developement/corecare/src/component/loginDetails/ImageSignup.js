@@ -3,43 +3,51 @@ import user_signup from '../../assets/user_signup.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import React, { useRef, useState } from 'react';
+import { useSetRecoilState } from "recoil";
+import { userInfo } from "../../Recoil/Atom";
 
 
 
 function ImageSignup() {
 
     const fileRef = useRef(null);
-    const [selectedFile, setSelectedFile] = useState(null);
+    const setUserInfo = useSetRecoilState(userInfo);
+
+    // const [selectedFile, setSelectedFile] = useState(null);
     const [SelectedImageUrl, setSelectedImageUrl] = useState(user_signup)
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        if (!file.type.startsWith('image/')) {
+        if (file.type && !file.type.startsWith('image/')) {
             return alert('Please select an image file.');
         }
 
-        setSelectedFile(file);
+        // setSelectedFile(file);
 
-        const formData = new FormData();
-        formData.append('profileImage', file);
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            photo: file
+        }));
+        // const formData = new FormData();
+        // formData.append('profileImage', file);
 
-        // Send the image data to the server for upload
-        fetch('/upload-profile-image', {
-            method: 'POST',
-            body: formData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                // Handle successful upload response (e.g., update user profile state)
-                console.log('Image uploaded successfully:', data);
-            })
-            .catch((error) => {
-                console.error('Error uploading image:', error);
-                // Handle upload error
-            });
+        // // Send the image data to the server for upload
+        // fetch('/upload-profile-image', {
+        //     method: 'POST',
+        //     body: formData,
+        // })
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         // Handle successful upload response (e.g., update user profile state)
+        //         console.log('Image uploaded successfully:', data);
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error uploading image:', error);
+        //         // Handle upload error
+        //     });
         const reader = new FileReader();
         reader.onload = (e) => {
-            setSelectedFile(file);
+            // setSelectedFile(file);
             setSelectedImageUrl(e.target.result); // Store the image URL for display
         };
         reader.readAsDataURL(file);
@@ -54,7 +62,6 @@ function ImageSignup() {
         fontFamily: 'DM Sans',
         fontSize: '14px',
         margin: "6px 0",
-        // paddingLeft: '12px',
         position: 'relative',
         display: 'flex',
         alignItems: 'center',

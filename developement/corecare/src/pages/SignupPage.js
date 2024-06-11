@@ -9,15 +9,15 @@ import { Outlet } from 'react-router-dom';
 function SignupPage() {
 
     return (
-        <CardLogin step={2}>
+        <CardLogin step={1}>
             <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <TextPage text='Who are you?' />
-                <FormLogin buttonName='Continue' path='/signup/step-3'>
+                <FormLogin buttonName='Continue' path='/signup/step-2'>
                     <div className='row' style={{ marginTop: '-15px' }}>
                         <div className='col col-lg-6'>
                             <TextInputField
-                                label='First Name'
+                                label='First Name *'
                                 type='text'
                                 name='firstName'
                                 placeholder='Enter your first name'
@@ -44,7 +44,7 @@ function SignupPage() {
                         </div>
                         <div className='col col-lg-6'>
                             <TextInputField
-                                label='Last Name'
+                                label='Last Name *'
                                 type='text'
                                 name='lastName'
                                 placeholder='Enter your last name'
@@ -53,14 +53,14 @@ function SignupPage() {
                         </div>
                     </div>
                     <TextInputField
-                        label='Email'
+                        label='Email *'
                         type='email'
                         name='email'
                         placeholder='Enter your email'
                         required={true}
                     />
-                    <DateInputField label='Date of Birth' placeholder='Select your Birth date' />
-                    <GenderInputField label='Gender' option1='Male' option2='Female' />
+                    <DateInputField name='dateOfBirth' label='Date of Birth *' placeholder='Select your Birth date' />
+                    <GenderInputField label='Sex' option1='Male' option2='Female' name='sex' />
                 </FormLogin>
                 <SignOrLogin goSign={false} />
             </div>

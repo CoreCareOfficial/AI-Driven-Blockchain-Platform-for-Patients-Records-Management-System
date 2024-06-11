@@ -26,7 +26,7 @@ function SignupPage3() {
             ...prevUserInfo,
             'idType': event.target.value
         }));
-        // alert('selectedNational');
+        // alert(event.target.value);
     };
     const handleIdTypeChangePassport = (event) => {
         setSelectedPassport(true);
@@ -35,8 +35,10 @@ function SignupPage3() {
             ...prevUserInfo,
             'idType': event.target.value
         }));
-        // alert('selectedPassport');
+        // alert(event.target.value);
     };
+
+    const nextPage = userInfoValue.typeUser === "Doctor" ? '/signup/step-4' : '/signup/password-step';
 
     const styleIDType = {
         color: '#ffffff',
@@ -55,14 +57,16 @@ function SignupPage3() {
 
     const bloodTypeslist = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
+
+
     return (
-        <CardLogin step={4}>
-            {userInfoValue.phoneNumber &&
+        <CardLogin step={3}>
+            {userInfoValue.phoneNumber ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
                     <TextPage text={`Welcome ${userInfoValue.firstName} ${userInfoValue.lastName}`} />
-                    <FormLogin buttonName='Continue' path='/signup/step-5'>
+                    <FormLogin buttonName='Continue' path={nextPage}>
                         <div className='row' style={{ padding: '0 10px' }}>
                             <div className='col col-lg-4' style={{ padding: '0px', alignItems: 'center' }}>
                                 <ImageSignup />
@@ -86,7 +90,7 @@ function SignupPage3() {
                                     <div className="idType__input">
                                         <input type="checkbox"
                                             name="idType"
-                                            value="passport"
+                                            value="Passport"
                                             id="passport"
                                             onChange={handleIdTypeChangePassport}
                                             checked={selectedPassport}
@@ -98,7 +102,7 @@ function SignupPage3() {
                                 {selectedNational
                                     ?
                                     <TextInputField
-                                        label='National ID'
+                                        label='National ID *'
                                         type='text'
                                         name='id'
                                         placeholder='Enter your national ID'
@@ -106,7 +110,7 @@ function SignupPage3() {
                                     />
                                     :
                                     <TextInputField
-                                        label='Passport NO'
+                                        label='Passport NO *'
                                         type='text'
                                         name='id'
                                         placeholder='Enter your passport ID'
@@ -115,10 +119,11 @@ function SignupPage3() {
                                 }
                                 <div style={{ height: '6px' }} />
                                 <SelectInputField
-                                    label='Blood Type'
+                                    label='Blood Type *'
                                     placeholder='Select your blood type...'
                                     optionsList={bloodTypeslist}
                                     required={true}
+                                    name='bloodType'
                                 />
                             </div>
                         </div>
@@ -127,7 +132,7 @@ function SignupPage3() {
                                 {!selectedNational &&
                                     <div style={{ maxWidth: '97%' }}>
                                         <TextInputField
-                                            label='Passport Type'
+                                            label='Passport Type *'
                                             type='text'
                                             name='passportType'
                                             placeholder='Enter your passsport type'
@@ -139,7 +144,7 @@ function SignupPage3() {
                             <div className='col col-lg-8' style={{ paddingLeft: '10px', paddingRight: '0px', maxWidth: '100%' }}>
                                 {!selectedNational &&
                                     <TextInputField
-                                        label='Passport Country Code'
+                                        label='Passport Country Code *'
                                         type='text'
                                         name='passportCountryCode'
                                         placeholder='Enter passport country code'
@@ -151,13 +156,17 @@ function SignupPage3() {
                         {selectedNational
                             ?
                             <div>
-                                <Upload title="Upload the front of national ID card" />
-                                <Upload title="Upload the black of national ID card" />
+                                <Upload title="Upload the front of national ID card *" name='FIdCardPhoto' />
+                                <Upload title="Upload the black of national ID card *" name='BIdCardPhoto' />
                             </div>
                             :
-                            <Upload title="Upload passport document" />
+                            <Upload title="Upload passport document *" name='passportPhoto' />
                         }
                     </FormLogin>
+                </div>
+                :
+                <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
+                    <TextPage text="You should not bypass the pervious step" />
                 </div>
             }
         </CardLogin>

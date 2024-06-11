@@ -1,6 +1,8 @@
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useRef } from "react";
+import { useSetRecoilState } from "recoil";
+import { userInfo } from "../../Recoil/Atom";
 
 
 function Upload(props) {
@@ -13,15 +15,16 @@ function Upload(props) {
         fontFamily: 'DM Sans',
         fontSize: '14px',
         margin: "6px 0",
-        // paddingLeft: '12px',
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
         marginTop: '16px'
     };
 
-    const [selectedFile, setSelectedFile] = useState(null);
+    // const [selectedFile, setSelectedFile] = useState(null);
     const fileRef = useRef(null);
+    const setUserInfo = useSetRecoilState(userInfo);
+
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -29,25 +32,29 @@ function Upload(props) {
             return alert('Please select an image file.');
         }
 
-        setSelectedFile(file);
+        // setSelectedFile(file);
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: file
+        }));
 
-        const formData = new FormData();
-        formData.append('profileImage', file);
+        // const formData = new FormData();
+        // formData.append('profileImage', file);
 
         // Send the image data to the server for upload
-        fetch('/upload-profile-image', {
-            method: 'POST',
-            body: formData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                // Handle successful upload response (e.g., update user profile state)
-                console.log('Image uploaded successfully:', data);
-            })
-            .catch((error) => {
-                console.error('Error uploading image:', error);
-                // Handle upload error
-            });
+        // fetch('/upload-profile-image', {
+        //     method: 'POST',
+        //     body: formData,
+        // })
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         // Handle successful upload response (e.g., update user profile state)
+        //         console.log('Image uploaded successfully:', data);
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error uploading image:', error);
+        //         // Handle upload error
+        //     });
     };
     return (
         <div style={styleInputFile} >
@@ -57,6 +64,7 @@ function Upload(props) {
                 ref={fileRef}
                 style={{ opacity: '0', flex: '1' }}
                 onChange={handleFileChange}
+                required
             />
             <div
                 style={{ width: '100%', cursor: 'pointer' }}

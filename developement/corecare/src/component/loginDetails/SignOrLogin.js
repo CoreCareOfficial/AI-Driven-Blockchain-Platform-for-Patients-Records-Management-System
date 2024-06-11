@@ -4,7 +4,7 @@ function SignOrLogin(props) {
     const goToLogin = 'Do you already have an account? Login';
     const goToSignUp = 'Need an account? Sign up';
     const login = '/login';
-    const sign = '/signup/step-1';
+    const sign = '/signup';
 
 
     return (

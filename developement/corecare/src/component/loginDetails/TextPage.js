@@ -3,7 +3,7 @@
 function TextPage(props) {
 
     return (
-        <dev style={{
+        <div style={{
             color: '#eaeaea',
             fontSize: '18px',
             fontFamily: 'DM Sans',
@@ -12,7 +12,7 @@ function TextPage(props) {
             width: '70%'
         }}>
             {props.text}
-        </dev>
+        </div>
     );
 };
 

@@ -2,6 +2,8 @@ import Card from 'react-bootstrap/Card';
 import '../../fonts/caladea.css';
 import BackButton from '../loginDetails/BackButton';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userInfo } from '../../Recoil/Atom';
 
 function CardLogin(props) {
     const styleCard = {
@@ -23,6 +25,8 @@ function CardLogin(props) {
 
     };
     const stepN = props.step;
+    const userInfoValue = useRecoilValue(userInfo);
+    const steps = userInfoValue.steps;
     return (
         <section style={{ alignContent: 'center', backgroundColor: '#181a1f' }}>
             <Card className='' style={styleCard}>
@@ -40,7 +44,7 @@ function CardLogin(props) {
                         </Link>
                         <div style={styleStep} className='col col-lg-3'>
                             {
-                                stepN ? `Step ${props.step}/6` : ''
+                                stepN && steps ? `Step ${stepN}/${steps} ` : ''
                             }
                         </div>
                     </div>

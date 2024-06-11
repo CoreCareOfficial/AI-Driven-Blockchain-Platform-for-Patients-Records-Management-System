@@ -11,15 +11,15 @@ function SignupPage2() {
     const userInfoValue = useRecoilValue(userInfo);
 
     return (
-        <CardLogin step={3}>
-            {userInfoValue.firstName &&
+        <CardLogin step={2}>
+            {userInfoValue.firstName ?
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
                     <TextPage text={`Welcome ${userInfoValue.firstName} ${userInfoValue.lastName}`} />
-                    <FormLogin buttonName='Continue' path='/signup/step-4'>
-                        <CountrySelectorField />
+                    <FormLogin buttonName='Continue' path='/signup/step-3'>
+                        <CountrySelectorField name='country' />
                         <TextInputField
-                            label="Phone Number"
+                            label="Phone Number *"
                             type='text'
                             name='phoneNumber'
                             required={true}
@@ -32,13 +32,18 @@ function SignupPage2() {
                             placeholder="Enter your job"
                         />
                         <TextInputField
-                            label="Address"
+                            label="Address *"
                             type='text'
                             name='address'
+                            required={true}
                             placeholder="Enter your address (city-street)"
                         />
-                        <GenderInputField label='Status' option1='Single' option2='Married' />
+                        <GenderInputField label='Status' option1='Single' option2='Married' name='status' />
                     </FormLogin>
+                </div>
+                :
+                <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
+                    <TextPage text="You should not bypass the pervious step" />
                 </div>
             }
         </CardLogin>

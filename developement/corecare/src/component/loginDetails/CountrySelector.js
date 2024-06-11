@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import countryList from 'react-select-country-list';
 import './select.css';
+import { useSetRecoilState } from 'recoil';
+import { userInfo } from '../../Recoil/Atom';
 
 function CountrySelector(props) {
     const [value, setValue] = useState('');
@@ -25,8 +27,16 @@ function CountrySelector(props) {
         fetchData(); // Fetch data on component mount
     }, []);
 
+    const setUserInfo = useSetRecoilState(userInfo);
     const changeHandler = (value) => {
         setValue(value);
+        console.log(value.label);
+        if (props.name) {
+            setUserInfo((prevUserInfo) => ({
+                ...prevUserInfo,
+                [props.name]: value.label
+            }));
+        }
     };
 
     return (
@@ -38,6 +48,7 @@ function CountrySelector(props) {
                     options={options}
                     value={value}
                     onChange={changeHandler}
+                    required
                 />
             )}
         </div>

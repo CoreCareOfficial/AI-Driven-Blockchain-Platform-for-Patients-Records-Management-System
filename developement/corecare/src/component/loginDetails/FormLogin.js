@@ -5,10 +5,14 @@ import { useNavigate } from 'react-router-dom';
 function FormLogin(props) {
     const navigate = useNavigate();
     const handleSubmit = (event) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
 
-        // Handle form data processing (e.g., validation, API calls)
-        // ...
+        if (props.onContinue) {
+            props.onContinue();
+            console.log('tyyuu');
+        }
+        else
+            console.log('error')
 
         navigate(props.path); // Redirect on successful submission
     };

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import CardLogin from "../component/bootcomponent/CardLogin";
 import FormLogin from "../component/loginDetails/FormLogin";
 import { PasswordInputField } from "../component/loginDetails/TextInputField";
@@ -8,22 +9,34 @@ import { useRecoilValue } from "recoil";
 
 function SignupPage4() {
     const userInfoValue = useRecoilValue(userInfo);
+    const [nextPage, setNextPage] = useState('');
+
+    const handleConfirmed = () => {
+        if (userInfoValue.password === userInfoValue.confirmedPassword)
+            setNextPage('/signup/verify-code');
+        else
+            alert('The two passwords are not the same')
+    };
+
+    const step =
+        userInfoValue.typeUser === "Doctor" ? 5 :
+            userInfoValue.typeUser === "Patient" ? 4 : 3;
 
     return (
-        <CardLogin step={5}>
-            {userInfoValue.id &&
+        <CardLogin step={step}>
+            {userInfoValue.typeUser &&
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
-                    <TextPage text='Now set up your password , but make it storing' />
-                    <FormLogin buttonName='Continue' path='/signup/verify-code'>
+                    <TextPage text='Now set up your password , but make it strong' />
+                    <FormLogin buttonName='Continue' path={nextPage} onContinue={handleConfirmed}>
                         <PasswordInputField
-                            label='Password'
+                            label='Password *'
                             placeholder='Enter your password'
                             name='password'
                         />
                         <PasswordInputField
-                            label='Confirm Password'
+                            label='Confirm Password *'
                             placeholder='Enter your password again'
                             name='confirmedPassword'
                         />

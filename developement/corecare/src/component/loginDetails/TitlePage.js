@@ -2,7 +2,7 @@
 function TitlePage(props) {
 
     return (
-        <dev style={{
+        <div style={{
             color: '#ffffff',
             fontSize: '30px',
             fontFamily: 'DM Sans',
@@ -12,7 +12,7 @@ function TitlePage(props) {
             marginBottom: '12px'
         }}>
             {props.title}
-        </dev>
+        </div>
     );
 };
 
