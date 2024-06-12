@@ -5,8 +5,8 @@ import './password.css';
 import Gender from './Gender';
 import CountrySelector from './CountrySelector';
 import MultiSelectField from './MultiSelectField';
-import { useSetRecoilState } from 'recoil';
-import { userInfo } from '../../Recoil/Atom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { HealthcareFacilityInfo, userInfo } from '../../Recoil/Atom';
 
 const styleInput = {
     backgroundColor: '#ffffff',
@@ -66,7 +66,10 @@ const styleRadio = {
 // }
 
 export function TextInputField(props) {
-    const setUserInfo = useSetRecoilState(userInfo);
+    const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const userInfoValue = useRecoilValue(props.isFacility ? HealthcareFacilityInfo : userInfo);
+
+    const keyUserInfo = props.name;
     const handleChange = (event) => {
 
         setUserInfo((prevUserInfo) => ({
@@ -83,6 +86,7 @@ export function TextInputField(props) {
                 type={props.type}
                 name={props.name}
                 onChange={handleChange}
+                value={userInfoValue[keyUserInfo]}
                 required={props.required}
                 placeholder={props.placeholder} />
         </div>
@@ -90,11 +94,12 @@ export function TextInputField(props) {
 };
 
 export function PasswordInputField(props) {
-    const [password, setPassword] = useState('');
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
-    const setUserInfo = useSetRecoilState(userInfo);
+    const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const userInfoValue = useRecoilValue(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const [password, setPassword] = useState(userInfoValue[props.name]);
 
     const handleChange = (event) => {
         setPassword(event.target.value)
@@ -130,8 +135,9 @@ export function PasswordInputField(props) {
 };
 
 export function SelectInputField(props) {
-    const [selectedValue, setSelectedValue] = useState('');
-    const setUserInfo = useSetRecoilState(userInfo);
+    const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const userInfoValue = useRecoilValue(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const [selectedValue, setSelectedValue] = useState(userInfoValue[props.name]);
 
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
@@ -175,7 +181,8 @@ export function SelectMultiInputField(props) {
 
 
 export function DateInputField(props) {
-    const setUserInfo = useSetRecoilState(userInfo);
+    const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const userInfoValue = useRecoilValue(props.isFacility ? HealthcareFacilityInfo : userInfo);
     const handleChange = (event) => {
 
         setUserInfo((prevUserInfo) => ({
@@ -186,7 +193,14 @@ export function DateInputField(props) {
     return (
         <div>
             <label style={styleLabel}>{props.label}</label>
-            <input name={props.name} style={styleDate} type="date" placeholder={props.placeholder} onChange={handleChange} required />
+            <input
+                name={props.name}
+                style={styleDate}
+                type="date"
+                value={userInfoValue[props.name]}
+                placeholder={props.placeholder}
+                onChange={handleChange}
+                required />
         </div>
     );
 };
@@ -196,7 +210,7 @@ export function GenderInputField(props) {
     return (
         <div>
             <label style={styleLabel}>{props.label}</label>
-            <Gender option1={props.option1} option2={props.option2} name={props.name} />
+            <Gender option1={props.option1} option2={props.option2} name={props.name} isFacility={props.isFacility} />
         </div>
     );
 };
@@ -206,7 +220,7 @@ export function CountrySelectorField(props) {
     return (
         <div>
             <label style={styleLabel}>Country *</label>
-            <CountrySelector name={props.name} />
+            <CountrySelector name={props.name} isFacility={props.isFacility} />
         </div>
     );
 };

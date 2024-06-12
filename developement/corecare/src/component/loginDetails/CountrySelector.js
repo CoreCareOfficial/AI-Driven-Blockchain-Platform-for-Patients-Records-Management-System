@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import countryList from 'react-select-country-list';
 import './select.css';
-import { useSetRecoilState } from 'recoil';
-import { userInfo } from '../../Recoil/Atom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { HealthcareFacilityInfo, userInfo } from '../../Recoil/Atom';
 
 function CountrySelector(props) {
-    const [value, setValue] = useState('');
     const [options, setOptions] = useState([]); // Initialize options state
     const [isLoading, setIsLoading] = useState(false); // Track loading state
     const [error, setError] = useState(null); // Store any errors
+
+    const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const userInfoValue = useRecoilValue(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const [value, setValue] = useState(userInfoValue[props.name]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,7 +30,6 @@ function CountrySelector(props) {
         fetchData(); // Fetch data on component mount
     }, []);
 
-    const setUserInfo = useSetRecoilState(userInfo);
     const changeHandler = (value) => {
         setValue(value);
         console.log(value.label);

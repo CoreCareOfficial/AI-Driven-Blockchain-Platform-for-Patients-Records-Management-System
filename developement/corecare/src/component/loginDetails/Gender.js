@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { userInfo } from '../../Recoil/Atom';
-import { useSetRecoilState } from 'recoil';
+import { HealthcareFacilityInfo, userInfo } from '../../Recoil/Atom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 function Gender(props) {
 
@@ -46,9 +46,10 @@ function Gender(props) {
         textAlign: 'center'
     };
 
-    const [isChecked, setIsChecked] = useState(false);
-    const [isChecked2, setIsChecked2] = useState(false);
-    const setUserInfo = useSetRecoilState(userInfo);
+    const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const userInfoValue = useRecoilValue(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const [isChecked, setIsChecked] = useState(userInfoValue[props.name] === props.option1);
+    const [isChecked2, setIsChecked2] = useState(userInfoValue[props.name] === props.option2);
 
 
     const handleCheckboxChange = (event) => {

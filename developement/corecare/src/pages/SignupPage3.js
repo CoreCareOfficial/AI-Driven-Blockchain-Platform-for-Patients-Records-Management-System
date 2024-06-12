@@ -57,8 +57,6 @@ function SignupPage3() {
 
     const bloodTypeslist = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
-
-
     return (
         <CardLogin step={3}>
             {userInfoValue.phoneNumber ?

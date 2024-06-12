@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { userInfo } from "../../Recoil/Atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 
 function MultiSelectField(props) {
@@ -35,8 +38,22 @@ function MultiSelectField(props) {
     }
     );
 
+    const setUserInfo = useSetRecoilState(userInfo);
+    const userInfoValue = useRecoilValue(userInfo);
+    const [selectedValue, setSelectedValue] = useState(userInfoValue.medicalSpecialization);
+
+    const handleChange = (event) => {
+        setSelectedValue(event.target.value);
+
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            academicDegree: event.target.value
+        }));
+        console.log(event.target.value)
+    };
+
     return (
-        <select id="dino-select" style={props.style}>
+        <select id="dino-select" style={props.style} value={selectedValue} onChange={handleChange}>
             <option disabled selected hidden>{props.placeholder}</option>
             {selectItems}
         </select>

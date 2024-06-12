@@ -41,14 +41,28 @@ function DoctorSignupPage() {
                         label='Medical Specialization'
                         placeholder='Select your Medical Specialization...'
                         optionsList={medicalSpecializations}
-                        required={true} />
+                        required={true}
+                        name='medicalSpecialization'
+                    />
                     <SelectMultiInputField
                         label='Academic Degree'
                         placeholder='Select your Academic Degree'
                     />
-                    <TextInputField label='License Number' placeholder='Enter your License Number' required={true} />
-                    <Upload title="Upload license document" />
-                    <TextInputField label='Location of Work' placeholder='Enter your Location of work' required={true} />
+                    <TextInputField
+                        label='License Number'
+                        type='text'
+                        name='licenseNumber'
+                        placeholder='Enter your License Number'
+                        required={true}
+                    />
+                    <Upload title="Upload license document *" name='licenseDocument' />
+                    <TextInputField
+                        label='Location of Work'
+                        type='text'
+                        name='locationOfWork'
+                        placeholder='Enter your Location of work'
+                        required={true}
+                    />
                 </FormLogin>
             </div>
         </CardLogin>

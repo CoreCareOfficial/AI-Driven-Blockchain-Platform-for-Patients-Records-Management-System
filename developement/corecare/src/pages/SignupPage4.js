@@ -4,11 +4,12 @@ import FormLogin from "../component/loginDetails/FormLogin";
 import { PasswordInputField } from "../component/loginDetails/TextInputField";
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
-import { userInfo } from "../Recoil/Atom";
+import { HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
 import { useRecoilValue } from "recoil";
 
 function SignupPage4() {
     const userInfoValue = useRecoilValue(userInfo);
+    const HealthcareFacilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
     const [nextPage, setNextPage] = useState('');
 
     const handleConfirmed = () => {
@@ -22,9 +23,13 @@ function SignupPage4() {
         userInfoValue.typeUser === "Doctor" ? 5 :
             userInfoValue.typeUser === "Patient" ? 4 : 3;
 
+    const isFacility =
+        userInfoValue.typeUser === "Doctor" ? false :
+            userInfoValue.typeUser === "Patient" ? false : true;
+
     return (
         <CardLogin step={step}>
-            {userInfoValue.typeUser &&
+            {(userInfoValue.phoneNumber || HealthcareFacilityInfoValue.licenseNumber) ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
@@ -34,13 +39,19 @@ function SignupPage4() {
                             label='Password *'
                             placeholder='Enter your password'
                             name='password'
+                            isFacility={isFacility}
                         />
                         <PasswordInputField
                             label='Confirm Password *'
                             placeholder='Enter your password again'
                             name='confirmedPassword'
+                            isFacility={isFacility}
                         />
                     </FormLogin>
+                </div>
+                :
+                <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
+                    <TextPage text="You should not bypass the pervious step" />
                 </div>
             }
         </CardLogin>

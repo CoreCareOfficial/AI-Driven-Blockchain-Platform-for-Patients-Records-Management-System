@@ -1,8 +1,8 @@
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useSetRecoilState } from "recoil";
-import { userInfo } from "../../Recoil/Atom";
+import { HealthcareFacilityInfo, userInfo } from "../../Recoil/Atom";
 
 
 function Upload(props) {
@@ -23,8 +23,7 @@ function Upload(props) {
 
     // const [selectedFile, setSelectedFile] = useState(null);
     const fileRef = useRef(null);
-    const setUserInfo = useSetRecoilState(userInfo);
-
+    const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];

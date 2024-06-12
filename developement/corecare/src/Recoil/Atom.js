@@ -29,9 +29,31 @@ export const userInfo = atom({
         userName: '',
         password: '',
         confirmedPassword: '',
-        steps: 0
+        steps: 0,
+        medicalSpecialization: '',
+        academicDegree: '',
+        licenseNumber: '',
+        licenseDocument: null,
+        locationOfWork: ''
     }
 });
+
+export const HealthcareFacilityInfo = atom({
+    key: 'HealthcareFacilityInfo',
+    default: {
+        facilityType: '',
+        name: '',
+        country: '',
+        address: '',
+        phoneNumber: '',
+        email: '',
+        licenseNumber: '',
+        licenseDocument: null,
+        password: '',
+        confirmedPassword: '',
+        type: 'Government'
+    }
+})
 
 export const userHealthInfo = atom({
     key: 'userHealthInfo',
