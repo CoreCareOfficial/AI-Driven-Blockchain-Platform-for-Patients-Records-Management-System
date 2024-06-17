@@ -18,7 +18,7 @@ function UserPage() {
         <>
             <div className="user">
                 <PatientSidebarHandler isDoctor={isDoctor} handleButtonClick={handleButtonClick} />
-                <Content isDoctor={isDoctor} active={active}/>
+                <Content isDoctor={isDoctor} active={active} />
             </div>
             <FormlessFooter />
         </>

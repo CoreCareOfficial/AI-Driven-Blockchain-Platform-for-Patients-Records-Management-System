@@ -72,6 +72,7 @@ export const userHealthInfo = atom({
         diagnosis: '',
         notes: '',
         dateOfNextVisit: '',
+        reasonOfNextVisit: '',
     }
 
 });

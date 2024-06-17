@@ -16,7 +16,8 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
     const resetState = useResetRecoilState(userHealthInfo);
     const [diagnosis, setDiagnosis] = useState(healthInfo.diagnosis);
     const [notes, setNotes] = useState(healthInfo.notes);
-    const [nextVisit, setNextVisit] = useState(healthInfo.dateOfNextVisit);
+    const [dateOfNextVisit, setDateOfNextVisit] = useState(healthInfo.dateOfNextVisit);
+    const [reasonOfNextVisit, setReasonOfNextVisit] = useState(healthInfo.reasonOfNextVisit);
     const navigate = useNavigate();
 
     const handleDiagnosisChange = (e) => {
@@ -37,15 +38,25 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
         });
         setNotes(e)
     };
-    const handleVisitChange = (e) => {
+    const handleVisitDateChange = (e) => {
         setHealthInfo(prevDiagnosis => {
             return {
                 ...prevDiagnosis,
                 dateOfNextVisit: e,
             };
         });
-        setNextVisit(e)
+        setDateOfNextVisit(e)
     };
+    const handleVisitReasonChange = (e) => {
+        setHealthInfo(prevDiagnosis => {
+            return {
+                ...prevDiagnosis,
+                reasonOfNextVisit: e,
+            };
+        });
+        setReasonOfNextVisit(e)
+    };
+
 
     const handleRemovePrescription = (index) => {
         setHealthInfo(prevInfo => {
@@ -89,7 +100,8 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
         resetState();
         setDiagnosis('');
         setNotes('');
-        setNextVisit('');
+        setDateOfNextVisit('');
+        setReasonOfNextVisit('');
     }
 
     const handleSubmit = (e) => {
@@ -100,7 +112,10 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
             prescribedMedicine: healthInfo.prescription,
             prescribedLabTests: healthInfo.labTests.selectedList,
             prescribedXrays: healthInfo.radiology.selectedList,
-            nextVisit
+            radiologyNotes: healthInfo.radiology.notes,
+            labTestsNotes: healthInfo.labTests.notes,
+            nextVisitDate: dateOfNextVisit,
+            nextVisitReason: reasonOfNextVisit
 
         };
 
@@ -170,8 +185,10 @@ const Diagnosis = ({ handleLabClick, handleXrayClick, handlePrescriptionClick })
                 </div>
 
                 <NextVisit
-                    value={nextVisit}
-                    onChange={(e) => handleVisitChange(e.target.value)}
+                    date={dateOfNextVisit}
+                    reason={reasonOfNextVisit}
+                    onDateChange={(e) => handleVisitDateChange(e.target.value)}
+                    onReasonChange={(e) => handleVisitReasonChange(e.target.value)}
                 />
 
                 <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 mx-5 font-bold text-white rounded-[10px] p-2 w-1/6 self-end" />
