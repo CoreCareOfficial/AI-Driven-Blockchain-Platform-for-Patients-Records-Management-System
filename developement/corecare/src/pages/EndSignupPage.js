@@ -6,6 +6,8 @@ import TitlePage from '../component/loginDetails/TitlePage';
 import TextPage from '../component/loginDetails/TextPage';
 import Submit from '../component/loginDetails/Submit';
 import { Link } from 'react-router-dom';
+import { useResetRecoilState } from 'recoil';
+import { HealthcareFacilityInfo, userInfo } from '../Recoil/Atom';
 
 function EndSignupPage() {
 
@@ -26,6 +28,15 @@ function EndSignupPage() {
         // paddingTop: '5px'
     };
 
+    // const userInfoValue = useRecoilValue(userInfo);
+    // const facilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
+    const resetState = useResetRecoilState(userInfo);
+    const resetStatefacility = useResetRecoilState(HealthcareFacilityInfo);
+
+    // console.log(Object.entries(userInfoValue));
+    // console.log(Object.entries(facilityInfoValue));
+    resetState();
+    resetStatefacility();
     return (
         <section style={{ alignContent: 'center', backgroundColor: '#181a1f' }}>
             <div className='' style={styleBody}>

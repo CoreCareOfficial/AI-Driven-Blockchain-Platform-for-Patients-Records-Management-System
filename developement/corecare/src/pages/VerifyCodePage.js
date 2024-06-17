@@ -1,11 +1,19 @@
+import { useRecoilValue } from "recoil";
 import CardLogin from "../component/bootcomponent/CardLogin";
 import FormLogin from "../component/loginDetails/FormLogin";
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
 import React, { useState, useRef } from 'react';
-
+import { HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
 
 function VerifyCodePage() {
+
+    const userInfoValue = useRecoilValue(userInfo);
+    const facilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
+
+    const email = userInfoValue.email ? userInfoValue.email
+        : facilityInfoValue.email ? facilityInfoValue.email : '';
+
     const [code, setCode] = useState(Array(4).fill(''));
 
     const input1Ref = useRef(null);
@@ -28,9 +36,6 @@ function VerifyCodePage() {
                 input4Ref.current.focus();
             }
         }
-
-        // Optional: Update border color based on input value
-        // e.target.style.border = '2px solid #3146FF';
     };
 
     const styleInputCode = {
@@ -41,48 +46,58 @@ function VerifyCodePage() {
         fontSize: '32px',
         textAlign: 'center',
         color: '#3146FF',
-        // border: '2px solid #3146FF',
     }
 
+    const step =
+        userInfoValue.typeUser === "Doctor" ? 6 :
+            userInfoValue.typeUser === "Patient" ? 5 : 4;
+
+
     return (
-        <CardLogin step={6} backPath='/signup/step-5'>
-            <div className='card-body d-flex flex-column justify-content-center'
-                style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
-                <TitlePage title="Verify Code" />
-                <TextPage text='Check your Email, we have sent you the code at email7800@gmail.com' />
-                <FormLogin buttonName='Continue' path='/signup/end_step'>
-                    <div style={{ minWidth: '248px', marginTop: '20px' }}>
-                        <input style={styleInputCode}
-                            type="text"
-                            maxLength={1}
-                            ref={input1Ref}
-                            onChange={(e) => handleInputChange(e, 0)}
-                            value={code[0]} />
-                        <input style={styleInputCode}
-                            type="text"
-                            maxLength={1}
-                            ref={input2Ref}
-                            onChange={(e) => handleInputChange(e, 1)}
-                            value={code[1]} />
-                        <input style={styleInputCode}
-                            type="text"
-                            maxLength={1}
-                            ref={input3Ref}
-                            onChange={(e) => handleInputChange(e, 2)}
-                            value={code[2]} />
-                        <input style={styleInputCode}
-                            type="text"
-                            maxLength={1}
-                            ref={input4Ref}
-                            onChange={(e) => handleInputChange(e, 3)}
-                            value={code[3]} />
-                    </div>
-                    <div style={{ color: '#ffffff', margin: '30px 0 60px 0', fontSize: '14px' }}>
-                        Didn't receive the code?
-                        <button style={{ color: '#3146FF', }}>Resend Code</button>
-                    </div>
-                </FormLogin>
-            </div>
+        <CardLogin step={step}>
+            {email ?
+                <div className='card-body d-flex flex-column justify-content-center'
+                    style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
+                    <TitlePage title="Verify Code" />
+                    <TextPage text={`Check your Email, we have sent you the code at ${email}`} />
+                    <FormLogin buttonName='Continue' path='/signup/end_step'>
+                        <div style={{ minWidth: '248px', marginTop: '20px' }}>
+                            <input style={styleInputCode}
+                                type="text"
+                                maxLength={1}
+                                ref={input1Ref}
+                                onChange={(e) => handleInputChange(e, 0)}
+                                value={code[0]} />
+                            <input style={styleInputCode}
+                                type="text"
+                                maxLength={1}
+                                ref={input2Ref}
+                                onChange={(e) => handleInputChange(e, 1)}
+                                value={code[1]} />
+                            <input style={styleInputCode}
+                                type="text"
+                                maxLength={1}
+                                ref={input3Ref}
+                                onChange={(e) => handleInputChange(e, 2)}
+                                value={code[2]} />
+                            <input style={styleInputCode}
+                                type="text"
+                                maxLength={1}
+                                ref={input4Ref}
+                                onChange={(e) => handleInputChange(e, 3)}
+                                value={code[3]} />
+                        </div>
+                        <div style={{ color: '#ffffff', margin: '30px 0 60px 0', fontSize: '14px' }}>
+                            Didn't receive the code?
+                            <button style={{ color: '#3146FF', }}>Resend Code</button>
+                        </div>
+                    </FormLogin>
+                </div>
+                :
+                <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
+                    <TextPage text="You should not bypass the pervious step" />
+                </div>
+            }
         </CardLogin>
     );
 };

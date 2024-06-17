@@ -1,11 +1,10 @@
+import { Link } from "react-router-dom";
 
 
 function ForgotButton() {
-    const forgotEvent = () => {
-        alert("Forgot password");
-    };
+
     return (
-        <button style={{
+        <Link style={{
             color: "#ffffff",
             display: 'block',
             width: '76%',
@@ -13,9 +12,9 @@ function ForgotButton() {
             fontFamily: 'DM Sans',
             backgroundColor: "#272c34",
             fontSize: '12px',
-        }} onClick={forgotEvent}>
+        }} to='/forget-password'>
             Forgotten password
-        </button>
+        </Link>
     );
 };
 

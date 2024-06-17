@@ -1,9 +1,5 @@
-// import { useFormStatus } from "react-dom/server";
-
-import { Link, Outlet } from "react-router-dom";
 
 function Submit(props) {
-    // const { pending } = useFormStatus();
     return (
         <>
             <button style={{
@@ -17,12 +13,8 @@ function Submit(props) {
                 margin: "14px 0 6px 0"
             }}
                 type="submit" value={props.name}>
-                {/* {pending ? "Submitting..." : "Submit"} */}
-                {/* <Link to={props.path} > */}
                 {props.name}
-                {/* </Link> */}
             </button>
-            <Outlet />
         </>
     );
 };

@@ -17,6 +17,7 @@ import DoctorPage from '../pages/DoctorPage';
 import DoctorSignupPage from '../pages/DoctorSignupPage';
 import HealthcareFacilitySignupPage from '../pages/HealthcareFacilitySignupPage';
 import HealthcareFacilitySignupPage2 from '../pages/HealthcareFacilitySignupPage2';
+import ForgetPasswordPage from '../pages/ForgetPasswordPage';
 
 
 function Root() {
@@ -29,6 +30,7 @@ function Root() {
                 <Route path='search' element={<SearchPage />} />
                 <Route path='contact' element={<ContactPage />} />
                 <Route path='login' element={<LoginPage />} />
+                <Route path='forget-password' element={<ForgetPasswordPage />} />
                 <Route path='userprofile' element={<UserPage />} />
                 <Route path='doctor' element={<DoctorPage />} />
                 <Route path='signup' element={<><Outlet /></>}>

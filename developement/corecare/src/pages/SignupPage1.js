@@ -16,12 +16,12 @@ function SignupPage1() {
 
     useEffect(() => {
         const stepsN =
-            selectedType === "Patient" ? 4
-                : selectedType === "Doctor" ? 5
-                    : selectedType === "Hospital" ? 3
-                        : selectedType === "X-ray Center" ? 3
-                            : selectedType === "Laboratory" ? 3
-                                : selectedType === "Pharmacy" ? 3
+            selectedType === "Patient" ? 5
+                : selectedType === "Doctor" ? 6
+                    : selectedType === "Hospital" ? 4
+                        : selectedType === "X-ray Center" ? 4
+                            : selectedType === "Laboratory" ? 4
+                                : selectedType === "Pharmacy" ? 4
                                     : selectedType === "Researcher" ? 0 : 0;
         setSteps(stepsN);
     }, [selectedType]);
