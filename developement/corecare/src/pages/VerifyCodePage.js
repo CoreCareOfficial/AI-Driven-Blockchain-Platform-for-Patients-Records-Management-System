@@ -14,6 +14,8 @@ function VerifyCodePage() {
     const email = userInfoValue.email ? userInfoValue.email
         : facilityInfoValue.email ? facilityInfoValue.email : '';
 
+    const nextPage = userInfoValue.isForgetton ? '/signup/password-step' : '/signup/end_step';
+
     const [code, setCode] = useState(Array(4).fill(''));
 
     const input1Ref = useRef(null);
@@ -55,12 +57,12 @@ function VerifyCodePage() {
 
     return (
         <CardLogin step={step}>
-            {email ?
+            {email || userInfoValue.isForgetton ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Verify Code" />
                     <TextPage text={`Check your Email, we have sent you the code at ${email}`} />
-                    <FormLogin buttonName='Continue' path='/signup/end_step'>
+                    <FormLogin buttonName='Continue' path={nextPage}>
                         <div style={{ minWidth: '248px', marginTop: '20px' }}>
                             <input style={styleInputCode}
                                 type="text"

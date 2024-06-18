@@ -13,8 +13,10 @@ function SignupPage4() {
     const [nextPage, setNextPage] = useState('');
 
     const handleConfirmed = () => {
-        if (userInfoValue.password === userInfoValue.confirmedPassword)
+        if (userInfoValue.password === userInfoValue.confirmedPassword && !userInfoValue.isForgetton)
             setNextPage('/signup/verify-code');
+        else if (userInfoValue.password === userInfoValue.confirmedPassword && userInfoValue.isForgetton)
+            setNextPage('/signup/end_step');
         else
             alert('The two passwords are not the same')
     };
@@ -29,7 +31,7 @@ function SignupPage4() {
 
     return (
         <CardLogin step={step}>
-            {(userInfoValue.phoneNumber || HealthcareFacilityInfoValue.licenseNumber) ?
+            {(userInfoValue.phoneNumber || HealthcareFacilityInfoValue.licenseNumber || userInfoValue.isForgetton) ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />

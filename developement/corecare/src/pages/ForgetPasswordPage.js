@@ -1,11 +1,19 @@
+import { useSetRecoilState } from "recoil";
 import CardLogin from "../component/bootcomponent/CardLogin";
 import FormLogin from "../component/loginDetails/FormLogin";
 import { TextInputField } from "../component/loginDetails/TextInputField";
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
+import { userInfo } from "../Recoil/Atom";
 
 
 function ForgetPasswordPage() {
+    const setUserInfo = useSetRecoilState(userInfo);
+    setUserInfo((prevUserInfo) => ({
+        ...prevUserInfo,
+        isForgetton: true
+    }));
+
     return (
         <>
             <CardLogin>

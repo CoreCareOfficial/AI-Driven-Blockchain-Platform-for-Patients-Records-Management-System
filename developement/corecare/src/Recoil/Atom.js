@@ -34,7 +34,18 @@ export const userInfo = atom({
         academicDegree: '',
         licenseNumber: '',
         licenseDocument: null,
-        locationOfWork: ''
+        locationOfWork: '',
+        isForgetton: false
+    }
+});
+
+export const GeneralData = atom({
+    key: 'GeneralData',
+    default: {
+        password: '',
+        confirmedPassword: '',
+        steps: 0,
+        isForgetton: false
     }
 });
 

@@ -34,7 +34,8 @@ function SignupPage1() {
         setUserInfo((prevUserInfo) => ({
             ...prevUserInfo,
             typeUser: selectedType,
-            steps: steps
+            steps: steps,
+            isForgetton: false
         }));
     }
 
