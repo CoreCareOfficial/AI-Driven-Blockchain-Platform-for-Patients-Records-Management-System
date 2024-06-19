@@ -61,6 +61,7 @@ function Upload(props) {
                 type="file"
                 accept="image/*"
                 ref={fileRef}
+                class="form-control"
                 style={{ opacity: '0', flex: '1' }}
                 onChange={handleFileChange}
                 required

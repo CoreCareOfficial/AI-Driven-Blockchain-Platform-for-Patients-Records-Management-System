@@ -9,7 +9,6 @@ function FormLogin(props) {
 
         if (props.onContinue) {
             props.onContinue();
-            console.log('tyyuu');
         }
         else
             console.log('error')

@@ -4,34 +4,54 @@ import FormLogin from "../component/loginDetails/FormLogin";
 import { PasswordInputField } from "../component/loginDetails/TextInputField";
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
-import { HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
-import { useRecoilValue } from "recoil";
+import { GeneralData, HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import bcrypt from 'bcryptjs';
 
 function SignupPage4() {
     const userInfoValue = useRecoilValue(userInfo);
+    const userGeneralData = useRecoilValue(GeneralData);
+
+    const isFacility =
+        userInfoValue.typeUser === "Doctor" ? false :
+            userInfoValue.typeUser === "Patient" ? false : true;
+
+    const setUserInfo = useSetRecoilState(isFacility ? HealthcareFacilityInfo : userInfo);
     const HealthcareFacilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
     const [nextPage, setNextPage] = useState('');
 
-    const handleConfirmed = () => {
-        if (userInfoValue.password === userInfoValue.confirmedPassword && !userInfoValue.isForgetton)
-            setNextPage('/signup/verify-code');
-        else if (userInfoValue.password === userInfoValue.confirmedPassword && userInfoValue.isForgetton)
-            setNextPage('/signup/end_step');
+    const handleConfirmed = async (e) => {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(userGeneralData.password, salt);
+        console.log("hashedPassword= " + hashedPassword);
+        if (userGeneralData.password.length >= 6) {
+            if (userGeneralData.password === userGeneralData.confirmedPassword && !userGeneralData.isForgetton) {
+                setNextPage('/signup/verify-code');
+                setUserInfo((prevUserInfo) => ({
+                    ...prevUserInfo,
+                    password: hashedPassword
+                }));
+            }
+            else if (userGeneralData.password === userGeneralData.confirmedPassword && userGeneralData.isForgetton) {
+                setNextPage('/signup/end_step');
+                setUserInfo((prevUserInfo) => ({
+                    ...prevUserInfo,
+                    password: hashedPassword
+                }));
+            } else
+                alert('The two passwords are not the same')
+        }
         else
-            alert('The two passwords are not the same')
+            alert('The password must be 6 digits at lest')
     };
 
     const step =
         userInfoValue.typeUser === "Doctor" ? 5 :
             userInfoValue.typeUser === "Patient" ? 4 : 3;
 
-    const isFacility =
-        userInfoValue.typeUser === "Doctor" ? false :
-            userInfoValue.typeUser === "Patient" ? false : true;
-
     return (
         <CardLogin step={step}>
-            {(userInfoValue.phoneNumber || HealthcareFacilityInfoValue.licenseNumber || userInfoValue.isForgetton) ?
+            {(userInfoValue.phoneNumber || HealthcareFacilityInfoValue.licenseNumber || userGeneralData.isForgetton) ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />

@@ -6,7 +6,7 @@ import Gender from './Gender';
 import CountrySelector from './CountrySelector';
 import MultiSelectField from './MultiSelectField';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { HealthcareFacilityInfo, userInfo } from '../../Recoil/Atom';
+import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from '../../Recoil/Atom';
 
 const styleInput = {
     backgroundColor: '#ffffff',
@@ -66,8 +66,9 @@ const styleRadio = {
 // }
 
 export function TextInputField(props) {
-    const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
-    const userInfoValue = useRecoilValue(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const user = props.isFacility ? HealthcareFacilityInfo : props.isLogin ? loginInfo : userInfo
+    const setUserInfo = useSetRecoilState(user);
+    const userInfoValue = useRecoilValue(user);
 
     const keyUserInfo = props.name;
     const handleChange = (event) => {
@@ -97,9 +98,8 @@ export function PasswordInputField(props) {
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
-    const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
-    const userInfoValue = useRecoilValue(props.isFacility ? HealthcareFacilityInfo : userInfo);
-    const [password, setPassword] = useState(userInfoValue[props.name]);
+    const setUserInfo = useSetRecoilState(GeneralData);
+    const [password, setPassword] = useState();
 
     const handleChange = (event) => {
         setPassword(event.target.value)
@@ -183,8 +183,9 @@ export function SelectMultiInputField(props) {
 export function DateInputField(props) {
     const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
     const userInfoValue = useRecoilValue(props.isFacility ? HealthcareFacilityInfo : userInfo);
-    const handleChange = (event) => {
+    const today = new Date().toISOString().split('T')[0];
 
+    const handleChange = (event) => {
         setUserInfo((prevUserInfo) => ({
             ...prevUserInfo,
             [props.name]: event.target.value
@@ -198,6 +199,7 @@ export function DateInputField(props) {
                 style={styleDate}
                 type="date"
                 value={userInfoValue[props.name]}
+                max={today}
                 placeholder={props.placeholder}
                 onChange={handleChange}
                 required />

@@ -28,8 +28,6 @@ export const userInfo = atom({
         passportPhoto: null,
         userName: '',
         password: '',
-        confirmedPassword: '',
-        steps: 0,
         medicalSpecialization: '',
         academicDegree: '',
         licenseNumber: '',
@@ -49,6 +47,16 @@ export const GeneralData = atom({
     }
 });
 
+export const loginInfo = atom({
+    key: 'loginInfo',
+    default: {
+        login: '',
+        userName: '',
+        email: '',
+        password: ''
+    }
+})
+
 export const HealthcareFacilityInfo = atom({
     key: 'HealthcareFacilityInfo',
     default: {
@@ -61,7 +69,6 @@ export const HealthcareFacilityInfo = atom({
         licenseNumber: '',
         licenseDocument: null,
         password: '',
-        confirmedPassword: '',
         type: 'Government'
     }
 })

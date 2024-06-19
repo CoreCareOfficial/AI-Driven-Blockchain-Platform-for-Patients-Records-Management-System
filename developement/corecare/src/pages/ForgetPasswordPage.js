@@ -4,11 +4,11 @@ import FormLogin from "../component/loginDetails/FormLogin";
 import { TextInputField } from "../component/loginDetails/TextInputField";
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
-import { userInfo } from "../Recoil/Atom";
+import { GeneralData } from "../Recoil/Atom";
 
 
 function ForgetPasswordPage() {
-    const setUserInfo = useSetRecoilState(userInfo);
+    const setUserInfo = useSetRecoilState(GeneralData);
     setUserInfo((prevUserInfo) => ({
         ...prevUserInfo,
         isForgetton: true
@@ -22,11 +22,11 @@ function ForgetPasswordPage() {
                     <TextPage text='Fill out the required details' />
                     <FormLogin buttonName='Login' path='/signup/verify-code'>
                         <TextInputField
-                            label='Username, Email'
+                            label='Email'
                             type='text'
                             placeholder='Enter your username or email'
                             required={true}
-                            name='userName'
+                            name='email'
                         />
                         <TextInputField
                             label='National ID, Passport No'

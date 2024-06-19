@@ -4,17 +4,22 @@ import FormLogin from "../component/loginDetails/FormLogin";
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
 import React, { useState, useRef } from 'react';
-import { HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
+import { GeneralData, HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
 
 function VerifyCodePage() {
 
     const userInfoValue = useRecoilValue(userInfo);
+    const GeneralDataValue = useRecoilValue(GeneralData);
     const facilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
 
     const email = userInfoValue.email ? userInfoValue.email
         : facilityInfoValue.email ? facilityInfoValue.email : '';
 
-    const nextPage = userInfoValue.isForgetton ? '/signup/password-step' : '/signup/end_step';
+    const [username, domain] = email.split('@');
+    const obfuscatedUsername = username.substring(0, 2) + '*'.repeat(username.length - 2);
+
+
+    const nextPage = GeneralDataValue.isForgetton ? '/signup/password-step' : '/signup/end_step';
 
     const [code, setCode] = useState(Array(4).fill(''));
 
@@ -54,14 +59,26 @@ function VerifyCodePage() {
         userInfoValue.typeUser === "Doctor" ? 6 :
             userInfoValue.typeUser === "Patient" ? 5 : 4;
 
+    const un = userInfoValue.email ?
+        userInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
+        userInfoValue.firstName.toLocaleLowerCase().slice(-2) +
+        userInfoValue.lastName.toLocaleLowerCase()[0] +
+        userInfoValue.phoneNumber.slice(-3)
+        : facilityInfoValue.email ?
+            facilityInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
+            facilityInfoValue.name.toLocaleLowerCase().slice(-2) +
+            facilityInfoValue.phoneNumber.slice(-3) +
+            facilityInfoValue.licenseNumber.toLocaleLowerCase().slice(-2) : '';
+
+    console.log('username = ' + un);
 
     return (
         <CardLogin step={step}>
-            {email || userInfoValue.isForgetton ?
+            {email || GeneralDataValue.isForgetton ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Verify Code" />
-                    <TextPage text={`Check your Email, we have sent you the code at ${email}`} />
+                    <TextPage text={`Check your Email, we have sent you the code at ${`${obfuscatedUsername}@${domain}`}`} />
                     <FormLogin buttonName='Continue' path={nextPage}>
                         <div style={{ minWidth: '248px', marginTop: '20px' }}>
                             <input style={styleInputCode}

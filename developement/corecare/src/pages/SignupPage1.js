@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { userInfo } from '../Recoil/Atom';
+import { GeneralData, userInfo } from '../Recoil/Atom';
 import CardLogin from '../component/bootcomponent/CardLogin';
 import TitlePage from '../component/loginDetails/TitlePage';
 import TextPage from '../component/loginDetails/TextPage';
@@ -10,7 +10,9 @@ import SignOrLogin from '../component/loginDetails/SignOrLogin';
 import { Outlet } from 'react-router-dom';
 
 function SignupPage1() {
+
     const setUserInfo = useSetRecoilState(userInfo);
+    const setGeneralData = useSetRecoilState(GeneralData);
     const [selectedType, setSelectedType] = useState('Patient');
     const [steps, setSteps] = useState(0);
 
@@ -34,6 +36,9 @@ function SignupPage1() {
         setUserInfo((prevUserInfo) => ({
             ...prevUserInfo,
             typeUser: selectedType,
+        }));
+        setGeneralData((prevUserInfo) => ({
+            ...prevUserInfo,
             steps: steps,
             isForgetton: false
         }));
