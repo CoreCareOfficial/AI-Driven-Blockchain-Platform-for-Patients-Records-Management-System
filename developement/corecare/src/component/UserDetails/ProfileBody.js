@@ -18,13 +18,13 @@ function ProfileBody(props) {
   return (
     <>
       <PersonalPublicContainer
-        isDoctor={props.isDoctor}
+        userType={props.userType}
         active={active}
         handlePersonalClick={handlePersonalClick}
         handlePublicClick={handlePublicClick}
       />
       <div className="profile-body">
-        {active === 'personal' || !props.isDoctor ? <PersonalInformation /> : <PublicInformation />}
+        {active === 'personal' && (props.userType === "Patient" || props.userType === "Doctor") ? <PersonalInformation /> : <PublicInformation userType={props.userType}/>}
       </div>
     </>
   );

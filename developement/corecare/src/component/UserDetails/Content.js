@@ -10,7 +10,7 @@ function Content(props) {
         <>
             <div className="contentContainer">
                 {
-                    props.active === "Profile" ? <Profile isDoctor={props.isDoctor} />
+                    props.active === "Profile" ? <Profile userType={props.userType} />
                         : props.active === "All Records" ? <RecordesPage title={props.active} />
                             : props.active === "Report" ? <RecordesPage title={props.active} />
                                 : props.active === "Lab test" ? <RecordesPage title={props.active} />

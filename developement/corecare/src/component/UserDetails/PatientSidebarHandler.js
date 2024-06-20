@@ -55,6 +55,10 @@ function PatientSidebarHandler(props) {
                         text="Profile"
                         onClick={() => handleButtonClick("Profile")}
                     />
+
+                    {/* ================================== */}
+
+                    {props.userType ==="Patient" || props.userType ==="Doctor"? (
                     <DropDownButton icon={<FaFileMedical />} text="Patient Records" >
                         <SideBtn
                             name="sideBtn"
@@ -99,7 +103,46 @@ function PatientSidebarHandler(props) {
                             onClick={() => handleButtonClick("Additional Records")}
                         />
                     </DropDownButton>
-                    {props.isDoctor ? (
+                    ) : null}
+
+                    {/* ================================== */}
+
+                    {props.userType ==="Hospital"? (
+                    <DropDownButton icon={<FaFileMedical />} text="Add Account" >
+                        <SideBtn
+                            name="sideBtn"
+                            id={activeButton === "Add Patient" ? "active" : ""}
+                            icon={<FaFolderOpen />}
+                            text="Add Patient"
+                            onClick={() => handleButtonClick("Add Patient")}
+                        />
+                        <SideBtn
+                            name="sideBtn"
+                            id={activeButton === "Add Doctor" ? "active" : ""}
+                            icon={<MdOutlineReceiptLong />}
+                            text="Add Doctor"
+                            onClick={() => handleButtonClick("Add Doctor")}
+                        />
+                        <SideBtn
+                            name="sideBtn"
+                            id={activeButton === "Add Laboratory" ? "active" : ""}
+                            icon={<FaRegFileLines />}
+                            text="Add Laboratory"
+                            onClick={() => handleButtonClick("Add Laboratory")}
+                        />
+                        <SideBtn
+                            name="sideBtn"
+                            id={activeButton === "Add Radiology" ? "active" : ""}
+                            icon={<FaXRay />}
+                            text="Add Radiology"
+                            onClick={() => handleButtonClick("Add Radiology")}
+                        />
+                    </DropDownButton>
+                    ) : null}
+
+                    {/* ================================== */}
+
+                    {props.userType !=="Patient"? (
                         <SideBtn
                             name="sideBtn"
                             id={activeButton === "Patient Access Management" ? "active" : ""}
@@ -110,13 +153,21 @@ function PatientSidebarHandler(props) {
                             onClick={() => handleButtonClick("Patient Access Management")}
                         />
                     ) : null}
-                    <SideBtn
+
+                    {/* ================================== */}
+
+                    {props.userType ==="Patient" || props.userType ==="Doctor"? (
+                        <SideBtn
                         name="sideBtn"
                         id={activeButton === "Appointment Schedule" ? "active" : ""}
                         icon={<MdEventNote />}
                         text="Appointment Schedule"
                         onClick={() => handleButtonClick("Appointment Schedule")}
-                    />
+                        />
+                    ) : null}
+
+                    {/* ================================== */}
+
                     <SideBtn
                         name="sideBtn"
                         id={activeButton === "Settings" ? "active" : ""}
@@ -126,8 +177,18 @@ function PatientSidebarHandler(props) {
                     />
                 </div>
                 <div className="flex flex-col flex-wrap max-w-full">
-                    <Button name="button secondary" label="Summarize Records" IconComponent={SummarizeIcon} />
+                    
+                    {props.userType ==="Patient" || props.userType ==="Doctor"? (
+                        <Button name="button secondary" label="Summarize Records" IconComponent={SummarizeIcon} />
+                    ) : null }
+                    
+                    {/* ========================== */}
+
+                    {props.userType ==="Patient" || props.userType ==="Doctor"? (
                     <Button name="button primary" label="Create Access Key" IconComponent={plusIcon} />
+                    ):null}
+
+                    {/* ========================== */}
                     <Button name="button logout" label="Logout" IconComponent={logoutIcon} />
                 </div>
             </SideBar >

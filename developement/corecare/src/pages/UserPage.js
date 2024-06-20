@@ -5,7 +5,7 @@ import PatientSidebarHandler from "../component/UserDetails/PatientSidebarHandle
 import { useState } from "react";
 function UserPage() {
 
-    const isDoctor = true;
+    const userType ="Doctor";
     const [active, setActive] = useState("Profile")
 
     const handleButtonClick = (text) => {
@@ -17,8 +17,8 @@ function UserPage() {
     return (
         <>
             <div className="user">
-                <PatientSidebarHandler isDoctor={isDoctor} handleButtonClick={handleButtonClick} />
-                <Content isDoctor={isDoctor} active={active} />
+                <PatientSidebarHandler userType={userType} handleButtonClick={handleButtonClick} />
+                <Content userType={userType} active={active} />
             </div>
             <FormlessFooter />
         </>
