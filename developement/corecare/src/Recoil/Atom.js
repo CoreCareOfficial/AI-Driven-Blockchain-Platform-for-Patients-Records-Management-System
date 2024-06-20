@@ -33,6 +33,7 @@ export const userInfo = atom({
         licenseNumber: '',
         licenseDocument: null,
         locationOfWork: '',
+        PublicWalletAddress: '',
         isForgetton: false
     }
 });
@@ -61,6 +62,7 @@ export const HealthcareFacilityInfo = atom({
     key: 'HealthcareFacilityInfo',
     default: {
         facilityType: '',
+        userName: '',
         name: '',
         country: '',
         address: '',

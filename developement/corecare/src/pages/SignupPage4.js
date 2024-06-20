@@ -13,12 +13,26 @@ function SignupPage4() {
     const userGeneralData = useRecoilValue(GeneralData);
 
     const isFacility =
-        userInfoValue.typeUser === "Doctor" ? false :
+        userInfoValue.typeUser === "Doctor" ||
             userInfoValue.typeUser === "Patient" ? false : true;
 
     const setUserInfo = useSetRecoilState(isFacility ? HealthcareFacilityInfo : userInfo);
     const HealthcareFacilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
     const [nextPage, setNextPage] = useState('');
+
+    const un = !isFacility ?
+        userInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
+        userInfoValue.firstName.toLocaleLowerCase().slice(-2) +
+        userInfoValue.lastName.toLocaleLowerCase()[0] +
+        userInfoValue.phoneNumber.slice(-3)
+        :
+        userInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
+        userInfoValue.name.toLocaleLowerCase().slice(-2) +
+        userInfoValue.phoneNumber.slice(-3) +
+        userInfoValue.licenseNumber.toLocaleLowerCase().slice(-2);
+
+    console.log('username = ' + un);
+
 
     const handleConfirmed = async (e) => {
         const salt = await bcrypt.genSalt(10);
@@ -29,14 +43,16 @@ function SignupPage4() {
                 setNextPage('/signup/verify-code');
                 setUserInfo((prevUserInfo) => ({
                     ...prevUserInfo,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    userName: un
                 }));
             }
             else if (userGeneralData.password === userGeneralData.confirmedPassword && userGeneralData.isForgetton) {
                 setNextPage('/signup/end_step');
                 setUserInfo((prevUserInfo) => ({
                     ...prevUserInfo,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    userName: un
                 }));
             } else
                 alert('The two passwords are not the same')

@@ -59,19 +59,6 @@ function VerifyCodePage() {
         userInfoValue.typeUser === "Doctor" ? 6 :
             userInfoValue.typeUser === "Patient" ? 5 : 4;
 
-    const un = userInfoValue.email ?
-        userInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
-        userInfoValue.firstName.toLocaleLowerCase().slice(-2) +
-        userInfoValue.lastName.toLocaleLowerCase()[0] +
-        userInfoValue.phoneNumber.slice(-3)
-        : facilityInfoValue.email ?
-            facilityInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
-            facilityInfoValue.name.toLocaleLowerCase().slice(-2) +
-            facilityInfoValue.phoneNumber.slice(-3) +
-            facilityInfoValue.licenseNumber.toLocaleLowerCase().slice(-2) : '';
-
-    console.log('username = ' + un);
-
     return (
         <CardLogin step={step}>
             {email || GeneralDataValue.isForgetton ?
