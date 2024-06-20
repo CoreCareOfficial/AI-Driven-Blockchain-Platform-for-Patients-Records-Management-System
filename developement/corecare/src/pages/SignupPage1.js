@@ -21,7 +21,7 @@ function SignupPage1() {
             selectedType === "Patient" ? 5
                 : selectedType === "Doctor" ? 6
                     : selectedType === "Hospital" ? 4
-                        : selectedType === "X-ray Center" ? 4
+                        : selectedType === "Radiology Center" ? 4
                             : selectedType === "Laboratory" ? 4
                                 : selectedType === "Pharmacy" ? 4
                                     : selectedType === "Researcher" ? 0 : 0;
@@ -48,7 +48,7 @@ function SignupPage1() {
         selectedType === "Patient" ? '/signup/step-1'
             : selectedType === "Doctor" ? '/signup/step-1'
                 : selectedType === "Hospital" ? '/signup/HealthcareFacility-step-1'
-                    : selectedType === "X-ray Center" ? '/signup/HealthcareFacility-step-1'
+                    : selectedType === "Radiology Center" ? '/signup/HealthcareFacility-step-1'
                         : selectedType === "Laboratory" ? '/signup/HealthcareFacility-step-1'
                             : selectedType === "Pharmacy" ? '/signup/HealthcareFacility-step-1'
                                 : selectedType === "Researcher" ? '' : '';
@@ -64,7 +64,7 @@ function SignupPage1() {
                         <RadioField label1='Patient' label2='Hospital' name='users' onSelected={handleChangeUserType} selectedTypeValue={selectedType} />
                         <RadioField label1='Doctor' label2='Laboratory' name='users' onSelected={handleChangeUserType} selectedTypeValue={selectedType} />
                         <RadioField label1='Researcher' label2='Pharmacy' name='users' onSelected={handleChangeUserType} selectedTypeValue={selectedType} />
-                        <RadioField label1='X-ray Center' name='users' onSelected={handleChangeUserType} selectedTypeValue={selectedType} />
+                        <RadioField label1='Radiology Center' name='users' onSelected={handleChangeUserType} selectedTypeValue={selectedType} />
                     </div>
                 </FormLogin>
                 <SignOrLogin goSign={false} />
