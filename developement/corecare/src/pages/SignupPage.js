@@ -5,15 +5,29 @@ import FormLogin from '../component/loginDetails/FormLogin';
 import { DateInputField, GenderInputField, TextInputField } from '../component/loginDetails/TextInputField';
 import SignOrLogin from '../component/loginDetails/SignOrLogin';
 import { Outlet } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userInfo } from '../Recoil/Atom';
 
 function SignupPage() {
 
+    const userInfoValue = useRecoilValue(userInfo);
+    const handleOnSubmit = async () => {
+        const email = userInfoValue.email;
+        console.log('email : ' + email);
+        // try {
+        //     const response = await fetch(`http://localhost:5000/../${email}`);
+        //     const jsonData = await response.json();
+        //     console.log('jsonData: ' + jsonData);
+        // } catch (error) {
+        //     console.error(error.message);
+        // }
+    };
     return (
         <CardLogin step={1}>
             <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <TextPage text='Who are you?' />
-                <FormLogin buttonName='Continue' path='/signup/step-2'>
+                <FormLogin buttonName='Continue' path='/signup/step-2' onContinue={handleOnSubmit}>
                     <div className='row' style={{ marginTop: '-15px' }}>
                         <div className='col col-lg-6'>
                             <TextInputField

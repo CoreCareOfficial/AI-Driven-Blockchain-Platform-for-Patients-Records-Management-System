@@ -6,9 +6,9 @@ import TitlePage from '../component/loginDetails/TitlePage';
 import TextPage from '../component/loginDetails/TextPage';
 import Submit from '../component/loginDetails/Submit';
 import { Link } from 'react-router-dom';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { HealthcareFacilityInfo, userInfo } from '../Recoil/Atom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function EndSignupPage() {
 
@@ -26,7 +26,6 @@ function EndSignupPage() {
         color: 'white',
         fontFamily: 'Caladea',
         fontWeight: 700,
-        // paddingTop: '5px'
     };
 
     const [errorMessage, setErrorMessage] = useState('');
@@ -73,26 +72,27 @@ function EndSignupPage() {
             console.log('successful');
             try {
                 const body = info;
-                const response = await fetch("http://localhost:5000/patients", {
+                const response = await fetch("http://localhost:5000/patients/patients", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
                 });
                 console.log("res = " + response);
             } catch (error) {
-                setErrorMessage(error.message)
                 console.error(error.message);
-                return false;
+                setErrorMessage(error.message)
             }
-            return true;
         }
-        return false;
     };
+
+    useEffect(() => {
+        successfulCreated();
+    }, []);
     return (
         <section style={{ alignContent: 'center', backgroundColor: '#181a1f' }}>
             <div className='' style={styleBody}>
                 <p style={styleP}>Core-care</p>
-                {successfulCreated() ?
+                {!errorMessage ?
                     <><FontAwesomeIcon icon={faCheckCircle} style={{ color: '#ffffff', width: '60px', height: '60px', margin: 'auto' }} />
                         <TitlePage title='Your account has been successfully created' />
                         <TextPage text='Please keep your private key and your password to log into your account and manage your health records.' />
