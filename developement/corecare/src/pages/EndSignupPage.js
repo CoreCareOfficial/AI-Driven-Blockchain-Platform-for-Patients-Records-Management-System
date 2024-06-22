@@ -6,11 +6,13 @@ import TitlePage from '../component/loginDetails/TitlePage';
 import TextPage from '../component/loginDetails/TextPage';
 import Submit from '../component/loginDetails/Submit';
 import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { HealthcareFacilityInfo, userInfo } from '../Recoil/Atom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function EndSignupPage() {
+
+    const hasEffectRun = useRef(false);
 
     const styleBody = {
         width: '34%',
@@ -29,20 +31,23 @@ function EndSignupPage() {
     };
 
     const [errorMessage, setErrorMessage] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [successfulAddUser, setSuccessfulAddUser] = useState(true);
     const userInfoValue = useRecoilValue(userInfo);
     const facilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
-    // const resetState = useResetRecoilState(userInfo);
-    // const resetStatefacility = useResetRecoilState(HealthcareFacilityInfo);
 
-    console.log(Object.entries(userInfoValue));
-    console.log(Object.entries(facilityInfoValue));
-    // resetState();
-    // resetStatefacility();
+    // console.log(Object.entries(userInfoValue));
+    // console.log(Object.entries(facilityInfoValue));
 
     const successfulCreated = async () => {
         const type = userInfoValue.typeUser;
-        console.log(type);
-        if (type === "Patient") {
+        let email = '';
+        let password = '';
+        let successfulAddUser = false;
+        console.log("type1: " + type);
+        if (type === "Patient" || type === "Doctor") {
+            console.log("type2: " + type);
             const formData = new FormData();
             formData.append('username', userInfoValue.userName);
             formData.append('firstName', userInfoValue.firstName);
@@ -68,24 +73,89 @@ function EndSignupPage() {
             formData.append('passportCountryCode', userInfoValue.passportCountryCode);
             formData.append('passportDocument', userInfoValue.passportPhoto);
             formData.append('PublicWalletAddress', userInfoValue.PublicWalletAddress);
-
-            console.log('successful');
+            // setEmail(userInfoValue.email);
+            // setPassword(userInfoValue.password);
+            email = userInfoValue.email;
+            password = userInfoValue.password;
             try {
                 const response = await fetch("http://localhost:5000/patients", {
                     method: "POST",
                     body: formData
                 });
                 console.log("res = " + response);
+                console.log('Added Patient Successful');
+                if (type === "Doctor") {
+                    console.log("type4: " + type);
+                    const patientId = await response.json();
+                    const doctorFormData = new FormData();
+                    doctorFormData.append('username', userInfoValue.userName);
+                    doctorFormData.append('patientID', patientId);
+                    doctorFormData.append('specialization', userInfoValue.medicalSpecialization);
+                    doctorFormData.append('academicDegree', userInfoValue.academicDegree);
+                    doctorFormData.append('locationOfWork', userInfoValue.locationOfWork);
+                    doctorFormData.append('licenseNumber', userInfoValue.licenseNumber);
+                    doctorFormData.append('licenseDocument', userInfoValue.licenseDocument);
+                    try {
+                        const doctorResponse = await fetch("http://localhost:5000/doctors", {
+                            method: "POST",
+                            body: doctorFormData
+                        });
+                        console.log("res = " + doctorResponse);
+                        console.log('Added Doctor Successful');
+                        successfulAddUser = true;
+                    } catch (error) {
+                        console.error(error.message);
+                        setErrorMessage(error.message);
+                        successfulAddUser = false;
+                    }
+                } else {
+                    successfulAddUser = true;
+                    console.log('else Patient Successful');
+                    console.log(successfulAddUser);
+                }
+            } catch (error) {
+                console.error(error.message);
+                setErrorMessage(error.message);
+                successfulAddUser = false;
+            }
+        }
+
+        console.log(successfulAddUser ? "suuuuuuuuu" : "fffffff");
+        if (successfulAddUser && email && password) {
+            console.log("type3: " + type);
+            const userFormData = new FormData();
+            userFormData.append('email', email);
+            userFormData.append('password', password);
+            userFormData.append('userType', userInfoValue.typeUser);
+            try {
+                const userResponse = await fetch("http://localhost:5000/login/add", {
+                    method: "POST",
+                    body: userFormData
+                });
+                console.log("res = " + userResponse);
+                console.log("User Added Successfully");
             } catch (error) {
                 console.error(error.message);
                 setErrorMessage(error.message)
+                console.log("User hasn't Added Successfully");
             }
+        } else {
+            console.log("User hasn't Added Successfully");
         }
     };
 
     useEffect(() => {
-        successfulCreated();
+        if (!hasEffectRun.current) {
+            successfulCreated();
+            hasEffectRun.current = true;
+        }
     }, []);
+
+    // const resetState = useResetRecoilState(userInfo);
+    // const resetStatefacility = useResetRecoilState(HealthcareFacilityInfo);
+    // resetState();
+    // resetStatefacility();
+
     return (
         <section style={{ alignContent: 'center', backgroundColor: '#181a1f' }}>
             <div className='' style={styleBody}>
@@ -103,6 +173,8 @@ function EndSignupPage() {
                     </>
                 }
             </div>
+
+
         </section>
     );
 };

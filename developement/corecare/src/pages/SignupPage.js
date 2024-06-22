@@ -5,29 +5,35 @@ import FormLogin from '../component/loginDetails/FormLogin';
 import { DateInputField, GenderInputField, TextInputField } from '../component/loginDetails/TextInputField';
 import SignOrLogin from '../component/loginDetails/SignOrLogin';
 import { Outlet } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { userInfo } from '../Recoil/Atom';
 
 function SignupPage() {
-
-    const userInfoValue = useRecoilValue(userInfo);
-    const handleOnSubmit = async () => {
-        const email = userInfoValue.email;
-        console.log('email : ' + email);
-        // try {
-        //     const response = await fetch(`http://localhost:5000/../${email}`);
-        //     const jsonData = await response.json();
-        //     console.log('jsonData: ' + jsonData);
-        // } catch (error) {
-        //     console.error(error.message);
-        // }
+    const handleOnBlur = async (v) => {
+        const formData = new FormData();
+        formData.append('email', v);
+        try {
+            const response = await fetch("http://localhost:5000/login", {
+                method: "POST",
+                body: formData
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Email doesn't Exist") {
+                console.log(jsonData.message);
+            } else {
+                alert(jsonData.message);
+                window.location = "/signup/step-1";
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
     };
     return (
         <CardLogin step={1}>
             <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <TextPage text='Who are you?' />
-                <FormLogin buttonName='Continue' path='/signup/step-2' onContinue={handleOnSubmit}>
+                <FormLogin buttonName='Continue' path='/signup/step-2' >
                     <div className='row' style={{ marginTop: '-15px' }}>
                         <div className='col col-lg-6'>
                             <TextInputField
@@ -71,7 +77,9 @@ function SignupPage() {
                         type='email'
                         name='email'
                         placeholder='Enter your email'
+                        min={13}
                         required={true}
+                        onBlur={handleOnBlur}
                     />
                     <DateInputField name='dateOfBirth' label='Date of Birth *' placeholder='Select your Birth date' />
                     <GenderInputField label='Sex' option1='Male' option2='Female' name='sex' />

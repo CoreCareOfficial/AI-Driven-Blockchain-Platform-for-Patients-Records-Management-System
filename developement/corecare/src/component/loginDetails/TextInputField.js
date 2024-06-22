@@ -78,6 +78,10 @@ export function TextInputField(props) {
             [props.name]: event.target.value
         }));
         console.log(event.target.value);
+    };
+    const handleBlur = (event) => {
+        if (props.onBlur)
+            props.onBlur(event.target.value);
     }
     return (
         <div>
@@ -89,7 +93,10 @@ export function TextInputField(props) {
                 onChange={handleChange}
                 value={userInfoValue[keyUserInfo]}
                 required={props.required}
-                placeholder={props.placeholder} />
+                placeholder={props.placeholder}
+                onBlur={handleBlur}
+                minLength={props.min ? props.min : 3}
+            />
         </div>
     );
 };
