@@ -1,7 +1,6 @@
 // loginRoutes.js
 import express from 'express';
 import pool from '../db.js';
-import bodyParser from 'body-parser';
 
 const router = express.Router();
 
