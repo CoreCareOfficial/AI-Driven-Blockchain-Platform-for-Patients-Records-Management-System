@@ -43,39 +43,37 @@ function EndSignupPage() {
         const type = userInfoValue.typeUser;
         console.log(type);
         if (type === "Patient") {
-            const info = {
-                username: userInfoValue.userName,
-                firstName: userInfoValue.firstName,
-                secondName: userInfoValue.secondName,
-                thirdName: userInfoValue.thirdName,
-                lastName: userInfoValue.lastName,
-                email: userInfoValue.email,
-                password: userInfoValue.password,
-                dateOfBirth: userInfoValue.dateOfBirth,
-                country: userInfoValue.country,
-                sex: userInfoValue.sex,
-                phoneNumber: userInfoValue.phoneNumber,
-                status: userInfoValue.status,
-                address: userInfoValue.address,
-                job: userInfoValue.job,
-                personalPhoto: userInfoValue.photo,
-                idType: userInfoValue.idType,
-                nationalID: userInfoValue.idType === "National" ? userInfoValue.id : '',
-                passportNo: userInfoValue.idType !== "National" ? userInfoValue.id : '',
-                FIDCardPhoto: userInfoValue.FIdCardPhoto,
-                BIDCardPhoto: userInfoValue.BIdCardPhoto,
-                passportType: userInfoValue.passportType,
-                passportCountryCode: userInfoValue.passportCountryCode,
-                passportDocument: userInfoValue.passportPhoto,
-                PublicWalletAddress: userInfoValue.PublicWalletAddress,
-            };
+            const formData = new FormData();
+            formData.append('username', userInfoValue.userName);
+            formData.append('firstName', userInfoValue.firstName);
+            formData.append('secondName', userInfoValue.secondName);
+            formData.append('thirdName', userInfoValue.thirdName);
+            formData.append('lastName', userInfoValue.lastName);
+            formData.append('email', userInfoValue.email);
+            formData.append('password', userInfoValue.password);
+            formData.append('dateOfBirth', userInfoValue.dateOfBirth);
+            formData.append('country', userInfoValue.country);
+            formData.append('sex', userInfoValue.sex);
+            formData.append('phoneNumber', userInfoValue.phoneNumber);
+            formData.append('status', userInfoValue.status);
+            formData.append('address', userInfoValue.address);
+            formData.append('job', userInfoValue.job);
+            formData.append('personalPhoto', userInfoValue.photo);
+            formData.append('idType', userInfoValue.idType);
+            formData.append('nationalID', userInfoValue.idType === "National" ? userInfoValue.id : '');
+            formData.append('passportNo', userInfoValue.idType !== "National" ? userInfoValue.id : '');
+            formData.append('FIDCardPhoto', userInfoValue.FIdCardPhoto);
+            formData.append('BIDCardPhoto', userInfoValue.BIdCardPhoto);
+            formData.append('passportType', userInfoValue.passportType);
+            formData.append('passportCountryCode', userInfoValue.passportCountryCode);
+            formData.append('passportDocument', userInfoValue.passportPhoto);
+            formData.append('PublicWalletAddress', userInfoValue.PublicWalletAddress);
+
             console.log('successful');
             try {
-                const body = info;
-                const response = await fetch("http://localhost:5000/patients/patients", {
+                const response = await fetch("http://localhost:5000/patients", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(body)
+                    body: formData
                 });
                 console.log("res = " + response);
             } catch (error) {
