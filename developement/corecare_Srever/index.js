@@ -1,4 +1,4 @@
-// app.js
+// index.js
 import express from 'express';
 import cors from 'cors';
 import patientRoutes from './routes/patientRoutes.js';

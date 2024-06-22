@@ -41,7 +41,7 @@ const generateRandomTwoDigitString = () => {
 };
 
 // INSERT a new patient
-router.post('/patients', upload.fields([
+router.post('/', upload.fields([
     { name: 'personalPhoto', maxCount: 1 },
     { name: 'FIDCardPhoto', maxCount: 1 },
     { name: 'BIDCardPhoto', maxCount: 1 },
@@ -92,7 +92,7 @@ router.post('/patients', upload.fields([
 });
 
 // SELECT all patients
-router.get('/patients', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const allPatients = await pool.query('SELECT * FROM PATIENT');
         res.json(allPatients.rows);
@@ -102,7 +102,7 @@ router.get('/patients', async (req, res) => {
 });
 
 // SELECT a patient by ID
-router.get('/patients/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -117,7 +117,7 @@ router.get('/patients/:id', async (req, res) => {
 });
 
 // UPDATE a patient
-router.put('/patients/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { patientID, firstName, secondName, thirdName, lastName, email, password, dateOfBirth, country, sex, phoneNumber, status, address, job, personalPhoto, idType, nationalID, passportNo, FIDCardPhoto, BIDCardPhoto, passportType, passportCountryCode, passportDocument, PublicWalletAddress } = req.body;
 
@@ -162,7 +162,7 @@ router.put('/patients/:id', async (req, res) => {
 });
 
 // DELETE a patient
-router.delete('/patients/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {

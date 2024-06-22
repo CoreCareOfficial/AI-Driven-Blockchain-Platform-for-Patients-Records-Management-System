@@ -1,11 +1,11 @@
-// patientRoutes.js
+// loginRoutes.js
 import express from 'express';
 import pool from '../db.js';
 
 const router = express.Router();
 
 // Check if email exists
-router.post('/login', async (req, res) => {
+router.post('/', async (req, res) => {
     const { email } = req.body;
 
     try {
