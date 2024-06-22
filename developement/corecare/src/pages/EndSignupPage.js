@@ -52,7 +52,7 @@ function EndSignupPage() {
             formData.append('email', userInfoValue.email);
             formData.append('password', userInfoValue.password);
             formData.append('dateOfBirth', userInfoValue.dateOfBirth);
-            formData.append('country', userInfoValue.country);
+            formData.append('country', userInfoValue.country.label);
             formData.append('sex', userInfoValue.sex);
             formData.append('phoneNumber', userInfoValue.phoneNumber);
             formData.append('status', userInfoValue.status);
