@@ -32,7 +32,7 @@ function SettingCountrySelector(props) {
             {isLoading && <p>Loading countries...</p>}
             {error && <p>Error fetching countries: {error.message}</p>}
             {!isLoading && !error && (
-                <select onChange={changeHandler} disabled={props.disabled}>
+                <select onChange={changeHandler} disabled={props.disabled} style={{color:props.disabled ? "gray":"white"}}>
                     <option selected value={value}>
                     {value}
                     </option> {/* Default option */}

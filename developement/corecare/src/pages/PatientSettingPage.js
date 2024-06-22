@@ -5,7 +5,7 @@ import SettingBodyLift from "../component/settingdetails/patientsetting/SettingB
 import SettingBodyMid from "../component/settingdetails/patientsetting/SettingBodyMid";
 import SettingBodyRight from "../component/settingdetails/patientsetting/SettingBodyRight";
 import EmergencyContact from "../component/settingdetails/patientsetting/EmergencyContact";
-function PatientSettingPage(){
+function PatientSettingPage(props){
 
     const [isOpen , setIsOpen] = useState(false);
 
@@ -14,7 +14,7 @@ function PatientSettingPage(){
     };
     return(
         <Container className="PatientSettingPage">
-            <SettingBodyLift/>
+            <SettingBodyLift userType={props.userType}/>
             
             <Container className="PatientSettingPage_right">
 
@@ -22,8 +22,8 @@ function PatientSettingPage(){
 
                 <Container className="mid_right">
                     
-                <SettingBodyMid/>
-                <SettingBodyRight handleAddContact={handleAddContact}/>
+                <SettingBodyMid userType={props.userType}/>
+                <SettingBodyRight userType={props.userType} handleAddContact={handleAddContact}/>
 
                 </Container>
             </Container>

@@ -18,7 +18,7 @@ function Content(props) {
                                         : props.active === "Prescription" ? <RecordesPage title={props.active} />
                                             : props.active === "Patient Access Management" ? <PatientAccessManagement />
                                                 : props.active === "Appointment Schedule" ? <div className="text-white">Appointment</div>
-                                                    : props.active === "Settings" ? <PatientSettingPage />
+                                                    : props.active === "Settings" ? <PatientSettingPage userType={props.userType} />
                                                         : null
                 }
             </div>
