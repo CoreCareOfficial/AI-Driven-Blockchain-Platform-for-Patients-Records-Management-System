@@ -49,10 +49,10 @@ router.post('/', upload.fields([
         const licenseDocumentPath = req.files.licenseDocument ? req.files.licenseDocument[0].path : null;
 
         const newDoctor = await pool.query(
-            `INSERT INTO DOCTOR (doctorID, patientID, specialization, academicdegree, yearsofexperience, locationofwork, licensenumber, licenseDocument) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+            `INSERT INTO DOCTOR (doctorID, patientID, specialization, academicdegree, locationofwork, licensenumber, licensedocument) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7) 
             RETURNING *`,
-            [doctorID, patientID, specialization, academicDegree, yearsofexperience, locationOfWork, licenseNumber, licenseDocumentPath]
+            [doctorID, patientID, specialization, academicDegree, locationOfWork, licenseNumber, licenseDocumentPath]
         );
         res.json(newDoctor.rows[0]);
     } catch (err) {
