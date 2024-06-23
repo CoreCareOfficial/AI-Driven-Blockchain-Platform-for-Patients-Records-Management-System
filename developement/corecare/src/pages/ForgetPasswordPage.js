@@ -14,6 +14,9 @@ function ForgetPasswordPage() {
         isForgetton: true
     }));
 
+    const handleBlur = (e) => {
+
+    };
     return (
         <>
             <CardLogin>
@@ -27,13 +30,7 @@ function ForgetPasswordPage() {
                             placeholder='Enter your username or email'
                             required={true}
                             name='email'
-                        />
-                        <TextInputField
-                            label='National ID, Passport No'
-                            type='text'
-                            placeholder='Enter your national ID or passport No'
-                            required={true}
-                            name='id'
+                            onBlur={handleBlur}
                         />
                     </FormLogin>
                 </div>

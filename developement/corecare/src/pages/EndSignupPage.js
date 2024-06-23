@@ -116,8 +116,6 @@ function EndSignupPage() {
                 successfulAddUser = false;
             }
         }
-
-        console.log(successfulAddUser ? "suuuuuuuuu" : "fffffff");
         if (successfulAddUser && email && password) {
             console.log("type3: " + type);
             const loginData = {
@@ -171,8 +169,6 @@ function EndSignupPage() {
                     </>
                 }
             </div>
-
-
         </section>
     );
 };
