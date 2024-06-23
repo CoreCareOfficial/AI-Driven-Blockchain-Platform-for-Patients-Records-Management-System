@@ -110,7 +110,7 @@ function SettingBodyRight(props, { handleAddContact }) {
                     </DynamicCard>
                 ) : null}
 
-                {props.userType === "Doctor" || props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Hospital" ? (
+                {props.userType === "Doctor" || props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Hospital" ||props.userType === "Pharmacy" ? (
 
                     <SettingForm name="SettingForm_form" legend="Work Hours" btn="Add Time" show={WorkHours} TheEvent={toggleEditWorkHours}>
                         <span style={{

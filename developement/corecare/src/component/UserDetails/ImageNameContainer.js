@@ -10,7 +10,7 @@ function ImageNameContainer(props) {
                     {props.display ? <p>{props.username}</p> : null}
                         <p>{props.name}</p>
 
-                        {props.userType !=="Hospital" && props.userType !=="Laboratory" && props.userType !=="Radiology" ?( 
+                        {props.userType !=="Hospital" && props.userType !=="Laboratory" && props.userType !=="Radiology" && props.userType !=="Pharmacy" ?( 
                         <p>{props.gender}, {props.age} years old</p>
                         ) : <p>{props.location}</p> }
                     </div>

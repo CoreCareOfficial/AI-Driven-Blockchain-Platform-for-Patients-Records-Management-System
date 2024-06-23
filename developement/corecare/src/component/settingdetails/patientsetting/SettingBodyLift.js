@@ -47,7 +47,7 @@ function SettingBodyLift(props){
                 <SettingInput class_name="SettingInput" type="text" name="phone-number" label="Phone Number:" placeholder="" disabled={General}/>
                 <SettingInput class_name="SettingInput" type="text" name="address" label="Address:" placeholder="" disabled={General}/>
                 <SettingCountry  label="Country:" name="country" disabled={General}/>
-                {props.userType !=="Hospital"?(
+                {props.userType !=="Hospital" && props.userType !=="Radiology" && props.userType !=="Laboratory" && props.userType !=="Pharmacy"?(
                     <>
                     <SettingInput class_name="SettingInput" type="text" name="job" label="Job:" placeholder="" disabled={General}/>
                     <SettingSelect items={['Male' ,'Female']} label="Sex:" disabled={General}/>
@@ -57,7 +57,7 @@ function SettingBodyLift(props){
                 ):null}
             </SettingForm>
 
-            {props.userType !=="Hospital"?(
+            {props.userType ==="Patient" || props.userType ==="Doctor"?(
             <SettingForm name="SettingForm_form" legend="Health Information" btn="Save Change" show={Health} TheEvent={toggleEditHealth}>
                 <span style={{
                     color:'white',

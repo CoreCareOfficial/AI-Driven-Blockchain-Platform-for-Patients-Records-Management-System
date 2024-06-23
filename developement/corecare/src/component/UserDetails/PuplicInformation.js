@@ -47,12 +47,12 @@ function PuplicInformation(props) {
             <ProfileBodyLeft>
                 <div className="profile-body-left-top">
                     <div className="general-info w-full">
-                        {props.userType !== "Hospital" && props.userType !== "Laboratory" && props.userType !== "Radiology" ? (
+                        {props.userType !== "Hospital" && props.userType !== "Laboratory" && props.userType !== "Radiology" && props.userType !== "Pharmacy" ? (
                             <h3>Profissioal Information :</h3>
                         ) : <h3>General Information :</h3>}
 
                         <div className="general-info-container">
-                            {props.userType === "Hospital" || props.userType === "Laboratory" || props.userType === "Radiology" ? (
+                            {props.userType === "Hospital" || props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Pharmacy" ? (
                                 <>
                                     <GeneralInfoItem icon={<MdPersonOutline />} title="Name :" value="Hospital name" />
                                     <GeneralInfoItem icon={<MdPersonOutline />} title="Location :" value="Yemen-Taiz" />
@@ -75,7 +75,7 @@ function PuplicInformation(props) {
 
                             {props.userType === "Hospital" ? (
                                 <h3>List of Department :</h3>
-                            ) : props.userType === "Laboratory" || props.userType === "Radiology" ? (
+                            ) : props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Pharmacy" ? (
                                 <h3>Service Provided :</h3>
                             ) : <h3>Practice Information :</h3>}
 
@@ -86,7 +86,7 @@ function PuplicInformation(props) {
                                     <GeneralInfoItem name="w-full" icon={<MdStars />} title="Department3" value="Althawrah" />
                                     <GeneralInfoItem name="w-full" icon={<MdStars />} title="Department4" value="Althawrah" />
                                 </div>
-                            ) : props.userType === "Laboratory" || props.userType === "Radiology" ? (
+                            ) : props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Pharmacy" ? (
                                 <div className="general-info-container flex-col">
                                     <GeneralInfoItem name="w-full" icon={<MdStars />} title="Service1" value="Althawrah" />
                                     <GeneralInfoItem name="w-full" icon={<MdStars />} title="Service2" value="Althawrah" />

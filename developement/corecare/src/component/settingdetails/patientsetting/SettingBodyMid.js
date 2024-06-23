@@ -149,7 +149,7 @@ function SettingBodyMid(props) {
                     </>
                 ) : null}
 
-                {props.userType === "Laboratory" || props.userType === "Radiology" ? (
+                {props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Pharmacy" ? (
                     <>
                         <SettingForm name="SettingForm_form" legend="Service Provided" btn="Add Service" show={Service} TheEvent={toggleEditService}>
                             <span style={{
