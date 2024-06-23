@@ -31,9 +31,6 @@ function EndSignupPage() {
     };
 
     const [errorMessage, setErrorMessage] = useState('');
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [successfulAddUser, setSuccessfulAddUser] = useState(true);
     const userInfoValue = useRecoilValue(userInfo);
     const facilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
 
@@ -73,8 +70,6 @@ function EndSignupPage() {
             formData.append('passportCountryCode', userInfoValue.passportCountryCode);
             formData.append('passportDocument', userInfoValue.passportPhoto);
             formData.append('PublicWalletAddress', userInfoValue.PublicWalletAddress);
-            // setEmail(userInfoValue.email);
-            // setPassword(userInfoValue.password);
             email = userInfoValue.email;
             password = userInfoValue.password;
             try {
@@ -87,6 +82,8 @@ function EndSignupPage() {
                 if (type === "Doctor") {
                     console.log("type4: " + type);
                     const patientId = await response.json();
+                    // const patientId = "PAT-14";
+                    console.log('patientId : ' + patientId);
                     const doctorFormData = new FormData();
                     doctorFormData.append('username', userInfoValue.userName);
                     doctorFormData.append('patientID', patientId);
@@ -135,11 +132,12 @@ function EndSignupPage() {
                 console.log("res = " + userResponse);
                 console.log("User Added Successfully");
             } catch (error) {
+                setErrorMessage(error.message);
                 console.error(error.message);
-                setErrorMessage(error.message)
                 console.log("User hasn't Added Successfully");
             }
         } else {
+            setErrorMessage('Something error');
             console.log("User hasn't Added Successfully");
         }
     };

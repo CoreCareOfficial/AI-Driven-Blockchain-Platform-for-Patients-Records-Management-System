@@ -85,7 +85,8 @@ router.post('/', upload.fields([
             RETURNING *`,
             [patientID, firstName, secondName, thirdName, lastName, email, password, dateOfBirth, country, sex, phoneNumber, status, address, job, personalPhotoPath, idType, nationalID, passportNo, FIDCardPhotoPath, BIDCardPhotoPath, passportType, passportCountryCode, passportDocumentPath, PublicWalletAddress, uniqueUsername]
         );
-        res.json(newPatient.rows[0].patientID);
+        // res.json(newPatient.rows[0].patientID);
+        res.json(patientID);
     } catch (err) {
         res.status(500).send(err.message);
     }

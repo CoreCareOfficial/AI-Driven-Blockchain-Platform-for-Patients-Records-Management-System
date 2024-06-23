@@ -1,3 +1,5 @@
+import { useRecoilValue } from "recoil";
+import { userInfo } from "../Recoil/Atom";
 import CardLogin from "../component/bootcomponent/CardLogin";
 import FormLogin from "../component/loginDetails/FormLogin";
 import { SelectInputField, SelectMultiInputField, TextInputField } from "../component/loginDetails/TextInputField";
@@ -28,14 +30,14 @@ function DoctorSignupPage() {
         'Renal Unit',
         'Sexual Health',
         'Urology'
-    ]
-
+    ];
+    const userInfoValue = useRecoilValue(userInfo);
     return (
         <CardLogin step={4}>
             <div className='card-body d-flex flex-column justify-content-center'
                 style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
-                <TextPage text='Welcome Dr. Mohammed Muthanna' />
+                <TextPage text={`Welcome Dr. ${userInfoValue.firstName} ${userInfoValue.lastName}`} />
                 <FormLogin buttonName='Continue' path='/signup/password-step'>
                     <SelectInputField
                         label='Medical Specialization'
