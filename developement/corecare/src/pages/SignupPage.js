@@ -8,12 +8,16 @@ import { Outlet } from 'react-router-dom';
 
 function SignupPage() {
     const handleOnBlur = async (v) => {
-        const formData = new FormData();
-        formData.append('email', v);
+        const checkEmail = {
+            email: v
+        };
         try {
             const response = await fetch("http://localhost:5000/login", {
                 method: "POST",
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(checkEmail)
             });
             console.log("res = " + response);
             const jsonData = await response.json();
@@ -22,7 +26,7 @@ function SignupPage() {
                 console.log(jsonData.message);
             } else {
                 alert(jsonData.message);
-                window.location = "/signup/step-1";
+
             }
         } catch (error) {
             console.error(error.message);

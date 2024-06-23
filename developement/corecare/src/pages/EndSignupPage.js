@@ -120,25 +120,25 @@ function EndSignupPage() {
         console.log(successfulAddUser ? "suuuuuuuuu" : "fffffff");
         if (successfulAddUser && email && password) {
             console.log("type3: " + type);
-            const userFormData = new FormData();
-            userFormData.append('email', email);
-            userFormData.append('password', password);
-            userFormData.append('userType', userInfoValue.typeUser);
+            const loginData = {
+                email: email,
+                password: password,
+                userType: userInfoValue.typeUser
+            };
+
             try {
                 const userResponse = await fetch("http://localhost:5000/login/add", {
                     method: "POST",
-                    body: userFormData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
                 });
-                console.log("res = " + userResponse);
-                console.log("User Added Successfully");
             } catch (error) {
                 setErrorMessage(error.message);
-                console.error(error.message);
-                console.log("User hasn't Added Successfully");
             }
         } else {
             setErrorMessage('Something error');
-            console.log("User hasn't Added Successfully");
         }
     };
 

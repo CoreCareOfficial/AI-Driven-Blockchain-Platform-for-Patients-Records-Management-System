@@ -60,4 +60,14 @@ router.post('/', upload.fields([
     }
 });
 
+// Get Doctors Info
+router.get('/', async (req, res) => {
+    try {
+        const allDoctors = await pool.query('SELECT * FROM DOCTOR');
+        res.json(allDoctors.rows);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
 export default router;
