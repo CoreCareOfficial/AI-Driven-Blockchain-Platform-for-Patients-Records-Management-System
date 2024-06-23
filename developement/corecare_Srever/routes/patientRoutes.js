@@ -1,4 +1,3 @@
-// patientRoutes.js
 import express from 'express';
 import pool from '../db.js';
 import multer from 'multer';
@@ -79,6 +78,34 @@ router.post('/', upload.fields([
         const BIDCardPhotoPath = req.files.BIDCardPhoto ? req.files.BIDCardPhoto[0].path : null;
         const passportDocumentPath = req.files.passportDocument ? req.files.passportDocument[0].path : null;
 
+        console.log({
+            patientID,
+            firstName,
+            secondName,
+            thirdName,
+            lastName,
+            email,
+            password,
+            dateOfBirth,
+            country,
+            sex,
+            phoneNumber,
+            status,
+            address,
+            job,
+            personalPhotoPath,
+            idType,
+            nationalID,
+            passportNo,
+            FIDCardPhotoPath,
+            BIDCardPhotoPath,
+            passportType,
+            passportCountryCode,
+            passportDocumentPath,
+            PublicWalletAddress,
+            uniqueUsername
+        });
+
         const newPatient = await pool.query(
             `INSERT INTO PATIENT (patientID, firstName, secondName, thirdName, lastName, email, password, dateOfBirth, country, sex, phoneNumber, status, address, job, personalPhoto, idType, nationalID, passportNo, FIDCardPhoto, BIDCardPhoto, passportType, passportCountryCode, passportDocument, PublicWalletAddress, username) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25) 
@@ -88,9 +115,15 @@ router.post('/', upload.fields([
         // res.json(newPatient.rows[0].patientID);
         res.json(patientID);
     } catch (err) {
-        res.status(500).send(err.message);
+        console.error('Error inserting patient:', err);
+        if (err.code === '23505') {
+            res.status(400).send('Email already exists');
+        } else {
+            res.status(500).send('Server error');
+        }
     }
 });
+
 
 // SELECT all patients
 router.get('/', async (req, res) => {
@@ -103,11 +136,11 @@ router.get('/', async (req, res) => {
 });
 
 // SELECT a patient by ID
-router.get('/:id', async (req, res) => {
-    const { id } = req.params;
+router.get('/:patientID', async (req, res) => {
+    const { patientID } = req.params;
 
     try {
-        const patient = await pool.query('SELECT * FROM PATIENT WHERE ID = $1', [id]);
+        const patient = await pool.query('SELECT * FROM PATIENT WHERE patientID = $1', [patientID]);
         if (patient.rows.length === 0) {
             return res.status(404).send('Patient not found');
         }
