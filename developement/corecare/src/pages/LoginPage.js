@@ -6,34 +6,42 @@ import { TextInputField, PasswordInputField } from '../component/loginDetails/Te
 import ForgotButton from '../component/loginDetails/ForgotButton';
 import SignOrLogin from '../component/loginDetails/SignOrLogin';
 import { Outlet } from 'react-router-dom';
-import bcrypt from 'bcryptjs';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { GeneralData, loginInfo } from '../Recoil/Atom';
 
 function LoginPage() {
 
-    const setloginInfo = useSetRecoilState(loginInfo);
     const loginInfoValue = useRecoilValue(loginInfo);
     const GeneralDataValue = useRecoilValue(GeneralData);
 
-    const handleConfirmed = async (password) => {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        console.log("hashedPassword= " + hashedPassword);
-        return hashedPassword;
-    };
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const handleUsername = () => {
+    const handleUsername = async () => {
         const p = GeneralDataValue.password;
         console.log('p= ' + p);
-        const type = emailRegex.test(loginInfoValue.login) ? 'email' : 'userName';
-        console.log("type= " + type);
-        setloginInfo((prevUserInfo) => ({
-            ...prevUserInfo,
-            [type]: loginInfoValue.login,
-            password: handleConfirmed(p)
-        }));
+        console.log(` emailorusername: ${loginInfoValue.login}`);
+        const loginData = {
+            email: loginInfoValue.login,
+            password: p
+        };
+
+        try {
+            const userResponse = await fetch("http://localhost:5000/login/get", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginData)
+            });
+            if (userResponse.ok) {
+                const jsonData = userResponse.json();
+                console.log('login : ');
+                console.log(jsonData);
+                console.log("successful signin");
+            } else {
+                console.log("faild signin");
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
     return (

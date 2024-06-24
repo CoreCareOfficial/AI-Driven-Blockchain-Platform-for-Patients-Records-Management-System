@@ -41,10 +41,12 @@ function EndSignupPage() {
         const type = userInfoValue.typeUser;
         let email = '';
         let password = '';
+        let username = '';
         let successfulAddUser = false;
         console.log("type1: " + type);
         if (type === "Patient" || type === "Doctor") {
             console.log("type2: " + type);
+            console.log("hashedPassword 4 atom= " + userInfoValue.password);
             const formData = new FormData();
             formData.append('username', userInfoValue.userName);
             formData.append('firstName', userInfoValue.firstName);
@@ -72,6 +74,7 @@ function EndSignupPage() {
             formData.append('PublicWalletAddress', userInfoValue.PublicWalletAddress);
             email = userInfoValue.email;
             password = userInfoValue.password;
+            username = userInfoValue.userName;
             try {
                 const response = await fetch("http://localhost:5000/patients", {
                     method: "POST",
@@ -116,12 +119,13 @@ function EndSignupPage() {
                 successfulAddUser = false;
             }
         }
-        if (successfulAddUser && email && password) {
+        if (successfulAddUser && email && password && username) {
             console.log("type3: " + type);
             const loginData = {
                 email: email,
                 password: password,
-                userType: userInfoValue.typeUser
+                userType: userInfoValue.typeUser,
+                username: username
             };
 
             try {
@@ -140,17 +144,17 @@ function EndSignupPage() {
         }
     };
 
+    // const resetState = useResetRecoilState(userInfo);
+    // const resetStatefacility = useResetRecoilState(HealthcareFacilityInfo);
     useEffect(() => {
         if (!hasEffectRun.current) {
             successfulCreated();
             hasEffectRun.current = true;
+            // resetState();
+            // resetStatefacility();
         }
     }, []);
 
-    // const resetState = useResetRecoilState(userInfo);
-    // const resetStatefacility = useResetRecoilState(HealthcareFacilityInfo);
-    // resetState();
-    // resetStatefacility();
 
     return (
         <section style={{ alignContent: 'center', backgroundColor: '#181a1f' }}>

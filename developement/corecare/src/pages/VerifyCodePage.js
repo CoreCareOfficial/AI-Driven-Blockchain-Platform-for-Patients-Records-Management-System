@@ -3,10 +3,12 @@ import CardLogin from "../component/bootcomponent/CardLogin";
 import FormLogin from "../component/loginDetails/FormLogin";
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { GeneralData, HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
 
 function VerifyCodePage() {
+
+    const hasEffectRun = useRef(false);
 
     const userInfoValue = useRecoilValue(userInfo);
     const GeneralDataValue = useRecoilValue(GeneralData);
@@ -18,10 +20,10 @@ function VerifyCodePage() {
     const [username, domain] = email.split('@');
     const obfuscatedUsername = username.substring(0, 2) + '*'.repeat(username.length - 2);
 
-
     const nextPage = GeneralDataValue.isForgetton ? '/signup/password-step' : '/signup/end_step';
 
     const [code, setCode] = useState(Array(4).fill(''));
+    const [message, setMessage] = useState('');
 
     const input1Ref = useRef(null);
     const input2Ref = useRef(null);
@@ -45,10 +47,57 @@ function VerifyCodePage() {
         }
     };
 
+    const handleSendCode = async () => {
+        console.log('email: ' + email);
+        try {
+            const response = await fetch("http://localhost:5000/verification", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            });
+            if (response.ok) {
+                setMessage('Verification code sent to your email');
+            } else {
+                const errorData = await response.text();
+                setMessage(`Failed to send verification code: ${errorData}`);
+            }
+        } catch (error) {
+            setMessage(`An error occurred while sending the code: ${error.message}`);
+        }
+    };
+
+    const handleVerifyCode = async (e) => {
+        e.preventDefault();
+        const verificationCode = code.join('');
+        try {
+            const response = await fetch("http://localhost:5000/verification/verify-code", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, code: verificationCode })
+            });
+            if (response.ok) {
+                // Redirect to the next page
+                window.location.href = nextPage;
+            } else {
+                const errorData = await response.text();
+                setMessage(`Invalid verification code: ${errorData}`);
+            }
+        } catch (error) {
+            setMessage(`An error occurred while verifying the code: ${error.message}`);
+        }
+    };
+
+    useEffect(() => {
+        if (!hasEffectRun.current) {
+            // handleSendCode();
+            hasEffectRun.current = true;
+        }
+    }, []);
+
     const styleInputCode = {
         width: '52px',
         height: '60px',
-        borderRadius: '5PX',
+        borderRadius: '5px',
         margin: '10px',
         fontSize: '32px',
         textAlign: 'center',
@@ -66,7 +115,8 @@ function VerifyCodePage() {
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Verify Code" />
                     <TextPage text={`Check your Email, we have sent you the code at ${`${obfuscatedUsername}@${domain}`}`} />
-                    <FormLogin buttonName='Continue' path={nextPage}>
+                    <FormLogin buttonName='Continue' path={nextPage} >
+                        {/* <FormLogin buttonName='Continue' path={nextPage} onContinue={handleVerifyCode}> */}
                         <div style={{ minWidth: '248px', marginTop: '20px' }}>
                             <input style={styleInputCode}
                                 type="text"
@@ -95,15 +145,16 @@ function VerifyCodePage() {
                         </div>
                         <div style={{ color: '#ffffff', margin: '30px 0 60px 0', fontSize: '14px' }}>
                             Didn't receive the code?
-                            <button style={{ color: '#3146FF', }}>Resend Code</button>
+                            <button style={{ color: '#3146FF', }} onClick={handleSendCode}>Resend Code</button>
                         </div>
                     </FormLogin>
                 </div>
                 :
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
-                    <TextPage text="You should not bypass the pervious step" />
+                    <TextPage text="You should not bypass the previous step" />
                 </div>
             }
+            {message && <p style={{ color: 'red' }}>{message}</p>}
         </CardLogin>
     );
 };

@@ -5,8 +5,17 @@ import FormLogin from '../component/loginDetails/FormLogin';
 import { DateInputField, GenderInputField, TextInputField } from '../component/loginDetails/TextInputField';
 import SignOrLogin from '../component/loginDetails/SignOrLogin';
 import { Outlet } from 'react-router-dom';
+import { useState } from 'react';
+import { userInfo } from '../Recoil/Atom';
+import { useSetRecoilState } from 'recoil';
 
 function SignupPage() {
+    const [emailValue, setEmailValue] = useState('');
+    const setUserInfo = useSetRecoilState(userInfo);
+    setUserInfo((prevUserInfo) => ({
+        ...prevUserInfo,
+        email: emailValue
+    }));
     const handleOnBlur = async (v) => {
         const checkEmail = {
             email: v
@@ -26,7 +35,11 @@ function SignupPage() {
                 console.log(jsonData.message);
             } else {
                 alert(jsonData.message);
-
+                setUserInfo((prevUserInfo) => ({
+                    ...prevUserInfo,
+                    email: emailValue
+                }));
+                setEmailValue('');
             }
         } catch (error) {
             console.error(error.message);
