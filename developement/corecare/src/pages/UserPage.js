@@ -5,7 +5,7 @@ import PatientSidebarHandler from "../component/UserDetails/PatientSidebarHandle
 import { useState } from "react";
 function UserPage() {
 
-    const userType ="Pharmacy";
+    const userType = "Patient";
     const [active, setActive] = useState("Profile")
 
     const handleButtonClick = (text) => {

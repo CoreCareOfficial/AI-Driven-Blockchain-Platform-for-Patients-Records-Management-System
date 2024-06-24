@@ -5,6 +5,8 @@ import patientRoutes from './routes/patientRoutes.js';
 import loginRoutes from './routes/loginRoutes.js'
 import doctorRoutes from './routes/doctorRoutes.js'
 import healthcareProviderRoutes from './routes/healthcareProviderRoutes.js';
+import healthInfoRoutes from './routes/healthInfoRoutes.js'
+import socialMediaRoutes from './routes/socialMediaRoutes.js'
 import verification from './routes/verification.js';
 import dotenv from 'dotenv';
 
@@ -22,6 +24,8 @@ app.use('/login', loginRoutes);
 app.use('/patients', patientRoutes);
 app.use('/doctors', doctorRoutes);
 app.use('/healthcareproviders', healthcareProviderRoutes);
+app.use('/healthinfo', healthInfoRoutes);
+app.use('/socialmedia', socialMediaRoutes);
 app.use('/verification', verification);
 
 app.listen(PORT, () => {

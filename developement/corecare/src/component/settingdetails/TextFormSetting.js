@@ -8,7 +8,7 @@ import { userHealthInfo } from "../../Recoil/Atom";
 
 export function SettingForm(props) {
 
-    const changState=(e)=>{
+    const changState = (e) => {
         e.preventDefault()
         if (props.TheEvent) {
             props.TheEvent();
@@ -19,12 +19,12 @@ export function SettingForm(props) {
             <fieldset name="general-info">
                 <legend style={{ color: 'white' }}>{props.legend}</legend>
                 {props.children}
-                {props.show === false ?(
+                {props.show === false ? (
                     <Button label={props.btn}
-                    className="bg-[#3146FF] my-2 text-white  rounded-[8px] p-1 self-center"
-                    onClick={changState} 
+                        className="bg-[#3146FF] my-2 text-white  rounded-[8px] p-1 self-center"
+                        onClick={changState}
                     />
-                ):null}
+                ) : null}
             </fieldset>
         </form>
     );
@@ -60,6 +60,12 @@ export function DynamicForm(props) {
 
 
 export function AddEmergency(props) {
+    const changState = (e) => {
+        e.preventDefault()
+        if (props.TheEvent) {
+            props.TheEvent();
+        }
+    }
     return (
         <form
             style={{
@@ -69,7 +75,7 @@ export function AddEmergency(props) {
                 padding: '0px 5px',
             }}>
             <input type={props.type} placeholder={props.placeholder} name={props.name} disabled={props.disabled} />
-            <Button label={props.btn} className="bg-[#3146FF] my-2 text-white w-[20%] rounded-[8px] p-1 self-center" />
+            <Button label={props.btn} className="bg-[#3146FF] my-2 text-white w-[20%] rounded-[8px] p-1 self-center" onClick={changState} />
         </form>
     );
 };
@@ -87,7 +93,7 @@ export function PasswordSettingInput(props) {
             <div className="PasswordSettingInput ">
                 <input
                     type={isVisible ? "text" : "password"}
-                    style={{color:props.disabled ? "gray":"white"}}
+                    style={{ color: props.disabled ? "gray" : "white" }}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={props.placeholder}
@@ -111,7 +117,7 @@ export function SocialSettingInput(props) {
             <label>{props.label}</label>
             <div className="SocialSettingInput ">
                 <input
-                style={{color:props.disabled ? "gray":"white"}}
+                    style={{ color: props.disabled ? "gray" : "white" }}
                     type="text"
                     placeholder={props.placeholder}
                     name={props.name}
@@ -130,7 +136,7 @@ export function SettingInput(props) {
         <div className={props.class_name}>
             <label >{props.label}</label>
             <input type={props.type}
-            style={{color:props.disabled ? "gray":"white"}}
+                style={{ color: props.disabled ? "gray" : "white" }}
                 placeholder={props.placeholder}
                 onChange={props.onChange}
                 name={props.name}
@@ -153,7 +159,7 @@ export function SettingSelect(props) {
         <div className="SettingSelect">
             <label>{props.label}</label>
             <select placeholder="" name={props.name} disabled={props.disabled}
-            style={{color:props.disabled ? "gray":"white"}}>
+                style={{ color: props.disabled ? "gray" : "white" }}>
                 <option disabled selected hidden>{hidtext}</option>
                 {listItems}
             </select>
@@ -215,12 +221,12 @@ export function MedicalDegree(props) {
     return (
         <div className="SettingSelect">
             <label>{props.label}</label>
-            <select id="dino-select" value={selectedValue} onChange={handleChange} disabled={props.disabled} style={{color:props.disabled ? "gray":"white"}}>
-            <option disabled selected hidden>{props.placeholder}</option>
-            {selectItems}
+            <select id="dino-select" value={selectedValue} onChange={handleChange} disabled={props.disabled} style={{ color: props.disabled ? "gray" : "white" }}>
+                <option disabled selected hidden>{props.placeholder}</option>
+                {selectItems}
             </select>
         </div>
-        
+
 
     );
 };
@@ -245,7 +251,7 @@ export function SpecializationSelect(props) {
                 value={selectedValue}
                 onChange={handleChange}
                 disabled={props.disabled}
-                style={{color:props.disabled ? "gray":"white"}}
+                style={{ color: props.disabled ? "gray" : "white" }}
             >
                 <option disabled selected hidden value="" style={{ textAlign: 'left' }}>{props.placeholder}</option>
                 {options}

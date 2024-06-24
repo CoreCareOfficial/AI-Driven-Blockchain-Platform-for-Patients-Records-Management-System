@@ -150,40 +150,27 @@ router.get('/:patientID', async (req, res) => {
     }
 });
 
-// UPDATE a patient
-router.put('/:id', async (req, res) => {
-    const { id } = req.params;
-    const { patientID, firstName, secondName, thirdName, lastName, email, password, dateOfBirth, country, sex, phoneNumber, status, address, job, personalPhoto, idType, nationalID, passportNo, FIDCardPhoto, BIDCardPhoto, passportType, passportCountryCode, passportDocument, PublicWalletAddress } = req.body;
+// UPDATE a general info
+router.put('/general/:patientID', async (req, res) => {
+    const { patientID } = req.params;
+    const { firstName, secondName, thirdName, lastName, phoneNumber, address, country, job, sex, dateOfBirth, status } = req.body;
 
     try {
         const updatePatient = await pool.query(
             `UPDATE PATIENT SET 
-        patientID = $1, 
-        firstName = $2, 
-        secondName = $3, 
-        thirdName = $4, 
-        lastName = $5, 
-        email = $6, 
-        password = $7, 
-        dateOfBirth = $8, 
-        country = $9, 
-        sex = $10, 
-        phoneNumber = $11, 
-        status = $12, 
-        address = $13, 
-        job = $14, 
-        personalPhoto = $15, 
-        idType = $16, 
-        nationalID = $17, 
-        passportNo = $18, 
-        FIDCardPhoto = $19, 
-        BIDCardPhoto = $20, 
-        passportType = $21, 
-        passportCountryCode = $22, 
-        passportDocument = $23, 
-        PublicWalletAddress = $24
-      WHERE ID = $25 RETURNING *`,
-            [patientID, firstName, secondName, thirdName, lastName, email, password, dateOfBirth, country, sex, phoneNumber, status, address, job, personalPhoto, idType, nationalID, passportNo, FIDCardPhoto, BIDCardPhoto, passportType, passportCountryCode, passportDocument, PublicWalletAddress, id]
+            firstname=$1, 
+            secondname=$2, 
+            thirdname=$3, 
+            lastname=$4, 
+            phonenumber=$5, 
+            address=$6, 
+            country=$7, 
+            job=$8, 
+            sex=$9, 
+            dateofbirth=$10, 
+            status=$11
+      WHERE patientID =$12  RETURNING *`,
+            [firstName, secondName, thirdName, lastName, phoneNumber, address, country, job, sex, dateOfBirth, status, patientID]
         );
 
         if (updatePatient.rows.length === 0) {
@@ -194,6 +181,8 @@ router.put('/:id', async (req, res) => {
         res.status(500).send(err.message);
     }
 });
+
+
 
 // DELETE a patient
 router.delete('/:id', async (req, res) => {

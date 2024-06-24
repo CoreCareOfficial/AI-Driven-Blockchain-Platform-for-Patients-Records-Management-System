@@ -10,7 +10,7 @@ import { MdModeEdit } from "react-icons/md";
 import { SettingForm, SettingInput } from "../TextFormSetting";
 import { CiCirclePlus } from "react-icons/ci";
 
-function SettingBodyRight(props, { handleAddContact }) {
+function SettingBodyRight(props) {
     const icons = [
         { 'num': <PiNumberOneFill /> },
         { 'num': <PiNumberSquareTwoFill /> },
@@ -26,17 +26,18 @@ function SettingBodyRight(props, { handleAddContact }) {
     const [times, setTimes] = useState([]);
 
     const handleAddTime = () => {
-        if (TimeFrom !=='' && to !=='') {
+        if (TimeFrom !== '' && to !== '') {
             if (to > TimeFrom) {
-        const newTime = {
-            TimeFrom,
-            to,
-        };
-        setTimes([...times, newTime]);
-        setFrom('');
-        setTo('');
-    } alert("choose correct time");}
-    alert("Choose time!");
+                const newTime = {
+                    TimeFrom,
+                    to,
+                };
+                setTimes([...times, newTime]);
+                setFrom('');
+                setTo('');
+            } alert("choose correct time");
+        }
+        alert("Choose time!");
     };
 
     const [WorkFrom, setWorkFrom] = useState('');
@@ -44,20 +45,21 @@ function SettingBodyRight(props, { handleAddContact }) {
     const [WorkTimes, setWorkTimes] = useState([]);
 
     const handleAddWorkTime = () => {
-        if (TimeFrom !=='' && to !=='') {
+        if (TimeFrom !== '' && to !== '') {
             if (to > TimeFrom) {
-        const newWorkTime = {
-            TimeFrom,
-            to,
-        };
-        setWorkTimes([...WorkTimes, newWorkTime]);
-        setFrom('');
-        setTo('');
-    } alert("choose correct time");}
-    alert("Choose time!");
+                const newWorkTime = {
+                    TimeFrom,
+                    to,
+                };
+                setWorkTimes([...WorkTimes, newWorkTime]);
+                setFrom('');
+                setTo('');
+            } alert("choose correct time");
+        }
+        alert("Choose time!");
     };
     console.log(times);
-    
+
     const [WorkHours, setWorkHours] = useState(true);
     const toggleEditWorkHours = () => {
         setWorkHours(!WorkHours);
@@ -105,12 +107,12 @@ function SettingBodyRight(props, { handleAddContact }) {
                             fontSize: '1.3em',
                             cursor: 'pointer',
                             display: usercontact.length <= 2 ? 'block' : 'none'
-                        }} onClick={usercontact.length <= 2 && handleAddContact} />
+                        }} onClick={usercontact.length <= 2 && props.handleAddContact} />
 
                     </DynamicCard>
                 ) : null}
 
-                {props.userType === "Doctor" || props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Hospital" ||props.userType === "Pharmacy" ? (
+                {props.userType === "Doctor" || props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Hospital" || props.userType === "Pharmacy" ? (
 
                     <SettingForm name="SettingForm_form" legend="Work Hours" btn="Add Time" show={WorkHours} TheEvent={toggleEditWorkHours}>
                         <span style={{
@@ -131,7 +133,7 @@ function SettingBodyRight(props, { handleAddContact }) {
                             padding: '5px',
                             backgroundColor: '#272c34',
                             cursor: 'pointer',
-                            display: WorkHours ? "none" :"block",
+                            display: WorkHours ? "none" : "block",
                         }} onClick={handleAddWorkTime}
                         ><CiCirclePlus /></span>
                         {props.userType === "Doctor" ? (
@@ -163,10 +165,10 @@ function SettingBodyRight(props, { handleAddContact }) {
                             padding: '5px',
                             backgroundColor: '#272c34',
                             cursor: 'pointer',
-                            display: VisitHours ? "none" :"block",
+                            display: VisitHours ? "none" : "block",
                         }} onClick={handleAddTime}
                         ><CiCirclePlus /></span>
-                        <SettingInput class_name="SettingInput" type="text"  name="Days" label="Days :" placeholder="Separated with ," disabled={VisitHours} />
+                        <SettingInput class_name="SettingInput" type="text" name="Days" label="Days :" placeholder="Separated with ," disabled={VisitHours} />
                         <SettingInput class_name="SettingInput" type="time" value={TimeFrom} name="From " label="From :" onChange={(e) => setFrom(e.target.value)} placeholder="" disabled={VisitHours} />
                         <SettingInput class_name="SettingInput" type="time" value={to} name="To " label="To :" onChange={(e) => setTo(e.target.value)} placeholder="" disabled={VisitHours} />
                     </SettingForm>

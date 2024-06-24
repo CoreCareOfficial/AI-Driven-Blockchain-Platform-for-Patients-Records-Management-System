@@ -70,4 +70,18 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:doctorID', async (req, res) => {
+    const { doctorID } = req.params;
+
+    try {
+        const doctor = await pool.query('SELECT * FROM DOCTOR WHERE doctorID = $1', [doctorID]);
+        if (doctor.rows.length === 0) {
+            return res.status(404).send('Doctor not found');
+        }
+        res.json(doctor.rows[0]);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+})
+
 export default router;
