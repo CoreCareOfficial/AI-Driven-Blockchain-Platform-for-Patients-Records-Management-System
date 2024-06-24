@@ -35,7 +35,7 @@ const upload = multer({ storage: storage });
 router.post('/', upload.fields([
     { name: 'licenseDocument', maxCount: 1 }
 ]), async (req, res) => {
-    const { username, name, phoneNumber, email, password, country, address, licenseNumber, publicWalletAddress } = req.body;
+    const { username, name, phoneNumber, email, password, country, address, licenseNumber, publicWalletAddress, facility_id } = req.body;
 
     try {
 
@@ -44,10 +44,10 @@ router.post('/', upload.fields([
         const licenseDocumentPath = req.files.licenseDocument ? req.files.licenseDocument[0].path : null;
 
         const newHealthcareProvider = await pool.query(
-            `INSERT INTO DOCTOR (username, name, phoneNumber, email, password, country, address, licenseNumber, licenseDocument, publicWalletAddress) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
+            `INSERT INTO DOCTOR (username, name, phoneNumber, email, password, country, address, licenseNumber, licenseDocument, publicWalletAddress, facility_id) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11) 
             RETURNING *`,
-            [username, name, phoneNumber, email, password, country, address, licenseNumber, licenseDocumentPath, publicWalletAddress]
+            [username, name, phoneNumber, email, password, country, address, licenseNumber, licenseDocumentPath, publicWalletAddress, facility_id]
         );
         res.json(newHealthcareProvider.rows[0]);
     } catch (err) {

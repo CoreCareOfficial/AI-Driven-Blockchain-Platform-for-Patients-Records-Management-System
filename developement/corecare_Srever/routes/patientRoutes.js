@@ -1,9 +1,14 @@
 import express from 'express';
 import pool from '../db.js';
+import path from 'path';
 import multer from 'multer';
-import fs from 'fs';
+import fs from 'fs/promises';
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Set up storage engine using multer
 const storage = multer.diskStorage({
@@ -38,6 +43,24 @@ const upload = multer({ storage: storage });
 const generateRandomTwoDigitString = () => {
     return Math.floor(1000 + Math.random() * 9000).toString().slice(-2);
 };
+
+
+// Helper function to read file content
+const readFileContent = async (filePath) => {
+    if (!filePath) {
+        console.log(`Skipping file read for null or undefined path`);
+        return null;
+    }
+    try {
+        const fullPath = path.resolve(__dirname, '..', filePath);
+        const data = await fs.readFile(fullPath);
+        return data.toString('base64');
+    } catch (error) {
+        console.error(`Error reading file from path ${filePath}:`, error);
+        return null;
+    }
+}
+
 
 // INSERT a new patient
 router.post('/', upload.fields([
@@ -126,14 +149,14 @@ router.post('/', upload.fields([
 
 
 // SELECT all patients
-router.get('/', async (req, res) => {
-    try {
-        const allPatients = await pool.query('SELECT * FROM PATIENT');
-        res.json(allPatients.rows);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
+// router.get('/', async (req, res) => {
+//     try {
+//         const allPatients = await pool.query('SELECT * FROM PATIENT');
+//         res.json(allPatients.rows);
+//     } catch (err) {
+//         res.status(500).send(err.message);
+//     }
+// });
 
 // SELECT a patient by ID
 router.get('/:patientID', async (req, res) => {
@@ -146,6 +169,36 @@ router.get('/:patientID', async (req, res) => {
         }
         res.json(patient.rows[0]);
     } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+// 
+
+// Get Patient Data
+router.get('/', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const patientQuery = await pool.query('SELECT * FROM PATIENT WHERE email = $1 or username = $1', [email]);
+        if (patientQuery.rows.length === 0) {
+            return res.status(404).send('Patient not found');
+        }
+
+        const patient = patientQuery.rows[0];
+
+        // Read files and include them in the response
+        const response = {
+            ...patient,
+            personalphoto: await readFileContent(patient.personalphoto),
+            fidcardphoto: await readFileContent(patient.fidcardphoto),
+            bidcardphoto: await readFileContent(patient.bidcardphoto),
+            passportdocument: await readFileContent(patient.passportdocument)
+        };
+
+        res.json(response);
+    } catch (err) {
+        console.error('Error in GET route:', err);
         res.status(500).send(err.message);
     }
 });

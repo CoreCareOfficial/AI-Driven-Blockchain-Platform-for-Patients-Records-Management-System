@@ -1,9 +1,14 @@
 import express from 'express';
 import pool from '../db.js';
+import path from 'path';
 import multer from 'multer';
-import fs from 'fs';
+import fs from 'fs/promises';
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -29,6 +34,22 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+// Helper function to read file content
+const readFileContent = async (filePath) => {
+    if (!filePath) {
+        console.log(`Skipping file read for null or undefined path`);
+        return null;
+    }
+    try {
+        const fullPath = path.resolve(__dirname, '..', filePath);
+        const data = await fs.readFile(fullPath);
+        return data.toString('base64');
+    } catch (error) {
+        console.error(`Error reading file from path ${filePath}:`, error);
+        return null;
+    }
+}
 
 // INSERT a new doctor
 router.post('/', upload.fields([
@@ -61,11 +82,37 @@ router.post('/', upload.fields([
 });
 
 // Get Doctors Info
+// router.get('/', async (req, res) => {
+//     try {
+//         const allDoctors = await pool.query('SELECT * FROM DOCTOR');
+//         res.json(allDoctors.rows);
+//     } catch (err) {
+//         res.status(500).send(err.message);
+//     }
+// });
+
+// Get Doctor Data
 router.get('/', async (req, res) => {
+    const { patientID } = req.body;
+
     try {
-        const allDoctors = await pool.query('SELECT * FROM DOCTOR');
-        res.json(allDoctors.rows);
+        const doctorQuery = await pool.query('SELECT * FROM DOCTOR WHERE patientID = $1', [patientID]);
+        if (doctorQuery.rows.length === 0) {
+            return res.status(404).send('Doctor not found');
+        }
+
+        const doctor = doctorQuery.rows[0];
+
+        // Read files and include them in the response
+        const response = {
+            ...doctor,
+            licensedocument: await readFileContent(doctor.licensedocument),
+
+        };
+
+        res.json(response);
     } catch (err) {
+        console.error('Error in GET route:', err);
         res.status(500).send(err.message);
     }
 });
