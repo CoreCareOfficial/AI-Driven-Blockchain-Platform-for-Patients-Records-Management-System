@@ -67,7 +67,7 @@ router.post('/checkemail', async (req, res) => {
     const { email } = req.body;
 
     try {
-        const checkEmail = await pool.query('SELECT email FROM LOGIN WHERE email = $1 or username = $1', [email]);
+        const checkEmail = await pool.query('SELECT email FROM LOGIN WHERE email = $1', [email]);
         if (checkEmail.rows.length > 0) {
             res.status(200).json({ message: "Account Exist" });
         } else {

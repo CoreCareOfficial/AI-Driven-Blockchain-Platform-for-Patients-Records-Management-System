@@ -69,16 +69,12 @@ let verificationCodes = {}; // In-memory store for simplicity
 
 // Generate and send verification code
 router.post('/', async (req, res) => {
-    console.log("server 1");
     const { email } = req.body;
-    console.log("server 2");
     const code = Math.floor(1000 + Math.random() * 9000).toString(); // Generate a 4-digit code
     console.log(code);
-    console.log("server 3");
 
     // Store the code with the email as key
     verificationCodes[email] = code;
-    console.log("server 4");
 
     const mailOptions = {
         from: "CoreCare <corecareofficial@gmail.com>",
@@ -121,7 +117,6 @@ This is an automated message, please do not reply.
 </html>
   `
     };
-    console.log("server 5");
 
     if (!transporterReady) {
         console.log("Transporter not ready, waiting...");
@@ -143,11 +138,9 @@ This is an automated message, please do not reply.
     try {
         await transporter.sendMail(mailOptions);
         res.status(200).send('Code sent successfully');
-        console.log("server 6");
     } catch (error) {
         console.error('Error sending email:', error); // Log the error
         res.status(500).send('Error sending email');
-        console.log("server 7");
     }
 });
 
