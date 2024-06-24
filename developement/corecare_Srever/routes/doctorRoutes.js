@@ -3,6 +3,7 @@ import pool from '../db.js';
 import path from 'path';
 import multer from 'multer';
 import fs from 'fs/promises';
+import fss from 'fs';
 import { fileURLToPath } from 'url';
 
 const router = express.Router();
@@ -22,8 +23,8 @@ const storage = multer.diskStorage({
         };
 
         // Create the directory if it does not exist
-        if (!fs.existsSync(paths[type])) {
-            fs.mkdirSync(paths[type], { recursive: true });
+        if (!fss.existsSync(paths[type])) {
+            fss.mkdirSync(paths[type], { recursive: true });
         }
 
         cb(null, paths[type]);
