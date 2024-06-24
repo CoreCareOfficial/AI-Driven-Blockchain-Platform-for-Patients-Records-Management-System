@@ -6,6 +6,7 @@ import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
 import Upload from "../component/loginDetails/Upload";
 import { HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
+import { useNavigate } from "react-router-dom";
 
 
 function HealthcareFacilitySignupPage2() {
@@ -13,6 +14,7 @@ function HealthcareFacilitySignupPage2() {
     const HealthcareFacilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
 
     const facilityType = userInfoValue.typeUser;
+    const navigate = useNavigate();
 
 
     return (
@@ -22,7 +24,7 @@ function HealthcareFacilitySignupPage2() {
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
                     <TextPage text={`Fill out the ${facilityType} details`} />
-                    <FormLogin buttonName='Continue' path='/signup/password-step'>
+                    <FormLogin buttonName='Continue' onContinue={() => navigate('/signup/password-step')}>
                         <TextInputField
                             label={`${facilityType} Address`}
                             type='text'
@@ -45,7 +47,7 @@ function HealthcareFacilitySignupPage2() {
                 </div>
                 :
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
-                    <TextPage text="You should not bypass the pervious step" />
+                    <TextPage text="You should not bypass the pervious step" color='red' />
                 </div>
             }
         </CardLogin>

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import Upload from '../component/loginDetails/Upload';
 import { userInfo } from "../Recoil/Atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useNavigate } from 'react-router-dom';
 
 
 function SignupPage3() {
@@ -56,6 +57,7 @@ function SignupPage3() {
     }
 
     const bloodTypeslist = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+    const navigate = useNavigate();
 
     return (
         <CardLogin step={3}>
@@ -64,7 +66,7 @@ function SignupPage3() {
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
                     <TextPage text={`Welcome ${userInfoValue.firstName} ${userInfoValue.lastName}`} />
-                    <FormLogin buttonName='Continue' path={nextPage}>
+                    <FormLogin buttonName='Continue' onContinue={() => navigate(nextPage)}>
                         <div className='row' style={{ padding: '0 10px' }}>
                             <div className='col col-lg-4' style={{ padding: '0px', alignItems: 'center' }}>
                                 <ImageSignup />
@@ -164,7 +166,7 @@ function SignupPage3() {
                 </div>
                 :
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
-                    <TextPage text="You should not bypass the pervious step" />
+                    <TextPage text="You should not bypass the pervious step" color='red' />
                 </div>
             }
         </CardLogin>

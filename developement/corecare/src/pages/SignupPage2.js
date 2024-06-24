@@ -5,18 +5,19 @@ import FormLogin from '../component/loginDetails/FormLogin';
 import { CountrySelectorField, GenderInputField, TextInputField } from '../component/loginDetails/TextInputField';
 import { userInfo } from "../Recoil/Atom";
 import { useRecoilValue } from "recoil";
+import { useNavigate } from 'react-router-dom';
 
 function SignupPage2() {
 
     const userInfoValue = useRecoilValue(userInfo);
-
+    const navigate = useNavigate();
     return (
         <CardLogin step={2}>
             {userInfoValue.firstName ?
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
                     <TextPage text={`Welcome ${userInfoValue.firstName} ${userInfoValue.lastName}`} />
-                    <FormLogin buttonName='Continue' path='/signup/step-3'>
+                    <FormLogin buttonName='Continue' onContinue={() => navigate('/signup/step-3')}>
                         <CountrySelectorField name='country' />
                         <TextInputField
                             label="Phone Number *"
@@ -43,10 +44,10 @@ function SignupPage2() {
                 </div>
                 :
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
-                    <TextPage text="You should not bypass the pervious step" />
+                    <TextPage text="You should not bypass the pervious step" color='red' />
                 </div>
             }
-        </CardLogin>
+        </CardLogin >
     );
 };
 

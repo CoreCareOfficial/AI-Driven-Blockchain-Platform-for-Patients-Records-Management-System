@@ -72,7 +72,6 @@ export function TextInputField(props) {
 
     const keyUserInfo = props.name;
     const handleChange = (event) => {
-
         setUserInfo((prevUserInfo) => ({
             ...prevUserInfo,
             [props.name]: event.target.value
@@ -82,7 +81,7 @@ export function TextInputField(props) {
     const handleBlur = (event) => {
         if (props.onBlur)
             props.onBlur(event.target.value);
-    }
+    };
     return (
         <div>
             <label style={styleLabel}>{props.label}</label>
@@ -114,6 +113,10 @@ export function PasswordInputField(props) {
             ...prevUserInfo,
             [props.name]: event.target.value
         }));
+    };
+    const handleBlur = (event) => {
+        if (props.onBlur)
+            props.onBlur(event.target.value);
     }
 
     return (
@@ -126,6 +129,7 @@ export function PasswordInputField(props) {
                     name={props.name}
                     value={password}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder={props.placeholder}
                     required
                 />

@@ -4,7 +4,7 @@ import TextPage from '../component/loginDetails/TextPage';
 import FormLogin from '../component/loginDetails/FormLogin';
 import { DateInputField, GenderInputField, TextInputField } from '../component/loginDetails/TextInputField';
 import SignOrLogin from '../component/loginDetails/SignOrLogin';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { userInfo } from '../Recoil/Atom';
 import { useSetRecoilState } from 'recoil';
@@ -45,12 +45,14 @@ function SignupPage() {
             console.error(error.message);
         }
     };
+    const navigate = useNavigate();
+
     return (
         <CardLogin step={1}>
             <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <TextPage text='Who are you?' />
-                <FormLogin buttonName='Continue' path='/signup/step-2' >
+                <FormLogin buttonName='Continue' onContinue={() => navigate('/signup/step-2')}>
                     <div className='row' style={{ marginTop: '-15px' }}>
                         <div className='col col-lg-6'>
                             <TextInputField

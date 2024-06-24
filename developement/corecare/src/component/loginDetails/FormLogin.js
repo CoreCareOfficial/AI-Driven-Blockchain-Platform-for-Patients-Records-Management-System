@@ -1,19 +1,14 @@
 import Submit from "./Submit";
-import { useNavigate } from 'react-router-dom';
 
 
 function FormLogin(props) {
-    const navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
-
         if (props.onContinue) {
             props.onContinue();
         }
         else
             console.log('error')
-
-        navigate(props.path); // Redirect on successful submission
     };
 
     return (

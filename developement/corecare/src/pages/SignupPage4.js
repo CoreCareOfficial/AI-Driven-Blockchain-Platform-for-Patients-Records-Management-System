@@ -1,12 +1,12 @@
-import { useState } from "react";
 import CardLogin from "../component/bootcomponent/CardLogin";
 import FormLogin from "../component/loginDetails/FormLogin";
 import { PasswordInputField } from "../component/loginDetails/TextInputField";
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
-import { GeneralData, HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
+import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from "../Recoil/Atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import bcrypt from 'bcryptjs';
+import { useNavigate } from "react-router-dom";
 
 function SignupPage4() {
     const userInfoValue = useRecoilValue(userInfo);
@@ -17,8 +17,8 @@ function SignupPage4() {
             userInfoValue.typeUser === "Patient" ? false : true;
 
     const setUserInfo = useSetRecoilState(isFacility ? HealthcareFacilityInfo : userInfo);
+    const setloginInfo = useSetRecoilState(loginInfo);
     const HealthcareFacilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
-    const [nextPage, setNextPage] = useState('');
 
     const un = !isFacility ?
         userInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
@@ -33,6 +33,7 @@ function SignupPage4() {
 
     console.log('username = ' + un);
 
+    const navigate = useNavigate();
 
     const handleConfirmed = async (e) => {
         const salt = await bcrypt.genSalt(10);
@@ -40,20 +41,19 @@ function SignupPage4() {
         console.log("hashedPassword= " + hashedPassword);
         if (userGeneralData.password.length >= 6) {
             if (userGeneralData.password === userGeneralData.confirmedPassword && !userGeneralData.isForgetton) {
-                setNextPage('/signup/verify-code');
                 setUserInfo((prevUserInfo) => ({
                     ...prevUserInfo,
                     password: hashedPassword,
                     userName: un
                 }));
+                navigate('/signup/verify-code');
             }
             else if (userGeneralData.password === userGeneralData.confirmedPassword && userGeneralData.isForgetton) {
-                setNextPage('/signup/end_step');
-                setUserInfo((prevUserInfo) => ({
+                setloginInfo((prevUserInfo) => ({
                     ...prevUserInfo,
-                    password: hashedPassword,
-                    userName: un
+                    password: hashedPassword
                 }));
+                navigate('/signup/end_step');
             } else
                 alert('The two passwords are not the same')
         }
@@ -72,7 +72,7 @@ function SignupPage4() {
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
                     <TextPage text='Now set up your password , but make it strong' />
-                    <FormLogin buttonName='Continue' path={nextPage} onContinue={handleConfirmed}>
+                    <FormLogin buttonName='Continue' onContinue={handleConfirmed}>
                         <PasswordInputField
                             label='Password *'
                             placeholder='Enter your password'
@@ -89,7 +89,7 @@ function SignupPage4() {
                 </div>
                 :
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
-                    <TextPage text="You should not bypass the pervious step" />
+                    <TextPage text="You should not bypass the pervious step" color='red' />
                 </div>
             }
         </CardLogin>

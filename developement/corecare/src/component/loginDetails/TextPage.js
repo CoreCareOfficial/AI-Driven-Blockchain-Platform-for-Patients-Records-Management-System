@@ -4,7 +4,7 @@ function TextPage(props) {
 
     return (
         <div style={{
-            color: '#eaeaea',
+            color: props.color ? props.color : '#eaeaea',
             fontSize: '18px',
             fontFamily: 'DM Sans',
             lineHeight: '23px',

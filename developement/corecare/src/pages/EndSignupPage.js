@@ -7,7 +7,7 @@ import TextPage from '../component/loginDetails/TextPage';
 import Submit from '../component/loginDetails/Submit';
 import { Link } from 'react-router-dom';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { HealthcareFacilityInfo, userInfo } from '../Recoil/Atom';
+import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from '../Recoil/Atom';
 import { useEffect, useRef, useState } from 'react';
 
 function EndSignupPage() {
@@ -33,9 +33,39 @@ function EndSignupPage() {
     const [errorMessage, setErrorMessage] = useState('');
     const userInfoValue = useRecoilValue(userInfo);
     const facilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
+    const userGeneralData = useRecoilValue(GeneralData);
+    const userloginInfo = useRecoilValue(loginInfo);
 
     // console.log(Object.entries(userInfoValue));
     // console.log(Object.entries(facilityInfoValue));
+
+    const successfulChangePassword = async () => {
+        const email = userloginInfo.login;
+        const newPassword = userloginInfo.password;
+        console.log('new password of forget: ' + newPassword);
+        const loginData = {
+            email: email,
+            password: newPassword,
+        };
+
+        try {
+            const userResponse = await fetch("http://localhost:5000/login/forget", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginData)
+            });
+            if (userResponse.ok)
+                console.log("Password Updated Successfully");
+            /////////////
+            else
+                console.log("Password has NOT Updated");
+
+        } catch (error) {
+            setErrorMessage(error.message);
+        }
+    }
 
     const successfulCreated = async () => {
         const type = userInfoValue.typeUser;
@@ -148,7 +178,9 @@ function EndSignupPage() {
     // const resetStatefacility = useResetRecoilState(HealthcareFacilityInfo);
     useEffect(() => {
         if (!hasEffectRun.current) {
-            successfulCreated();
+            userGeneralData.isForgetton ?
+                successfulChangePassword() :
+                successfulCreated();
             hasEffectRun.current = true;
             // resetState();
             // resetStatefacility();

@@ -6,6 +6,7 @@ import { SelectInputField, SelectMultiInputField, TextInputField } from "../comp
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
 import Upload from "../component/loginDetails/Upload";
+import { useNavigate } from "react-router-dom";
 
 function DoctorSignupPage() {
 
@@ -31,6 +32,8 @@ function DoctorSignupPage() {
         'Sexual Health',
         'Urology'
     ];
+    const navigate = useNavigate();
+
     const userInfoValue = useRecoilValue(userInfo);
     return (
         <CardLogin step={4}>
@@ -38,7 +41,7 @@ function DoctorSignupPage() {
                 style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <TextPage text={`Welcome Dr. ${userInfoValue.firstName} ${userInfoValue.lastName}`} />
-                <FormLogin buttonName='Continue' path='/signup/password-step'>
+                <FormLogin buttonName='Continue' onContinue={() => navigate('/signup/password-step')}>
                     <SelectInputField
                         label='Medical Specialization'
                         placeholder='Select your Medical Specialization...'

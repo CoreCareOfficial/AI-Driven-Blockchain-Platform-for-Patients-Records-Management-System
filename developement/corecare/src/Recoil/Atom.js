@@ -44,7 +44,7 @@ export const GeneralData = atom({
         password: '',
         confirmedPassword: '',
         steps: 0,
-        isForgetton: false
+        isForgetton: false,
     }
 });
 

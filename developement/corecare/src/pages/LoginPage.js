@@ -5,19 +5,27 @@ import FormLogin from '../component/loginDetails/FormLogin';
 import { TextInputField, PasswordInputField } from '../component/loginDetails/TextInputField';
 import ForgotButton from '../component/loginDetails/ForgotButton';
 import SignOrLogin from '../component/loginDetails/SignOrLogin';
-import { Outlet } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { GeneralData, loginInfo } from '../Recoil/Atom';
+import { useState } from 'react';
 
 function LoginPage() {
 
     const loginInfoValue = useRecoilValue(loginInfo);
     const GeneralDataValue = useRecoilValue(GeneralData);
+    const setGeneralData = useSetRecoilState(GeneralData);
+    const navigate = useNavigate();
+
+    const [p, setP] = useState('');
+
+    const handleBlur = (pass) => {
+        setP(pass);
+        console.log('p= ' + p);
+    }
 
     const handleUsername = async () => {
-        const p = GeneralDataValue.password;
-        console.log('p= ' + p);
-        console.log(` emailorusername: ${loginInfoValue.login}`);
+        console.log(`emailorusername: ${loginInfoValue.login}`);
         const loginData = {
             email: loginInfoValue.login,
             password: p
@@ -32,10 +40,10 @@ function LoginPage() {
                 body: JSON.stringify(loginData)
             });
             if (userResponse.ok) {
-                const jsonData = userResponse.json();
-                console.log('login : ');
-                console.log(jsonData);
+                const jsonData = await userResponse.json();
+                console.log(jsonData.message);
                 console.log("successful signin");
+                navigate('/userprofile', { state: { userType: jsonData.userType } });
             } else {
                 console.log("faild signin");
             }
@@ -50,7 +58,7 @@ function LoginPage() {
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-100px' }}>
                     <TitlePage title="Login" />
                     <TextPage text='Fill out your personal details' />
-                    <FormLogin buttonName='Login' path='/userprofile' onContinue={handleUsername}>
+                    <FormLogin buttonName='Login' onContinue={handleUsername}>
                         <TextInputField
                             label='Username, Email'
                             type='text'
@@ -59,7 +67,7 @@ function LoginPage() {
                             isLogin={true}
                             name='login'
                         />
-                        <PasswordInputField label='Password' placeholder="Enter your password" />
+                        <PasswordInputField label='Password' placeholder="Enter your password" onBlur={handleBlur} />
                     </FormLogin>
                     <ForgotButton />
                     <SignOrLogin goSign={true} />

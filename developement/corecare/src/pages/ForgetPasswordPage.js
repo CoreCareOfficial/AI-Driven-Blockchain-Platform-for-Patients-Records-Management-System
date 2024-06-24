@@ -4,18 +4,25 @@ import FormLogin from "../component/loginDetails/FormLogin";
 import { TextInputField } from "../component/loginDetails/TextInputField";
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
-import { GeneralData } from "../Recoil/Atom";
+import { GeneralData, loginInfo } from "../Recoil/Atom";
+import { useNavigate } from "react-router-dom";
 
 
 function ForgetPasswordPage() {
     const setUserInfo = useSetRecoilState(GeneralData);
+    const setloginInfo = useSetRecoilState(loginInfo);
     setUserInfo((prevUserInfo) => ({
         ...prevUserInfo,
         isForgetton: true
     }));
 
-    const handleBlur = (e) => {
+    const navigate = useNavigate();
 
+    const handleBlur = (e) => {
+        setloginInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            login: e
+        }));
     };
     return (
         <>
@@ -23,7 +30,7 @@ function ForgetPasswordPage() {
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-100px' }}>
                     <TitlePage title="Forget Password" />
                     <TextPage text='Fill out the required details' />
-                    <FormLogin buttonName='Login' path='/signup/verify-code'>
+                    <FormLogin buttonName='Login' onContinue={navigate('/signup/verify-code')}>
                         <TextInputField
                             label='Email'
                             type='text'

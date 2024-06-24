@@ -7,7 +7,7 @@ import TextPage from '../component/loginDetails/TextPage';
 import FormLogin from '../component/loginDetails/FormLogin';
 import { RadioField } from '../component/loginDetails/TextInputField';
 import SignOrLogin from '../component/loginDetails/SignOrLogin';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 function SignupPage1() {
 
@@ -32,17 +32,8 @@ function SignupPage1() {
         setSelectedType(e.target.value);
     };
 
-    const handleContinue = () => {
-        setUserInfo((prevUserInfo) => ({
-            ...prevUserInfo,
-            typeUser: selectedType,
-        }));
-        setGeneralData((prevUserInfo) => ({
-            ...prevUserInfo,
-            steps: steps,
-            isForgetton: false
-        }));
-    }
+    const navigate = useNavigate();
+
 
     const nextPage =
         selectedType === "Patient" ? '/signup/step-1'
@@ -53,11 +44,23 @@ function SignupPage1() {
                             : selectedType === "Pharmacy" ? '/signup/HealthcareFacility-step-1'
                                 : selectedType === "Researcher" ? '' : '';
 
+    const handleContinue = () => {
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            typeUser: selectedType,
+        }));
+        setGeneralData((prevUserInfo) => ({
+            ...prevUserInfo,
+            steps: steps,
+            isForgetton: false
+        }));
+        navigate(nextPage); // Redirect on successful submission
+    };
     return (
         <CardLogin>
             <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
-                <FormLogin buttonName='Continue' onContinue={handleContinue} path={nextPage}>
+                <FormLogin buttonName='Continue' onContinue={handleContinue}>
                     <div style={{ height: '200px', padding: '20px', backgroundColor: '#3F4652', borderRadius: '25px' }}>
                         <TextPage text='Sign up as' />
                         <div style={{ marginBottom: '12px' }}></div>

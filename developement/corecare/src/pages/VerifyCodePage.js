@@ -5,6 +5,7 @@ import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
 import React, { useState, useRef, useEffect } from 'react';
 import { GeneralData, HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
+import { useNavigate } from "react-router-dom";
 
 function VerifyCodePage() {
 
@@ -13,6 +14,7 @@ function VerifyCodePage() {
     const userInfoValue = useRecoilValue(userInfo);
     const GeneralDataValue = useRecoilValue(GeneralData);
     const facilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
+    const navigate = useNavigate();
 
     const email = userInfoValue.email ? userInfoValue.email
         : facilityInfoValue.email ? facilityInfoValue.email : '';
@@ -76,8 +78,8 @@ function VerifyCodePage() {
                 body: JSON.stringify({ email, code: verificationCode })
             });
             if (response.ok) {
-                // Redirect to the next page
-                window.location.href = nextPage;
+                console.log('go to next page');
+                navigate(nextPage);
             } else {
                 const errorData = await response.text();
                 setMessage(`Invalid verification code: ${errorData}`);
@@ -89,7 +91,7 @@ function VerifyCodePage() {
 
     useEffect(() => {
         if (!hasEffectRun.current) {
-            // handleSendCode();
+            handleSendCode();
             hasEffectRun.current = true;
         }
     }, []);
@@ -115,8 +117,8 @@ function VerifyCodePage() {
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Verify Code" />
                     <TextPage text={`Check your Email, we have sent you the code at ${`${obfuscatedUsername}@${domain}`}`} />
-                    <FormLogin buttonName='Continue' path={nextPage} >
-                        {/* <FormLogin buttonName='Continue' path={nextPage} onContinue={handleVerifyCode}> */}
+                    {/* <FormLogin buttonName='Continue' onContinue={() => navigate(nextPage)} > */}
+                    <FormLogin buttonName='Continue' onContinue={handleVerifyCode}>
                         <div style={{ minWidth: '248px', marginTop: '20px' }}>
                             <input style={styleInputCode}
                                 type="text"
@@ -151,7 +153,7 @@ function VerifyCodePage() {
                 </div>
                 :
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
-                    <TextPage text="You should not bypass the previous step" />
+                    <TextPage text="You should not bypass the previous step" color='red' />
                 </div>
             }
             {message && <p style={{ color: 'red' }}>{message}</p>}
