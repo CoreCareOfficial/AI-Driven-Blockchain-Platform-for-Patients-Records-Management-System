@@ -62,12 +62,29 @@ router.post('/get', async (req, res) => {
 });
 
 // Forgot Password
+
+router.post('/checkemail', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const checkEmail = await pool.query('SELECT email FROM LOGIN WHERE email = $1 or username = $1', [email]);
+        if (checkEmail.rows.length > 0) {
+            res.status(200).json({ message: "Account Exist" });
+        } else {
+            res.status(400).json({ message: "Account doesn't Exists" });
+        }
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+
 router.put('/forget', async (req, res) => {
     const { email, newPassword } = req.body;
     try {
-        const updatePassword = await pool.query('UPDATE LOGIN SET password = $1 WHERE email = $2 RETURNING *', [newPassword, email]);
+        const updatePassword = await pool.query('UPDATE LOGIN SET password = $1 WHERE email = $2 or username = $2 RETURNING *', [newPassword, email]);
         if (updatePassword.rowCount === 0) {
-            return res.status(404).send('email not found');
+            return res.status(404).send("Password wasn't updated successfully");
         }
         res.status(200).send("Password Updated Successfully");
 

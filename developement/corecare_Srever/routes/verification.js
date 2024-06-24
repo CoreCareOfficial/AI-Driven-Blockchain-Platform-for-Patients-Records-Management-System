@@ -73,6 +73,7 @@ router.post('/', async (req, res) => {
     const { email } = req.body;
     console.log("server 2");
     const code = Math.floor(1000 + Math.random() * 9000).toString(); // Generate a 4-digit code
+    console.log(code);
     console.log("server 3");
 
     // Store the code with the email as key
