@@ -68,8 +68,7 @@ function VerifyCodePage() {
         }
     };
 
-    const handleVerifyCode = async (e) => {
-        e.preventDefault();
+    const handleVerifyCode = async () => {
         const verificationCode = code.join('');
         try {
             const response = await fetch("http://localhost:5000/verification/verify-code", {
