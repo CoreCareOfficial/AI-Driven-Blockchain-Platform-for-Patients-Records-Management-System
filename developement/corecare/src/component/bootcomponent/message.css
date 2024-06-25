@@ -1,6 +1,15 @@
-.p-message {
+.p-message-detail {
     max-width: 80%;
     margin: 10px auto;
+    font-weight: 600;
+}
+
+.p-message {
+    border-width: 0 0 0 6px;
+    border-radius: 6px;
+    width: 90%;
+    margin: 10px auto;
+    border-color: currentColor;
 }
 
 .p-message-wrapper {
