@@ -27,4 +27,5 @@ yarn-error.log*
 /routes
 /db.js
 /index.js
-
+/package.json
+/package-lock.json
