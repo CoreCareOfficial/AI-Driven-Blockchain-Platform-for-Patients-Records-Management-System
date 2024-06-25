@@ -4,7 +4,7 @@ import { useMountEffect } from 'primereact/hooks';
 import { Messages } from 'primereact/messages';
 // import '../../../node_modules/primeflex/primeflex.css';                          // PrimeFlex
 
-import './message.css';
+// import './message.css';
 
 export default function Message() {
     const msgs = useRef(null);

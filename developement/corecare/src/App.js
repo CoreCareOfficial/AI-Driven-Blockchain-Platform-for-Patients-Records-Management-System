@@ -7,19 +7,15 @@ import './css/service.css';
 import './css/search.css';
 import './css/contact.css';
 import './css/RecordesPageStyle/recordes.css';
-import "primereact/resources/themes/lara-light-cyan/theme.css";  // Theme
-import 'primereact/resources/primereact.min.css';          // Core CSS
-import 'primeicons/primeicons.css';              // Icons
-// import 'primeflex/primeflex.css';                          // PrimeFlex
-
+import 'primeicons/primeicons.css';
+import 'primereact/resources/primereact.css';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import Root from './routes/Root';
 
 function App() {
   return (
     <>
-
       <Root />
-
     </>
   );
 }
