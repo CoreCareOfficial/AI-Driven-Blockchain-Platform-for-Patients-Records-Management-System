@@ -4,7 +4,7 @@ import FormLogin from "../component/loginDetails/FormLogin";
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
 import React, { useState, useRef, useEffect } from 'react';
-import { GeneralData, HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
+import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from "../Recoil/Atom";
 import { useNavigate } from "react-router-dom";
 
 function VerifyCodePage() {
@@ -13,11 +13,12 @@ function VerifyCodePage() {
 
     const userInfoValue = useRecoilValue(userInfo);
     const GeneralDataValue = useRecoilValue(GeneralData);
+    const loginInfoValue = useRecoilValue(loginInfo);
     const facilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
     const navigate = useNavigate();
 
     const email = userInfoValue.email ? userInfoValue.email
-        : facilityInfoValue.email ? facilityInfoValue.email : '';
+        : facilityInfoValue.email ? facilityInfoValue.email : loginInfoValue.email;
 
     const [username, domain] = email.split('@');
     const obfuscatedUsername = username.substring(0, 2) + '*'.repeat(username.length - 2);

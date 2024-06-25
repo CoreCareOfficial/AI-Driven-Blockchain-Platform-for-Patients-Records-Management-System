@@ -45,12 +45,12 @@ function EndSignupPage() {
         console.log('new password of forget: ' + newPassword);
         const loginData = {
             email: email,
-            password: newPassword,
+            newPassword: newPassword,
         };
 
         try {
             const userResponse = await fetch("http://localhost:5000/login/forget", {
-                method: "POST",
+                method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },

@@ -1,0 +1,10 @@
+.p-message {
+    max-width: 80%;
+    margin: 10px auto;
+}
+
+.p-message-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+}
