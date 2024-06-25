@@ -82,7 +82,7 @@ router.post('/checkemail', async (req, res) => {
 router.put('/forget', async (req, res) => {
     const { email, newPassword } = req.body;
     try {
-        const updatePassword = await pool.query('UPDATE LOGIN SET password = $1 WHERE email = $2 or username = $2 RETURNING *', [newPassword, email]);
+        const updatePassword = await pool.query('UPDATE LOGIN SET password = $1 WHERE email = $2 RETURNING *', [newPassword, email]);
         if (updatePassword.rowCount === 0) {
             return res.status(404).send("Password wasn't updated successfully");
         }
