@@ -118,38 +118,48 @@ function EndSignupPage() {
                     method: "POST",
                     body: formData
                 });
-                console.log("res = " + response);
-                console.log('Added Patient Successful');
-                if (type === "Doctor") {
-                    console.log("type4: " + type);
-                    const patientId = await response.json();
-                    console.log('patientId : ' + patientId);
-                    const doctorFormData = new FormData();
-                    doctorFormData.append('username', userInfoValue.userName);
-                    doctorFormData.append('patientID', patientId);
-                    doctorFormData.append('specialization', userInfoValue.medicalSpecialization);
-                    doctorFormData.append('academicDegree', userInfoValue.academicDegree);
-                    doctorFormData.append('locationOfWork', userInfoValue.locationOfWork);
-                    doctorFormData.append('licenseNumber', userInfoValue.licenseNumber);
-                    doctorFormData.append('licenseDocument', userInfoValue.licenseDocument);
-                    try {
-                        const doctorResponse = await fetch("http://localhost:5000/doctors", {
-                            method: "POST",
-                            body: doctorFormData
-                        });
-                        console.log("res = " + doctorResponse);
-                        console.log('Added Doctor Successful');
+                if (response.ok) {
+                    console.log("res = " + response);
+                    console.log('Added Patient Successful');
+                    if (type === "Doctor") {
+                        console.log("type4: " + type);
+                        const patientId = await response.json();
+                        console.log('patientId : ' + patientId);
+                        const doctorFormData = new FormData();
+                        doctorFormData.append('username', userInfoValue.userName);
+                        doctorFormData.append('patientID', patientId);
+                        doctorFormData.append('specialization', userInfoValue.medicalSpecialization);
+                        doctorFormData.append('academicDegree', userInfoValue.academicDegree);
+                        doctorFormData.append('locationOfWork', userInfoValue.locationOfWork);
+                        doctorFormData.append('licenseNumber', userInfoValue.licenseNumber);
+                        doctorFormData.append('licenseDocument', userInfoValue.licenseDocument);
+                        try {
+                            const doctorResponse = await fetch("http://localhost:5000/doctors", {
+                                method: "POST",
+                                body: doctorFormData
+                            });
+                            if (doctorResponse.ok) {
+                                console.log("res = " + doctorResponse);
+                                console.log('Added Doctor Successful');
+                                successfulAddUser = true;
+                            } else {
+                                successfulAddUser = false;
+                                toast.current.show({ severity: 'error', summary: 'Error', detail: `Failed Adding ${type}` });
+                            }
+                        } catch (error) {
+                            console.error(error.message);
+                            toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
+                            setState((prevState) => ({ ...prevState, errorMessage: error.message, successful: false }));
+                            successfulAddUser = false;
+                        }
+                    } else {
                         successfulAddUser = true;
-                    } catch (error) {
-                        console.error(error.message);
-                        toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
-                        setState((prevState) => ({ ...prevState, errorMessage: error.message, successful: false }));
-                        successfulAddUser = false;
+                        console.log('else Patient Successful');
+                        console.log(successfulAddUser);
                     }
                 } else {
-                    successfulAddUser = true;
-                    console.log('else Patient Successful');
-                    console.log(successfulAddUser);
+                    successfulAddUser = false;
+                    toast.current.show({ severity: 'error', summary: 'Error', detail: `Failed Adding ${type}` });
                 }
             } catch (error) {
                 console.error(error.message);
@@ -185,9 +195,14 @@ function EndSignupPage() {
                     method: "POST",
                     body: formData
                 });
-                console.log("res = " + response);
-                console.log(`Added ${type} Successful`);
-                successfulAddUser = true;
+                if (response.ok) {
+                    console.log("res = " + response);
+                    console.log(`Added ${type} Successful`);
+                    successfulAddUser = true;
+                } else {
+                    successfulAddUser = false;
+                    toast.current.show({ severity: 'error', summary: 'Error', detail: `Failed Adding ${type}` });
+                }
             } catch (error) {
                 console.error(error.message);
                 toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
