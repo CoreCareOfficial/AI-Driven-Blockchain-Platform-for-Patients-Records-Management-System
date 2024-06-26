@@ -99,7 +99,7 @@ function EndSignupPage() {
             formData.append('phoneNumber', userInfoValue.phoneNumber);
             formData.append('status', userInfoValue.status);
             formData.append('address', userInfoValue.address);
-            formData.append('job', userInfoValue.job);
+            formData.append('job', type === 'Doctor' ? 'Doctor' : userInfoValue.job);
             formData.append('personalPhoto', userInfoValue.photo);
             formData.append('idType', userInfoValue.idType);
             formData.append('nationalID', userInfoValue.idType === "National" ? userInfoValue.id : '');

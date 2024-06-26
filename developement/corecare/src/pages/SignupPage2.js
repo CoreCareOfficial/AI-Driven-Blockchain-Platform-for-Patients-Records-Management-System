@@ -11,12 +11,15 @@ function SignupPage2() {
 
     const userInfoValue = useRecoilValue(userInfo);
     const navigate = useNavigate();
+
+    const text = userInfoValue.typeUser === "Doctor" ? `Welcome Dr. ${userInfoValue.firstName} ${userInfoValue.lastName}` :
+        `Welcome ${userInfoValue.firstName} ${userInfoValue.lastName}`;
     return (
         <CardLogin step={2}>
             {userInfoValue.firstName ?
                 <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
-                    <TextPage text={`Welcome ${userInfoValue.firstName} ${userInfoValue.lastName}`} />
+                    <TextPage text={text} />
                     <FormLogin buttonName='Continue' onContinue={() => navigate('/signup/step-3')}>
                         <CountrySelectorField name='country' />
                         <TextInputField
@@ -26,12 +29,12 @@ function SignupPage2() {
                             required={true}
                             placeholder="Enter your phone number"
                         />
-                        <TextInputField
+                        {userInfoValue.typeUser !== "Doctor" && <TextInputField
                             label="Job"
                             type='text'
                             name='job'
                             placeholder="Enter your job"
-                        />
+                        />}
                         <TextInputField
                             label="Address *"
                             type='text'

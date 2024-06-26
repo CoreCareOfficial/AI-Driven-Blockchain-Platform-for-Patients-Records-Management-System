@@ -58,14 +58,15 @@ function SignupPage3() {
 
     const bloodTypeslist = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
     const navigate = useNavigate();
-
+    const text = userInfoValue.typeUser === "Doctor" ? `Welcome Dr. ${userInfoValue.firstName} ${userInfoValue.lastName}` :
+        `Welcome ${userInfoValue.firstName} ${userInfoValue.lastName}`;
     return (
         <CardLogin step={3}>
             {userInfoValue.phoneNumber ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
-                    <TextPage text={`Welcome ${userInfoValue.firstName} ${userInfoValue.lastName}`} />
+                    <TextPage text={text} />
                     <FormLogin buttonName='Continue' onContinue={() => navigate(nextPage)}>
                         <div className='row' style={{ padding: '0 10px' }}>
                             <div className='col col-lg-4' style={{ padding: '0px', alignItems: 'center' }}>
