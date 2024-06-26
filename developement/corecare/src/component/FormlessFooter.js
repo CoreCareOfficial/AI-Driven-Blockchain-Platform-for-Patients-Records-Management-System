@@ -24,19 +24,19 @@ function FormlessFooter() {
                 <div className="followContainer">
                     <h2>Follow for more</h2>
                     <div className="iconContainer">
-                        <a href="https://www.x.com" rel="noreferrer" target="_blank">
+                        <a href="https://www.x.com/corecare219293" rel="noreferrer" target="_blank">
                             <AiOutlineX />
                         </a>
-                        <a href="https://www.instagram.com" rel="noreferrer" target="_blank">
+                        <a href="https://www.instagram.com/co_ca_official" rel="noreferrer" target="_blank">
                             <AiFillInstagram />
                         </a>
-                        <a href="https://www.linkedin.com" rel="noreferrer" target="_blank">
+                        <a href="https://www.linkedin.com/in/core-care-2a9521316" rel="noreferrer" target="_blank">
                             <AiFillLinkedin />
                         </a>
-                        <a href="https://www.fb.com" rel="noreferrer" target="_blank">
+                        <a href="https://www.facebook.com/profile.php?id=61561349946436" rel="noreferrer" target="_blank">
                             <AiFillFacebook />
                         </a>
-                        <a href="https://www.whatsapp.com" rel="noreferrer" target="_blank">
+                        <a href="https://wa.me/733816431" rel="noreferrer" target="_blank">
                             <AiOutlineWhatsApp />
                         </a>
                     </div>

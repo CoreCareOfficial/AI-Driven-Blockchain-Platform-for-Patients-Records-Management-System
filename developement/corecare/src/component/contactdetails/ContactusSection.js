@@ -43,6 +43,7 @@ function Section2() {
                                 <Form.Control type="email" placeholder="your email" style={{ backgroundColor: '#272c34', color: '#fff' }} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                <Form.Label>Message</Form.Label>
                                 <Form.Control as="textarea" rows={3} placeholder="write a message" style={{ backgroundColor: '#272c34' }} />
                             </Form.Group>
                             <Button variant="primary" style={{ width: '100%', transition: '0.7s ease' }}>send</Button>{' '}

@@ -3,9 +3,12 @@ import "../css/UserPageStyle/userpage.css"
 import Content from "../component/UserDetails/Content";
 import PatientSidebarHandler from "../component/UserDetails/PatientSidebarHandler";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 function UserPage() {
 
-    const userType = "Doctor";
+    const location = useLocation();
+    const { userType } = location.state || {};
+    console.log(userType);
     const [active, setActive] = useState("Profile")
 
     const handleButtonClick = (text) => {
