@@ -174,14 +174,12 @@ router.get('/:patientID', async (req, res) => {
     }
 });
 
-// 
-
-// Get Patient Data
+// Update this route
 router.get('/', async (req, res) => {
-    const { email } = req.body;
+    const { email } = req.query;
 
     try {
-        const patientQuery = await pool.query('SELECT * FROM PATIENT WHERE email = $1 or username = $1', [email]);
+        const patientQuery = await pool.query('SELECT * FROM PATIENT WHERE email = $1 OR username = $1', [email]);
         if (patientQuery.rows.length === 0) {
             return res.status(404).send('Patient not found');
         }
@@ -192,9 +190,10 @@ router.get('/', async (req, res) => {
         const response = {
             ...patient,
             personalphoto: await readFileContent(patient.personalphoto),
-            fidcardphoto: await readFileContent(patient.fidcardphoto),
-            bidcardphoto: await readFileContent(patient.bidcardphoto),
-            passportdocument: await readFileContent(patient.passportdocument)
+            // Uncomment these if you need them
+            // fidcardphoto: await readFileContent(patient.fidcardphoto),
+            // bidcardphoto: await readFileContent(patient.bidcardphoto),
+            // passportdocument: await readFileContent(patient.passportdocument)
         };
 
         res.json(response);
