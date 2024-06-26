@@ -157,6 +157,43 @@ function EndSignupPage() {
                 setState((prevState) => ({ ...prevState, errorMessage: error.message, successful: false }));
                 successfulAddUser = false;
             }
+        } else {
+            const idFacility =
+                type === "Hospital" ? 1
+                    : type === "Radiology Center" ? 2
+                        : type === "Laboratory" ? 3
+                            : type === "Pharmacy" ? 4 : 5;
+
+            const formData = new FormData();
+            formData.append('username', facilityInfoValue.userName);
+            formData.append('type', type);
+            formData.append('name', facilityInfoValue.name);
+            formData.append('phoneNumber', facilityInfoValue.phoneNumber);
+            formData.append('email', facilityInfoValue.email);
+            formData.append('address', facilityInfoValue.address);
+            formData.append('licenseNumber', facilityInfoValue.licenseNumber);
+            formData.append('PublicWalletAddress', facilityInfoValue.PublicWalletAddress);
+            formData.append('facility_id', idFacility);
+            formData.append('facilityPhoto', facilityInfoValue.facilityPhoto);
+            formData.append('licenseDocument', facilityInfoValue.licenseDocument);
+
+            email = facilityInfoValue.email;
+            password = facilityInfoValue.password;
+            username = facilityInfoValue.userName;
+            try {
+                const response = await fetch("http://localhost:5000/healthcareproviders", {
+                    method: "POST",
+                    body: formData
+                });
+                console.log("res = " + response);
+                console.log(`Added ${type} Successful`);
+                successfulAddUser = true;
+            } catch (error) {
+                console.error(error.message);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
+                setState((prevState) => ({ ...prevState, errorMessage: error.message, successful: false }));
+                successfulAddUser = false;
+            }
         }
         if (successfulAddUser && email && password && username) {
             console.log("type3: " + type);

@@ -5,11 +5,13 @@ import { CountrySelectorField, TextInputField } from "../component/loginDetails/
 import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
 import { HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Toast } from "primereact/toast";
 
 
 function HealthcareFacilitySignupPage() {
+    const toast = useRef(null);
     const userInfoValue = useRecoilValue(userInfo);
     const setUserInfo = useSetRecoilState(HealthcareFacilityInfo);
     const facilityType = userInfoValue.typeUser;
@@ -32,8 +34,10 @@ function HealthcareFacilitySignupPage() {
             console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Email doesn't Exist") {
                 console.log(jsonData.message);
+
             } else {
-                alert(jsonData.message);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                // alert(jsonData.message);
                 setUserInfo((prevUserInfo) => ({
                     ...prevUserInfo,
                     email: emailValue
@@ -44,14 +48,16 @@ function HealthcareFacilitySignupPage() {
             console.error(error.message);
         }
     };
+
     const navigate = useNavigate();
     return (
         <CardLogin step={1}>
+            <Toast ref={toast} />
             <div className='card-body d-flex flex-column justify-content-center'
                 style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <TextPage text={`Fill out the ${facilityType} details`} />
-                <FormLogin buttonName='Continue' onContinue={navigate('/signup/HealthcareFacility-step-2')}>
+                <FormLogin buttonName='Continue' onContinue={() => navigate('/signup/HealthcareFacility-step-2')}>
                     <TextInputField
                         label={`${facilityType} Name`}
                         type='text'
@@ -77,6 +83,7 @@ function HealthcareFacilitySignupPage() {
                         required={true}
                         isFacility={true}
                         onBlur={handleOnBlur}
+                        min={13}
                     />
                 </FormLogin>
             </div>

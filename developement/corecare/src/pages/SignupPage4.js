@@ -30,10 +30,10 @@ function SignupPage4() {
         userInfoValue.lastName.toLocaleLowerCase()[0] +
         userInfoValue.phoneNumber.slice(-3)
         :
-        userInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
-        userInfoValue.name.toLocaleLowerCase().slice(-2) +
-        userInfoValue.phoneNumber.slice(-3) +
-        userInfoValue.licenseNumber.toLocaleLowerCase().slice(-2);
+        HealthcareFacilityInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
+        HealthcareFacilityInfoValue.name.toLocaleLowerCase().slice(-2) +
+        HealthcareFacilityInfoValue.phoneNumber.slice(-3) +
+        HealthcareFacilityInfoValue.licenseNumber.slice(-2);
 
     console.log('username = ' + un);
 

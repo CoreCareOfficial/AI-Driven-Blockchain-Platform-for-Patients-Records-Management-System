@@ -71,7 +71,9 @@ export const HealthcareFacilityInfo = atom({
         licenseNumber: '',
         licenseDocument: null,
         password: '',
-        type: 'Government'
+        type: 'Government',
+        facilityPhoto: null,
+        PublicWalletAddress: ''
     }
 })
 
