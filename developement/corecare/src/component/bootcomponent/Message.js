@@ -6,15 +6,15 @@ import { Messages } from 'primereact/messages';
 
 // import './message.css';
 
-export default function Message() {
+export default function Message(props) {
     const msgs = useRef(null);
     const stateList = ['success', 'info', 'warn', 'error'];
-    // const iconsList = ['pi pi-send',];
+    console.log('for message componet');
     useMountEffect(() => {
         if (msgs.current) {
             msgs.current.clear();
             msgs.current.show([
-                { sticky: true, severity: stateList[0], detail: 'Info message' },
+                { sticky: true, severity: stateList[props.indexState], detail: props.message, closable: false },
             ]);
         }
     });

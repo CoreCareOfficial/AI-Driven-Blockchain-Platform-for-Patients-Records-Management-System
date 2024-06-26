@@ -5,11 +5,14 @@ import FormLogin from '../component/loginDetails/FormLogin';
 import { DateInputField, GenderInputField, TextInputField } from '../component/loginDetails/TextInputField';
 import SignOrLogin from '../component/loginDetails/SignOrLogin';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { userInfo } from '../Recoil/Atom';
 import { useSetRecoilState } from 'recoil';
+import '../component/bootcomponent/message.css';
+import { Toast } from 'primereact/toast';
 
 function SignupPage() {
+    const toast = useRef(null);
     const [emailValue, setEmailValue] = useState('');
     const setUserInfo = useSetRecoilState(userInfo);
     setUserInfo((prevUserInfo) => ({
@@ -33,8 +36,10 @@ function SignupPage() {
             console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Email doesn't Exist") {
                 console.log(jsonData.message);
+
             } else {
-                alert(jsonData.message);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                // alert(jsonData.message);
                 setUserInfo((prevUserInfo) => ({
                     ...prevUserInfo,
                     email: emailValue
@@ -49,6 +54,7 @@ function SignupPage() {
 
     return (
         <CardLogin step={1}>
+            <Toast ref={toast} />
             <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <TextPage text='Who are you?' />

@@ -5,12 +5,15 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import React, { useRef, useState } from 'react';
 import { useSetRecoilState } from "recoil";
 import { userInfo } from "../../Recoil/Atom";
-
+import '../bootcomponent/message.css';
+import { Toast } from "primereact/toast";
 
 
 function ImageSignup() {
 
     const fileRef = useRef(null);
+    const toast = useRef(null);
+
     const setUserInfo = useSetRecoilState(userInfo);
 
     // const [selectedFile, setSelectedFile] = useState(null);
@@ -19,7 +22,7 @@ function ImageSignup() {
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file.type && !file.type.startsWith('image/')) {
-            return alert('Please select an image file.');
+            return toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'Invalid File, Please select an image file' });
         }
 
         // setSelectedFile(file);
@@ -49,6 +52,7 @@ function ImageSignup() {
         reader.onload = (e) => {
             // setSelectedFile(file);
             setSelectedImageUrl(e.target.result); // Store the image URL for display
+            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successful Photo Uploaded' });
         };
         reader.readAsDataURL(file);
     };
@@ -70,11 +74,12 @@ function ImageSignup() {
 
     return (
         <div className="image-signup" style={{ maxWidth: '136px' }}>
+            <Toast ref={toast} />
             <Image
                 src={SelectedImageUrl}
                 thumbnail
                 style={{ backgroundColor: 'transparent', maxHeight: '120px', minWidth: '90%' }}
-                onClick={() => alert(SelectedImageUrl)
+                onClick={() => toast.current.show({ severity: 'info', summary: 'Info', detail: 'Your Profile Photo' })
                 }
             />
             <div style={styleInputFile} >

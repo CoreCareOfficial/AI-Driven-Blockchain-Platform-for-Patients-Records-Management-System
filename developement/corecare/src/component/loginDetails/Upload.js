@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef } from "react";
 import { useSetRecoilState } from "recoil";
 import { HealthcareFacilityInfo, userInfo } from "../../Recoil/Atom";
+import { Toast } from "primereact/toast";
 
 
 function Upload(props) {
@@ -23,12 +24,13 @@ function Upload(props) {
 
     // const [selectedFile, setSelectedFile] = useState(null);
     const fileRef = useRef(null);
+    const toast = useRef(null);
     const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (!file.type.startsWith('image/')) {
-            return alert('Please select an image file.');
+            return toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'Invalid File, Please select an image file' });
         }
 
         // setSelectedFile(file);
@@ -37,6 +39,7 @@ function Upload(props) {
             [props.name]: file
         }));
 
+        toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successful Photo Uploaded' });
         // const formData = new FormData();
         // formData.append('profileImage', file);
 
@@ -57,6 +60,7 @@ function Upload(props) {
     };
     return (
         <div style={styleInputFile} >
+            <Toast ref={toast} />
             <input
                 type="file"
                 accept="image/*"

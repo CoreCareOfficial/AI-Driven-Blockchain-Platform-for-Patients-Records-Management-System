@@ -7,8 +7,12 @@ import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from "../Rec
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import bcrypt from 'bcryptjs';
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
+import { Toast } from "primereact/toast";
 
 function SignupPage4() {
+    const toast = useRef(null);
+
     const userInfoValue = useRecoilValue(userInfo);
     const userGeneralData = useRecoilValue(GeneralData);
 
@@ -55,7 +59,8 @@ function SignupPage4() {
                 }));
                 navigate('/signup/end_step');
             } else
-                alert('The two passwords are not the same')
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'The two passwords are not the same' });
+
         }
         else
             alert('The password must be 6 digits at lest')
@@ -67,6 +72,7 @@ function SignupPage4() {
 
     return (
         <CardLogin step={step}>
+            <Toast ref={toast} />
             {(userInfoValue.phoneNumber || HealthcareFacilityInfoValue.licenseNumber || userGeneralData.isForgetton) ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>

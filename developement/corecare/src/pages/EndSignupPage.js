@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 import '../fonts/caladea.css';
 import TitlePage from '../component/loginDetails/TitlePage';
 import TextPage from '../component/loginDetails/TextPage';
 import Submit from '../component/loginDetails/Submit';
 import { Link } from 'react-router-dom';
+import { Toast } from 'primereact/toast';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from '../Recoil/Atom';
 import { useEffect, useRef, useState } from 'react';
@@ -13,6 +14,7 @@ import { useEffect, useRef, useState } from 'react';
 function EndSignupPage() {
 
     const hasEffectRun = useRef(false);
+    const toast = useRef(null);
 
     const styleBody = {
         width: '34%',
@@ -30,14 +32,15 @@ function EndSignupPage() {
         fontWeight: 700,
     };
 
-    const [errorMessage, setErrorMessage] = useState('');
+    const [state, setState] = useState({
+        errorMessage: '',
+        successful: false,
+    });
+
     const userInfoValue = useRecoilValue(userInfo);
     const facilityInfoValue = useRecoilValue(HealthcareFacilityInfo);
     const userGeneralData = useRecoilValue(GeneralData);
     const userloginInfo = useRecoilValue(loginInfo);
-
-    // console.log(Object.entries(userInfoValue));
-    // console.log(Object.entries(facilityInfoValue));
 
     const successfulChangePassword = async () => {
         const email = userloginInfo.login;
@@ -56,14 +59,19 @@ function EndSignupPage() {
                 },
                 body: JSON.stringify(loginData)
             });
-            if (userResponse.ok)
+            if (userResponse.ok) {
                 console.log("Password Updated Successfully");
-            /////////////
-            else
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Password Updated Successfully' });
+                setState((prevState) => ({ ...prevState, successful: true }));
+            } else {
                 console.log("Password has NOT Updated");
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Password has NOT Updated' });
+                setState((prevState) => ({ ...prevState, errorMessage: "Password has NOT Updated", successful: false }));
+            }
 
         } catch (error) {
-            setErrorMessage(error.message);
+            setState((prevState) => ({ ...prevState, errorMessage: error.message, successful: false }));
+            toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
         }
     }
 
@@ -115,7 +123,6 @@ function EndSignupPage() {
                 if (type === "Doctor") {
                     console.log("type4: " + type);
                     const patientId = await response.json();
-                    // const patientId = "PAT-14";
                     console.log('patientId : ' + patientId);
                     const doctorFormData = new FormData();
                     doctorFormData.append('username', userInfoValue.userName);
@@ -135,7 +142,8 @@ function EndSignupPage() {
                         successfulAddUser = true;
                     } catch (error) {
                         console.error(error.message);
-                        setErrorMessage(error.message);
+                        toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
+                        setState((prevState) => ({ ...prevState, errorMessage: error.message, successful: false }));
                         successfulAddUser = false;
                     }
                 } else {
@@ -145,7 +153,8 @@ function EndSignupPage() {
                 }
             } catch (error) {
                 console.error(error.message);
-                setErrorMessage(error.message);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
+                setState((prevState) => ({ ...prevState, errorMessage: error.message, successful: false }));
                 successfulAddUser = false;
             }
         }
@@ -166,41 +175,48 @@ function EndSignupPage() {
                     },
                     body: JSON.stringify(loginData)
                 });
+                if (userResponse.ok) {
+                    console.log("User Added Successful");
+                    toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
+                    setState((prevState) => ({ ...prevState, successful: true }));
+                } else {
+                    toast.current.show({ severity: 'error', summary: 'Error', detail: 'User could not be added' });
+                    setState((prevState) => ({ ...prevState, errorMessage: 'User could not be added', successful: false }));
+                }
             } catch (error) {
-                setErrorMessage(error.message);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
+                setState((prevState) => ({ ...prevState, errorMessage: error.message, successful: false }));
             }
         } else {
-            setErrorMessage('Something error');
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Something error' });
+            setState((prevState) => ({ ...prevState, errorMessage: 'Something error', successful: false }));
         }
     };
 
-    // const resetState = useResetRecoilState(userInfo);
-    // const resetStatefacility = useResetRecoilState(HealthcareFacilityInfo);
     useEffect(() => {
         if (!hasEffectRun.current) {
             userGeneralData.isForgetton ?
                 successfulChangePassword() :
                 successfulCreated();
             hasEffectRun.current = true;
-            // resetState();
-            // resetStatefacility();
         }
     }, []);
 
 
     return (
         <section style={{ alignContent: 'center', backgroundColor: '#181a1f' }}>
+            <Toast ref={toast} />
             <div className='' style={styleBody}>
                 <p style={styleP}>Core-care</p>
-                {!errorMessage ?
+                {state.successful ?
                     <><FontAwesomeIcon icon={faCheckCircle} style={{ color: '#ffffff', width: '60px', height: '60px', margin: 'auto' }} />
-                        <TitlePage title='Your account has been successfully created' />
-                        <TextPage text='Please keep your private key and your password to log into your account and manage your health records.' />
+                        <TitlePage title={userGeneralData.isForgetton ? 'Your Password has been successfully updated' : 'Your Account has been successfully created'} />
+                        <TextPage text='Please keep your Email and your password to log into your account and manage your health records.' />
                         <div style={{ width: '70%' }}><Link to='/login'><Submit name='Go to Login' /></Link></div>
                     </> :
-                    <>
-                        <TitlePage title='Your account has NOT been successfully created' />
-                        <TextPage text={errorMessage} />
+                    <><FontAwesomeIcon icon={faCircleExclamation} style={{ color: 'red', width: '60px', height: '60px', margin: 'auto' }} />
+                        <TitlePage title={userGeneralData.isForgetton ? 'Your Password has NOT been successfully updated' : 'Your Account has NOT been successfully created'} />
+                        <TextPage text={state.errorMessage} color='red' />
                         <div style={{ width: '70%' }}><Link to='/signup'><Submit name='Go to signup' /></Link></div>
                     </>
                 }

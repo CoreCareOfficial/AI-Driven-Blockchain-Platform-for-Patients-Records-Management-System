@@ -17,3 +17,9 @@
     justify-content: space-between;
 
 }
+
+.p-toast-message {
+    border-width: 0 0 0 6px;
+    border-radius: 6px;
+    border-color: currentColor;
+}

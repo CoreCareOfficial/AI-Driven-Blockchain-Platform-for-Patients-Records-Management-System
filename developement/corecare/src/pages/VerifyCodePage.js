@@ -6,10 +6,12 @@ import TitlePage from "../component/loginDetails/TitlePage";
 import React, { useState, useRef, useEffect } from 'react';
 import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from "../Recoil/Atom";
 import { useNavigate } from "react-router-dom";
+import { Toast } from "primereact/toast";
 
 function VerifyCodePage() {
 
     const hasEffectRun = useRef(false);
+    const toast = useRef(null);
 
     const userInfoValue = useRecoilValue(userInfo);
     const GeneralDataValue = useRecoilValue(GeneralData);
@@ -60,12 +62,16 @@ function VerifyCodePage() {
             });
             if (response.ok) {
                 setMessage('Verification code sent to your email');
+                return toast.current.show({ severity: 'success', summary: 'Success', detail: 'Verification code sent to your email' });
+
             } else {
                 const errorData = await response.text();
                 setMessage(`Failed to send verification code: ${errorData}`);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: `Failed to send verification code: ${errorData}` });
             }
         } catch (error) {
             setMessage(`An error occurred while sending the code: ${error.message}`);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: `An error occurred while sending the code: ${error.message}` });
         }
     };
 
@@ -83,9 +89,11 @@ function VerifyCodePage() {
             } else {
                 const errorData = await response.text();
                 setMessage(`Invalid verification code: ${errorData}`);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: `Invalid verification code: ${errorData}` });
             }
         } catch (error) {
             setMessage(`An error occurred while verifying the code: ${error.message}`);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: `An error occurred while verifying the code: ${error.message}` });
         }
     };
 
@@ -112,12 +120,12 @@ function VerifyCodePage() {
 
     return (
         <CardLogin step={step}>
+            <Toast ref={toast} />
             {email || GeneralDataValue.isForgetton ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Verify Code" />
                     <TextPage text={`Check your Email, we have sent you the code at ${`${obfuscatedUsername}@${domain}`}`} />
-                    {/* <FormLogin buttonName='Continue' onContinue={() => navigate(nextPage)} > */}
                     <FormLogin buttonName='Continue' onContinue={handleVerifyCode}>
                         <div style={{ minWidth: '248px', marginTop: '20px' }}>
                             <input style={styleInputCode}
@@ -145,6 +153,7 @@ function VerifyCodePage() {
                                 onChange={(e) => handleInputChange(e, 3)}
                                 value={code[3]} />
                         </div>
+                        {message && <p style={{ color: 'red', marginTop: '20px' }}>{message}</p>}
                         <div style={{ color: '#ffffff', margin: '30px 0 60px 0', fontSize: '14px' }}>
                             Didn't receive the code?
                             <button style={{ color: '#3146FF', }} onClick={handleSendCode}>Resend Code</button>
@@ -156,7 +165,6 @@ function VerifyCodePage() {
                     <TextPage text="You should not bypass the previous step" color='red' />
                 </div>
             }
-            {message && <p style={{ color: 'red' }}>{message}</p>}
         </CardLogin>
     );
 };
