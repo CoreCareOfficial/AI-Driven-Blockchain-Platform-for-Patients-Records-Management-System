@@ -24,7 +24,7 @@ function ProfileBody(props) {
         handlePublicClick={handlePublicClick}
       />
       <div className="profile-body">
-        {active === 'personal' && (props.userType === "Patient" || props.userType === "Doctor") ? <PersonalInformation /> : <PublicInformation userType={props.userType}/>}
+        {active === 'personal' && (props.userType === "Patient" || props.userType === "Doctor") ? <PersonalInformation userInfo={props.userInfo} /> : <PublicInformation userType={props.userType} />}
       </div>
     </>
   );

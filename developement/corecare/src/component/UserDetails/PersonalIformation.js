@@ -23,9 +23,12 @@ import heart from "../../assets/heart.png";
 import allergies from "../../assets/allergies.png";
 import HealthCard from "./HealthCard";
 import PreviousDoctorCard from "./PreviousDoctorCard";
-import ahmed from "../../assets/ahmed.jpg"
+import ahmed from "../../assets/ahmed.jpg";
+import { Nationality } from "./Nationalities";
 
-function PersonalInformation() {
+function PersonalInformation(props) {
+    const userInfo = props.userInfo;
+    console.log(userInfo);
     const doctors = {
         doctor1: {
             image: ahmed,
@@ -49,6 +52,14 @@ function PersonalInformation() {
             spec: 'Serguent',
         },
     };
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
+        return `${day}-${month}-${year}`;
+    };
     return (
         <>
             <ProfileBodyLeft >
@@ -56,16 +67,16 @@ function PersonalInformation() {
                     <div className="general-info">
                         <h3>General Information :</h3>
                         <div className="general-info-container">
-                            <GeneralInfoItem icon={<MdPersonOutline />} title="Full Name :" value="Osama Alathwari" />
-                            <GeneralInfoItem icon={<MdAlternateEmail />} title="Email :" value="Osama@gmail.com" />
-                            <GeneralInfoItem icon={<FaVenusMars />} title="Gender" value="Male" />
-                            <GeneralInfoItem icon={<MdLocalPhone />} title="Phone Number :" value="+967711379934" />
-                            <GeneralInfoItem icon={<MdCalendarToday />} title="Date of Birth :" value="8 sep 1995" />
-                            <GeneralInfoItem icon={<MdOutlineEditRoad />} title="Address :" value="Yemen, Taiz, Gamal Street" />
-                            <GeneralInfoItem icon={<MdLanguage />} title="Nationality :" value="Yemeni" />
-                            <GeneralInfoItem icon={<MdBloodtype />} title="Blood Type :" value="A+" />
-                            <GeneralInfoItem icon={<FaGenderless />} title="Status :" value="Single 💔" />
-                            <GeneralInfoItem icon={<MdWorkOutline />} title="Job :" value="Fucker" />
+                            <GeneralInfoItem icon={<MdPersonOutline />} title="Full Name :" value={`${userInfo.firstname} ${userInfo.secondname} ${userInfo.thirdname} ${userInfo.lastname}`} />
+                            <GeneralInfoItem icon={<MdAlternateEmail />} title="Email :" value={userInfo.email} />
+                            <GeneralInfoItem icon={<FaVenusMars />} title="Gender" value={userInfo.sex} />
+                            <GeneralInfoItem icon={<MdLocalPhone />} title="Phone Number :" value={userInfo.phonenumber} />
+                            <GeneralInfoItem icon={<MdCalendarToday />} title="Date of Birth :" value={formatDate(userInfo.dateofbirth)} />
+                            <GeneralInfoItem icon={<MdOutlineEditRoad />} title="Address :" value={`${userInfo.country}, ${userInfo.address}`} />
+                            <GeneralInfoItem icon={<MdLanguage />} title="Nationality :" value={Nationality[userInfo.country]} />
+                            <GeneralInfoItem icon={<MdBloodtype />} title="Blood Type :" value={userInfo.bloodtype} />
+                            <GeneralInfoItem icon={<FaGenderless />} title="Status :" value={userInfo.status} />
+                            <GeneralInfoItem icon={<MdWorkOutline />} title="Job :" value={userInfo.job} />
                         </div>
                     </div>
                     <div className="profile-body-left-bottom">

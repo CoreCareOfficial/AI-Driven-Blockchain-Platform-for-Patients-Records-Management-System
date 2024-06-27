@@ -19,11 +19,16 @@ function UserPage() {
 
     return (
         <>
-            <div className="user">
-                <PatientSidebarHandler userType={userType} handleButtonClick={handleButtonClick} />
-                <Content userType={userType} active={active} />
-            </div>
-            <FormlessFooter />
+            {userType ?
+                <>
+                    <div className="user">
+                        <PatientSidebarHandler userType={userType} handleButtonClick={handleButtonClick} />
+                        <Content userType={userType} active={active} />
+                    </div>
+                    <FormlessFooter />
+                </>
+                : null
+            }
         </>
     );
 }
