@@ -5,7 +5,7 @@ import "../../css/UserPageStyle/profile.css"
 import { useEffect, useRef, useState } from "react";
 
 function ProfileHeader(props) {
-    const [userSocialmedia, setUserSocialmedia] = useState(null);
+    const [userSocialmedia, setUserSocialmedia] = useState([]);
     const hasEffectRun = useRef(false);
 
     const getUserData = async (userId) => {
@@ -36,7 +36,7 @@ function ProfileHeader(props) {
             hasEffectRun.current = true;
         }
     }, []);
-    console.log("user socialmedia: " + userSocialmedia[0][0].link);
+    console.log("user socialmedia: " + userSocialmedia[0][0]['link']);
     console.log(userSocialmedia);
     return (
         <div className="profile-header">
