@@ -94,7 +94,7 @@ router.post('/', upload.fields([
 
 // Get Doctor Data
 router.get('/', async (req, res) => {
-    const { patientID } = req.body;
+    const { patientID } = req.query;
 
     try {
         const doctorQuery = await pool.query('SELECT * FROM DOCTOR WHERE patientID = $1', [patientID]);
