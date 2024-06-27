@@ -7,7 +7,7 @@ router.get('/:patientID', async (req, res) => {
     const { patientID } = req.params;
 
     try {
-        const socialAccounts = await pool.query('SELECT * from socialmedia WHERE patientID = $1', [patientID]);
+        const socialAccounts = await pool.query('SELECT * from socialmedia WHERE patientID = $1 or healthcareid = $1', [patientID]);
         if (socialAccounts.rows.length === 0) {
             return res.status(404).send('account not found');
         }

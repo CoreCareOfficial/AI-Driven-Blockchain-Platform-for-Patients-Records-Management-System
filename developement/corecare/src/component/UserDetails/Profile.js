@@ -47,7 +47,21 @@ function Profile(props) {
     };
 
     useEffect(() => {
+<<<<<<< Updated upstream
         if (!hasEffectRun.current) {
+=======
+        const fetchPatientData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/${userType}`, {
+                    params: { email: 'qahtan.dev@gmail.com' }
+                });
+                setPatient(response.data);
+            } catch (err) {
+                setError(err.response ? err.response.data : err.message);
+                console.error('Error:', err);
+            }
+        };
+>>>>>>> Stashed changes
 
             getUserData(`http://localhost:5000/${userType}?email=${loginInfoValue.login}`);
             console.log("user info: " + userInfo);

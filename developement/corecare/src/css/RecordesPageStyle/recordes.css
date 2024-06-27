@@ -76,7 +76,8 @@
     color: var(--white-color);   
 }
 /* =============================== */
-.records_table{
+
+/* .records_table{
     color: var(--white-color);
     height: auto;
 }
@@ -91,6 +92,24 @@
 }
 .tbody_tr span{
     font-size: 1.1em;
+} */
+ /* ===== */
+.p-treetable-table{
+    background-color: #272c34;
+    color: #1787e0;
+}
+.p-treetable-thead tr th:first-child,th:last-child{
+    width: 8%;
+}
+.p-treetable-thead tr th input{
+    width: 90%;
+}
+.p-treetable-thead tr th:first-child .p-filter-column{
+    display: none;
+}
+/* ===== */
+.p-treetable-thead tr th:last-child .p-filter-column{
+    display: none;
 }
 /* ====================== */
 .RecordesMen{

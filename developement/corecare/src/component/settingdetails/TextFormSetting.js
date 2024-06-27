@@ -1,10 +1,64 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoIosEyeOff } from "react-icons/io";
 import SettingCountrySelector from './SettingCountrySelector';
 import { Button } from "primereact/button";
 import { useSetRecoilState } from "recoil";
 import { userHealthInfo } from "../../Recoil/Atom";
+import { Image } from "react-bootstrap";
+import ahmed from '../../assets/ahmed.jpg';
+// import user_signup from '../../assets/user_signup.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+
+
+
+
+export function UpdateImage() {
+
+    const fileRef = useRef(null);
+    // const setUserInfo = useSetRecoilState(userInfo);
+
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [SelectedImageUrl, setSelectedImageUrl] = useState(ahmed)
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file.type && !file.type.startsWith('image/')) {
+            return alert('Please select an image file.');
+        }
+
+        setSelectedFile(file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            setSelectedFile(file);
+            setSelectedImageUrl(e.target.result); // Store the image URL for display
+        };
+        reader.readAsDataURL(file);
+    };
+
+    return (
+            <>
+            <Image
+                src={SelectedImageUrl}
+                thumbnail
+                roundedCircle
+                style={{cursor:'pointer', width: '130px', height: '130px', margin: '0px auto' }}
+                onClick={() => {
+                    fileRef.current.click();
+                }
+                }
+            />
+            <input
+                type="file"
+                accept="image/*"
+                ref={fileRef}
+                style={{ display: 'none', flex: '1' }}
+                onChange={handleFileChange}
+            />
+            </>
+    );
+};
 
 export function SettingForm(props) {
 

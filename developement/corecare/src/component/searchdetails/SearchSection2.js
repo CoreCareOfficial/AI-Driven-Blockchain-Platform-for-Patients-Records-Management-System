@@ -10,24 +10,16 @@ import osama from '../../assets/osama.jpg';
 import azoz from '../../assets/azoz.jpg';
 import abod from '../../assets/abod.jpg';
 import H1 from "../H1";
+import SearchSidebarHandler from "./SearchSidebarHandler";
 
 function Section2(){
     const result="Showing 175 Search Result"
+
     return(
         <>
         <section className="S_section1 Search_sec2">
-        <aside>
-            <h1>hhhhhhhhhhh</h1>
-            <h1>hhhhhhhhhhh</h1>
-            <h1>hhhhhhhhhhh</h1>
-            <h1>hhhhhhhhhhh</h1>
-            <h1>hhhhhhhhhhh</h1>
-            <h1>hhhhhhhhhhh</h1>
-            <h1>hhhhhhhhhhh</h1>
-            <h1>hhhhhhhhhhh</h1>
-            <h1>hhhhhhhhhhh</h1>
-            <h1>hhhhhhhhhhh</h1>
-        </aside>
+        <SearchSidebarHandler/>
+
         <Container style={{
             backgroundColor:'#3f4652',
             borderRadius:'8px',
@@ -36,6 +28,7 @@ function Section2(){
             marginBottom:'-10px'}}>
 
                 <H1 name="Search_sec2_result" title={result}/>
+                
             <MyCarousel>
                 <Carousel.Item > 
                 <Container className="curs_con" style={{backgroundColor:'#3f4652'}}>
@@ -133,6 +126,7 @@ function Section2(){
                 </Carousel.Caption>
                 </Carousel.Item>
             </MyCarousel>
+
         </Container>
         </section>
         </>

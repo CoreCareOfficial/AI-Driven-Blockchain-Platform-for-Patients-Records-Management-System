@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import DynamicCard from '../../bootcomponent/DynamicCard';
 import { Card, Image } from "react-bootstrap";
 import ahmed from '../../../assets/ahmed.jpg';
-import { SettingForm, SettingInput, SettingSelect, SettingCountry } from "../TextFormSetting";
+import { SettingForm, SettingInput, SettingSelect, SettingCountry, UpdateImage } from "../TextFormSetting";
 import { MdModeEdit } from "react-icons/md";
-
 function SettingBodyLift(props) {
 
     const [General, setGeneral] = useState(true);
@@ -24,7 +23,7 @@ function SettingBodyLift(props) {
     return (
         <>
             <DynamicCard name="SettingBodyLift">
-                <Image src={ahmed} style={{ width: '130px', height: '130px', margin: '0px auto' }} roundedCircle />
+                <UpdateImage />
                 <Card.Title style={{
                     textAlign: 'center',
                     color: "white",
