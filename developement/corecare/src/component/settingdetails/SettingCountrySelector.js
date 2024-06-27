@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import countryList from 'react-select-country-list';
 function SettingCountrySelector(props) {
 
-    const [value, setValue] = useState('Yemen');
+    const [value, setValue] = useState('Location');
     const [options, setOptions] = useState([]); // Initialize options state
     const [isLoading, setIsLoading] = useState(false); // Track loading state
     const [error, setError] = useState(null); // Store any errors

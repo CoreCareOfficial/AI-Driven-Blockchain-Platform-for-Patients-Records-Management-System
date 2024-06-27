@@ -6,7 +6,7 @@ import Flex_Container from "../bootcomponent/flex_Container";
 import { BsCrosshair ,BsCalendar3  } from "react-icons/bs";
 import { AiOutlineSearch } from "react-icons/ai";
 import Button from 'react-bootstrap/Button';
-
+import SettingCountry from '../settingdetails/SettingCountrySelector'
 function Section1(){
 const defaultProps = {
         label: 'Specialty / Doctor / Hospital',
@@ -42,10 +42,12 @@ const defaultProps = {
                     <option value={value} key={value}>{value}</option>
                         ))}
                 </select>
-                <div className="input_div" >
+                {/* <div className="input_div" >
                     <Form.Control type="text" placeholder="Location"/>
                     <span className="Search_sec_dotI"><BsCrosshair /></span>
-                </div>
+                </div> */}
+                <SettingCountry label="Country:" name="country"/>
+
                 <div className="input_div">
                     <Form.Control type="date" placeholder="Date" />
                     {/* <span className="Search_sec_calI"><BsCalendar3 /></span> */}
