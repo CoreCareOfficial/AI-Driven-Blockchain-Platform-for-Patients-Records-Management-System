@@ -11,6 +11,7 @@ import { useRecoilValue } from "recoil";
 function Profile(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
     const [userInfo, setUserInfo] = useState(null);
+    const [userCurrentMedications, setCurrentMedications] = useState(null);
     const [error, setError] = useState(null);
     const hasEffectRun = useRef(false);
 
@@ -26,7 +27,6 @@ function Profile(props) {
 
     console.log(userType);
 
-    let ui = {};
     const getUserData = async (fetchText, param) => {
         console.log(param);
         try {
@@ -39,7 +39,6 @@ function Profile(props) {
             });
             const jsonData = await response.json();
             setUserInfo(jsonData);
-            ui = jsonData;
             console.log("success");
         } catch (err) {
             setError(err.message);
@@ -78,9 +77,10 @@ function Profile(props) {
                 name={`${userInfo.firstname} ${userInfo.lastname}`}
                 gender={userInfo.sex}
                 age={calculateAge(userInfo.dateofbirth)}
+                userId={userInfo.patientid}
             // Add other social media props if available in patient data
             />
-            {ui && <ProfileBody userType={props.userType} userInfo={userInfo} />}
+            <ProfileBody userType={props.userType} userInfo={userInfo} />
         </div>
     )
 }

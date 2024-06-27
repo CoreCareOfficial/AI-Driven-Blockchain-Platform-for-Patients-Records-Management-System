@@ -3,8 +3,8 @@ import pool from '../db.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const { patientID } = req.query;
+router.get('/:patientID', async (req, res) => {
+    const { patientID } = req.params;
 
     try {
         const socialAccounts = await pool.query('SELECT * from socialmedia WHERE patientID = $1', [patientID]);
