@@ -47,8 +47,8 @@ const defaultProps = {
                     <span className="Search_sec_dotI"><BsCrosshair /></span>
                 </div>
                 <div className="input_div">
-                    <Form.Control type="text" placeholder="Date" />
-                    <span className="Search_sec_calI"><BsCalendar3 /></span>
+                    <Form.Control type="date" placeholder="Date" />
+                    {/* <span className="Search_sec_calI"><BsCalendar3 /></span> */}
                 </div>
                     <Button variant="primary" style={{transition: '0.7s ease'}}>search</Button>{' '}
                 </Flex_Container>
