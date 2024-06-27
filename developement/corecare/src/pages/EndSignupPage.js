@@ -110,6 +110,7 @@ function EndSignupPage() {
             formData.append('passportCountryCode', userInfoValue.passportCountryCode);
             formData.append('passportDocument', userInfoValue.passportPhoto);
             formData.append('PublicWalletAddress', userInfoValue.PublicWalletAddress);
+            formData.append('bloodType', userInfoValue.bloodType);
             email = userInfoValue.email;
             password = userInfoValue.password;
             username = userInfoValue.userName;

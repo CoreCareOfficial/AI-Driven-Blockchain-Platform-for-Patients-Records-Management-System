@@ -4,14 +4,13 @@ import ProfileHeader from "./ProfileHeader";
 import ProfileBody from "./ProfileBody";
 
 import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { loginInfo } from "../../Recoil/Atom";
 import { useRecoilValue } from "recoil";
 
 function Profile(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
-    const [patient, setPatient] = useState(null);
-    const [userInfo, setUserInfo] = useState({});
+    const [userInfo, setUserInfo] = useState(null);
     const [error, setError] = useState(null);
     const hasEffectRun = useRef(false);
 
@@ -22,57 +21,38 @@ function Profile(props) {
     }
 
     else {
-        userType = props.userType + 's'
+        userType = 'Patients'
     }
 
     console.log(userType);
 
+    let ui = {};
     const getUserData = async (fetchText, param) => {
         console.log(param);
         try {
             const response = await fetch(fetchText, {
-                body: param
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                params: JSON.stringify(param),
             });
             const jsonData = await response.json();
             setUserInfo(jsonData);
-            console.log('succes');
+            ui = jsonData;
+            console.log("success");
         } catch (err) {
-            setError(err.response ? err.response.data : err.message);
-            console.error('Error:', err);
+            setError(err.message);
+            console.error("Error:", err);
         }
     };
 
     useEffect(() => {
         if (!hasEffectRun.current) {
-            getUserData(`http://localhost:5000/${userType}`, { email: loginInfoValue.login });
+
+            getUserData(`http://localhost:5000/${userType}?email=${loginInfoValue.login}`);
             console.log("user info: " + userInfo);
             console.log(userInfo);
-            // const fetchPatientData = async () => {
-            //     console.log(loginInfoValue.login);
-            //     try {
-            //         const response = await axios.get(`http://localhost:5000/${userType}`, {
-            //             params: { email: loginInfoValue.login }
-            //         });
-            //         setPatient(response.data);
-            //     } catch (err) {
-            //         setError(err.response ? err.response.data : err.message);
-            //         console.error('Error:', err);
-            //     }
-            // };
-
-
-            // if (patient.patientid) {
-            //     try {
-            //         const response = await axios.get(`http://localhost:5000/socialmedia`, {
-            //             params: {patientid: patient.patientid}
-            //         });
-            //     } catch (err) {
-            //         setError(err.response ? err.response.data : err.message);
-            //         console.error('Error:', err);
-            //     }
-            // }
-
-            // fetchPatientData();
             hasEffectRun.current = true;
         }
     }, []);
@@ -84,7 +64,7 @@ function Profile(props) {
         return <div>Error: {error}</div>;
     }
 
-    if (!patient) {
+    if (!userInfo) {
         return <div>Loading...</div>;
     }
 
@@ -92,15 +72,15 @@ function Profile(props) {
         <div className="profile-container">
             <ProfileHeader
                 userType={props.userType}
-                location={patient.address}
-                image={patient.personalphoto ? `data:image/jpeg;base64,${patient.personalphoto}` : defaultPic}
-                username={patient.username}
-                name={`${patient.firstname} ${patient.lastname}`}
-                gender={patient.sex}
-                age={calculateAge(patient.dateofbirth)}
+                location={userInfo.address}
+                image={userInfo.personalphoto ? `data:image/jpeg;base64,${userInfo.personalphoto}` : defaultPic}
+                username={userInfo.username}
+                name={`${userInfo.firstname} ${userInfo.lastname}`}
+                gender={userInfo.sex}
+                age={calculateAge(userInfo.dateofbirth)}
             // Add other social media props if available in patient data
             />
-            <ProfileBody userType={props.userType} patient={patient} />
+            {ui && <ProfileBody userType={props.userType} userInfo={userInfo} />}
         </div>
     )
 }
