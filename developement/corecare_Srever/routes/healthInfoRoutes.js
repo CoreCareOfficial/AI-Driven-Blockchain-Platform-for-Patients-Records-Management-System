@@ -3,8 +3,8 @@ import pool from '../db.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const { patientID } = req.query;
+router.get('/:patientID', async (req, res) => {
+    const { patientID } = req.params;
     try {
         const healthinfo = await pool.query('SELECT * FROM health_info WHERE patientID = $1', [patientID]);
         if (healthinfo.rows.length === 0) {

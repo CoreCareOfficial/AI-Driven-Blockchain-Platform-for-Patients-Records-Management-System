@@ -8,6 +8,8 @@ import healthcareProviderRoutes from './routes/healthcareProviderRoutes.js';
 import healthInfoRoutes from './routes/healthInfoRoutes.js';
 import socialMediaRoutes from './routes/socialMediaRoutes.js';
 import allergiesRoutes from './routes/allergiesRoutes.js';
+import medicationRouts from './routes/medecationRoutes.js';
+import pastConditionRoutes from './routes/pastConditionRoutes.js';
 import verification from './routes/verification.js';
 import dotenv from 'dotenv';
 
@@ -28,6 +30,8 @@ app.use('/healthcareproviders', healthcareProviderRoutes);
 app.use('/healthinfo', healthInfoRoutes);
 app.use('/socialmedia', socialMediaRoutes);
 app.use('/allergies', allergiesRoutes);
+app.use('/medications', medicationRouts);
+app.use('/pastconditions', pastConditionRoutes);
 app.use('/verification', verification);
 
 app.listen(PORT, () => {
