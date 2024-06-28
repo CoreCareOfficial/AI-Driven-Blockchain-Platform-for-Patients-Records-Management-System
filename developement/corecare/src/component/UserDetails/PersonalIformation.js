@@ -1,18 +1,16 @@
+import { useEffect, useState } from "react";
 import ProfileBodyLeft from "./ProfileBodyLeft";
 import ProfileBodyRight from "./ProfileBodyRight";
 import ProfileBodyBottom from "./ProfileBodyBottom";
-import { MdPersonOutline } from "react-icons/md";
-import { MdAlternateEmail } from "react-icons/md";
-import { FaVenusMars } from "react-icons/fa";
-import { MdLocalPhone } from "react-icons/md";
-import { MdCalendarToday } from "react-icons/md";
-import { MdOutlineEditRoad } from "react-icons/md";
-import { MdLanguage } from "react-icons/md";
-import { MdBloodtype } from "react-icons/md";
-import { MdWorkOutline } from "react-icons/md";
 import GeneralInfoItem from "./GeneralInfoItem";
 import CardListContaier from "./CardListContaier";
-import { FaGenderless } from "react-icons/fa";
+import HealthCard from "./HealthCard";
+import PreviousDoctorCard from "./PreviousDoctorCard";
+import { MdPersonOutline, MdAlternateEmail, MdLocalPhone, MdCalendarToday, MdOutlineEditRoad, MdLanguage, MdBloodtype, MdWorkOutline } from "react-icons/md";
+import { FaVenusMars, FaGenderless } from "react-icons/fa";
+import { Nationality } from "./Nationalities";
+import { FormatRelativeTime } from "../../utiles/FormatRelativeTime";
+import ahmed from "../../assets/ahmed.jpg";
 import blood from "../../assets/blood.png";
 import sugar from "../../assets/suger.png";
 import weight from "../../assets/weight.png";
@@ -20,22 +18,18 @@ import height from "../../assets/height.png";
 import pressure from "../../assets/pressure.png";
 import respiratory from "../../assets/respiratory.png";
 import heart from "../../assets/heart.png";
-import allergies from "../../assets/allergies.png";
-import HealthCard from "./HealthCard";
-import PreviousDoctorCard from "./PreviousDoctorCard";
-import ahmed from "../../assets/ahmed.jpg";
-import { Nationality } from "./Nationalities";
+import allergiesImg from "../../assets/allergies.png";
 
 function PersonalInformation(props) {
     const userInfo = props.userInfo;
     console.log(userInfo);
+
     const doctors = {
         doctor1: {
             image: ahmed,
             name: 'Ahmed Qahtan',
             spec: 'Serguent',
         },
-
         doctor2: {
             image: ahmed,
             name: 'Ahmed Qahtan',
@@ -52,24 +46,72 @@ function PersonalInformation(props) {
             spec: 'Serguent',
         },
     };
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-
         return `${day}-${month}-${year}`;
     };
+
+    const [userData, setUserData] = useState({
+        healthInfo: {},
+        allergies: {},
+        medications: {},
+        pastConditions: {},
+        isLoading: true,
+    });
+
+    const fetchData = async (url, setStateKey) => {
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const jsonData = await response.json();
+            setUserData((prevState) => ({
+                ...prevState,
+                [setStateKey]: jsonData,
+            }));
+            console.log(`Success loading ${setStateKey}:`, jsonData);
+        } catch (err) {
+            console.error("Error:", err);
+        } finally {
+            setUserData((prevState) => ({
+                ...prevState,
+                isLoading: false,
+            }));
+        }
+    };
+
+    useEffect(() => {
+        const userId = userInfo.patientid;
+        fetchData(`http://192.168.137.1:5000/healthinfo/${userId}`, "healthInfo");
+        fetchData(`http://192.168.137.1:5000/allergies/${userId}`, "allergies");
+        fetchData(`http://192.168.137.1:5000/medications/${userId}`, "medications");
+        fetchData(`http://192.168.137.1:5000/pastconditions/${userId}`, "pastConditions");
+    }, [userInfo.patientid]);
+
+    const { healthInfo, allergies, medications, pastConditions, isLoading } = userData;
+
     return (
         <>
-            <ProfileBodyLeft >
+            <ProfileBodyLeft>
                 <div className="profile-body-left-top">
                     <div className="general-info">
                         <h3>General Information :</h3>
                         <div className="general-info-container">
                             <GeneralInfoItem icon={<MdPersonOutline />} title="Full Name :" value={`${userInfo.firstname} ${userInfo.secondname} ${userInfo.thirdname} ${userInfo.lastname}`} />
                             <GeneralInfoItem icon={<MdAlternateEmail />} title="Email :" value={userInfo.email} />
-                            <GeneralInfoItem icon={<FaVenusMars />} title="Gender" value={userInfo.sex} />
+                            <GeneralInfoItem icon={<FaVenusMars />} title="Gender :" value={userInfo.sex} />
                             <GeneralInfoItem icon={<MdLocalPhone />} title="Phone Number :" value={userInfo.phonenumber} />
                             <GeneralInfoItem icon={<MdCalendarToday />} title="Date of Birth :" value={formatDate(userInfo.dateofbirth)} />
                             <GeneralInfoItem icon={<MdOutlineEditRoad />} title="Address :" value={`${userInfo.country}, ${userInfo.address}`} />
@@ -80,32 +122,33 @@ function PersonalInformation(props) {
                         </div>
                     </div>
                     <div className="profile-body-left-bottom">
-                        <CardListContaier title="Current Medications :" items={['Medicine 1', 'Medicine 2', 'Medicine 3']} />
-                        <CardListContaier title="Past Illnessess and Conditions :" items={['Condition 1', 'Condition 2', 'Condition 3']} />
+                        <CardListContaier title="Current Medications :" items={medications} nameKey='medname' />
+                        <CardListContaier title="Past Illnesses and Conditions :" items={pastConditions} nameKey='conditionname' />
                     </div>
                 </div>
             </ProfileBodyLeft>
 
-            <ProfileBodyRight >
+            <ProfileBodyRight>
                 <h3>Health Information :</h3>
-                <div className="flex flex-col my-1">
-                    <HealthCard image={blood} title="Blood (HP) :" date="2 weeks ago" value="11" />
-                    <HealthCard image={sugar} title="Blood Sugar :" date="3 weeks ago" value="90" />
-                    <HealthCard image={pressure} title="Blood Pressure :" date="2 years ago" value="115" />
-                    <HealthCard image={heart} title="Heart Rate (Pulse):" date="5 Years Ago ago" value="70/m" />
-                    <HealthCard image={respiratory} title="Respiratory Rate :" date="3 Years ago" value="15/m" />
-                    <HealthCard image={allergies} title="Allergies :" date="0 weeks ago" value="null" />
-                    <HealthCard image={weight} title="Weight :" date="3 months ago" value="54 kg" />
-                    <HealthCard image={height} title="Height :" date="4 Years ago" value="170 cm" />
-                </div>
+                {!isLoading && (
+                    <div className="flex flex-col my-1">
+                        <HealthCard image={blood} title="Blood (HP) :" date={FormatRelativeTime(healthInfo.blooddate)} value={healthInfo.blood} />
+                        <HealthCard image={sugar} title="Blood Sugar :" date={FormatRelativeTime(healthInfo.bloodsugardate)} value={healthInfo.bloodsugar} />
+                        <HealthCard image={pressure} title="Blood Pressure :" date={FormatRelativeTime(healthInfo.bloodpressuredate)} value={healthInfo.bloodpressure} />
+                        <HealthCard image={heart} title="Heart Rate (Pulse):" date={FormatRelativeTime(healthInfo.heartratedate)} value={`${healthInfo.heartrate}/m`} />
+                        <HealthCard image={respiratory} title="Respiratory Rate :" date={FormatRelativeTime(healthInfo.respiratoryratedate)} value={`${healthInfo.respiratoryrate}/m`} />
+                        <HealthCard image={allergiesImg} title="Allergies :" date={FormatRelativeTime(allergies.allergiesdate)} value={allergies.allergyname} />
+                        <HealthCard image={weight} title="Weight :" date={FormatRelativeTime(healthInfo.weightdate)} value={`${healthInfo.weight} kg`} />
+                        <HealthCard image={height} title="Height :" date={FormatRelativeTime(healthInfo.heightdate)} value={`${healthInfo.height} cm`} />
+                    </div>
+                )}
             </ProfileBodyRight>
 
-            <ProfileBodyBottom >
+            <ProfileBodyBottom>
                 <PreviousDoctorCard title="Previous Doctors" doctors={doctors} />
             </ProfileBodyBottom>
         </>
-    )
+    );
 }
 
 export default PersonalInformation;
-

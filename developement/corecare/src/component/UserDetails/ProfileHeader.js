@@ -2,15 +2,15 @@ import ImageNameContainer from "./ImageNameContainer"
 import InfoContainer from "./InfoContainer"
 import ProfileHeaderIcon from "./ProfileHeaderIcon"
 import "../../css/UserPageStyle/profile.css"
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 function ProfileHeader(props) {
     const [userSocialmedia, setUserSocialmedia] = useState([]);
-    const hasEffectRun = useRef(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const getUserData = async (userId) => {
         try {
-            const response = await fetch(`http://localhost:5000/socialmedia/${userId}`, {
+            const response = await fetch(`http://192.168.137.1:5000/socialmedia/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -26,23 +26,31 @@ function ProfileHeader(props) {
             console.log("Success:", jsonData);
         } catch (err) {
             console.error("Error:", err);
+        } finally {
+            setIsLoading(false);
         }
     };
     useEffect(() => {
-        if (!hasEffectRun.current) {
+        console.log('use effect 1');
+        getUserData(props.userId);
+        console.log('use effect 2');
+    }, [props.userId]);
 
-            getUserData(props.userId);
-
-            hasEffectRun.current = true;
-        }
-    }, []);
-    console.log("user socialmedia: " + userSocialmedia[0][0]['link']);
-    console.log(userSocialmedia);
+    if (!isLoading && userSocialmedia.length > 0) {
+        console.log(userSocialmedia);
+    }
+    // console.log("user socialmedia: " + userSocialmedia[0].link);
     return (
         <div className="profile-header">
             <ProfileHeaderIcon image={props.image} />
             <ImageNameContainer userType={props.userType} location={props.location} image={props.image} username={props.username} display={true} name={props.name} gender={props.gender} age={props.age} />
-            <InfoContainer twitter={props.twitter} insta={props.insta} linkedin={props.linkedin} fb={props.fb} whatsapp={props.whatsapp} />
+            <InfoContainer
+                twitter={userSocialmedia.find(sm => sm.type === 'twitter')?.link || ''}
+                insta={userSocialmedia.find(sm => sm.type === 'instagram')?.link || ''}
+                linkedin={userSocialmedia.find(sm => sm.type === 'linkedin')?.link || ''}
+                fb={userSocialmedia.find(sm => sm.type === 'facebook')?.link || ''}
+                whatsapp={userSocialmedia.find(sm => sm.type === 'whatsapp')?.link || ''}
+            />
             <hr />
         </div>
     )

@@ -49,7 +49,7 @@ function Profile(props) {
     useEffect(() => {
         if (!hasEffectRun.current) {
 
-            getUserData(`http://localhost:5000/${userType}?email=${loginInfoValue.login}`);
+            getUserData(`http://192.168.137.1:5000/${userType}?email=${loginInfoValue.login}`);
             console.log("user info: " + userInfo);
             console.log(userInfo);
             hasEffectRun.current = true;

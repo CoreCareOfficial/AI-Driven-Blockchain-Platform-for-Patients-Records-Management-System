@@ -29,21 +29,21 @@ function InfoContainer(props) {
         </IconContext.Provider>
     return (
         <div className="info-container">
-            <a href={`https://www.x.com/${props.twitter}`} rel="noreferrer" target="_blank">
+            {props.twitter && <a href={props.twitter} rel="noreferrer" target="_blank">
                 {XIcon}
-            </a>
-            <a href={`https://www.instagram.com/${props.insta}`} rel="noreferrer" target="_blank">
+            </a>}
+            {props.insta && <a href={props.insta} rel="noreferrer" target="_blank">
                 {instaIcon}
-            </a>
-            <a href={`https://www.linkedin.com/${props.linkedin}`} rel="noreferrer" target="_blank">
+            </a>}
+            {props.linkedin && <a href={props.linkedin} rel="noreferrer" target="_blank">
                 {linkedinIcon}
-            </a>
-            <a href={`https://www.fb.com/${props.fb}`} rel="noreferrer" target="_blank">
+            </a>}
+            {props.fb && <a href={props.fb} rel="noreferrer" target="_blank">
                 {fbIcon}
-            </a>
-            <a href={`https://www.whatsapp.com/${props.whatsapp}`} rel="noreferrer" target="_blank">
+            </a>}
+            {props.whatsapp && <a href={`https://wa.me/${props.whatsapp}`} rel="noreferrer" target="_blank">
                 {whatsappIcon}
-            </a>
+            </a>}
         </div>
     )
 }
