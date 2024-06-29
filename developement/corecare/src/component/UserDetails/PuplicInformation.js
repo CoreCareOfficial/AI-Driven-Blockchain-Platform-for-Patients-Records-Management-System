@@ -13,17 +13,80 @@ import { MdWatchLater } from "react-icons/md";
 import WorkHoursCard from "./WorkHoursCard";
 import ProfileBodyLeft from "./ProfileBodyLeft";
 import ProfileBodyRight from "./ProfileBodyRight";
+import { useEffect, useState } from "react";
 
 
 function PuplicInformation(props) {
-    const WorkHours = {
-        first: {
+    const [doctors, setDoctors] = useState({});
+    const [userData, setUserData] = useState({
+        practiceinfo: {},
+        educationalinfo: {},
+        workhours: {},
+    });
+
+    const fetchData = async (url, setStateKey) => {
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const jsonData = await response.json();
+            if (setStateKey === "doctors") {
+                setDoctors(jsonData);
+            } else {
+                setUserData((prevState) => ({
+                    ...prevState,
+                    [setStateKey]: jsonData,
+                }));
+            }
+            console.log(`Success loading ${setStateKey}:`, jsonData);
+        } catch (err) {
+            console.error("Error:", err);
+        } finally {
+            setUserData((prevState) => ({
+                ...prevState,
+                isLoading: false,
+            }));
+        }
+    };
+
+    useEffect(() => {
+        //call the api to get the doctor data when userType is Doctor
+        if (props.userType === "Doctor") {
+            fetchData(`http://192.168.137.1:5000/doctors/${props.userId}`, "doctors");
+        }
+
+    }, [props.userId, props.userType]);
+
+    useEffect(() => {
+        if (props.userType === "Doctor") {
+            fetchData(`http://192.168.137.1:5000/practiceinfo/${doctors.doctorid}`, "practiceinfo");
+            fetchData(`http://192.168.137.1:5000/educationalinfo/${doctors.doctorid}`, "educationalinfo");
+            fetchData(`http://192.168.137.1:5000/workhours/${doctors.doctorid}`, "workhours");
+        }
+    }, [doctors.doctorid, props.userType]);
+
+    const { practiceinfo, educationalinfo, workhours, previousDoctors } = userData;
+
+    console.log('doctors:', doctors);
+    console.log('practiceinfo:', practiceinfo);
+    console.log('educationalinfo:', educationalinfo);
+    console.log('workhours:', workhours);
+    const WorkHours = [
+        {
             hospitalName: "ALqaherah Hospital",
             workDays: "Sat-Sun",
             DayworkHours: "08:00 PM - 20:00 PM",
             NightworkHours: "08:00 PM - 20:00 PM",
         },
-        second: {
+        {
             hospitalName: "ALqaherah Hospital",
             workDays: "Sat-Sun",
             DayworkHours: "08:00 PM - 20:00 PM",
@@ -41,7 +104,7 @@ function PuplicInformation(props) {
         //     DayworkHours: "08:00 PM - 20:00 PM",
         //     NightworkHours: "08:00 PM - 20:00 PM",
         // },
-    }
+    ];
     return (
         <>
             <ProfileBodyLeft>
@@ -61,10 +124,11 @@ function PuplicInformation(props) {
                                 </>
                             ) :
                                 <>
-                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Medical Degree :" value="MD" />
-                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Specialization :" value="Cardiology" />
-                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Years of Experience :" value="10 Years" />
-                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Clinic Number :" value="01234567890" />
+                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Medical Degree :" value={doctors.academicdegree} />
+                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Specialization :" value={doctors.specialization} />
+                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Years of Experience :" value={doctors.yearsofexperience} />
+                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Clinic Number :" value={doctors.clinicnumber} />
+                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Location of Work :" value={doctors.locationofwork} />
                                 </>
                             }
                         </div>
@@ -95,10 +159,10 @@ function PuplicInformation(props) {
                                 </div>
                             ) :
                                 <div className="general-info-container flex-col">
-                                    <GeneralInfoItem name="w-full" icon={<MdStars />} title="Practice Location(s) :" value="Althawrah" />
-                                    <GeneralInfoItem name="w-full" icon={<MdWorkspacePremium />} title="Hospital Affiliation(s) :" value="Physician's clinic" />
-                                    <GeneralInfoItem name="w-full" icon={<IoHourglassOutline />} title="Practice Hourse :" value="10 Years" />
-                                    <GeneralInfoItem name="w-full" icon={<BsTranslate />} title="Language(s) :" value="Arabic, English" />
+                                    <GeneralInfoItem name="w-full" icon={<MdStars />} title="Practice Location(s) :" value={practiceinfo.practicelocation} />
+                                    <GeneralInfoItem name="w-full" icon={<MdWorkspacePremium />} title="Hospital Affiliation(s) :" value={practiceinfo.affiliations} />
+                                    <GeneralInfoItem name="w-full" icon={<IoHourglassOutline />} title="Practice Hourse :" value={practiceinfo.practicehours} />
+                                    <GeneralInfoItem name="w-full" icon={<BsTranslate />} title="Language(s) :" value={practiceinfo.languagesspoken} />
                                 </div>
                             }
 
@@ -118,10 +182,10 @@ function PuplicInformation(props) {
                             <div className="general-info w-full">
                                 <h3>Educational Information :</h3>
                                 <div className="general-info-container flex-col">
-                                    <GeneralInfoItem name="w-full" icon={<IoMdSchool />} title="Medical School :" value="Taiz University" />
-                                    <GeneralInfoItem name="w-full" icon={<FaUserNurse />} title="Internships :" value="Alqaherah" />
-                                    <GeneralInfoItem name="w-full" icon={<FaRegHospital />} title="Residencies :" value="Cairo Hospital" />
-                                    <GeneralInfoItem name="w-full" icon={<PiStethoscopeDuotone />} title="Fellowships :" value="Jordan University" />
+                                    <GeneralInfoItem name="w-full" icon={<IoMdSchool />} title="Medical School :" value={educationalinfo.medschool} />
+                                    <GeneralInfoItem name="w-full" icon={<FaUserNurse />} title="Internships :" value={educationalinfo.internships} />
+                                    <GeneralInfoItem name="w-full" icon={<FaRegHospital />} title="Residencies :" value={educationalinfo.residencies} />
+                                    <GeneralInfoItem name="w-full" icon={<PiStethoscopeDuotone />} title="Fellowships :" value={educationalinfo.fellowships} />
                                 </div>
                             </div>
                         ) : null}
@@ -144,7 +208,7 @@ function PuplicInformation(props) {
                     ) : <>
                         <h3 className="flex items-center gap-2"> <MdWatchLater /> Work Hours :</h3>
                         <div className="flex flex-col my-1">
-                            <WorkHoursCard WorkHours={WorkHours} />
+                            <WorkHoursCard WorkHours={workhours} />
                         </div>
                     </>
                 }

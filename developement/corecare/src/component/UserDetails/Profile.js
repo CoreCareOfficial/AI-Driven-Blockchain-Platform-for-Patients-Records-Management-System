@@ -11,7 +11,6 @@ import { useRecoilValue } from "recoil";
 function Profile(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
     const [userInfo, setUserInfo] = useState(null);
-    const [userCurrentMedications, setCurrentMedications] = useState(null);
     const [error, setError] = useState(null);
     const hasEffectRun = useRef(false);
 
@@ -20,7 +19,6 @@ function Profile(props) {
     if (props.userType !== "Patient" && props.userType !== "Doctor") {
         userType = "healthcare_provider"
     }
-
     else {
         userType = 'Patients'
     }

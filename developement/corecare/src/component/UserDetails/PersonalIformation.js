@@ -23,30 +23,6 @@ import allergiesImg from "../../assets/allergies.png";
 function PersonalInformation(props) {
     const userInfo = props.userInfo;
     console.log(userInfo);
-
-    const doctors = {
-        doctor1: {
-            image: ahmed,
-            name: 'Ahmed Qahtan',
-            spec: 'Serguent',
-        },
-        doctor2: {
-            image: ahmed,
-            name: 'Ahmed Qahtan',
-            spec: 'Serguent',
-        },
-        doctor3: {
-            image: ahmed,
-            name: 'Ahmed Qahtan',
-            spec: 'Serguent',
-        },
-        doctor4: {
-            image: ahmed,
-            name: 'Ahmed Qahtan',
-            spec: 'Serguent',
-        },
-    };
-
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -60,6 +36,7 @@ function PersonalInformation(props) {
         allergies: {},
         medications: {},
         pastConditions: {},
+        previousDoctors: {},
         isLoading: true,
     });
 
@@ -98,9 +75,10 @@ function PersonalInformation(props) {
         fetchData(`http://192.168.137.1:5000/allergies/${userId}`, "allergies");
         fetchData(`http://192.168.137.1:5000/medications/${userId}`, "medications");
         fetchData(`http://192.168.137.1:5000/pastconditions/${userId}`, "pastConditions");
+        fetchData(`http://192.168.137.1:5000/previousdoctors/${userId}`, "previousDoctors");
     }, [userInfo.patientid]);
 
-    const { healthInfo, allergies, medications, pastConditions, isLoading } = userData;
+    const { healthInfo, allergies, medications, pastConditions, previousDoctors, isLoading } = userData;
 
     return (
         <>
@@ -135,17 +113,17 @@ function PersonalInformation(props) {
                         <HealthCard image={blood} title="Blood (HP) :" date={FormatRelativeTime(healthInfo.blooddate)} value={healthInfo.blood} />
                         <HealthCard image={sugar} title="Blood Sugar :" date={FormatRelativeTime(healthInfo.bloodsugardate)} value={healthInfo.bloodsugar} />
                         <HealthCard image={pressure} title="Blood Pressure :" date={FormatRelativeTime(healthInfo.bloodpressuredate)} value={healthInfo.bloodpressure} />
-                        <HealthCard image={heart} title="Heart Rate (Pulse):" date={FormatRelativeTime(healthInfo.heartratedate)} value={`${healthInfo.heartrate}/m`} />
-                        <HealthCard image={respiratory} title="Respiratory Rate :" date={FormatRelativeTime(healthInfo.respiratoryratedate)} value={`${healthInfo.respiratoryrate}/m`} />
+                        <HealthCard image={heart} title="Heart Rate (Pulse):" date={FormatRelativeTime(healthInfo.heartratedate)} value={healthInfo.heartrate ? `${healthInfo.heartrate}/m` : ''} />
+                        <HealthCard image={respiratory} title="Respiratory Rate :" date={FormatRelativeTime(healthInfo.respiratoryratedate)} value={healthInfo.respiratoryrate ? `${healthInfo.respiratoryrate}/m` : ''} />
                         <HealthCard image={allergiesImg} title="Allergies :" date={FormatRelativeTime(allergies.allergiesdate)} value={allergies.allergyname} />
-                        <HealthCard image={weight} title="Weight :" date={FormatRelativeTime(healthInfo.weightdate)} value={`${healthInfo.weight} kg`} />
-                        <HealthCard image={height} title="Height :" date={FormatRelativeTime(healthInfo.heightdate)} value={`${healthInfo.height} cm`} />
+                        <HealthCard image={weight} title="Weight :" date={FormatRelativeTime(healthInfo.weightdate)} value={healthInfo.weight ? `${healthInfo.weight} kg` : ''} />
+                        <HealthCard image={height} title="Height :" date={FormatRelativeTime(healthInfo.heightdate)} value={healthInfo.height ? `${healthInfo.height} cm` : ''} />
                     </div>
                 )}
             </ProfileBodyRight>
 
             <ProfileBodyBottom>
-                <PreviousDoctorCard title="Previous Doctors" doctors={doctors} />
+                <PreviousDoctorCard title="Previous Doctors" doctors={previousDoctors} />
             </ProfileBodyBottom>
         </>
     );
