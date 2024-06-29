@@ -127,7 +127,7 @@ function SettingBodyRight(props) {
                         ><MdModeEdit /></span>
                         <span style={{
                             color: 'white',
-                            position: 'absolute', right: '15px', top: '150px',
+                            position: 'absolute', right: '15px', top: '180px',
                             fontSize: '1.3em',
                             borderRadius: '20px',
                             padding: '5px',
