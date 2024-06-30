@@ -38,12 +38,12 @@ export function UpdateImage() {
     };
 
     return (
-            <>
+        <>
             <Image
                 src={SelectedImageUrl}
                 thumbnail
                 roundedCircle
-                style={{cursor:'pointer', width: '130px', height: '130px', margin: '0px auto' }}
+                style={{ cursor: 'pointer', width: '130px', height: '130px', margin: '0px auto' }}
                 onClick={() => {
                     fileRef.current.click();
                 }
@@ -56,7 +56,7 @@ export function UpdateImage() {
                 style={{ display: 'none', flex: '1' }}
                 onChange={handleFileChange}
             />
-            </>
+        </>
     );
 };
 
@@ -313,3 +313,26 @@ export function SpecializationSelect(props) {
         </div>
     );
 };
+
+export function DynamicInput(props) {
+    const lab={
+        color:'#272c34',
+        fontWeight:'700',
+    }
+    const inp={
+        width:'calc(100% - 85px)',
+        borderBottom:'1px solid #3146ff',
+        outline:'none',
+        fontWeight:'500',
+    }
+
+    return (
+        <>
+            <div style={{ margin:'10px 5px',display:'flex', justifyContent:'space-between'}}>
+                {props .children}
+                <label style={lab}>{props.label}</label>
+                <input style={inp} type={props.type} value={props.value} disabled={props.disabled} />
+            </div>
+        </>
+    );
+}

@@ -77,7 +77,7 @@
 }
 /* =============================== */
 
-/* .records_table{
+.records_table{
     color: var(--white-color);
     height: auto;
 }
@@ -92,7 +92,7 @@
 }
 .tbody_tr span{
     font-size: 1.1em;
-} */
+}
  /* ===== */
 .p-treetable-table{
     background-color: #272c34;
