@@ -3,11 +3,11 @@ import pool from '../db.js';
 
 const router = express.Router();
 
-router.get('/:patientID', async (req, res) => {
-    const { patientID } = req.params;
+router.get('/:email', async (req, res) => {
+    const { email } = req.params;
 
     try {
-        const socialAccounts = await pool.query('SELECT * from socialmedia WHERE patientID = $1', [patientID]);
+        const socialAccounts = await pool.query('SELECT * from socialmedia WHERE email = $1', [email]);
         if (socialAccounts.rows.length === 0) {
             return res.status(404).send('account not found');
         }

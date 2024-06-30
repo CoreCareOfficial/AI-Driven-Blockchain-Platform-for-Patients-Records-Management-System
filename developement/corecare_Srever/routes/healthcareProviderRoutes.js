@@ -79,7 +79,7 @@ router.post('/', upload.fields([
 
 // Select Healthcare by email
 router.get('/', async (req, res) => {
-    const { email } = req.body;
+    const { email } = req.query;
     try {
         const healthcareProviderQuery = await pool.query('SELECT * from healthcare_provider WHERE email = $1 or username = $1', [email]);
         if (healthcareProviderQuery.rows.length === 0) {

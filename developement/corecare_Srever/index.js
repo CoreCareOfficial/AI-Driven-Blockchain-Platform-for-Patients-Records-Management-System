@@ -10,6 +10,13 @@ import socialMediaRoutes from './routes/socialMediaRoutes.js';
 import allergiesRoutes from './routes/allergiesRoutes.js';
 import medicationRouts from './routes/medecationRoutes.js';
 import pastConditionRoutes from './routes/pastConditionRoutes.js';
+import previousDoctorsRoutes from './routes/previousDoctorsRoutes.js';
+import practiceInfoRoutes from './routes/praticeInfoRoutes.js';
+import educationalInnfoRoutes from './routes/educationalInnfoRoutes.js';
+import workHoursRoutes from './routes/workHoursRoutes.js';
+import visitHoursRoutes from './routes/visitHoursRoutes.js';
+import departmentsRoutes from './routes/departmentsRoutes.js';
+import servicesRoutes from './routes/ServicesRoutes.js';
 import verification from './routes/verification.js';
 import dotenv from 'dotenv';
 
@@ -32,6 +39,13 @@ app.use('/socialmedia', socialMediaRoutes);
 app.use('/allergies', allergiesRoutes);
 app.use('/medications', medicationRouts);
 app.use('/pastconditions', pastConditionRoutes);
+app.use('/previousdoctors', previousDoctorsRoutes);
+app.use('/practiceinfo', practiceInfoRoutes);
+app.use('/educationalinfo', educationalInnfoRoutes);
+app.use('/workhours', workHoursRoutes);
+app.use('/visithours', visitHoursRoutes);
+app.use('/departments', departmentsRoutes);
+app.use('/services', servicesRoutes);
 app.use('/verification', verification);
 
 app.listen(PORT, () => {
