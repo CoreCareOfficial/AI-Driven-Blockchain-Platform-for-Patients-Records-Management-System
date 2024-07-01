@@ -14,14 +14,22 @@ import WorkHoursCard from "./WorkHoursCard";
 import ProfileBodyLeft from "./ProfileBodyLeft";
 import ProfileBodyRight from "./ProfileBodyRight";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { loginInfo } from "../../Recoil/Atom";
 
 
 function PuplicInformation(props) {
+    const facilityInfo = props.facilityInfo;
+    const loginInfoValue = useRecoilValue(loginInfo);
+    console.log('facilityInfo:', facilityInfo);
     const [doctors, setDoctors] = useState({});
     const [userData, setUserData] = useState({
-        practiceinfo: {},
-        educationalinfo: {},
-        workhours: {},
+        practiceinfo: [],
+        educationalinfo: [],
+        workhours: [],
+        departments: [],
+        emergencyservices: [],
+        visithours: [],
     });
 
     const fetchData = async (url, setStateKey) => {
@@ -67,44 +75,30 @@ function PuplicInformation(props) {
 
     useEffect(() => {
         if (props.userType === "Doctor") {
+            console.log('doctors.doctorid:', doctors.doctorid);
             fetchData(`http://192.168.137.1:5000/practiceinfo/${doctors.doctorid}`, "practiceinfo");
             fetchData(`http://192.168.137.1:5000/educationalinfo/${doctors.doctorid}`, "educationalinfo");
-            fetchData(`http://192.168.137.1:5000/workhours/${doctors.doctorid}`, "workhours");
+        } else {
+            fetchData(`http://192.168.137.1:5000/services/${facilityInfo.id}`, "emergencyservices");
+            if (props.userType === "Hospital") {
+                console.log('facilityInfo.facility_id:', facilityInfo.id);
+                fetchData(`http://192.168.137.1:5000/departments/${facilityInfo.id}`, "departments");
+                fetchData(`http://192.168.137.1:5000/visithours/${loginInfoValue.login}`, "visithours");
+            }
         }
-    }, [doctors.doctorid, props.userType]);
+        fetchData(`http://192.168.137.1:5000/workhours/${loginInfoValue.login}`, "workhours");
+    }, [doctors?.doctorid, props.userType, facilityInfo?.id, loginInfoValue?.login]);
 
-    const { practiceinfo, educationalinfo, workhours, previousDoctors } = userData;
+    const { practiceinfo, educationalinfo, workhours, departments, emergencyservices, visithours } = userData;
 
     console.log('doctors:', doctors);
     console.log('practiceinfo:', practiceinfo);
     console.log('educationalinfo:', educationalinfo);
     console.log('workhours:', workhours);
-    const WorkHours = [
-        {
-            hospitalName: "ALqaherah Hospital",
-            workDays: "Sat-Sun",
-            DayworkHours: "08:00 PM - 20:00 PM",
-            NightworkHours: "08:00 PM - 20:00 PM",
-        },
-        {
-            hospitalName: "ALqaherah Hospital",
-            workDays: "Sat-Sun",
-            DayworkHours: "08:00 PM - 20:00 PM",
-            NightworkHours: "08:00 PM - 20:00 PM",
-        },
-        // third: {
-        //     hospitalName: "ALqaherah Hospital",
-        //     workDays: "Sat-Sun",
-        //     DayworkHours: "08:00 PM - 20:00 PM",
-        //     NightworkHours: "08:00 PM - 20:00 PM",
-        // },
-        // fourth: {
-        //     hospitalName: "ALqaherah Hospital",
-        //     workDays: "Sat-Sun",
-        //     DayworkHours: "08:00 PM - 20:00 PM",
-        //     NightworkHours: "08:00 PM - 20:00 PM",
-        // },
-    ];
+    console.log('departments:', departments);
+    console.log('emergencyservices:', emergencyservices);
+    console.log('visithours:', visithours);
+
     return (
         <>
             <ProfileBodyLeft>
@@ -117,10 +111,10 @@ function PuplicInformation(props) {
                         <div className="general-info-container">
                             {props.userType === "Hospital" || props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Pharmacy" ? (
                                 <>
-                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Name :" value="Hospital name" />
-                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Location :" value="Yemen-Taiz" />
-                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Phone Number :" value="+967774714500" />
-                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Email :" value="qahtan.dev@gmail.com" />
+                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Name :" value={facilityInfo.name} />
+                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Location :" value={`${facilityInfo.country}-${facilityInfo.address}`} />
+                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Phone Number :" value={facilityInfo.phonenumber} />
+                                    <GeneralInfoItem icon={<MdPersonOutline />} title="Email :" value={facilityInfo.email} />
                                 </>
                             ) :
                                 <>
@@ -145,17 +139,19 @@ function PuplicInformation(props) {
 
                             {props.userType === "Hospital" ? (
                                 <div className="general-info-container flex-col">
-                                    <GeneralInfoItem name="w-full" icon={<MdStars />} title="Department1" value="Althawrah" />
-                                    <GeneralInfoItem name="w-full" icon={<MdStars />} title="Department2" value="Althawrah" />
-                                    <GeneralInfoItem name="w-full" icon={<MdStars />} title="Department3" value="Althawrah" />
-                                    <GeneralInfoItem name="w-full" icon={<MdStars />} title="Department4" value="Althawrah" />
+                                    {
+                                        departments.map((department, index) => (
+                                            <GeneralInfoItem key={department.id} name="w-full" icon={<MdStars />} title={`Department ${index + 1}`} value={department.name} />
+                                        ))
+                                    }
                                 </div>
                             ) : props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Pharmacy" ? (
                                 <div className="general-info-container flex-col">
-                                    <GeneralInfoItem name="w-full" icon={<MdStars />} title="Service1" value="Althawrah" />
-                                    <GeneralInfoItem name="w-full" icon={<MdStars />} title="Service2" value="Althawrah" />
-                                    <GeneralInfoItem name="w-full" icon={<MdStars />} title="Service3" value="Althawrah" />
-                                    <GeneralInfoItem name="w-full" icon={<MdStars />} title="Service4" value="Althawrah" />
+                                    {
+                                        emergencyservices.map((service, index) => (
+                                            <GeneralInfoItem key={service.id} name="w-full" icon={<MdStars />} title={`Service ${index + 1} :`} value={service.name} />
+                                        ))
+                                    }
                                 </div>
                             ) :
                                 <div className="general-info-container flex-col">
@@ -172,10 +168,11 @@ function PuplicInformation(props) {
                             <div className="general-info w-full">
                                 <h3>Emergency Services :</h3>
                                 <div className="general-info-container flex-col">
-                                    <GeneralInfoItem name="w-full" icon={<PiStethoscopeDuotone />} title="Emergency Services :" value="Taiz University" />
-                                    <GeneralInfoItem name="w-full" icon={<PiStethoscopeDuotone />} title="Emergency Services :" value="Alqaherah" />
-                                    <GeneralInfoItem name="w-full" icon={<PiStethoscopeDuotone />} title="Emergency Services :" value="Cairo Hospital" />
-                                    <GeneralInfoItem name="w-full" icon={<PiStethoscopeDuotone />} title="Emergency Services :" value="Jordan University" />
+                                    {
+                                        emergencyservices.map((service, index) => (
+                                            <GeneralInfoItem key={service.id} name="w-full" icon={<PiStethoscopeDuotone />} title={`Emergency Service ${index + 1} :`} value={service.name} />
+                                        ))
+                                    }
                                 </div>
                             </div>
                         ) : props.userType === "Doctor" ? (
@@ -198,17 +195,17 @@ function PuplicInformation(props) {
                         <>
                             <h3 className="flex items-center gap-2"> <MdWatchLater /> Work Hours :</h3>
                             <div className="flex flex-col my-1">
-                                <WorkHoursCard WorkHours={WorkHours} />
+                                <WorkHoursCard WorkHours={workhours} userType={props.userType} />
                             </div>
                             <h3 className="flex items-center gap-2"> <MdWatchLater /> Visit Hours :</h3>
                             <div className="flex flex-col my-1">
-                                <WorkHoursCard WorkHours={WorkHours} />
+                                <WorkHoursCard WorkHours={visithours} userType={props.userType} />
                             </div>
                         </>
                     ) : <>
                         <h3 className="flex items-center gap-2"> <MdWatchLater /> Work Hours :</h3>
                         <div className="flex flex-col my-1">
-                            <WorkHoursCard WorkHours={workhours} />
+                            <WorkHoursCard WorkHours={workhours} userType={props.userType} />
                         </div>
                     </>
                 }

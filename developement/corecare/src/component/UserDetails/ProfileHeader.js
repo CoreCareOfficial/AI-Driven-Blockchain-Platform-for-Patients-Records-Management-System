@@ -43,7 +43,7 @@ function ProfileHeader(props) {
     return (
         <div className="profile-header">
             <ProfileHeaderIcon image={props.image} />
-            <ImageNameContainer userType={props.userType} location={props.location} image={props.image} username={props.username} display={true} name={props.name} gender={props.gender} age={props.age} />
+            <ImageNameContainer userType={props.userType} location={`${props.country}, ${props.location}`} image={props.image} username={props.username} display={true} name={props.name} gender={props.gender} age={props.age} />
             <InfoContainer
                 twitter={userSocialmedia.find(sm => sm.type === 'twitter')?.link || ''}
                 insta={userSocialmedia.find(sm => sm.type === 'instagram')?.link || ''}

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoIosEyeOff } from "react-icons/io";
 import SettingCountrySelector from './SettingCountrySelector';
@@ -6,6 +6,8 @@ import { Button } from "primereact/button";
 import { useSetRecoilState } from "recoil";
 import { userHealthInfo } from "../../Recoil/Atom";
 import { Image } from "react-bootstrap";
+import defaultPic from '../../assets/user_signup.png';
+
 import ahmed from '../../assets/ahmed.jpg';
 // import user_signup from '../../assets/user_signup.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,40 +16,41 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
 
 
-export function UpdateImage() {
-
+export function UpdateImage(props) {
     const fileRef = useRef(null);
-    // const setUserInfo = useSetRecoilState(userInfo);
-
     const [selectedFile, setSelectedFile] = useState(null);
-    const [SelectedImageUrl, setSelectedImageUrl] = useState(ahmed)
+    const [selectedImageUrl, setSelectedImageUrl] = useState(defaultPic);
+
+    useEffect(() => {
+        if (props.img) {
+            setSelectedImageUrl(`data:image/jpeg;base64,${props.img}`);
+        }
+    }, [props.img]);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        if (file.type && !file.type.startsWith('image/')) {
-            return alert('Please select an image file.');
-        }
-
-        setSelectedFile(file);
-        const reader = new FileReader();
-        reader.onload = (e) => {
+        if (file && file.type.startsWith('image/')) {
             setSelectedFile(file);
-            setSelectedImageUrl(e.target.result); // Store the image URL for display
-        };
-        reader.readAsDataURL(file);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setSelectedImageUrl(e.target.result); // Store the image URL for display
+            };
+            reader.readAsDataURL(file);
+        } else {
+            alert('Please select an image file.');
+        }
     };
 
     return (
         <>
             <Image
-                src={SelectedImageUrl}
+                src={selectedImageUrl}
                 thumbnail
                 roundedCircle
                 style={{ cursor: 'pointer', width: '130px', height: '130px', margin: '0px auto' }}
                 onClick={() => {
                     fileRef.current.click();
-                }
-                }
+                }}
             />
             <input
                 type="file"
@@ -176,6 +179,7 @@ export function SocialSettingInput(props) {
                     placeholder={props.placeholder}
                     name={props.name}
                     disabled={props.disabled}
+                    value={props.value}
                 />
                 <span>{props.icon}</span>
             </div>
@@ -202,9 +206,29 @@ export function SettingInput(props) {
     );
 };
 
+export function SettingTimeInput(props) {
+    const [timeValue, setTimeValue] = useState(props.value ? props.value : "");
+    console.log(timeValue);
+    return (
+        <div className={props.class_name}>
+            <label>{props.label}</label>
+            <input
+                type='time'
+                style={{ color: props.disabled ? "gray" : "white" }}
+                placeholder={props.placeholder}
+                onChange={(e) => setTimeValue(e.target.value)}
+                name={props.name}
+                disabled={props.disabled}
+                autoFocus={props.autoFocus}
+                value={timeValue}
+            />
+        </div>
+    );
+};
+
 export function SettingSelect(props) {
 
-    const hidtext = "";
+    const hidtext = props.value;
 
     const listItems = props.items.map((item, index) => (
         <option key={index}>{item}</option>
@@ -225,7 +249,7 @@ export function SettingCountry(props) {
     return (
         <div className="SettingCountry">
             <label>{props.label}</label>
-            <SettingCountrySelector disabled={props.disabled} />
+            <SettingCountrySelector disabled={props.disabled} value={props.value} />
         </div>
     );
 };
@@ -276,7 +300,7 @@ export function MedicalDegree(props) {
         <div className="SettingSelect">
             <label>{props.label}</label>
             <select id="dino-select" value={selectedValue} onChange={handleChange} disabled={props.disabled} style={{ color: props.disabled ? "gray" : "white" }}>
-                <option disabled selected hidden>{props.placeholder}</option>
+                <option disabled selected hidden>{props.value}</option>
                 {selectItems}
             </select>
         </div>
@@ -307,7 +331,7 @@ export function SpecializationSelect(props) {
                 disabled={props.disabled}
                 style={{ color: props.disabled ? "gray" : "white" }}
             >
-                <option disabled selected hidden value="" style={{ textAlign: 'left' }}>{props.placeholder}</option>
+                <option disabled selected hidden value="" style={{ textAlign: 'left' }}>{props.value}</option>
                 {options}
             </select>
         </div>

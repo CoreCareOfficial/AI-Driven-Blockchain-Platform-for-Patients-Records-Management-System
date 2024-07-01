@@ -92,8 +92,8 @@ function PersonalInformation(props) {
                             <GeneralInfoItem icon={<FaVenusMars />} title="Gender :" value={userInfo.sex} />
                             <GeneralInfoItem icon={<MdLocalPhone />} title="Phone Number :" value={userInfo.phonenumber} />
                             <GeneralInfoItem icon={<MdCalendarToday />} title="Date of Birth :" value={formatDate(userInfo.dateofbirth)} />
-                            <GeneralInfoItem icon={<MdOutlineEditRoad />} title="Address :" value={`${userInfo.country}, ${userInfo.address}`} />
                             <GeneralInfoItem icon={<MdLanguage />} title="Nationality :" value={Nationality[userInfo.country]} />
+                            <GeneralInfoItem icon={<MdOutlineEditRoad />} title="Address :" value={`${userInfo.country}, ${userInfo.address}`} />
                             <GeneralInfoItem icon={<MdBloodtype />} title="Blood Type :" value={userInfo.bloodtype} />
                             <GeneralInfoItem icon={<FaGenderless />} title="Status :" value={userInfo.status} />
                             <GeneralInfoItem icon={<MdWorkOutline />} title="Job :" value={userInfo.job} />

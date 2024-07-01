@@ -181,6 +181,7 @@ function EndSignupPage() {
             formData.append('name', facilityInfoValue.name);
             formData.append('phoneNumber', facilityInfoValue.phoneNumber);
             formData.append('email', facilityInfoValue.email);
+            formData.append('country', facilityInfoValue.country.label);
             formData.append('address', facilityInfoValue.address);
             formData.append('licenseNumber', facilityInfoValue.licenseNumber);
             formData.append('PublicWalletAddress', facilityInfoValue.PublicWalletAddress);

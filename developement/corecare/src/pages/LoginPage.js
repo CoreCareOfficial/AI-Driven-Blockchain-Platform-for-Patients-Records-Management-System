@@ -41,8 +41,8 @@ function LoginPage() {
             if (userResponse.ok) {
                 console.log(jsonData.message);
                 console.log("successful signin");
-                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successful' });
-                navigate('/userprofile', { state: { userType: jsonData.userType } });
+                // toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successful' });
+                navigate('/userprofile', { state: { userType: jsonData.userType === "Radiology Center" ? 'Radiology' : jsonData.userType } });
             } else {
                 console.log("failed signin");
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Invalid Password or Email' });

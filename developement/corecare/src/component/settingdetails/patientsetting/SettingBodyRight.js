@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 import DynamicCard from '../../bootcomponent/DynamicCard';
-import { PiNumberOneFill } from "react-icons/pi";
-import { PiNumberSquareTwoFill } from "react-icons/pi";
-import { PiNumberThreeFill } from "react-icons/pi";
+import { PiNumberOneFill, PiNumberSquareTwoFill, PiNumberThreeFill } from "react-icons/pi";
 import { TbTrashXFilled } from "react-icons/tb";
 import { Card } from "react-bootstrap";
 import { IoMdPersonAdd } from "react-icons/io";
 import { MdModeEdit } from "react-icons/md";
-import { SettingForm, SettingInput } from "../TextFormSetting";
+import { SettingForm, SettingInput, SettingTimeInput } from "../TextFormSetting";
 import { CiCirclePlus } from "react-icons/ci";
 
 function SettingBodyRight(props) {
-    const icons = [
-        { 'num': <PiNumberOneFill /> },
-        { 'num': <PiNumberSquareTwoFill /> },
-        { 'num': <PiNumberThreeFill /> }
-    ]
+    const emergencyContacts = props.emergencyContact ? props.emergencyContact : [];
+    const workHours = Array.isArray(props.workHours) ? props.workHours : [];
+    const icons = {
+        1: <PiNumberOneFill />,
+        2: <PiNumberSquareTwoFill />,
+        3: <PiNumberThreeFill />
+    };
     const usercontact = [
         { id: 1, 'name': "ahmed qahtan" },
         { id: 2, 'name': "ahmed qahtan" },
-    ]
+    ];
 
     const [TimeFrom, setFrom] = useState('');
     const [to, setTo] = useState('');
@@ -35,9 +35,12 @@ function SettingBodyRight(props) {
                 setTimes([...times, newTime]);
                 setFrom('');
                 setTo('');
-            } alert("choose correct time");
+            } else {
+                alert("Choose correct time");
+            }
+        } else {
+            alert("Choose time!");
         }
-        alert("Choose time!");
     };
 
     const [WorkFrom, setWorkFrom] = useState('');
@@ -45,18 +48,21 @@ function SettingBodyRight(props) {
     const [WorkTimes, setWorkTimes] = useState([]);
 
     const handleAddWorkTime = () => {
-        if (TimeFrom !== '' && to !== '') {
-            if (to > TimeFrom) {
+        if (WorkFrom !== '' && WorkTo !== '') {
+            if (WorkTo > WorkFrom) {
                 const newWorkTime = {
-                    TimeFrom,
-                    to,
+                    WorkFrom,
+                    WorkTo,
                 };
                 setWorkTimes([...WorkTimes, newWorkTime]);
-                setFrom('');
-                setTo('');
-            } alert("choose correct time");
+                setWorkFrom('');
+                setWorkTo('');
+            } else {
+                alert("Choose correct time");
+            }
+        } else {
+            alert("Choose time!");
         }
-        alert("Choose time!");
     };
     console.log(times);
 
@@ -68,6 +74,26 @@ function SettingBodyRight(props) {
     const [VisitHours, setVisitHours] = useState(true);
     const toggleEditVisitHours = () => {
         setVisitHours(!VisitHours);
+    };
+
+    const spanWorkHours1 = {
+        color: 'white',
+        position: 'absolute', right: '40px', top: '-15px',
+        fontSize: '1.3em',
+        borderRadius: '20px',
+        padding: '5px',
+        backgroundColor: '#272c34',
+        cursor: 'pointer',
+    };
+    const spanWorkHours2 = {
+        color: 'white',
+        position: 'absolute', right: '15px', top: '150px',
+        fontSize: '1.3em',
+        borderRadius: '20px',
+        padding: '5px',
+        backgroundColor: '#272c34',
+        cursor: 'pointer',
+        display: WorkHours ? "none" : "block",
     };
 
     return (
@@ -82,8 +108,8 @@ function SettingBodyRight(props) {
                             fontFamily: 'DM Sans'
                         }}>Emergency Contact</Card.Title>
                         {
-                            usercontact.map((EmergencyContact) => (
-                                <div style={{
+                            emergencyContacts.map((EmergencyContact, index) => (
+                                <div key={index} style={{
                                     height: '40px',
                                     display: 'flex',
                                     justifyContent: 'space-between',
@@ -91,12 +117,10 @@ function SettingBodyRight(props) {
                                     alignItems: 'center'
                                 }}>
                                     <span>
-
-                                        <PiNumberOneFill />
+                                        {icons[index + 1]}
                                     </span>
-                                    <Card.Text>{EmergencyContact['name']}</Card.Text>
+                                    <Card.Text>{EmergencyContact}</Card.Text>
                                     <span>
-                                        {/* event */}
                                         <TbTrashXFilled />
                                     </span>
                                 </div>
@@ -113,36 +137,71 @@ function SettingBodyRight(props) {
                 ) : null}
 
                 {props.userType === "Doctor" || props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Hospital" || props.userType === "Pharmacy" ? (
+                    <>
+                        {workHours.map((workHour, index) => {
+                            // Trim and split DayworkHours into start and end times
+                            const dayworkHours = workHour.DayworkHours.trim();
+                            const [startTime, endTime] = dayworkHours.split(' - ');
+                            const NightworkHours = workHour.NightworkHours.trim();
+                            const [startTimeN, endTimeN] = NightworkHours.split(' - ');
 
-                    <SettingForm name="SettingForm_form" legend="Work Hours" btn="Add Time" show={WorkHours} TheEvent={toggleEditWorkHours}>
-                        <span style={{
-                            color: 'white',
-                            position: 'absolute', right: '40px', top: '-15px',
-                            fontSize: '1.3em',
-                            borderRadius: '20px',
-                            padding: '5px',
-                            backgroundColor: '#272c34',
-                            cursor: 'pointer',
-                        }} onClick={toggleEditWorkHours}
-                        ><MdModeEdit /></span>
-                        <span style={{
-                            color: 'white',
-                            position: 'absolute', right: '15px', top: '180px',
-                            fontSize: '1.3em',
-                            borderRadius: '20px',
-                            padding: '5px',
-                            backgroundColor: '#272c34',
-                            cursor: 'pointer',
-                            display: WorkHours ? "none" : "block",
-                        }} onClick={handleAddWorkTime}
-                        ><CiCirclePlus /></span>
-                        {props.userType === "Doctor" ? (
-                            <SettingInput class_name="SettingInput" type="text" name="Facility Name" label="Facility Name:" placeholder="" disabled={WorkHours} />
-                        ) : null}
-                        <SettingInput class_name="SettingInput" type="text" name="Days" label="Days :" placeholder="Separated with ," disabled={WorkHours} />
-                        <SettingInput class_name="SettingInput" type="time" value={WorkFrom} name="From " label="From :" onChange={(e) => setWorkFrom(e.target.value)} placeholder="" disabled={WorkHours} />
-                        <SettingInput class_name="SettingInput" type="time" value={WorkTo} name="To " label="To :" onChange={(e) => setWorkTo(e.target.value)} placeholder="" disabled={WorkHours} />
-                    </SettingForm>
+                            // Debugging statements
+                            console.log("DayworkHours:", dayworkHours);
+                            console.log("Start Time:", startTime);
+                            console.log("End Time:", endTime);
+                            console.log("NightworkHours:", NightworkHours);
+                            console.log("Start TimeN:", startTimeN);
+                            console.log("End TimeN:", endTimeN);
+
+                            // Ensure startTime and endTime are properly formatted
+                            const formatTime = (time) => time.split(':').slice(0, 2).join(':');
+                            const formattedStartTime = formatTime(startTime);
+                            const formattedEndTime = formatTime(endTime);
+                            const formattedStartTimeN = formatTime(startTimeN);
+                            const formattedEndTimeN = formatTime(endTimeN);
+
+                            return (
+                                <SettingForm key={index} name="SettingForm_form" legend="Work Hours" btn="Add Time" show={WorkHours} TheEvent={toggleEditWorkHours}>
+                                    <span style={spanWorkHours1} onClick={toggleEditWorkHours}>
+                                        <MdModeEdit />
+                                    </span>
+                                    <span style={spanWorkHours2} onClick={handleAddWorkTime}>
+                                        <CiCirclePlus />
+                                    </span>
+                                    {props.userType === "Doctor" ? (
+                                        <SettingInput class_name="SettingInput" type="text" name="Facility Name" label="Facility Name:" placeholder="" disabled={WorkHours} value={workHour.hospitalName} />
+                                    ) : null}
+                                    <SettingInput class_name="SettingInput" type="text" name="Days" label="Days :" placeholder="Separated with ," disabled={WorkHours} value={workHour.workDays} />
+                                    {/* Use the split values for From and To */}
+                                    {dayworkHours &&
+                                        <>
+                                            <SettingTimeInput class_name="SettingInput" value={formattedStartTime} name="From " label="From :" placeholder="" disabled={WorkHours} />
+                                            <SettingTimeInput class_name="SettingInput" value={formattedEndTime} name="To " label="To :" placeholder="" disabled={WorkHours} />
+                                        </>
+                                    }
+                                    {NightworkHours &&
+                                        <>
+                                            <SettingTimeInput class_name="SettingInput" value={formattedStartTimeN} name="From " label="From :" placeholder="" disabled={WorkHours} />
+                                            <SettingTimeInput class_name="SettingInput" value={formattedEndTimeN} name="To " label="To :" placeholder="" disabled={WorkHours} />
+                                        </>
+                                    }
+                                </SettingForm>
+                            );
+                        })}
+
+                        <SettingForm name="SettingForm_form" legend="New Work Hours" btn="Add Time" show={WorkHours} TheEvent={toggleEditWorkHours}>
+                            <span style={spanWorkHours1} onClick={toggleEditWorkHours}
+                            ><MdModeEdit /></span>
+                            <span style={spanWorkHours2} onClick={handleAddWorkTime}
+                            ><CiCirclePlus /></span>
+                            {props.userType === "Doctor" ? (
+                                <SettingInput class_name="SettingInput" type="text" name="Facility Name" label="Facility Name:" placeholder="" disabled={WorkHours} />
+                            ) : null}
+                            <SettingInput class_name="SettingInput" type="text" name="Days" label="Days :" placeholder="Separated with ," disabled={WorkHours} />
+                            <SettingInput class_name="SettingInput" type="time" value={WorkFrom} name="From " label="From :" onChange={(e) => setWorkFrom(e.target.value)} placeholder="" disabled={WorkHours} />
+                            <SettingInput class_name="SettingInput" type="time" value={WorkTo} name="To " label="To :" onChange={(e) => setWorkTo(e.target.value)} placeholder="" disabled={WorkHours} />
+                        </SettingForm>
+                    </>
                 ) : null}
 
                 {props.userType === "Hospital" ? (
@@ -177,6 +236,5 @@ function SettingBodyRight(props) {
             </DynamicCard>
         </>
     );
-
 }
 export default SettingBodyRight;

@@ -10,6 +10,10 @@ import { MdModeEdit } from "react-icons/md";
 
 
 function SettingBodyMid(props) {
+    const socialInfo = props.socialInfo ? props.socialInfo : [];
+    const profissional = props.profissional ? props.profissional : {};
+    const educational = props.educational ? props.educational : {};
+
     const medicalSpecializations = [
         'Anesthetics',
         'Breast Screening',
@@ -98,11 +102,11 @@ function SettingBodyMid(props) {
                         cursor: 'pointer',
                     }} onClick={toggleEditSocial}
                     ><MdModeEdit /></span>
-                    <SocialSettingInput name="facebook" label="Facebook:" icon={<AiFillFacebook />} placeholder="" disabled={Social} />
-                    <SocialSettingInput name="twitter" label="Twitter:" icon={<AiOutlineX />} placeholder="" disabled={Social} />
-                    <SocialSettingInput name="linkedin" label="Linkedin:" icon={<AiFillLinkedin />} placeholder="" disabled={Social} />
-                    <SocialSettingInput name="instagram" label="Instagram:" icon={<AiFillInstagram />} placeholder="" disabled={Social} />
-                    <SocialSettingInput name="whatsapp" label="WhatsApp:" icon={<AiOutlineWhatsApp />} placeholder="" disabled={Social} />
+                    <SocialSettingInput name="facebook" label="Facebook:" icon={<AiFillFacebook />} placeholder="" disabled={Social} value={socialInfo.find(sm => sm.type === 'facebook')?.link || ''} />
+                    <SocialSettingInput name="twitter" label="Twitter:" icon={<AiOutlineX />} placeholder="" disabled={Social} value={socialInfo.find(sm => sm.type === 'twitter')?.link || ''} />
+                    <SocialSettingInput name="linkedin" label="Linkedin:" icon={<AiFillLinkedin />} placeholder="" disabled={Social} value={socialInfo.find(sm => sm.type === 'linkedin')?.link || ''} />
+                    <SocialSettingInput name="instagram" label="Instagram:" icon={<AiFillInstagram />} placeholder="" disabled={Social} value={socialInfo.find(sm => sm.type === 'instagram')?.link || ''} />
+                    <SocialSettingInput name="whatsapp" label="WhatsApp:" icon={<AiOutlineWhatsApp />} placeholder="" disabled={Social} value={socialInfo.find(sm => sm.type === 'whatsapp')?.link || ''} />
                 </SettingForm>
 
                 {props.userType === "Doctor" ? (
@@ -120,14 +124,20 @@ function SettingBodyMid(props) {
                             ><MdModeEdit /></span>
                             <MedicalDegree label='Academic Degree'
                                 placeholder='Select your Academic Degree'
-                                disabled={General} />
+                                disabled={General}
+                                value={profissional.academicdegree}
+                            />
                             <SpecializationSelect
                                 label='Specialization'
                                 placeholder='Medical Specialization'
                                 optionsList={medicalSpecializations}
                                 name='medicalSpecialization'
-                                disabled={General} />
-                            <SettingInput class_name="SettingInput" type="number" name="Years of Experience" label="Experience:" placeholder="" disabled={General} />
+                                disabled={General}
+                                value={profissional.specialization}
+                            />
+                            <SettingInput class_name="SettingInput" type="number" name="Years of Experience" label="Experience Years" placeholder="" disabled={General} value={profissional.yearsofexperience} />
+                            <SettingInput class_name="SettingInput" type="text" name="Clinic Number" label="Clinic Number" placeholder="" disabled={General} value={profissional.clinicnumber} />
+                            <SettingInput class_name="SettingInput" type="text" name="Location of Work" label="Location of Work" placeholder="" disabled={General} value={profissional.locationofwork} />
                         </SettingForm>
 
                         <SettingForm name="SettingForm_form" legend="Educational Information" btn="Save Change" show={Educational} TheEvent={toggleEditEducational}>
@@ -141,10 +151,10 @@ function SettingBodyMid(props) {
                                 cursor: 'pointer',
                             }} onClick={toggleEditEducational}
                             ><MdModeEdit /></span>
-                            <SettingInput class_name="SettingInput" type="text" name="Medical School" label="Medical School:" placeholder="" disabled={Educational} />
-                            <SettingInput class_name="SettingInput" type="text" name="Internships  " label="Internships  :" placeholder="" disabled={Educational} />
-                            <SettingInput class_name="SettingInput" type="text" name="Residencies " label="Residencies :" placeholder="" disabled={Educational} />
-                            <SettingInput class_name="SettingInput" type="text" name="Fellowships " label="Fellowships :" placeholder="" disabled={Educational} />
+                            <SettingInput class_name="SettingInput" type="text" name="Medical School" label="Medical School:" placeholder="" disabled={Educational} value={educational.medschool} />
+                            <SettingInput class_name="SettingInput" type="text" name="Internships  " label="Internships  :" placeholder="" disabled={Educational} value={educational.internships} />
+                            <SettingInput class_name="SettingInput" type="text" name="Residencies " label="Residencies :" placeholder="" disabled={Educational} value={educational.residencies} />
+                            <SettingInput class_name="SettingInput" type="text" name="Fellowships " label="Fellowships :" placeholder="" disabled={Educational} value={educational.fellowships} />
                         </SettingForm>
                     </>
                 ) : null}

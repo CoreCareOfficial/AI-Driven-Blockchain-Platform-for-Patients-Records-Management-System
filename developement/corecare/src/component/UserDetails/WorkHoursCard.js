@@ -15,10 +15,12 @@ function WorkHoursCard(props) {
             {items.length > 0 ? (
                 items.map((workHour, index) => (
                     <div key={index} className="flex flex-col bg-gray-600 p-2 rounded-xl my-2">
-                        <div className="flex flex-row items-center gap-2 text-white p-2">
-                            <FaHospital />
-                            <h6>{workHour.hospitalName}</h6>
-                        </div>
+                        {props.userType === "Doctor" &&
+                            <div className="flex flex-row items-center gap-2 text-white p-2">
+                                <FaHospital />
+                                <h6>{workHour.hospitalName}</h6>
+                            </div>
+                        }
                         <div className="flex flex-row items-center gap-2 text-white mx-5">
                             <MdCalendarToday />
                             <p>{workHour.workDays}</p>
