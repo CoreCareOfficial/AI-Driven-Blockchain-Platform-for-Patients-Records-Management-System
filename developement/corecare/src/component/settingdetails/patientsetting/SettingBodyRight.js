@@ -71,6 +71,11 @@ function SettingBodyRight(props) {
         setWorkHours(!WorkHours);
     };
 
+    const [WorkHoursShow, setWorkHoursShow] = useState(true);
+    const toggleEditWorkHoursShow = () => {
+        setWorkHoursShow(!WorkHoursShow);
+    };
+
     const [VisitHours, setVisitHours] = useState(true);
     const toggleEditVisitHours = () => {
         setVisitHours(!VisitHours);
@@ -85,15 +90,36 @@ function SettingBodyRight(props) {
         backgroundColor: '#272c34',
         cursor: 'pointer',
     };
+    const spanWorkHourShow = {
+        color: 'white',
+        position: 'absolute', right: '50px', bottom: '10%',
+        fontSize: '1.3em',
+        borderRadius: '20px',
+        padding: '5px',
+        backgroundColor: '#272c34',
+        cursor: 'pointer',
+        display: WorkHoursShow ? "block": "none" ,
+
+    };
     const spanWorkHours2 = {
         color: 'white',
-        position: 'absolute', right: '15px', top: '150px',
+        position: 'absolute', right: '15px', bottom: '4%',
         fontSize: '1.3em',
         borderRadius: '20px',
         padding: '5px',
         backgroundColor: '#272c34',
         cursor: 'pointer',
         display: WorkHours ? "none" : "block",
+    };
+    const spanNewWorkHours = {
+        color: 'white',
+        position: 'absolute', right: '15px', bottom: '10%',
+        fontSize: '1.3em',
+        borderRadius: '20px',
+        padding: '5px',
+        backgroundColor: '#272c34',
+        cursor: 'pointer',
+        display: WorkHoursShow ? "none" : "block",
     };
 
     return (
@@ -189,17 +215,23 @@ function SettingBodyRight(props) {
                             );
                         })}
 
-                        <SettingForm name="SettingForm_form" legend="New Work Hours" btn="Add Time" show={WorkHours} TheEvent={toggleEditWorkHours}>
-                            <span style={spanWorkHours1} onClick={toggleEditWorkHours}
-                            ><MdModeEdit /></span>
-                            <span style={spanWorkHours2} onClick={handleAddWorkTime}
+                        <SettingForm name="SettingForm_form" legend="New Work Hours" btn="Add Time" show={WorkHoursShow} TheEvent={toggleEditWorkHoursShow}>
+                            <span style={spanWorkHourShow} onClick={toggleEditWorkHoursShow}
                             ><CiCirclePlus /></span>
-                            {props.userType === "Doctor" ? (
-                                <SettingInput class_name="SettingInput" type="text" name="Facility Name" label="Facility Name:" placeholder="" disabled={WorkHours} />
+                            <span style={spanNewWorkHours} onClick={handleAddWorkTime}
+                            ><CiCirclePlus /></span>
+
+                            {!WorkHoursShow ? (
+                                <>
+                                {props.userType === "Doctor" ? (
+                                    <SettingInput class_name="SettingInput" type="text" name="Facility Name" label="Facility Name:" placeholder="" />
+                                ) : null}
+                                    <SettingInput class_name="SettingInput" type="text" name="Days" label="Days :" placeholder="Separated with ," />
+                                    <SettingInput class_name="SettingInput" type="time" value={WorkFrom} name="From " label="From :" onChange={(e) => setWorkFrom(e.target.value)} placeholder="" />
+                                    <SettingInput class_name="SettingInput" type="time" value={WorkTo} name="To " label="To :" onChange={(e) => setWorkTo(e.target.value)} placeholder="" />
+                                </>
                             ) : null}
-                            <SettingInput class_name="SettingInput" type="text" name="Days" label="Days :" placeholder="Separated with ," disabled={WorkHours} />
-                            <SettingInput class_name="SettingInput" type="time" value={WorkFrom} name="From " label="From :" onChange={(e) => setWorkFrom(e.target.value)} placeholder="" disabled={WorkHours} />
-                            <SettingInput class_name="SettingInput" type="time" value={WorkTo} name="To " label="To :" onChange={(e) => setWorkTo(e.target.value)} placeholder="" disabled={WorkHours} />
+                        
                         </SettingForm>
                     </>
                 ) : null}

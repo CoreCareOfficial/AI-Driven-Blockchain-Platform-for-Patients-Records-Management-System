@@ -83,10 +83,10 @@ function PatientSidebarHandler(props) {
                         />
                         <SideBtn
                             name="sideBtn"
-                            id={activeButton === "Ray" ? "active" : ""}
+                            id={activeButton === "Radiology" ? "active" : ""}
                             icon={<FaXRay />}
                             text="Radiology"
-                            onClick={() => handleButtonClick("Ray")}
+                            onClick={() => handleButtonClick("Radiology")}
                         />
                         <SideBtn
                             name="sideBtn"
