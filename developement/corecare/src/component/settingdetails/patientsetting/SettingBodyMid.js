@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import DynamicCard from '../../bootcomponent/DynamicCard';
 import { MedicalDegree, SpecializationSelect, SettingForm, SocialSettingInput, PasswordSettingInput, SettingInput } from "../TextFormSetting";
 import { AiOutlineX } from "react-icons/ai";
@@ -7,6 +7,11 @@ import { AiFillLinkedin } from "react-icons/ai";
 import { AiFillFacebook } from "react-icons/ai";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
+import { useRecoilValue } from "recoil";
+import { updateUserInfo } from "../../../Recoil/UpdateData";
+import { loginInfo } from "../../../Recoil/Atom";
+import { Toast } from "primereact/toast";
+import bcrypt from 'bcryptjs';
 
 
 function SettingBodyMid(props) {
@@ -15,6 +20,8 @@ function SettingBodyMid(props) {
     const educational = props.educational ? props.educational : {};
     const departments = props.departments ? props.departments : [];
     const services = props.services ? props.services : [];
+
+    const toast = useRef(null);
 
     const medicalSpecializations = [
         'Anesthetics',
@@ -39,17 +46,122 @@ function SettingBodyMid(props) {
         'Urology'
     ]
     const [Password, setPassword] = useState(true);
-    const toggleEditPassword = () => {
+    const loginInfoValue = useRecoilValue(loginInfo);
+    const updateUserInfoValue = useRecoilValue(updateUserInfo);
+    const toggleEditPassword = async () => {
+
+        if (updateUserInfoValue.newPassword !== updateUserInfoValue.confirmPassword) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Passwords do not match' });
+            return;
+        }
+        if (updateUserInfoValue.newPassword.length < 6) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Password must be more than 5 digits' });
+            return;
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(updateUserInfoValue.newPassword, salt);
+        console.log("hashedPassword= " + hashedPassword);
+
+        const data = {
+            emailorusername: loginInfoValue.login,
+            password: updateUserInfoValue.password,
+            newPassword: hashedPassword,
+        };
+        try {
+            const response = await fetch("http://192.168.137.1:5000/login/change", {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Password Updated Successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated Password' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating password' });
+        }
         setPassword(!Password);
     };
 
     const [Social, setSocial] = useState(true);
-    const toggleEditSocial = () => {
+    const toggleEditSocial = async () => {
+        const data = {
+            fb: 'facebook',
+            facebook: updateUserInfoValue.facebook,
+            tw: 'twitter',
+            twitter: updateUserInfoValue.twitter,
+            li: 'linkedin',
+            linkedin: updateUserInfoValue.linkedin,
+            im: 'instagram',
+            instagram: updateUserInfoValue.instagram,
+            wh: 'whatsapp',
+            whatsapp: updateUserInfoValue.whatsapp
+        };
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/socialmedia/${loginInfoValue.login}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Socailmedia accounts updated successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Socailmedia accounts updated successfully' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating socialmedia' });
+        }
         setSocial(!Social);
     };
 
     const [General, setGeneral] = useState(true);
-    const toggleEditGeneral = () => {
+    const toggleEditGeneral = async () => {
+        if (!profissional.doctorid) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Doctor ID is required' });
+            return;
+        }
+        const data = {
+            specialization: updateUserInfoValue.specialization,
+            academicdegree: updateUserInfoValue.academicDegree,
+            yearsofexperience: updateUserInfoValue.yearsOfExperience,
+            locationofwork: updateUserInfoValue.locationOfWork,
+            clinicnumber: updateUserInfoValue.clinicNumber,
+        };
+        console.log('data:', data);
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/doctors/updateprofissionalinfo/${profissional.doctorid}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Proffesional Info Updated Successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Proffesional Info Updated Successfully' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating Proffisional info' });
+        }
         setGeneral(!General);
     };
 
@@ -75,6 +187,7 @@ function SettingBodyMid(props) {
 
     return (
         <>
+            <Toast ref={toast} />
             <DynamicCard name="SettingBodyMid">
                 <SettingForm name="SettingForm_form" legend="Password Change" btn="Change Password" show={Password} TheEvent={toggleEditPassword}>
                     <span style={{
@@ -85,11 +198,11 @@ function SettingBodyMid(props) {
                         padding: '5px',
                         backgroundColor: '#272c34',
                         cursor: 'pointer',
-                    }} onClick={toggleEditPassword}
+                    }} onClick={() => setPassword(!Password)}
                     ><MdModeEdit /></span>
-                    <PasswordSettingInput name="old-password" label="Old Password:" disabled={Password} />
-                    <PasswordSettingInput name="new-password" label="New Password:" disabled={Password} />
-                    <PasswordSettingInput name="confirm-password" label="Confirm Password:" disabled={Password} />
+                    <PasswordSettingInput name="password" label="Old Password:" disabled={Password} />
+                    <PasswordSettingInput name="newPassword" label="New Password:" disabled={Password} />
+                    <PasswordSettingInput name="confirmPassword" label="Confirm Password:" disabled={Password} />
                 </SettingForm>
 
 
@@ -102,7 +215,7 @@ function SettingBodyMid(props) {
                         padding: '5px',
                         backgroundColor: '#272c34',
                         cursor: 'pointer',
-                    }} onClick={toggleEditSocial}
+                    }} onClick={() => setSocial(!Social)}
                     ><MdModeEdit /></span>
                     <SocialSettingInput name="facebook" label="Facebook:" icon={<AiFillFacebook />} placeholder="" disabled={Social} value={socialInfo.find(sm => sm.type === 'facebook')?.link || ''} />
                     <SocialSettingInput name="twitter" label="Twitter:" icon={<AiOutlineX />} placeholder="" disabled={Social} value={socialInfo.find(sm => sm.type === 'twitter')?.link || ''} />
@@ -122,7 +235,7 @@ function SettingBodyMid(props) {
                                 padding: '5px',
                                 backgroundColor: '#272c34',
                                 cursor: 'pointer',
-                            }} onClick={toggleEditGeneral}
+                            }} onClick={() => setGeneral(!General)}
                             ><MdModeEdit /></span>
                             <MedicalDegree label='Academic Degree'
                                 placeholder='Select your Academic Degree'
@@ -133,13 +246,13 @@ function SettingBodyMid(props) {
                                 label='Specialization'
                                 placeholder='Medical Specialization'
                                 optionsList={medicalSpecializations}
-                                name='medicalSpecialization'
+                                name='specialization'
                                 disabled={General}
                                 value={profissional.specialization}
                             />
-                            <SettingInput class_name="SettingInput" type="number" name="Years of Experience" label="Experience Years" placeholder="" disabled={General} value={profissional.yearsofexperience} />
-                            <SettingInput class_name="SettingInput" type="text" name="Clinic Number" label="Clinic Number" placeholder="" disabled={General} value={profissional.clinicnumber} />
-                            <SettingInput class_name="SettingInput" type="text" name="Location of Work" label="Location of Work" placeholder="" disabled={General} value={profissional.locationofwork} />
+                            <SettingInput class_name="SettingInput" type="number" name="yearsOfExperience" label="Experience Years" placeholder="" disabled={General} value={profissional.yearsofexperience} />
+                            <SettingInput class_name="SettingInput" type="text" name="clinicNumber" label="Clinic Number" placeholder="" disabled={General} value={profissional.clinicnumber} />
+                            <SettingInput class_name="SettingInput" type="text" name="locationOfWork" label="Location of Work" placeholder="" disabled={General} value={profissional.locationofwork} />
                         </SettingForm>
 
                         <SettingForm name="SettingForm_form" legend="Educational Information" btn="Save Change" show={Educational} TheEvent={toggleEditEducational}>

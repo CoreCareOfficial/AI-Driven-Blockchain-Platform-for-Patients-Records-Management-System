@@ -24,6 +24,19 @@ export const updateUserInfo = atom({
         practicehours: '',
         languagesspoken: '',
         name: '',
+        password: '',
+        newPassword: '',
+        confirmPassword: '',
+        facebook: '',
+        twitter: '',
+        linkedin: '',
+        instagram: '',
+        whatsapp: '',
+        academicDegree: '',
+        specialization: '',
+        yearsOfExperience: '',
+        locationOfWork: '',
+        clinicNumber: '',
     }
 }
 );

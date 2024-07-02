@@ -206,6 +206,15 @@ export function PasswordSettingInput(props) {
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
+    const setUserInfo = useSetRecoilState(updateUserInfo);
+
+    const handleOnBlur = (e) => {
+        const newValue = e.target.value;
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: newValue
+        }));
+    };
 
     return (
         <div className="PasswordSetting">
@@ -216,6 +225,7 @@ export function PasswordSettingInput(props) {
                     style={{ color: props.disabled ? "gray" : "white" }}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onBlur={handleOnBlur}
                     placeholder={props.placeholder}
                     required
                     name={props.name}
@@ -232,17 +242,37 @@ export function PasswordSettingInput(props) {
 };
 
 export function SocialSettingInput(props) {
+    const [value, setValue] = useState(props.value || "");
+    const setUserInfo = useSetRecoilState(updateUserInfo);
+
+    useEffect(() => {
+        if (props.value !== value) {
+            setValue(props.value);
+        }
+    }, [props.value]);
+
+    const handleOnBlur = (e) => {
+        const newValue = e.target.value;
+        setValue(newValue);
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: newValue
+        }));
+    };
+
     return (
         <div className="PasswordSetting">
             <label>{props.label}</label>
             <div className="SocialSettingInput ">
                 <input
-                    style={{ color: props.disabled ? "gray" : "white" }}
+                    style={{ color: props.disabled ? "gray" : "white", paddingLeft: '22px' }}
                     type="text"
                     placeholder={props.placeholder}
                     name={props.name}
                     disabled={props.disabled}
-                    value={props.value}
+                    value={value}
+                    onBlur={handleOnBlur}
+                    onChange={(e) => setValue(e.target.value)}
                 />
                 <span>{props.icon}</span>
             </div>
@@ -337,7 +367,6 @@ export function SettingSelect(props) {
 
     const hidtext = value;
 
-
     const listItems = props.items.map((item, index) => (
         <option key={index}>{item}</option>
     ));
@@ -404,10 +433,19 @@ export function MedicalDegree(props) {
         console.log(event.target.value)
     };
 
+    const setUserInfo = useSetRecoilState(updateUserInfo);
+    const handleOnBlur = (e) => {
+        const newValue = e.target.value;
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            academicDegree: newValue
+        }));
+    };
+
     return (
         <div className="SettingSelect">
             <label>{props.label}</label>
-            <select id="dino-select" value={selectedValue} onChange={handleChange} disabled={props.disabled} style={{ color: props.disabled ? "gray" : "white" }}>
+            <select id="dino-select" value={selectedValue} onBlur={handleOnBlur} onChange={handleChange} disabled={props.disabled} style={{ color: props.disabled ? "gray" : "white" }}>
                 <option disabled selected hidden>{props.value}</option>
                 {selectItems}
             </select>
@@ -424,6 +462,14 @@ export function SpecializationSelect(props) {
         setSelectedValue(event.target.value);
         console.log(event.target.value)
     };
+    const setUserInfo = useSetRecoilState(updateUserInfo);
+    const handleOnBlur = (e) => {
+        const newValue = e.target.value;
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            specialization: newValue
+        }));
+    };
     const options = props.optionsList.map((option, index) => {
         return (
             <option key={index} value={option}>{option}</option>
@@ -436,6 +482,7 @@ export function SpecializationSelect(props) {
                 placeholder={props.placeholder}
                 value={selectedValue}
                 onChange={handleChange}
+                onBlur={handleOnBlur}
                 disabled={props.disabled}
                 style={{ color: props.disabled ? "gray" : "white" }}
             >
