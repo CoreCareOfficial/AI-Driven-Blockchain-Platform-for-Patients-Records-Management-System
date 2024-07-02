@@ -46,7 +46,7 @@ const defaultProps = {
                     <Form.Control type="text" placeholder="Location"/>
                     <span className="Search_sec_dotI"><BsCrosshair /></span>
                 </div> */}
-                <SettingCountry label="Country:" name="country"/>
+                <SettingCountry label="Country:"/>
 
                 <div className="input_div">
                     <Form.Control type="date" placeholder="Date" />

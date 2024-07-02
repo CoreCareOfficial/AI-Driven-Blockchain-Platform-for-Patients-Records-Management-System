@@ -7,11 +7,10 @@ import { useSetRecoilState } from "recoil";
 import { userHealthInfo } from "../../Recoil/Atom";
 import { Image } from "react-bootstrap";
 import defaultPic from '../../assets/user_signup.png';
-
-import ahmed from '../../assets/ahmed.jpg';
-// import user_signup from '../../assets/user_signup.png';
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { Toast } from "primereact/toast";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import AddCountry from "../hospitaldetails/AddCountry";
 
 
 
@@ -47,7 +46,7 @@ export function UpdateImage(props) {
                 src={selectedImageUrl}
                 thumbnail
                 roundedCircle
-                style={{ cursor: 'pointer', width: '130px', height: '130px', margin: '0px auto' }}
+                style={{ cursor: 'pointer', width: '130px', height: '130px', margin: '5px auto' }}
                 onClick={() => {
                     fileRef.current.click();
                 }}
@@ -339,24 +338,188 @@ export function SpecializationSelect(props) {
 };
 
 export function DynamicInput(props) {
-    const lab={
-        color:'#272c34',
-        fontWeight:'700',
+    const lab = {
+        color: '#272c34',
+        fontWeight: '700',
     }
-    const inp={
-        width:'calc(100% - 85px)',
-        borderBottom:'1px solid #3146ff',
-        outline:'none',
-        fontWeight:'500',
+    const inp = {
+        width: 'calc(100% - 85px)',
+        borderBottom: '1px solid #3146ff',
+        outline: 'none',
+        fontWeight: '500',
     }
 
     return (
         <>
-            <div style={{ margin:'10px 5px',display:'flex', justifyContent:'space-between'}}>
-                {props .children}
+            <div style={{ margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+                {props.children}
                 <label style={lab}>{props.label}</label>
                 <input style={inp} type={props.type} value={props.value} disabled={props.disabled} />
             </div>
         </>
     );
 }
+
+export function AddAccountForm(props) {
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+    }
+    return (
+        <form style={{marginTop:'20px'}}>
+            {props.children}
+            <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 self-center" onClick={handleSubmit} />
+        </form>
+    );
+}
+
+export function AddAccountInput(props) {
+    const lab = {
+        color: '#fff',
+        fontWeight: '700',
+    }
+    const inp = {
+        width: 'calc(100% - 50%)',
+        borderBottom: '1px solid #3f4652',
+        outline: 'none',
+        fontWeight: '500',
+        backgroundColor:'#181a1f',
+        color:'#fff'
+    }
+
+    return (
+        <>
+            <div style={{borderRadius:'8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+                <label style={lab}>{props.label}</label>
+                <input style={inp} type={props.type} value={props.value} disabled={props.disabled} />
+            </div>
+        </>
+    );
+}
+
+export function AddAccountSelect(props) {
+
+    const hidtext = props.value;
+    const lab = {
+        color: '#fff',
+        fontWeight: '700',
+    }
+    const inp = {
+        width: 'calc(100% - 50%)',
+        borderBottom: '1px solid #3f4652',
+        outline: 'none',
+        fontWeight: '500',
+        backgroundColor:'#181a1f',
+        color:'#fff'
+    }
+
+    const listItems = props.items.map((item, index) => (
+        <option key={index}>{item}</option>
+    ));
+    return (
+        <div style={{borderRadius:'8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+            <label style={lab}>{props.label}</label>
+            <select style={inp} placeholder="" name={props.name} disabled={props.disabled}>
+                <option disabled selected hidden>{hidtext}</option>
+                {listItems}
+            </select>
+        </div>
+    );
+};
+
+export function AddAccountCountry(props) {
+    const lab = {
+        color: '#fff',
+        fontWeight: '700',
+    }
+    return (
+        <div style={{borderRadius:'8px', width: '100%',  padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+            <label style={lab}>{props.label}</label>
+            <AddCountry value={props.value} />
+        </div>
+    );
+};
+
+export function AddAccountCheckbox(props) {
+    const lab = {
+        color: '#fff',
+        fontWeight: '700',
+        
+    }
+    return (
+        <div style={{borderRadius:'8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+            <label style={lab}>{props.label}</label>
+
+            <label style={lab}>{props.ch1}
+                <input type='checkbox' value={props.value} name={props.name} />
+            </label>
+
+            <label style={lab}>{props.ch2}
+                <input type='checkbox' value={props.value} name={props.name} />
+            </label>
+        </div>
+    );
+};
+export function AddAccountPassport(props) {
+
+        const inp = {
+            width: '100%',
+            borderBottom: '1px solid #000',
+            outline: 'none',
+            fontWeight: '500',
+            opacity: '0', flex: '1',
+        }
+        const lab = {
+            color: '#000',
+            fontWeight: '700',
+        }
+    
+        // const [selectedFile, setSelectedFile] = useState(null);
+        const fileRef = useRef(null);
+        const toast = useRef(null);
+        // const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    
+        const handleFileChange = (event) => {
+            const file = event.target.files[0];
+            if (!file.type.startsWith('image/')) {
+                return toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'Invalid File, Please select an image file' });
+            }
+    
+            // setSelectedFile(file);
+            // setUserInfo((prevUserInfo) => ({
+            //     ...prevUserInfo,
+            //     [props.name]: file
+            // }));
+    
+            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successful Photo Uploaded' });
+
+        };
+        return (
+            <div style={{ width: '100%', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+                <Toast ref={toast} />
+                <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileRef}
+                    // className="form-control"
+                    style={inp}
+                    onChange={handleFileChange}
+                    required
+                />
+                <div
+                    style={{textAlign:'center' ,borderRadius:'8px',borderBottom: '1px solid #000',backgroundColor:'#fff', width: '100%', cursor: 'pointer' }}
+                    onClick={() => {
+                        fileRef.current.click();
+                    }
+                    }
+                >
+                    <FontAwesomeIcon
+                        style={{ marginRight: '4px' }}
+                        icon={faUpload}
+                    />
+                    <label style={lab}>{props.title}</label>
+                </div>
+            </div>
+        );
+    
+};

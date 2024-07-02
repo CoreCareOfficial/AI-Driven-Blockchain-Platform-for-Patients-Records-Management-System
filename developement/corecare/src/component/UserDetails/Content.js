@@ -6,6 +6,7 @@ import PatientSettingPage from "../../pages/PatientSettingPage";
 import { useEffect, useRef, useState } from 'react';
 import { loginInfo } from "../../Recoil/Atom";
 import { useRecoilValue } from "recoil";
+import AddAccount from "../hospitaldetails/AddAccount";
 
 function Content(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
@@ -74,10 +75,11 @@ function Content(props) {
                                 : props.active === "Lab test" ? <RecordesPage title={props.active} />
                                     : props.active === "Radiology" ? <RecordesPage title={props.active} />
                                         : props.active === "Prescription" ? <RecordesPage title={props.active} />
-                                            : props.active === "Patient Access Management" ? <PatientAccessManagement />
-                                                : props.active === "Appointment Schedule" ? <div className="text-white">Appointment</div>
-                                                    : props.active === "Settings" ? <PatientSettingPage userType={props.userType} userInfo={userInfo} />
-                                                        : null
+                                            : props.active === "Add Patient" ? <AddAccount userType={props.userType} title={props.active}/>
+                                                : props.active === "Patient Access Management" ? <PatientAccessManagement />
+                                                    : props.active === "Appointment Schedule" ? <div className="text-white">Appointment</div>
+                                                        : props.active === "Settings" ? <PatientSettingPage userType={props.userType} userInfo={userInfo} />
+                                                            : null
                 }
             </div>
         </>
