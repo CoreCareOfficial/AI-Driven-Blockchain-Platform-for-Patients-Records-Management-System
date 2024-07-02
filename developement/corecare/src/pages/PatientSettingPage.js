@@ -13,6 +13,7 @@ function PatientSettingPage(props) {
     const [userData, setUserData] = useState({
         Info: {},
         doctorInfo: {},
+        facilityInfo: {},
     });
     const [allInfo, setAllInfo] = useState({
         userInfo: {},
@@ -22,10 +23,19 @@ function PatientSettingPage(props) {
         emergencyContacts: [],
     });
     const [allDoctorInfo, setAllDoctorInfo] = useState({
+        doctorid: '',
         educational: {},
         practice: {},
         profissional: {},
         workHours: {},
+    });
+    const [allFacilityInfo, setAllFacilityInfo] = useState({
+        healthcareProviderInfo: {},
+        facilitySocialMedia: [],
+        departments: [],
+        services: [],
+        ficilityWorkHours: [],
+        visitHours: [],
     });
 
     const loginInfoValue = useRecoilValue(loginInfo);
@@ -59,10 +69,12 @@ function PatientSettingPage(props) {
     useEffect(() => {
         if (props.userType === 'Patient' || props.userType === 'Doctor') {
             fetchData(`http://192.168.137.1:5000/patients/getpatientinfo/${loginInfoValue.login}`, "Info");
+        } else {
+            fetchData(`http://192.168.137.1:5000/healthcareproviders/gethealtcareinfo/${loginInfoValue.login}`, "facilityInfo");
         }
     }, [loginInfoValue.login, props.userType]);
 
-    const { Info, doctorInfo } = userData;
+    const { Info, doctorInfo, facilityInfo } = userData;
 
     useEffect(() => {
         setAllInfo(Info);
@@ -73,28 +85,32 @@ function PatientSettingPage(props) {
     }, [doctorInfo]);
 
     useEffect(() => {
+        setAllFacilityInfo(facilityInfo);
+    }, [facilityInfo]);
+
+    useEffect(() => {
         if (allInfo.patientInfo) {
             console.log('allInfo.patientInfo.patientid', allInfo.patientInfo.patientid);
             if (props.userType === 'Doctor') {
                 fetchData(`http://192.168.137.1:5000/doctors/getdoctorinfo/${allInfo.patientInfo.patientid}`, "doctorInfo");
             }
-            // setPatientId(allInfo.patientInfo.patientid);
         }
     }, [props.userType, allInfo.patientInfo]);
 
     const { patientInfo, healthInfo, allergies, socialMedia, emergencyContacts } = allInfo;
-    const { educational, practice, profissional, workHours } = allDoctorInfo;
+    const { doctorid, educational, practice, profissional, workHours } = allDoctorInfo;
+    const { healthcareProviderInfo, facilitySocialMedia, departments, services, ficilityWorkHours, visitHours } = allFacilityInfo;
 
     return (
         <Container className="PatientSettingPage">
-            <SettingBodyLift userType={props.userType} userInfo={patientInfo} healthInfo={healthInfo} allergies={allergies} practice={practice} />
+            <SettingBodyLift userType={props.userType} userInfo={patientInfo} healthInfo={healthInfo} allergies={allergies} practice={practice} healthcareProviderInfo={healthcareProviderInfo} doctorid={doctorid} />
 
             <Container className="PatientSettingPage_right">
                 <EmergencyContact isOpen={isOpen} />
 
                 <Container className="mid_right">
-                    <SettingBodyMid userType={props.userType} socialInfo={socialMedia} profissional={profissional} educational={educational} />
-                    <SettingBodyRight userType={props.userType} handleAddContact={handleAddContact} emergencyContact={emergencyContacts} workHours={workHours} />
+                    <SettingBodyMid userType={props.userType} socialInfo={socialMedia ? socialMedia : facilitySocialMedia ? facilitySocialMedia : null} profissional={profissional} educational={educational} departments={departments} services={services} />
+                    <SettingBodyRight userType={props.userType} handleAddContact={handleAddContact} emergencyContact={emergencyContacts} workHours={workHours ? workHours : ficilityWorkHours} visitHours={visitHours} />
                 </Container>
             </Container>
         </Container>

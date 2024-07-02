@@ -13,6 +13,8 @@ function SettingBodyMid(props) {
     const socialInfo = props.socialInfo ? props.socialInfo : [];
     const profissional = props.profissional ? props.profissional : {};
     const educational = props.educational ? props.educational : {};
+    const departments = props.departments ? props.departments : [];
+    const services = props.services ? props.services : [];
 
     const medicalSpecializations = [
         'Anesthetics',
@@ -179,7 +181,7 @@ function SettingBodyMid(props) {
 
                 {props.userType === "Hospital" ? (
                     <>
-                        <SettingForm name="SettingForm_form" legend="Department" btn="Add Department" show={Department} TheEvent={toggleEditDepartment}>
+                        <SettingForm name="SettingForm_form" legend="Departments" btn="Add Department" show={Department} TheEvent={toggleEditDepartment}>
                             <span style={{
                                 color: 'white',
                                 position: 'absolute', right: '40px', top: '-15px',
@@ -190,7 +192,13 @@ function SettingBodyMid(props) {
                                 cursor: 'pointer',
                             }} onClick={toggleEditDepartment}
                             ><MdModeEdit /></span>
-                            <SettingInput class_name="SettingInput" type="text" name="Department" label="Department:" placeholder="" disabled={Department} />
+                            {
+                                departments && departments.map((department, index) => (
+
+                                    <SettingInput key={index} class_name="SettingInput" type="text" name="Department" label={`Department ${index + 1}:`} placeholder="" disabled={Department} value={department.name} />
+                                ))
+                            }
+                            <SettingInput class_name="SettingInput" type="text" name="Department" label="New Department" placeholder="" disabled={Department} />
                         </SettingForm>
 
                         <SettingForm name="SettingForm_form" legend="Emergency Services" btn="Add Services" show={Emergency} TheEvent={toggleEditEmergency}>
@@ -204,7 +212,12 @@ function SettingBodyMid(props) {
                                 cursor: 'pointer',
                             }} onClick={toggleEditEmergency}
                             ><MdModeEdit /></span>
-                            <SettingInput class_name="SettingInput" type="text" name="Emergency Services" label="Services:" placeholder="" disabled={Emergency} />
+                            {
+                                services && services.map((service, index) => (
+                                    <SettingInput key={index} class_name="SettingInput" type="text" name="Emergency Services" label={`Service ${index + 1}:`} placeholder="" disabled={Emergency} value={service.name} />
+                                ))
+                            }
+                            <SettingInput class_name="SettingInput" type="text" name="Emergency Services" label="New Service:" placeholder="" disabled={Emergency} />
                         </SettingForm>
                     </>
                 ) : null}

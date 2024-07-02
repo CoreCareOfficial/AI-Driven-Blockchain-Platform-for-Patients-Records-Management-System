@@ -23,16 +23,16 @@ function WorkHoursCard(props) {
                         }
                         <div className="flex flex-row items-center gap-2 text-white mx-5">
                             <MdCalendarToday />
-                            <p>{workHour.workDays}</p>
+                            <p>{workHour.workDays ? workHour.workDays : workHour.visitDays ? workHour.visitDays : null}</p>
                         </div>
                         <div className="flex flex-col items-center gap-2 text-white">
                             <div className="flex flex-row items-center gap-2 my-2">
                                 <MdLightMode />
-                                <p>{workHour.DayworkHours}</p>
+                                <p>{workHour.DayworkHours ? workHour.DayworkHours : workHour.DayvisitHours ? workHour.DayvisitHours : null}</p>
                             </div>
                             <div className="flex flex-row items-center gap-2">
                                 <FaCloudMoon />
-                                <p>{workHour.NightworkHours}</p>
+                                <p>{workHour.NightworkHours ? workHour.NightworkHours : workHour.NightvisitHours ? workHour.NightvisitHours : null}</p>
                             </div>
                         </div>
                     </div >

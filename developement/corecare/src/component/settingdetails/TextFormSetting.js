@@ -11,13 +11,12 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { Toast } from "primereact/toast";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddCountry from "../hospitaldetails/AddCountry";
-
-
+import { updateUserInfo } from "../../Recoil/UpdateData";
 
 
 export function UpdateImage(props) {
     const fileRef = useRef(null);
-    const [selectedFile, setSelectedFile] = useState(null);
+    const toast = useRef(null);
     const [selectedImageUrl, setSelectedImageUrl] = useState(defaultPic);
 
     useEffect(() => {
@@ -26,15 +25,79 @@ export function UpdateImage(props) {
         }
     }, [props.img]);
 
+    const featchImageFacility = async (imageFile) => {
+        if (!props.username && !props.userType) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Username User type health info' });
+            console.log(props.username);
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('facilityPhoto', imageFile);
+        formData.append('type', props.userType)
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/healthcareproviders/updatefacilityphoto/${props.username}`, {
+                method: "PUT",
+                body: formData
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData);
+            if (jsonData === "Facility Photo Updated Successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Facility Photo Updated Successfully' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating health info' });
+        }
+    };
+
+    const featchImagePersonal = async (imageFile) => {
+        if (!props.username) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Usename health info' });
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('personalPhoto', imageFile);
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/patients/personalphoto/${props.username}`, {
+                method: "PUT",
+                body: formData
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData);
+            if (jsonData === "Personal photo updated successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating health info' });
+        }
+    };
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file && file.type.startsWith('image/')) {
-            setSelectedFile(file);
             const reader = new FileReader();
             reader.onload = (e) => {
                 setSelectedImageUrl(e.target.result); // Store the image URL for display
             };
             reader.readAsDataURL(file);
+            if (file) {
+                if (props.userType === 'Patient' || props.userType === 'Doctor') {
+                    featchImagePersonal(file);
+                } else {
+                    featchImageFacility(file);
+                }
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Selected health info' });
+            }
         } else {
             alert('Please select an image file.');
         }
@@ -42,6 +105,7 @@ export function UpdateImage(props) {
 
     return (
         <>
+            <Toast ref={toast} />
             <Image
                 src={selectedImageUrl}
                 thumbnail
@@ -187,24 +251,50 @@ export function SocialSettingInput(props) {
     );
 };
 
-
 export function SettingInput(props) {
+    const [value, setValue] = useState(props.value || "");
+    const setUserInfo = useSetRecoilState(updateUserInfo);
+
+    useEffect(() => {
+        if (props.value !== value) {
+            setValue(props.value);
+        }
+    }, [props.value]);
+
+    const handleOnBlur = (e) => {
+        const newValue = e.target.value;
+        setValue(newValue);
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: newValue
+        }));
+    };
+
+    const handleChange = (e) => {
+        const newValue = e.target.value;
+        setValue(newValue);
+        if (props.onChange) {
+            props.onChange(e);
+        }
+    };
+
     return (
         <div className={props.class_name}>
-            <label >{props.label}</label>
-            <input type={props.type}
+            <label>{props.label}</label>
+            <input
+                type={props.type}
                 style={{ color: props.disabled ? "gray" : "white" }}
                 placeholder={props.placeholder}
-                onChange={props.onChange}
+                onChange={handleChange}
+                onBlur={handleOnBlur}
                 name={props.name}
                 disabled={props.disabled}
                 autoFocus={props.autoFocus}
-                value={props.value}
+                value={value}
             />
         </div>
     );
-};
-
+}
 export function SettingTimeInput(props) {
     const [timeValue, setTimeValue] = useState(props.value ? props.value : "");
     console.log(timeValue);
@@ -227,7 +317,26 @@ export function SettingTimeInput(props) {
 
 export function SettingSelect(props) {
 
-    const hidtext = props.value;
+    const [value, setValue] = useState(props.value || "");
+    const setUserInfo = useSetRecoilState(updateUserInfo);
+
+    useEffect(() => {
+        if (props.value !== value) {
+            setValue(props.value);
+        }
+    }, [props.value]);
+
+    const handleOnBlur = (e) => {
+        const newValue = e.target.value;
+        setValue(newValue);
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: newValue
+        }));
+    };
+
+    const hidtext = value;
+
 
     const listItems = props.items.map((item, index) => (
         <option key={index}>{item}</option>
@@ -235,7 +344,7 @@ export function SettingSelect(props) {
     return (
         <div className="SettingSelect">
             <label>{props.label}</label>
-            <select placeholder="" name={props.name} disabled={props.disabled}
+            <select placeholder="" onBlur={handleOnBlur} name={props.name} disabled={props.disabled}
                 style={{ color: props.disabled ? "gray" : "white" }}>
                 <option disabled selected hidden>{hidtext}</option>
                 {listItems}
@@ -248,7 +357,7 @@ export function SettingCountry(props) {
     return (
         <div className="SettingCountry">
             <label>{props.label}</label>
-            <SettingCountrySelector disabled={props.disabled} value={props.value} />
+            <SettingCountrySelector disabled={props.disabled} value={props.value} name={props.name} />
         </div>
     );
 };
@@ -366,7 +475,7 @@ export function AddAccountForm(props) {
         event.preventDefault();
     }
     return (
-        <form style={{marginTop:'20px'}}>
+        <form style={{ marginTop: '20px' }}>
             {props.children}
             <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 self-center" onClick={handleSubmit} />
         </form>
@@ -383,13 +492,13 @@ export function AddAccountInput(props) {
         borderBottom: '1px solid #3f4652',
         outline: 'none',
         fontWeight: '500',
-        backgroundColor:'#181a1f',
-        color:'#fff'
+        backgroundColor: '#181a1f',
+        color: '#fff'
     }
 
     return (
         <>
-            <div style={{borderRadius:'8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
                 <label style={lab}>{props.label}</label>
                 <input style={inp} type={props.type} value={props.value} disabled={props.disabled} />
             </div>
@@ -409,15 +518,15 @@ export function AddAccountSelect(props) {
         borderBottom: '1px solid #3f4652',
         outline: 'none',
         fontWeight: '500',
-        backgroundColor:'#181a1f',
-        color:'#fff'
+        backgroundColor: '#181a1f',
+        color: '#fff'
     }
 
     const listItems = props.items.map((item, index) => (
         <option key={index}>{item}</option>
     ));
     return (
-        <div style={{borderRadius:'8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
             <label style={lab}>{props.label}</label>
             <select style={inp} placeholder="" name={props.name} disabled={props.disabled}>
                 <option disabled selected hidden>{hidtext}</option>
@@ -433,7 +542,7 @@ export function AddAccountCountry(props) {
         fontWeight: '700',
     }
     return (
-        <div style={{borderRadius:'8px', width: '100%',  padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
             <label style={lab}>{props.label}</label>
             <AddCountry value={props.value} />
         </div>
@@ -444,10 +553,10 @@ export function AddAccountCheckbox(props) {
     const lab = {
         color: '#fff',
         fontWeight: '700',
-        
+
     }
     return (
-        <div style={{borderRadius:'8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
             <label style={lab}>{props.label}</label>
 
             <label style={lab}>{props.ch1}
@@ -462,64 +571,64 @@ export function AddAccountCheckbox(props) {
 };
 export function AddAccountPassport(props) {
 
-        const inp = {
-            width: '100%',
-            borderBottom: '1px solid #000',
-            outline: 'none',
-            fontWeight: '500',
-            opacity: '0', flex: '1',
-        }
-        const lab = {
-            color: '#000',
-            fontWeight: '700',
-        }
-    
-        // const [selectedFile, setSelectedFile] = useState(null);
-        const fileRef = useRef(null);
-        const toast = useRef(null);
-        // const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
-    
-        const handleFileChange = (event) => {
-            const file = event.target.files[0];
-            if (!file.type.startsWith('image/')) {
-                return toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'Invalid File, Please select an image file' });
-            }
-    
-            // setSelectedFile(file);
-            // setUserInfo((prevUserInfo) => ({
-            //     ...prevUserInfo,
-            //     [props.name]: file
-            // }));
-    
-            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successful Photo Uploaded' });
+    const inp = {
+        width: '100%',
+        borderBottom: '1px solid #000',
+        outline: 'none',
+        fontWeight: '500',
+        opacity: '0', flex: '1',
+    }
+    const lab = {
+        color: '#000',
+        fontWeight: '700',
+    }
 
-        };
-        return (
-            <div style={{ width: '100%', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
-                <Toast ref={toast} />
-                <input
-                    type="file"
-                    accept="image/*"
-                    ref={fileRef}
-                    // className="form-control"
-                    style={inp}
-                    onChange={handleFileChange}
-                    required
+    // const [selectedFile, setSelectedFile] = useState(null);
+    const fileRef = useRef(null);
+    const toast = useRef(null);
+    // const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (!file.type.startsWith('image/')) {
+            return toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'Invalid File, Please select an image file' });
+        }
+
+        // setSelectedFile(file);
+        // setUserInfo((prevUserInfo) => ({
+        //     ...prevUserInfo,
+        //     [props.name]: file
+        // }));
+
+        toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successful Photo Uploaded' });
+
+    };
+    return (
+        <div style={{ width: '100%', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+            <Toast ref={toast} />
+            <input
+                type="file"
+                accept="image/*"
+                ref={fileRef}
+                // className="form-control"
+                style={inp}
+                onChange={handleFileChange}
+                required
+            />
+            <div
+                style={{ textAlign: 'center', borderRadius: '8px', borderBottom: '1px solid #000', backgroundColor: '#fff', width: '100%', cursor: 'pointer' }}
+                onClick={() => {
+                    fileRef.current.click();
+                }
+                }
+            >
+                <FontAwesomeIcon
+                    style={{ marginRight: '4px' }}
+                    icon={faUpload}
                 />
-                <div
-                    style={{textAlign:'center' ,borderRadius:'8px',borderBottom: '1px solid #000',backgroundColor:'#fff', width: '100%', cursor: 'pointer' }}
-                    onClick={() => {
-                        fileRef.current.click();
-                    }
-                    }
-                >
-                    <FontAwesomeIcon
-                        style={{ marginRight: '4px' }}
-                        icon={faUpload}
-                    />
-                    <label style={lab}>{props.title}</label>
-                </div>
+                <label style={lab}>{props.title}</label>
             </div>
-        );
-    
+        </div>
+    );
+
 };

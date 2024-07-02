@@ -2,11 +2,16 @@ import "../../css/UserPageStyle/profile.css"
 import defaultPic from '../../assets/user_signup.png'
 import ProfileHeader from "./ProfileHeader";
 import ProfileBody from "./ProfileBody";
+import { useRecoilValue } from "recoil";
+import { loginInfo } from "../../Recoil/Atom";
+import { useEffect, useRef, useState } from "react";
 
 
 function Profile(props) {
-    const userInfo = props.userInfo;
-
+    const loginInfoValue = useRecoilValue(loginInfo);
+    const [userInfo, setUserInfo] = useState(null);
+    const [error, setError] = useState(null);
+    const hasEffectRun = useRef(false);
     let userType = '';
     if (props.userType !== "Patient" && props.userType !== "Doctor") {
         userType = "healthcareproviders"
@@ -17,13 +22,57 @@ function Profile(props) {
 
     console.log(userType);
 
+    const getUserData = async (fetchText, param) => {
+        console.log('param;', param);
+        console.log('fetchText:;', fetchText);
+        try {
+            const response = await fetch(fetchText, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                params: JSON.stringify(param),
+            });
+            const jsonData = await response.json();
+            setUserInfo(jsonData);
+            console.log("success");
+        } catch (err) {
+            setError(err.message);
+            console.error("Error:", err);
+        }
+    };
+
+    useEffect(() => {
+        if (!hasEffectRun.current) {
+            getUserData(`http://192.168.137.1:5000/${userType}?email=${loginInfoValue.login}`);
+            hasEffectRun.current = true;
+        }
+    }, [userType, loginInfoValue.login]);
+
+    console.log('userInfo:', userInfo);
+    console.log(userInfo);
+
+    if (error) {
+        return <div style={{ color: 'red' }}>Error: {error}</div>;
+    }
+
+    if (!userInfo) {
+        return <div style={{ color: 'white' }}>Loading...</div>;
+    } else {
+        console.log("userInfo", userInfo);
+    }
+
     return (
         <div className="profile-container">
             <ProfileHeader
                 userType={props.userType}
                 location={userInfo.address}
                 country={userInfo.country}
-                image={userInfo.personalphoto ? `data:image/jpeg;base64,${userInfo.personalphoto}` : defaultPic}
+                image={userInfo.facilityphoto
+                    ? `data:image/jpeg;base64,${userInfo.facilityphoto}`
+                    : userInfo.personalphoto
+                        ? `data:image/jpeg;base64,${userInfo.personalphoto}`
+                        : defaultPic}
                 username={userInfo.username}
                 name={userType === "healthcareproviders" ? userInfo.name : `${userInfo.firstname} ${userInfo.secondname} ${userInfo.thirdname} ${userInfo.lastname}`}
                 gender={userInfo.sex}

@@ -1,12 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import countryList from 'react-select-country-list';
+import { useSetRecoilState } from 'recoil';
+import { updateUserInfo } from '../../Recoil/UpdateData';
 function SettingCountrySelector(props) {
 
-    const [value, setValue] = useState(props.value);
+    const [value, setValue] = useState(props.value || "");
     const [options, setOptions] = useState([]); // Initialize options state
     const [isLoading, setIsLoading] = useState(false); // Track loading state
     const [error, setError] = useState(null); // Store any errors
 
+    const setUserInfo = useSetRecoilState(updateUserInfo);
+
+    useEffect(() => {
+        if (props.value !== value) {
+            setValue(props.value);
+        }
+    }, [props.value]);
+
+    const handleOnBlur = (e) => {
+        const newValue = e.target.value;
+        setValue(newValue);
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            country: newValue
+        }));
+    };
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -32,12 +50,12 @@ function SettingCountrySelector(props) {
             {isLoading && <p>Loading countries...</p>}
             {error && <p>Error fetching countries: {error.message}</p>}
             {!isLoading && !error && (
-                <select onChange={changeHandler} disabled={props.disabled} style={{ color: props.disabled ? "gray" : "white" }}>
+                <select value={value} onChange={changeHandler} onBlur={handleOnBlur} disabled={props.disabled} style={{ color: props.disabled ? "gray" : "white" }}>
                     <option selected value={value}>
                         {value}
-                    </option> {/* Default option */}
+                    </option> Default option
                     {options.map((country) => (
-                        <option key={country.value} value={country.value}>
+                        <option key={country.value} value={country.label}>
                             {country.label}
                         </option>
                     ))}
