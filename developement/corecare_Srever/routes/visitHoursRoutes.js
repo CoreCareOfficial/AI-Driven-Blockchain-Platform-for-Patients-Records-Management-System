@@ -10,15 +10,15 @@ const formatVisitHours = (data) => {
         let existingEntry = result.find(
             (entry) =>
                 entry.hospitalName === item.facilityname &&
-                entry.workDays === item.days
+                entry.visitDays === item.days
         );
 
         if (!existingEntry) {
             existingEntry = {
                 hospitalName: item.facilityname,
-                workDays: item.days,
-                DayworkHours: '',
-                NightworkHours: '',
+                visitDays: item.days,
+                DayvisitHours: '',
+                NightvisitHours: '',
             };
             result.push(existingEntry);
         }
@@ -26,9 +26,9 @@ const formatVisitHours = (data) => {
         const timeRange = `${item.from} - ${item.to}`;
 
         if (item.period === 'Morning') {
-            existingEntry.DayworkHours = timeRange;
+            existingEntry.DayvisitHours = timeRange;
         } else if (item.period === 'Afternoon') {
-            existingEntry.NightworkHours = timeRange;
+            existingEntry.NightvisitHours = timeRange;
         }
     });
 
@@ -38,7 +38,7 @@ const formatVisitHours = (data) => {
 router.get('/:email', async (req, res) => {
     try {
         const { email } = req.params;
-        const workHours = await pool.query(
+        const visitHours = await pool.query(
             `SELECT 
             VISIT_DAYS.facilityName, 
             VISIT_DAYS.days, 
@@ -55,16 +55,100 @@ router.get('/:email', async (req, res) => {
             [email]
         );
 
-        if (workHours.rows.length === 0) {
+        if (visitHours.rows.length === 0) {
             return res.status(400).send('Not found');
         }
 
-        const formattedData = formatVisitHours(workHours.rows);
+        const formattedData = formatVisitHours(visitHours.rows);
 
         res.json(formattedData);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
+    }
+});
+
+
+router.post('/', async (req, res) => {
+    console.log(req.body);
+    try {
+        const { email, hospitalName, visitDays, DayvisitHours, NightvisitHours } = req.body;
+        // Insert into VISIT_DAYS table
+        const newVisitDay = await pool.query(
+            `INSERT INTO VISIT_DAYS (email, facilityName, days)
+            VALUES ($1, $2, $3)
+            RETURNING id`,
+            [email, hospitalName, visitDays]
+        );
+
+        const visitDayID = newVisitDay.rows[0].id;
+
+        // Insert into VISIT_HOURS table for DayvisitHours
+        if (DayvisitHours) {
+            const [fromm, to] = DayvisitHours.split(' - ');
+            await pool.query(
+                `INSERT INTO VISIT_HOURS (visitDayID, "from", "to", period)
+                VALUES ($1, $2, $3, $4)`,
+                [visitDayID, fromm, to, 'Morning']
+            );
+        }
+
+        // Insert into VISIT_HOURS table for NightvisitHours
+        if (NightvisitHours) {
+            const [fromm, to] = NightvisitHours.split(' - ');
+            await pool.query(
+                `INSERT INTO VISIT_HOURS (visitDayID, "from", "to", period)
+        VALUES ($1, $2, $3, $4)`,
+                [visitDayID, fromm, to, 'Afternoon']
+            );
+        }
+
+        res.status(200).json({ message: 'Visit Day and Visit Hours added successfully' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: err.message });
+    }
+});
+
+router.put('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { hospitalName, visitDays, DayvisitHours, NightvisitHours } = req.body;
+
+        // Update VISIT_DAYS table
+        await pool.query(
+            `UPDATE VISIT_DAYS
+            SET facilityName = $1, days = $2
+            WHERE id = $3`,
+            [hospitalName, visitDays, id]
+        );
+
+        // Update VISIT_HOURS table for DayvisitHours
+        if (DayvisitHours) {
+            const [fromm, to] = DayvisitHours.split(' - ');
+            await pool.query(
+                `UPDATE VISIT_HOURS
+                SET "from" = $1, "to" = $2
+                WHERE visitDayID = $3 AND period = 'Morning'`,
+                [fromm, to, id]
+            );
+        }
+
+        // Update VISIT_HOURS table for NightvisitHours
+        if (NightvisitHours) {
+            const [fromm, to] = NightvisitHours.split(' - ');
+            await pool.query(
+                `UPDATE VISIT_HOURS
+                SET "from" = $1, "to" = $2
+                WHERE visitDayID = $3 AND period = 'Afternoon'`,
+                [fromm, to, id]
+            );
+        }
+
+        res.status(200).json({ message: 'Visit Day and Visit Hours updated successfully' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: 'Server Error' });
     }
 });
 

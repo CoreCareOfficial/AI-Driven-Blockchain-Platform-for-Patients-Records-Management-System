@@ -64,6 +64,7 @@ const formatWorkHours = (data) => {
 
         if (!existingEntry) {
             existingEntry = {
+                id: item.id,
                 hospitalName: item.facilityname,
                 workDays: item.days,
                 DayworkHours: '',
@@ -171,6 +172,7 @@ router.get('/getdoctorinfo/:patientID', async (req, res) => {
 
         const workHoursResult = await pool.query(
             `SELECT 
+            WORK_DAYS.id,
             WORK_DAYS.facilityName, 
             WORK_DAYS.days, 
             WORK_HOURS.from, 
@@ -189,6 +191,7 @@ router.get('/getdoctorinfo/:patientID', async (req, res) => {
         const workHours = formatWorkHours(workHoursResult.rows);
 
         const doctorData = {
+            doctorid,
             profissional,
             practice,
             educational,
@@ -205,32 +208,60 @@ router.get('/getdoctorinfo/:patientID', async (req, res) => {
 // Update Proffesional Info
 router.put('/updateprofissionalinfo/:doctorID', async (req, res) => {
     const { doctorID } = req.params;
-    const { specialization, academicDegree, yearsOfExperience, locationOfWork, clinicNumber } = req.body;
+    const { specialization, academicdegree, yearsofexperience, locationofwork, clinicnumber } = req.body;
 
     try {
-        const updateProffesionalInfo = await pool.query('UPDATE DOCTOR SET specialization = $1, academicdegree = $2, yearsofexperience = $3, locationofwork = $4, clinicnumber = $5 WHERE doctorID = $6 RETURNING *', [specialization, academicDegree, yearsOfExperience, locationOfWork, clinicNumber, doctorID]);
+        const updateProffesionalInfo = await pool.query(`
+        UPDATE DOCTOR 
+        SET specialization = $1, 
+        academicdegree = $2,
+        yearsofexperience = $3, 
+        locationofwork = $4, 
+        clinicnumber = $5 
+        WHERE doctorID = $6 RETURNING *`, [specialization, academicdegree, yearsofexperience, locationofwork, clinicnumber, doctorID]);
 
         if (updateProffesionalInfo.rowCount === 0) {
-            return res.status(404).send("Doctor not found");
+            return res.status(404).send("Proffesional Info not Updated");
         }
-        res.json(updateProffesionalInfo.rows[0]);
+        res.status(200).json({ message: "Proffesional Info Updated Successfully" });
     } catch (err) {
-        res.status(500).send(err.message);
+        res.status(500).json({ message: err.message });
     }
 });
 
 // Update Practice Info
 router.put('/updatepracticeinfo/:doctorID', async (req, res) => {
     const { doctorID } = req.params;
-    const { practiceLocation, affiliations, practiceHours, languagesSpoken } = req.body;
+    const { practicelocation, affiliations, practicehours, languagesspoken } = req.body;
 
+    console.log(req.body);
     try {
-        const updatePracticeInfo = await pool.query('UPDATE PRACTICE_INFO SET practicelocation = $1, affiliations = $2, practicehours = $3, languagesspoken = $4 WHERE doctorID = $5 RETURNING *', [practiceLocation, affiliations, practiceHours, languagesSpoken, doctorID]);
+
+        const getPracticeInfo = await pool.query(`SELECT practicelocation, affiliations, practicehours, languagesspoken from PRACTICE_INFO WHERE doctorID = $1`, [doctorID]);
+        if (getPracticeInfo.rows.length === 0) {
+            return res.status(404).json({ message: 'Practice Info not found' });
+        }
+        const oldpractice = getPracticeInfo.rows[0];
+
+        const updatedPracticeLocation = practicelocation !== '' ? medschool : oldpractice.practicelocation;
+        const updatedAffiliations = affiliations !== '' ? internships : oldpractice.affiliations;
+        const updatedPracticehours = practicehours !== '' ? residencies : oldpractice.practicehours;
+        const updatedLanguagesspoken = languagesspoken !== '' ? fellowships : oldpractice.languagesspoken;
+
+        const updatePracticeInfo = await pool.query(
+            `INSERT INTO PRACTICE_INFO (practicelocation, affiliations, practicehours, languagesspoken, doctorID)
+            VALUES ($1, $2, $3, $4, $5)
+            ON CONFLICT (doctorID) DO UPDATE 
+            SET practicelocation = EXCLUDED.practicelocation, affiliations = EXCLUDED.affiliations, practicehours = EXCLUDED.practicehours, languagesspoken = EXCLUDED.languagesspoken
+            RETURNING *`,
+            [updatedPracticeLocation, updatedAffiliations, updatedPracticehours, updatedLanguagesspoken, doctorID]
+        );
+
 
         if (updatePracticeInfo.rowCount === 0) {
-            return res.status(404).send("Doctor not found");
+            return res.status(404).json("Failed to update practice info");
         }
-        res.json(updatePracticeInfo.rows[0]);
+        res.json('Updated Practice Info Successfully');
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -239,18 +270,35 @@ router.put('/updatepracticeinfo/:doctorID', async (req, res) => {
 // Update Educational Info
 router.put('/updateeducationalinfo/:doctorID', async (req, res) => {
     const { doctorID } = req.params;
-    const { medSchool, internships, residencies, fellowships } = req.body;
+    const { medschool, internships, residencies, fellowships } = req.body;
 
     try {
-        const updateEducationalInfo = await pool.query('UPDATE EDUCATIONAL_INFO SET medschool = $1, internships = $2, residencies = $3, fellowships = $4 WHERE doctorID = $5 RETURNING *', [medSchool, internships, residencies, fellowships, doctorID]);
+        const getEducationalInfo = await pool.query(`SELECT medschool, internships, residencies, fellowships from EDUCATIONAL_INFO WHERE doctorid = $1 `, [doctorID]);
+        if (getEducationalInfo.rows.length === 0) {
+            return res.status(404).json({ message: 'Educational Info not found' });
+        }
+        const oldedu = getEducationalInfo.rows[0];
+
+        const updatedMedschool = medschool !== '' ? medschool : oldedu.medschool;
+        const updatedInternships = internships !== '' ? internships : oldedu.internships;
+        const updatedResidencies = residencies !== '' ? residencies : oldedu.residencies;
+        const updatedFellowships = fellowships !== '' ? fellowships : oldedu.fellowships;
+
+        const updateEducationalInfo = await pool.query(
+            `INSERT INTO EDUCATIONAL_INFO (medschool, internships, residencies, fellowships, doctorID)
+            VALUES ($1, $2, $3, $4, $5)
+            ON CONFLICT (doctorID) DO UPDATE 
+            SET medschool = EXCLUDED.medschool, internships = EXCLUDED.internships, residencies = EXCLUDED.residencies, fellowships = EXCLUDED.fellowships
+            RETURNING *`,
+            [updatedMedschool, updatedInternships, updatedResidencies, updatedFellowships, doctorID]
+        );
 
         if (updateEducationalInfo.rowCount === 0) {
-            return res.status(404).send("Doctor not found");
+            return res.status(404).json({ message: "Failed to update educational info" });
         }
-        res.json(updateEducationalInfo.rows[0]);
-    }
-    catch (err) {
-        res.status(500).send(err.message);
+        res.status(200).json({ message: 'Updated Educational Info Successfully' });
+    } catch (err) {
+        res.status(500).json(err.message);
     }
 });
 

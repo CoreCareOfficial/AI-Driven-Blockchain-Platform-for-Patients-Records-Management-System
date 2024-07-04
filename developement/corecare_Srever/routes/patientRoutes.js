@@ -5,6 +5,7 @@ import multer from 'multer';
 import fs from 'fs/promises';
 import fss from 'fs';
 import { fileURLToPath } from 'url';
+import moment from 'moment-timezone';
 
 const router = express.Router();
 
@@ -179,49 +180,80 @@ router.get('/', async (req, res) => {
 // UPDATE a general info
 router.put('/general/:patientID', async (req, res) => {
     const { patientID } = req.params;
-    const { firstName, secondName, thirdName, lastName, phoneNumber, address, country, job, sex, dateOfBirth, status } = req.body;
+    let { firstname, secondname, thirdname, lastname, phonenumber, address, country, job, sex, dateofbirth, status } = req.body;
 
+    console.log('req.body:', req.body);
+
+
+    console.log('Received request to update patient:', patientID);
     try {
+        const oldPatientQuery = await pool.query('SELECT firstname, secondname, thirdname, lastname, phonenumber, address, country, job, sex, dateofbirth, status FROM PATIENT WHERE patientID = $1', [patientID]);
+
+        if (oldPatientQuery.rows.length === 0) {
+            return res.status(404).send('Patient not found');
+        }
+
+        const oldPatient = oldPatientQuery.rows[0];
+        console.log("Existing patient data: ", oldPatient);
+
+        // Assign old values if new values are undefined
+        firstname = firstname !== '' ? firstname : oldPatient.firstname;
+        secondname = secondname !== '' ? secondname : oldPatient.secondname;
+        thirdname = thirdname !== '' ? thirdname : oldPatient.thirdname;
+        lastname = lastname !== '' ? lastname : oldPatient.lastname;
+        phonenumber = phonenumber !== '' ? phonenumber : oldPatient.phonenumber;
+        address = address !== '' ? address : oldPatient.address;
+        country = country !== '' ? country : oldPatient.country;
+        job = job !== '' ? job : oldPatient.job;
+        sex = sex !== '' ? sex : oldPatient.sex;
+        dateofbirth = dateofbirth !== '' ? dateofbirth : oldPatient.dateofbirth;
+        status = status !== '' ? status : oldPatient.status;
+
+        console.log('Updated values:', firstname, secondname, thirdname, lastname, phonenumber, address, country, job, sex, dateofbirth, status);
+
         const updatePatient = await pool.query(
             `UPDATE PATIENT SET 
-            firstname=$1, 
-            secondname=$2, 
-            thirdname=$3, 
-            lastname=$4, 
-            phonenumber=$5, 
-            address=$6, 
-            country=$7, 
-            job=$8, 
-            sex=$9, 
-            dateofbirth=$10, 
-            status=$11
-      WHERE patientID =$12  RETURNING *`,
-            [firstName, secondName, thirdName, lastName, phoneNumber, address, country, job, sex, dateOfBirth, status, patientID]
+                firstname = $1, 
+                secondname = $2, 
+                thirdname = $3, 
+                lastname = $4, 
+                phonenumber = $5, 
+                address = $6, 
+                country = $7, 
+                job = $8, 
+                sex = $9, 
+                dateofbirth = $10, 
+                status = $11
+            WHERE patientID = $12 
+            RETURNING *`,
+            [firstname, secondname, thirdname, lastname, phonenumber, address, country, job, sex, dateofbirth, status, patientID]
         );
 
         if (updatePatient.rows.length === 0) {
-            return res.status(404).send('Patient not found');
+            return res.status(404).send('Failed to update patient information');
         }
-        res.json(updatePatient.rows[0]);
+
+        res.json('Patient updated successfully');
     } catch (err) {
-        res.status(500).send(err.message);
+        console.error('Error updating patient information:', err);
+        res.status(500).send('Internal server error');
     }
 });
 
 // Update a patient's personal photo via email
-router.put('/personalphoto/:email/:username', upload.fields([
+router.put('/personalphoto/:username', upload.fields([
     { name: 'personalPhoto', maxCount: 1 }
 ]), async (req, res) => {
-    const { email } = req.params;
+    const { username } = req.params;
 
     try {
         const personalPhotoPath = req.files.personalPhoto ? req.files.personalPhoto[0].path : null;
-        const newPhoto = await pool.query('UPDATE PATIENT SET personalphoto = $1 WHERE email = $2 RETURNING personalphoto', [personalPhotoPath, email]);
+        const newPhoto = await pool.query('UPDATE PATIENT SET personalphoto = $1 WHERE username = $2 RETURNING personalphoto', [personalPhotoPath, username]);
         if (newPhoto.rows.length === 0) {
-            return res.status(404).send('Patient not found');
+            return res.status(404).send('Personal photo not updated');
         }
         // const newPersonalphoto = await readFileContent(newPhoto.rows[0].personalphoto);
-        res.json(newPhoto.rows[0]);
+        res.json('Personal photo updated successfully');
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -248,21 +280,38 @@ router.put('/personalphoto/:patientID', upload.fields([
 // UPDATE a patient's health info
 router.put('/healthinfo/:patientID', async (req, res) => {
     const { patientID } = req.params;
-    const { weight, height } = req.body;
+    const { bloodtype, weight, height, allergies } = req.body;
+    const currentDate = moment().tz('Asia/Aden').format('YYYY-MM-DDTHH:mm:ss');
+
+    console.log('currentDate:', currentDate);
+
 
     try {
+
+        const updatebloodtype = await pool.query(`UPDATE patient SET bloodtype=$1 WHERE patientID =$2 RETURNING *`, [bloodtype, patientID]);
+
         const updateHealthInfo = await pool.query(
-            `UPDATE health_info SET 
-            weight=$1, 
-            height=$2
-      WHERE patientID =$3  RETURNING *`,
-            [weight, height, patientID]
+            `INSERT INTO health_info (weight, height, weightdate, heightdate, patientid)
+            VALUES ($1, $2, $3, $4, $5)
+            ON CONFLICT (patientid) DO UPDATE 
+            SET weight = EXCLUDED.weight, height = EXCLUDED.height, weightdate = EXCLUDED.weightdate, heightdate = EXCLUDED.heightdate
+            RETURNING *`,
+            [weight, height, currentDate, currentDate, patientID]
         );
 
-        if (updateHealthInfo.rows.length === 0) {
-            return res.status(404).send('Patient not found');
+        const updateAllergies = await pool.query(
+            `INSERT INTO allergies (allergyname, allergiesdate, patientid)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (patientid) DO UPDATE 
+            SET allergyname = EXCLUDED.allergyname, allergiesdate = EXCLUDED.allergiesdate
+            RETURNING *`,
+            [allergies, currentDate, patientID]
+        );
+
+        if (updateHealthInfo.rows.length === 0 && updatebloodtype.rows.length === 0 && updateAllergies.rows.length === 0) {
+            return res.status(404).send('Failed to update health information');
         }
-        res.json(updateHealthInfo.rows[0]);
+        res.json("Patient updated successfully");
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -273,11 +322,14 @@ router.put('/healthinfo/:patientID', async (req, res) => {
 
 
 // GET patient info from the database
-router.get('/getpatientinfo/:email', async (req, res) => {
-    const { email } = req.params;
+router.get('/getpatientinfo/:emailorusername', async (req, res) => {
+    const { emailorusername } = req.params;
     try {
-        const patientIDResult = await pool.query('SELECT patientID FROM PATIENT WHERE email = $1', [email]);
+        const patientIDResult = await pool.query('SELECT patientID FROM PATIENT WHERE email = $1 or username = $1', [emailorusername]);
         const patientID = patientIDResult.rows[0].patientid;
+
+        const emailQuery = await pool.query('SELECT email FROM PATIENT WHERE patientID = $1', [patientID]);
+        const email = emailQuery.rows[0].email;
 
         const patientInfoResult = await pool.query('SELECT patientid, username, firstName, secondName, thirdName, lastName, phoneNumber, address, country, job, sex, dateOfBirth, status, personalphoto, bloodtype FROM PATIENT WHERE email = $1', [email]);
         const patient = patientInfoResult.rows[0];
@@ -299,7 +351,10 @@ router.get('/getpatientinfo/:email', async (req, res) => {
         let emergencyContacts = [];
         for (let i = 0; i < emergencyContactsResult.rows.length; i++) {
             const chosenUserResult = await pool.query('SELECT firstname, lastname FROM patient WHERE patientID = $1', [emergencyContactsResult.rows[i].chosenuserid]);
-            emergencyContacts[i] = chosenUserResult.rows[0].firstname + " " + chosenUserResult.rows[0].lastname;
+            emergencyContacts[i] = {
+                id: emergencyContactsResult.rows[i].id,
+                name: chosenUserResult.rows[0].firstname + " " + chosenUserResult.rows[0].lastname
+            };
         }
 
         const patientData = {
@@ -316,18 +371,55 @@ router.get('/getpatientinfo/:email', async (req, res) => {
     }
 });
 
+// INSERT a new emergency contact via emailorusername
+router.post('/newemergencycontact/:emailorusername', async (req, res) => {
+    const { emailorusername } = req.params;
+    const { chosenUserEmail } = req.body;
+    try {
+        const patientIDResult = await pool.query('SELECT patientID FROM PATIENT WHERE email = $1 or username = $1', [emailorusername]);
+        const patientID = patientIDResult.rows[0].patientid;
 
-//     const { id } = req.params;
+        const chosenUserIDResult = await pool.query('SELECT patientID FROM PATIENT WHERE email = $1', [chosenUserEmail]);
+        const chosenUserID = chosenUserIDResult.rows[0].patientid;
 
-//     try {
-//         const deletePatient = await pool.query('DELETE FROM PATIENT WHERE ID = $1 RETURNING *', [id]);
-//         if (deletePatient.rows.length === 0) {
-//             return res.status(404).send('Patient not found');
-//         }
-//         res.json({ message: 'Patient deleted' });
-//     } catch (err) {
-//         res.status(500).send(err.message);
-//     }
-// });
+        const newEmergencyContact = await pool.query('INSERT INTO emergency_contacts (patientID, chosenUserID) VALUES ($1, $2) RETURNING *', [patientID, chosenUserID]);
+        res.json(newEmergencyContact.rows[0]);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+// DELETE an emergency contact via emailorusername
+router.delete('/deleteemergencycontact/:emailorusername', async (req, res) => {
+    const { emailorusername } = req.params;
+    const { chosenUserEmail } = req.body;
+    try {
+        const patientIDResult = await pool.query('SELECT patientID FROM PATIENT WHERE email = $1 or username = $1', [emailorusername]);
+        const patientID = patientIDResult.rows[0].patientid;
+
+        const chosenUserIDResult = await pool.query('SELECT patientID FROM PATIENT WHERE email = $1', [chosenUserEmail]);
+        const chosenUserID = chosenUserIDResult.rows[0].patientid;
+
+        const deleteEmergencyContact = await pool.query('DELETE FROM emergency_contacts WHERE patientID = $1 AND chosenUserID = $2 RETURNING *', [patientID, chosenUserID]);
+        res.json(deleteEmergencyContact.rows[0]);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+// DELETE a patient via email
+router.delete('/:email', async (req, res) => {
+    const { email } = req.params;
+    try {
+        const deletePatient = await pool.query('DELETE FROM PATIENT WHERE email = $1 RETURNING *', [email]);
+        res.json(deletePatient.rows[0]);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+//
+
+
 
 export default router;

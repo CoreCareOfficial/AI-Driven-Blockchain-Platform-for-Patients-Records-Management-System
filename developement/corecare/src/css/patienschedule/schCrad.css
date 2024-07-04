@@ -1,0 +1,109 @@
+.containerSch{
+   
+    height: 495px;
+    
+ 
+    border-radius:20px;
+    background-color: #272C34;
+    
+  
+margin-bottom: 0px;
+color: white;
+} 
+button{
+    all: unset;
+}
+.containerSch .bodySchedule{
+    
+    overflow:auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    height: 435px;
+    margin-top: 10px;
+
+}
+
+
+
+.HeaderSch{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    padding-left: 5px;
+    flex-shrink: 0;
+    font-weight: bold;
+    
+}
+.HeadTitle ,.HeadertIcon{
+    padding-left: 10px;
+    padding-top: 5px;
+
+
+}
+.HeadertIcon svg{
+
+    width:20px ;
+    height: 20px;
+}
+
+.body_S{
+    
+width: 94%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+   
+    align-items: center;
+   
+    height: 44px;
+    border-radius: 10px;
+    background-color: #3F4652;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-bottom: 5px;
+    cursor:pointer;
+}
+.body_S1{
+    display: flex;
+    padding-left: 8px;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    font-size: 14px;
+    width: 240px;
+   
+    
+
+}
+.body_S1 svg{
+    
+        
+        
+        box-sizing: border-box;
+        width: 25px;
+        height: 25px;
+       fill:rgb(255, 255, 255);
+     
+
+}
+.body_S2{
+padding-right: 5px;
+font-size: 14px;
+width: 60px;
+}
+.body_S1in{
+    padding-left: 5px;
+    
+}
+.body_S:hover{
+    background-color:rgb(61, 90, 151);
+}
+
+.body_S.active{
+    transition: 100ms;
+    border:2px solid blue;
+}

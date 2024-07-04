@@ -1,0 +1,84 @@
+.MargeScheduleBody {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: top;
+    width: 100%;
+    height: 500px;
+
+    background-color: #181a1f;
+    padding-left: 2%;
+
+}
+
+.ContiuerMargeSchedule div hr {
+
+    margin: 2% 2% 2% 2%;
+
+    color: white;
+
+
+
+}
+
+.MargeSchedule {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: top;
+
+    background-color: rgb(204, 52, 52);
+
+    width: 100%;
+
+}
+
+.hederMargeSchedule {
+    margin-left: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+
+
+}
+
+.SchCard {
+    width: 29%;
+}
+
+.StyleSetion2 {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.StyleSetion2 .TimeShedules {
+    margin-bottom: 10px;
+}
+
+.StyleSetion2 div {
+    width: 100%;
+}
+
+.StyleSetion3 {
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+
+}
+
+.StyleSetion3 .AppointmentReasons {
+    margin-bottom: 15px;
+
+}
+
+.StyleSetion3 div {
+    width: 100%;
+}

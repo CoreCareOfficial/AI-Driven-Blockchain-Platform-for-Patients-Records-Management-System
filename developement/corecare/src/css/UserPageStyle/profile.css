@@ -258,8 +258,9 @@
 
 .previous-doctor-card .h5 {
     color: #fff;
+    font-size: large;
 }
 
 .previous-doctor-card p {
-    color: #6f6f6f;
+    color: #eaeaea;
 }

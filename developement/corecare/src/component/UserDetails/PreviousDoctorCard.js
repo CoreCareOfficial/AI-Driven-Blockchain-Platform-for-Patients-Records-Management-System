@@ -12,7 +12,7 @@ function PreviousDoctorCard(props) {
                 {items.length > 0 ? (
                     items.map((doctor) => (
                         <DynamicCard key={doctor.doctorid} name="previous-doctor-card">
-                            <Image src={doctor.personalphoto ? `data:image/jpeg;base64,${doctor.personalphoto}` : defaultPic} roundedCircle />
+                            <Image src={doctor.personalphoto ? `data:image/jpeg;base64,${doctor.personalphoto}` : defaultPic} roundedCircle className="h-[200px] w-[200px] mx-auto" />
                             <Card.Title>{`${doctor.firstname} ${doctor.lastname}`}</Card.Title>
                             <Card.Text>{doctor.specialization}</Card.Text>
                         </DynamicCard>

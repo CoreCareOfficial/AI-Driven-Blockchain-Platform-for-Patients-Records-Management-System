@@ -1,0 +1,68 @@
+h6{
+    all:unset;
+}
+.continerDotor{
+  
+    background-color:#272C34;
+    width: 100%;
+
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+    align-items: center;
+    border-radius:15px ; 
+   
+    color: white;  
+
+}
+
+.photoDotor{
+    margin-bottom:15px;
+  
+}
+
+.hederDotor{
+    display: flex;
+    justify-content:start;
+   
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+    align-items: center;
+    margin-right: 15px;
+    font-weight:bold ;
+
+}
+.hederDotor .hederDctorprovider{
+    width: 80%;
+    margin-right: 4% ;
+   
+}
+.hederDotor .hederIcon{
+    width: 20%;
+    padding-left: 8%;
+}
+
+
+.imageDotor{
+    width: 50px;
+    height: 50px;
+    border-radius:25px ;
+    
+}
+.photoDotor{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+    align-items:c;
+    border-radius:25px ;
+    /* width: 100%; */
+} 
+.photoDotor .PronName{
+    width: 65%;
+}
+.photoDotor .divimage{
+    width: 35%;
+    padding-left: 8%;
+}

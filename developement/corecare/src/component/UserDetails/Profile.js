@@ -5,6 +5,7 @@ import ProfileBody from "./ProfileBody";
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 import { useEffect, useRef, useState } from "react";
+import ProfileSkeleton from "../skeletons/ProfileSkeleton";
 
 
 function Profile(props) {
@@ -44,8 +45,10 @@ function Profile(props) {
 
     useEffect(() => {
         if (!hasEffectRun.current) {
-            getUserData(`http://192.168.137.1:5000/${userType}?email=${loginInfoValue.login}`);
-            hasEffectRun.current = true;
+            setTimeout(() => {
+                getUserData(`http://192.168.137.1:5000/${userType}?email=${loginInfoValue.login}`);
+                hasEffectRun.current = true;
+            }, 350);
         }
     }, [userType, loginInfoValue.login]);
 
@@ -57,7 +60,7 @@ function Profile(props) {
     }
 
     if (!userInfo) {
-        return <div style={{ color: 'white' }}>Loading...</div>;
+        return <ProfileSkeleton />;
     } else {
         console.log("userInfo", userInfo);
     }

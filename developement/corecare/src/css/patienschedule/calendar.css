@@ -1,0 +1,99 @@
+:root {
+    width: unset;
+}
+
+.calendar-header {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 21PX;
+    flex-direction: row;
+
+
+}
+
+.calendar-header .calenderMonth {
+    width: 120px;
+    text-align: center;
+}
+
+.calendar-footer {
+    display: flex;
+    justify-content: center;
+    gap: 80%;
+    flex-direction: row;
+    align-items: center;
+    /* margin-top: 10px; */
+    /* position: fixed; */
+}
+
+.divTable {
+    width: 100% !important;
+    /*
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left:400px;
+    margin-bottom:200px ; */
+    /* width: fit-content; */
+    height: 260px;
+
+    color: white;
+    background-color: #272C34;
+    border-radius: 20px 20px 20px 20px;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+
+
+}
+
+.tabledate {
+    /* width: fit-content; */
+    border-radius: 15px;
+    overflow: hidden;
+    border: 0px solid #272C34;
+    border-spacing: 1px;
+    /* width: 350px; */
+    height: 190px;
+    width: 100%;
+}
+
+table td {
+    text-align: center;
+
+    height: 15px;
+}
+
+table,
+thead .theatTh {
+    color: inherit;
+    background-color: #272C34;
+}
+
+table,
+tbody .dark-cell {
+    background-color: #272C34;
+    /* Dark color */
+    color: rgb(67, 69, 71);
+}
+
+table,
+tbody .current-month-cell {
+    /* background-color: transparent; */
+    background-color: #272C34;
+    color: white;
+    /* width: 30px;
+    height: 25px; */
+}
+
+.Selectday {
+    transition: 300ms;
+    background-color: blue;
+    border-radius: 20px;
+    width: 8%;
+    height: 8%;
+}
+
+table .theatTh {
+    text-align: center;
+}

@@ -1,0 +1,74 @@
+.containerAppointmen{
+    background-color:#272C34;
+   
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-evenly;
+    align-items: center;
+    border-radius:15px ; 
+    
+    color: white;  
+    
+}
+
+.containerAppointmen .hedarAppointmen{
+    font-size: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content:start;
+    align-items: center;
+    margin-right: 15px;
+    font-weight:bold ;
+    margin-top:2%;
+   
+
+
+}
+.hedarAppointmenicon{
+    width: 20% !important;
+    padding-left: 8%;
+}
+.hedarAppointmenText{
+    width:80%;
+   
+}
+
+.containerAppointmen .HospitalName{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    margin-right: 15px;
+    font-weight:bold ;
+    background-color: #3F4652;
+    width: 80%;
+    border-radius: 10px;
+    height: 25%;
+
+
+}
+.containerAppointmen .HospitalLocation{
+    height: 25%;
+    width:80% !important;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    margin-right: 15px;
+    font-weight:bold ;
+    background-color: #3F4652;
+    margin-bottom: 3%;
+
+}
+.containerAppointmen .hedarAppointmen .hedarAppointmenicon{
+    font-size: 20px;
+}
+.containerAppointmen .HospitalName div,.containerAppointmen .HospitalLocation div{
+    margin-left: 10px;
+}
+
+.HospitalLocationicon{
+    width: 10% !important;
+}

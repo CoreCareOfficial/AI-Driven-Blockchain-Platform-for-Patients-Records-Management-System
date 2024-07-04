@@ -32,18 +32,46 @@ router.get('healthcare/:patientID', async (req, res) => {
     }
 });
 
-router.put('/:patientID', async (req, res) => {
-    const { patientID } = req.params;
+router.put('/:email', async (req, res) => {
+    const { email } = req.params;
     const { fb, facebook, tw, twitter, li, linkedin, im, instagram, wh, whatsapp } = req.body;
-
     try {
-        const fbupdate = await pool.query('UPDATE socialmedia set link = $1 wHERE type = $2 and patientID = $3', [facebook, fb, patientID]);
-        const twupdate = await pool.query('UPDATE socialmedia set link = $1 wHERE type = $2 and patientID = $3', [twitter, tw, patientID]);
-        const liupdate = await pool.query('UPDATE socialmedia set link = $1 wHERE type = $2 and patientID = $3', [linkedin, li, patientID]);
-        const imupdate = await pool.query('UPDATE socialmedia set link = $1 wHERE type = $2 and patientID = $3', [instagram, im, patientID]);
-        const whupdate = await pool.query('UPDATE socialmedia set link = $1 wHERE type = $2 and patientID = $3', [whatsapp, wh, patientID]);
+        const upsertQueries = [
+            pool.query(`
+                INSERT INTO socialmedia (email, type, link)
+                VALUES ($3, $2, $1)
+                ON CONFLICT (email, type) DO UPDATE 
+                SET link = EXCLUDED.link
+            `, [twitter, tw, email]),
+            pool.query(`
+                INSERT INTO socialmedia (email, type, link)
+                VALUES ($3, $2, $1)
+                ON CONFLICT (email, type) DO UPDATE 
+                SET link = EXCLUDED.link
+            `, [linkedin, li, email]),
+            pool.query(`
+                INSERT INTO socialmedia (email, type, link)
+                VALUES ($3, $2, $1)
+                ON CONFLICT (email, type) DO UPDATE 
+                SET link = EXCLUDED.link
+            `, [instagram, im, email]),
+            pool.query(`
+                INSERT INTO socialmedia (email, type, link)
+                VALUES ($3, $2, $1)
+                ON CONFLICT (email, type) DO UPDATE 
+                SET link = EXCLUDED.link
+            `, [whatsapp, wh, email]),
+            pool.query(`
+                INSERT INTO socialmedia (email, type, link)
+                VALUES ($3, $2, $1)
+                ON CONFLICT (email, type) DO UPDATE 
+                SET link = EXCLUDED.link
+            `, [facebook, fb, email])
+        ];
 
-        res.json({ message: "Updated successfully" })
+        await Promise.all(upsertQueries);
+
+        res.json({ message: "Socailmedia accounts updated successfully" });
 
     } catch (err) {
         res.status(500).send(err.message);

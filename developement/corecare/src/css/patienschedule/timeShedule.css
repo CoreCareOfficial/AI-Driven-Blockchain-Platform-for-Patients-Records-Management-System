@@ -1,0 +1,84 @@
+.coutinerTimeShedule{
+    width:100%!important ;
+    height: 150px;
+    display: grid;
+    grid-template-columns:repeat(5,1fr);
+    grid-template-rows: repeat(3,auto);
+   text-align: center;
+    
+    border-radius: 10px;
+    row-gap: 10px;
+    column-gap: 10px;
+    
+    color: aliceblue    ;
+   
+  
+}
+
+.coutinerTimeShedule div{
+  width: 100% !important;
+display:flex ;
+justify-content:center;
+    
+    align-items: center;
+    background-color:#3F4652;
+    
+    
+    
+
+    border-radius: 10px;
+}
+.coutinerTimeSheduleheder{
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+.selectTime{
+    position: relative;
+   
+    border: 2px solid blue;
+    font-size: 12px;
+    font-weight: bold;
+ transition: 100ms;
+ display: flex;
+ justify-content:center;
+ flex-direction: column;
+ align-items: center;
+ 
+
+    
+}
+
+
+
+.appSelectTime {
+    width:100% !important;
+    height: 40px;
+    box-sizing: border-box;
+}
+.selectTime ,.noselectTime{
+    width: 80%!important;
+    height: 40px;
+} 
+.noselectTime{
+   color: #a5a6a8;
+     
+   font-size: 12px;
+   font-weight:normal;
+} 
+
+.IconChick svg{
+    all:unset;
+    position: absolute;
+    bottom:23px;
+    right: -4px;
+    box-sizing: border-box;
+    width: 10px;
+    height: 20px;
+    background-color:blue;
+    border-radius: 7px;
+    fill: white;
+    
+}
