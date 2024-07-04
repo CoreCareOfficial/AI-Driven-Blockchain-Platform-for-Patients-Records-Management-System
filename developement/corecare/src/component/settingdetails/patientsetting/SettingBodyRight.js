@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DynamicCard from '../../bootcomponent/DynamicCard';
 import { PiNumberOneFill, PiNumberSquareTwoFill, PiNumberThreeFill } from "react-icons/pi";
 import { TbTrashXFilled } from "react-icons/tb";
@@ -7,68 +7,85 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { MdModeEdit } from "react-icons/md";
 import { SettingForm, SettingInput, SettingTimeInput } from "../TextFormSetting";
 import { CiCirclePlus } from "react-icons/ci";
+import { Toast } from "primereact/toast";
+import { useRecoilValue } from "recoil";
+import { loginInfo } from "../../../Recoil/Atom";
+import { updateUserInfo } from "../../../Recoil/UpdateData";
 
 function SettingBodyRight(props) {
-    const emergencyContacts = props.emergencyContact ? props.emergencyContact : [];
+    // let emergencyContacts = props.emergencyContact ? props.emergencyContact : [];
+    const [emergencyContacts, setEmergencyContacts] = useState([]);
     const workHours = Array.isArray(props.workHours) ? props.workHours : [];
     const visitHours = Array.isArray(props.visitHours) ? props.visitHours : [];
+    const toast = useRef(null);
+
+    useEffect(() => {
+        if (props.emergencyContact) {
+            setEmergencyContacts(props.emergencyContact);
+        }
+    }, [props.emergencyContact]);
+
+    // const [emergencyContact, setEmergencyContact] = useState(emergencyContacts)
     const icons = {
         1: <PiNumberOneFill />,
         2: <PiNumberSquareTwoFill />,
         3: <PiNumberThreeFill />
     };
-    const usercontact = [
-        { id: 1, 'name': "ahmed qahtan" },
-        { id: 2, 'name': "ahmed qahtan" },
-    ];
 
-    const [TimeFrom, setFrom] = useState('');
-    const [to, setTo] = useState('');
-    const [times, setTimes] = useState([]);
-
-    const handleAddTime = () => {
-        if (TimeFrom !== '' && to !== '') {
-            if (to > TimeFrom) {
-                const newTime = {
-                    TimeFrom,
-                    to,
-                };
-                setTimes([...times, newTime]);
-                setFrom('');
-                setTo('');
-            } else {
-                alert("Choose correct time");
-            }
-        } else {
-            alert("Choose time!");
-        }
+    const handleToast = (isAdded, message) => {
+        // setIsAdded();
+        isAdded ?
+            toast.current.show({ severity: 'success', summary: 'Successful', detail: message, life: 3000 })
+            :
+            toast.current.show({ severity: 'error', summary: 'Error', detail: message, life: 3000 });
     };
 
-    const [WorkFrom, setWorkFrom] = useState('');
-    const [WorkTo, setWorkTo] = useState('');
-    const [WorkTimes, setWorkTimes] = useState([]);
 
-    const handleAddWorkTime = () => {
-        if (WorkFrom !== '' && WorkTo !== '') {
-            if (WorkTo > WorkFrom) {
-                const newWorkTime = {
-                    WorkFrom,
-                    WorkTo,
-                };
-                setWorkTimes([...WorkTimes, newWorkTime]);
-                setWorkFrom('');
-                setWorkTo('');
-            } else {
-                alert("Choose correct time");
-            }
-        } else {
-            alert("Choose time!");
-        }
-    };
-    console.log(times);
-
+    const loginInfoValue = useRecoilValue(loginInfo);
+    const updateUserInfoValue = useRecoilValue(updateUserInfo);
     const [editWorkHours, setEditWorkHours] = useState({});
-    const toggleEditWorkHours = (id) => {
+    const [editVisitHours, setEditVisitHours] = useState({});
+    const toggleEditWorkHours = async (id) => {
+
+        if (!id) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'ID is required' });
+            return;
+        }
+        if (!updateUserInfoValue.DayworkHoursFrom && !updateUserInfoValue.DayworkHoursTo && !updateUserInfoValue.NightworkHoursFrom && !updateUserInfoValue.NightworkHoursTo) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please fill all fields Correctly' });
+            return;
+        }
+        console.log('updateUserInfoValue:', updateUserInfoValue.NightworkHoursFrom)
+        const DayworkHours = `${updateUserInfoValue.DayworkHoursFrom} - ${updateUserInfoValue.DayworkHoursTo}`;
+        const NightworkHours = `${updateUserInfoValue.NightworkHoursFrom} - ${updateUserInfoValue.NightworkHoursTo}`;
+        const data = {
+            hospitalName: updateUserInfoValue.hospitalName,
+            workDays: updateUserInfoValue.workDays,
+            DayworkHours,
+            NightworkHours,
+        };
+        console.log('data:', data);
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/workhours/${id}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Work Day and Work Hours updated successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Work Day and Work Hours updated successfully' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Work Day and Work Hours updated' });
+        }
+
         setEditWorkHours((prevState) => ({
             ...prevState,
             [id]: !prevState[id],
@@ -76,13 +93,129 @@ function SettingBodyRight(props) {
     };
 
     const [WorkHoursShow, setWorkHoursShow] = useState(true);
-    const toggleEditWorkHoursShow = () => {
+    const [VisitHoursShow, setVisitHoursShow] = useState(true);
+    const toggleEditWorkHoursShow = async () => {
+        if (!updateUserInfoValue.DayworkHoursFrom && !updateUserInfoValue.DayworkHoursTo && !updateUserInfoValue.NightworkHoursFrom && !updateUserInfoValue.NightworkHoursTo) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please fill all fields Correctly' });
+            return;
+        }
+        console.log('updateUserInfoValue:', updateUserInfoValue.NightworkHoursFrom)
+        const DayworkHours = `${updateUserInfoValue.DayworkHoursFrom} - ${updateUserInfoValue.DayworkHoursTo}`;
+        const NightworkHours = `${updateUserInfoValue.NightworkHoursFrom} - ${updateUserInfoValue.NightworkHoursTo}`;
+        const data = {
+            email: loginInfoValue.login,
+            hospitalName: updateUserInfoValue.hospitalName,
+            workDays: updateUserInfoValue.workDays,
+            DayworkHours,
+            NightworkHours,
+        };
+        console.log('data:', data);
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/workhours`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Work Day and Work Hours added successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Work Day and Work Hours added successfully' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Work Day and Work Hours added' });
+        }
         setWorkHoursShow(!WorkHoursShow);
     };
 
-    const [VisitHours, setVisitHours] = useState(true);
-    const toggleEditVisitHours = () => {
-        setVisitHours(!VisitHours);
+    const toggleEditVisitHours = async (id) => {
+        if (!id) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'ID is required' });
+            return;
+        }
+        if (!updateUserInfoValue.DayvisitHoursFrom && !updateUserInfoValue.DayvisitHoursTo && !updateUserInfoValue.NightvisitHoursFrom && !updateUserInfoValue.NightvisitHoursTo) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please fill all fields Correctly' });
+            return;
+        }
+        console.log('updateUserInfoValue:', updateUserInfoValue.NightworkHoursFrom)
+        const DayworkHours = `${updateUserInfoValue.DayvisitHoursFrom} - ${updateUserInfoValue.DayvisitHoursTo}`;
+        const NightworkHours = `${updateUserInfoValue.NightvisitHoursFrom} - ${updateUserInfoValue.NightvisitHoursTo}`;
+        const data = {
+            hospitalName: updateUserInfoValue.hospitalNameVisit,
+            visitDays: updateUserInfoValue.visitDays,
+            DayvisitHours: DayworkHours,
+            NightvisitHours: NightworkHours,
+        };
+        console.log('data:', data);
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/visithours/${id}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Visit Day and Visit Hours updated successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Visit Day and Visit Hours updated successfully' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Visit Day and Visit Hours updated' });
+        }
+
+        setEditVisitHours((prevState) => ({
+            ...prevState,
+            [id]: !prevState[id],
+        }));
+    };
+
+    const handleAddVisitTime = async () => {
+        if (!updateUserInfoValue.DayvisitHoursFrom && !updateUserInfoValue.DayvisitHoursTo && !updateUserInfoValue.NightvisitHoursFrom && !updateUserInfoValue.NightvisitHoursTo) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please fill all fields Correctly' });
+            return;
+        }
+        console.log('updateUserInfoValue:', updateUserInfoValue.NightworkHoursFrom)
+        const DayvisitHours = `${updateUserInfoValue.DayvisitHoursFrom} - ${updateUserInfoValue.DayvisitHoursTo}`;
+        const NightvisitHours = `${updateUserInfoValue.NightvisitHoursFrom} - ${updateUserInfoValue.NightvisitHoursTo}`;
+        const data = {
+            email: loginInfoValue.login,
+            hospitalName: updateUserInfoValue.hospitalNameVisit,
+            visitDays: updateUserInfoValue.visitDays,
+            DayvisitHours,
+            NightvisitHours,
+        };
+        console.log('data:', data);
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/visithours`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Visit Day and Visit Hours added successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Visit Day and Visit Hours added successfully' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Visit Day and Visit Hours added' });
+        }
+        setVisitHoursShow(!VisitHoursShow);
     };
 
     const spanWorkHours1 = {
@@ -104,29 +237,51 @@ function SettingBodyRight(props) {
         cursor: 'pointer',
         display: WorkHoursShow ? "block" : "none",
     };
-    const spanWorkHours2 = {
+    const spanVisitHourShow = {
         color: 'white',
-        position: 'absolute', right: '15px', bottom: '4%',
+        position: 'absolute', right: '50px', bottom: '10%',
         fontSize: '1.3em',
         borderRadius: '20px',
         padding: '5px',
         backgroundColor: '#272c34',
         cursor: 'pointer',
-        display: WorkHoursShow ? "none" : "block",
+        display: VisitHoursShow ? "block" : "none",
     };
-    const spanNewWorkHours = {
-        color: 'white',
-        position: 'absolute', right: '15px', bottom: '10%',
-        fontSize: '1.3em',
-        borderRadius: '20px',
-        padding: '5px',
-        backgroundColor: '#272c34',
-        cursor: 'pointer',
-        display: WorkHoursShow ? "none" : "block",
+
+    const handleDeleteEmergencyContact = async (id) => {
+        if (!id) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'ID is required' });
+            return;
+        }
+
+        const newEmergencyContacts = emergencyContacts.filter((EmergencyContact) => EmergencyContact.id !== id);
+        setEmergencyContacts(newEmergencyContacts);
+
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/emergencycontacts/${id}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Emergency Contact Deleted Successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Emergency Contact Deleted Successfully' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Emergency Contact Deleted' });
+        }
     };
+
 
     return (
         <>
+            <Toast ref={toast} />
             <DynamicCard name="SettingBodyRight">
                 {props.userType === "Doctor" || props.userType === "Patient" ? (
                     <DynamicCard name="UserContact">
@@ -138,7 +293,7 @@ function SettingBodyRight(props) {
                         }}>Emergency Contact</Card.Title>
                         {
                             emergencyContacts.map((EmergencyContact, index) => (
-                                <div key={index} style={{
+                                <div key={EmergencyContact.id} style={{
                                     height: '40px',
                                     display: 'flex',
                                     justifyContent: 'space-between',
@@ -148,9 +303,9 @@ function SettingBodyRight(props) {
                                     <span>
                                         {icons[index + 1]}
                                     </span>
-                                    <Card.Text>{EmergencyContact}</Card.Text>
+                                    <Card.Text>{EmergencyContact.name}</Card.Text>
                                     <span>
-                                        <TbTrashXFilled />
+                                        <TbTrashXFilled style={{ cursor: "pointer" }} onClick={() => handleDeleteEmergencyContact(EmergencyContact.id)} />
                                     </span>
                                 </div>
                             ))
@@ -159,14 +314,14 @@ function SettingBodyRight(props) {
                             color: 'white',
                             fontSize: '1.3em',
                             cursor: 'pointer',
-                            display: usercontact.length <= 2 ? 'block' : 'none'
-                        }} onClick={usercontact.length <= 2 && props.handleAddContact} />
+                            display: emergencyContacts.length <= 2 ? 'block' : 'none'
+                        }} onClick={(emergencyContacts.length <= 2) && props.handleAddContact} />
                     </DynamicCard>
                 ) : null}
 
                 {props.userType === "Doctor" || props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Hospital" || props.userType === "Pharmacy" ? (
                     <>
-                        {workHours.map((workHour, index) => {
+                        {workHours.map((workHour) => {
                             const dayworkHours = workHour.DayworkHours.trim();
                             const [startTime, endTime] = dayworkHours.split(' - ');
                             const NightworkHours = workHour.NightworkHours.trim();
@@ -181,27 +336,27 @@ function SettingBodyRight(props) {
                             const isEditing = !!editWorkHours[workHour.id];
 
                             return (
-                                <SettingForm key={workHour.id} name="SettingForm_form" legend="Work Hours" btn="Add Time" show={!isEditing} TheEvent={() => toggleEditWorkHours(workHour.id)}>
-                                    <span style={spanWorkHours1} onClick={() => toggleEditWorkHours(workHour.id)}>
+                                <SettingForm key={workHour.id} name="SettingForm_form" legend="Work Hours" btn="Update Time" show={!isEditing} TheEvent={() => toggleEditWorkHours(workHour.id)}>
+                                    <span style={spanWorkHours1} onClick={() => setEditWorkHours((prevState) => ({
+                                        ...prevState,
+                                        [workHour.id]: !prevState[workHour.id],
+                                    }))}>
                                         <MdModeEdit />
                                     </span>
-                                    {/* <span style={spanWorkHours2} onClick={handleAddWorkTime}>
-                                        <CiCirclePlus />
-                                    </span> */}
                                     {props.userType === "Doctor" ? (
-                                        <SettingInput class_name="SettingInput" type="text" name="Facility Name" label="Facility Name:" placeholder="" disabled={!isEditing} value={workHour.hospitalName} />
+                                        <SettingInput class_name="SettingInput" type="text" name="hospitalName" label="Facility Name:" placeholder="" disabled={!isEditing} value={workHour.hospitalName} />
                                     ) : null}
-                                    <SettingInput class_name="SettingInput" type="text" name="Days" label="Days :" placeholder="Separated with ," disabled={!isEditing} value={workHour.workDays} />
+                                    <SettingInput class_name="SettingInput" type="text" name="workDays" label="Days :" placeholder='Separated with " - "' disabled={!isEditing} value={workHour.workDays} />
                                     {dayworkHours &&
                                         <>
-                                            <SettingTimeInput class_name="SettingInput" value={formattedStartTime} name="From " label="From :" placeholder="" disabled={!isEditing} />
-                                            <SettingTimeInput class_name="SettingInput" value={formattedEndTime} name="To " label="To :" placeholder="" disabled={!isEditing} />
+                                            <label style={{ color: '#ffffff', marginLeft: '5px' }}>Morning Period</label>
+                                            <SettingTimeInput handleToast={handleToast} class_name="SettingInput" name1="DayworkHoursFrom" name2='DayworkHoursTo' value1={formattedStartTime} value2={formattedEndTime} disabled={!isEditing} />
                                         </>
                                     }
                                     {NightworkHours &&
                                         <>
-                                            <SettingTimeInput class_name="SettingInput" value={formattedStartTimeN} name="From " label="From :" placeholder="" disabled={!isEditing} />
-                                            <SettingTimeInput class_name="SettingInput" value={formattedEndTimeN} name="To " label="To :" placeholder="" disabled={!isEditing} />
+                                            <label style={{ color: '#ffffff', marginLeft: '5px' }}>Evening Period</label>
+                                            <SettingTimeInput handleToast={handleToast} class_name="SettingInput" name1="NightworkHoursFrom" name2='NightworkHoursTo' value1={formattedStartTimeN} value2={formattedEndTimeN} disabled={!isEditing} />
                                         </>
                                     }
                                 </SettingForm>
@@ -209,19 +364,19 @@ function SettingBodyRight(props) {
                         })}
 
                         <SettingForm name="SettingForm_form" legend="New Work Hours" btn="Add Time" show={WorkHoursShow} TheEvent={toggleEditWorkHoursShow}>
-                            <span style={spanWorkHourShow} onClick={toggleEditWorkHoursShow}
-                            ><CiCirclePlus /></span>
-                            <span style={spanNewWorkHours} onClick={handleAddWorkTime}
+                            <span style={spanWorkHourShow} onClick={() => setWorkHoursShow(!WorkHoursShow)}
                             ><CiCirclePlus /></span>
 
                             {!WorkHoursShow ? (
                                 <>
                                     {props.userType === "Doctor" ? (
-                                        <SettingInput class_name="SettingInput" type="text" name="Facility Name" label="Facility Name:" placeholder="" />
+                                        <SettingInput class_name="SettingInput" type="text" name="hospitalName" label="Facility Name:" placeholder="" />
                                     ) : null}
-                                    <SettingInput class_name="SettingInput" type="text" name="Days" label="Days :" placeholder="Separated with ," />
-                                    <SettingInput class_name="SettingInput" type="time" value={WorkFrom} name="From " label="From :" onChange={(e) => setWorkFrom(e.target.value)} placeholder="" />
-                                    <SettingInput class_name="SettingInput" type="time" value={WorkTo} name="To " label="To :" onChange={(e) => setWorkTo(e.target.value)} placeholder="" />
+                                    <SettingInput class_name="SettingInput" type="text" name="workDays" label="Days :" placeholder='Separated with " - "' />
+                                    <label style={{ color: '#ffffff', marginLeft: '5px' }}>Morning Period</label>
+                                    <SettingTimeInput handleToast={handleToast} class_name="SettingInput" name1="DayworkHoursFrom" name2='DayworkHoursTo' placeholder="" />
+                                    <label style={{ color: '#ffffff', marginLeft: '5px' }}>Evening Period</label>
+                                    <SettingTimeInput handleToast={handleToast} class_name="SettingInput" name1="NightworkHoursFrom" name2='NightworkHoursTo' placeholder="" />
                                 </>
                             ) : null}
                         </SettingForm>
@@ -230,7 +385,7 @@ function SettingBodyRight(props) {
 
                 {props.userType === "Hospital" ? (
                     <>
-                        {visitHours.map((workHour, index) => {
+                        {visitHours.map((workHour) => {
                             const dayworkHours = workHour.DayvisitHours.trim();
                             const [startTime, endTime] = dayworkHours.split(' - ');
                             const NightworkHours = workHour.NightvisitHours.trim();
@@ -242,48 +397,44 @@ function SettingBodyRight(props) {
                             const formattedStartTimeN = formatTime(startTimeN);
                             const formattedEndTimeN = formatTime(endTimeN);
 
+                            const isEditing = !!editVisitHours[workHour.id];
+
                             return (
-                                <SettingForm key={index} name="SettingForm_form" legend="Visit Hours" btn="Add Time" show={VisitHours} TheEvent={toggleEditVisitHours}>
-                                    <span style={spanWorkHours1} onClick={toggleEditVisitHours}>
+                                <SettingForm key={workHour.id} name="SettingForm_form" legend="Visit Hours" btn="Update Time" show={!isEditing} TheEvent={() => toggleEditVisitHours(workHour.id)}>
+                                    <span style={spanWorkHours1} onClick={() => setEditVisitHours((prevState) => ({
+                                        ...prevState,
+                                        [workHour.id]: !prevState[workHour.id],
+                                    }))}>
                                         <MdModeEdit />
                                     </span>
-                                    {/* <span style={spanWorkHours2} onClick={handleAddWorkTime}>
-                                        <CiCirclePlus />
-                                    </span> */}
-                                    {props.userType === "Doctor" ? (
-                                        <SettingInput class_name="SettingInput" type="text" name="Facility Name" label="Facility Name:" placeholder="" disabled={VisitHours} value={workHour.hospitalName} />
-                                    ) : null}
-                                    <SettingInput class_name="SettingInput" type="text" name="Days" label="Days :" placeholder="Separated with ," disabled={VisitHours} value={workHour.workDays} />
+                                    <SettingInput class_name="SettingInput" type="text" name="visitDays" label="Days :" placeholder='Separated with " - "' disabled={!isEditing} value={workHour.visitDays} />
                                     {dayworkHours &&
                                         <>
-                                            <SettingTimeInput class_name="SettingInput" value={formattedStartTime} name="From " label="From :" placeholder="" disabled={VisitHours} />
-                                            <SettingTimeInput class_name="SettingInput" value={formattedEndTime} name="To " label="To :" placeholder="" disabled={VisitHours} />
+                                            <label style={{ color: '#ffffff', marginLeft: '5px' }}>Morning Period</label>
+                                            <SettingTimeInput class_name="SettingInput" value1={formattedStartTime} name1="DayvisitHoursFrom" value2={formattedEndTime} name2="DayvisitHoursTo" disabled={!isEditing} />
                                         </>
                                     }
                                     {NightworkHours &&
                                         <>
-                                            <SettingTimeInput class_name="SettingInput" value={formattedStartTimeN} name="From " label="From :" placeholder="" disabled={VisitHours} />
-                                            <SettingTimeInput class_name="SettingInput" value={formattedEndTimeN} name="To " label="To :" placeholder="" disabled={VisitHours} />
+                                            <label style={{ color: '#ffffff', marginLeft: '5px' }}>Evening Period</label>
+                                            <SettingTimeInput class_name="SettingInput" value1={formattedStartTimeN} name1="NightvisitHoursFrom" value2={formattedEndTimeN} name2="NightvisitHoursTo" label="From :" placeholder="" disabled={!isEditing} />
                                         </>
                                     }
                                 </SettingForm>
                             );
                         })}
 
-                        <SettingForm name="SettingForm_form" legend="New Visit Hours" btn="Add Time" show={VisitHours} TheEvent={toggleEditVisitHours}>
-                            <span style={spanWorkHourShow} onClick={toggleEditWorkHoursShow}
-                            ><CiCirclePlus /></span>
-                            <span style={spanNewWorkHours} onClick={handleAddWorkTime}
+                        <SettingForm name="SettingForm_form" legend="New Visit Hours" btn="Add Time" show={VisitHoursShow} TheEvent={handleAddVisitTime}>
+                            <span style={spanVisitHourShow} onClick={() => setVisitHoursShow(!VisitHoursShow)}
                             ><CiCirclePlus /></span>
 
-                            {!WorkHoursShow ? (
+                            {!VisitHoursShow ? (
                                 <>
-                                    {props.userType === "Doctor" ? (
-                                        <SettingInput class_name="SettingInput" type="text" name="Facility Name" label="Facility Name:" placeholder="" />
-                                    ) : null}
-                                    <SettingInput class_name="SettingInput" type="text" name="Days" label="Days :" placeholder="Separated with ," />
-                                    <SettingInput class_name="SettingInput" type="time" value={WorkFrom} name="From " label="From :" onChange={(e) => setWorkFrom(e.target.value)} placeholder="" />
-                                    <SettingInput class_name="SettingInput" type="time" value={WorkTo} name="To " label="To :" onChange={(e) => setWorkTo(e.target.value)} placeholder="" />
+                                    <SettingInput class_name="SettingInput" type="text" name="visitDays" label="Days :" placeholder='Separated with " - "' />
+                                    <label style={{ color: '#ffffff', marginLeft: '5px' }}>Morning Period</label>
+                                    <SettingTimeInput handleToast={handleToast} class_name="SettingInput" name1="DayvisitHoursFrom" name2='DayvisitHoursTo' />
+                                    <label style={{ color: '#ffffff', marginLeft: '5px' }}>Evening Period</label>
+                                    <SettingTimeInput handleToast={handleToast} class_name="SettingInput" name1="NightvisitHoursFrom" name2='NightvisitHoursTo' />
                                 </>
                             ) : null}
                         </SettingForm>

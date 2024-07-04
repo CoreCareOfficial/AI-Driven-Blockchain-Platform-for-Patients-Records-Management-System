@@ -3,7 +3,7 @@ import { FaEye } from "react-icons/fa";
 import { IoIosEyeOff } from "react-icons/io";
 import SettingCountrySelector from './SettingCountrySelector';
 import { Button } from "primereact/button";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userHealthInfo } from "../../Recoil/Atom";
 import { Image } from "react-bootstrap";
 import defaultPic from '../../assets/user_signup.png';
@@ -180,8 +180,43 @@ export function DynamicForm(props) {
 
 
 export function AddEmergency(props) {
-    const changState = (e) => {
-        e.preventDefault()
+    const [value, setValue] = useState('');
+    const toast = useRef(null);
+
+    const changState = async (e) => {
+        e.preventDefault();
+        if (!props.userid) {
+            props.handleAddContactSuccessful(false, 'ID is required');
+            return;
+        }
+        if (!value) {
+            props.handleAddContactSuccessful(false, 'Email OR Username is required');
+            return;
+        }
+        const data = {
+            emailorusername: value,
+            patientid: props.userid
+        };
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/emergencycontacts`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Emergency Contact Added Successfully") {
+                props.handleAddContactSuccessful(true, 'Emergency Contact Added Successfully');
+            } else {
+                props.handleAddContactSuccessful(false, jsonData.message);
+            }
+        } catch (error) {
+            console.error(error.message);
+            props.handleAddContactSuccessful(false, 'Error Emergency Contact Added');
+        }
         if (props.TheEvent) {
             props.TheEvent();
         }
@@ -193,9 +228,11 @@ export function AddEmergency(props) {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '0px 5px',
-            }}>
-            <input type={props.type} placeholder={props.placeholder} name={props.name} disabled={props.disabled} />
-            <Button label={props.btn} className="bg-[#3146FF] my-2 text-white w-[20%] rounded-[8px] p-1 self-center" onClick={changState} />
+            }}
+            onSubmit={changState}>
+            <Toast ref={toast} />
+            <input type={props.type} value={value} placeholder={props.placeholder} name={props.name} disabled={props.disabled} onChange={(e) => setValue(e.target.value)} />
+            <Button type='submit' label={props.btn} className="bg-[#3146FF] my-2 text-white w-[20%] rounded-[8px] p-1 self-center" />
         </form>
     );
 };
@@ -284,6 +321,7 @@ export function SocialSettingInput(props) {
 export function SettingInput(props) {
     const [value, setValue] = useState(props.value || "");
     const setUserInfo = useSetRecoilState(updateUserInfo);
+    const userInfo = useRecoilValue(updateUserInfo);
 
     useEffect(() => {
         if (props.value !== value) {
@@ -294,10 +332,23 @@ export function SettingInput(props) {
     const handleOnBlur = (e) => {
         const newValue = e.target.value;
         setValue(newValue);
-        setUserInfo((prevUserInfo) => ({
-            ...prevUserInfo,
-            [props.name]: newValue
-        }));
+        if (props.id) {
+            // Ensure the target list is an array before updating
+            const targetList = Array.isArray(userInfo[props.name]) ? userInfo[props.name] : [];
+            // Create a new array with the new item
+            const newList = [...targetList, { id: props.id, value: newValue }];
+            // Update the atom state
+            setUserInfo(prevUserInfo => ({
+                ...prevUserInfo,
+                [props.name]: newList
+            }));
+
+        } else {
+            setUserInfo((prevUserInfo) => ({
+                ...prevUserInfo,
+                [props.name]: newValue
+            }));
+        }
     };
 
     const handleChange = (e) => {
@@ -326,20 +377,53 @@ export function SettingInput(props) {
     );
 }
 export function SettingTimeInput(props) {
-    const [timeValue, setTimeValue] = useState(props.value ? props.value : "");
-    console.log(timeValue);
+    const setUserInfo = useSetRecoilState(updateUserInfo);
+    const [timeValue, setTimeValue] = useState(props.value1 ? props.value1 : "");
+    const [timeValue2, setTimeValue2] = useState(props.value2 ? props.value2 : "");
+    console.log('from:', timeValue);
+    console.log('to:', timeValue2);
+    const handleOnBlur = (e, name) => {
+        const newValue = e.target.value;
+        if (timeValue2) {
+            if (timeValue < timeValue2) {
+                setUserInfo((prevUserInfo) => ({
+                    ...prevUserInfo,
+                    [name]: newValue
+                }));
+            } else {
+                props.handleToast(false, 'From time must be less than To time');
+            }
+        } else {
+            setUserInfo((prevUserInfo) => ({
+                ...prevUserInfo,
+                [name]: newValue
+            }));
+        }
+    };
     return (
         <div className={props.class_name}>
-            <label>{props.label}</label>
+            {/* <label>{props.label}</label> */}
+            <input
+                type='time'
+                style={{ color: props.disabled ? "gray" : "white", marginLeft: '10px' }}
+                placeholder={props.placeholder}
+                onChange={(e) => setTimeValue(e.target.value)}
+                name={props.name1}
+                disabled={props.disabled}
+                autoFocus={props.autoFocus}
+                onBlur={(e) => handleOnBlur(e, props.name1)}
+                value={timeValue}
+            />
             <input
                 type='time'
                 style={{ color: props.disabled ? "gray" : "white" }}
                 placeholder={props.placeholder}
-                onChange={(e) => setTimeValue(e.target.value)}
-                name={props.name}
+                onChange={(e) => setTimeValue2(e.target.value)}
+                name={props.name2}
                 disabled={props.disabled}
                 autoFocus={props.autoFocus}
-                value={timeValue}
+                onBlur={(e) => handleOnBlur(e, props.name2)}
+                value={timeValue2}
             />
         </div>
     );

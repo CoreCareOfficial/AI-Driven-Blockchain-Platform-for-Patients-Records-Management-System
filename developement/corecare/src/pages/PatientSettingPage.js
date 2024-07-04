@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import '../css/settingpagestyle/patientsetting.css';
 import { Container } from "react-bootstrap";
 import SettingBodyLift from "../component/settingdetails/patientsetting/SettingBodyLift";
@@ -7,9 +7,13 @@ import SettingBodyRight from "../component/settingdetails/patientsetting/Setting
 import EmergencyContact from "../component/settingdetails/patientsetting/EmergencyContact";
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../Recoil/Atom";
+import { Toast } from "primereact/toast";
 
 function PatientSettingPage(props) {
     const [isOpen, setIsOpen] = useState(false);
+    // const [isAdded, setIsAdded] = useState(false);
+    const toast = useRef(null);
+
     const [userData, setUserData] = useState({
         Info: {},
         doctorInfo: {},
@@ -42,6 +46,14 @@ function PatientSettingPage(props) {
 
     const handleAddContact = () => {
         setIsOpen(!isOpen);
+        console.log(isOpen);
+    };
+    const handleAddContactSuccessful = (isAdded, message) => {
+        // setIsAdded();
+        isAdded ?
+            toast.current.show({ severity: 'success', summary: 'Successful', detail: message, life: 3000 })
+            :
+            toast.current.show({ severity: 'error', summary: 'Error', detail: message, life: 3000 });
     };
 
     const fetchData = async (url, setStateKey) => {
@@ -103,13 +115,13 @@ function PatientSettingPage(props) {
 
     return (
         <Container className="PatientSettingPage">
+            <Toast ref={toast} />
             <SettingBodyLift userType={props.userType} userInfo={patientInfo} healthInfo={healthInfo} allergies={allergies} practice={practice} healthcareProviderInfo={healthcareProviderInfo} doctorid={doctorid} />
 
             <Container className="PatientSettingPage_right">
-                <EmergencyContact isOpen={isOpen} />
-
+                <EmergencyContact isOpen={isOpen} handleAddContact={handleAddContact} userid={patientInfo ? patientInfo.patientid : ''} handleAddContactSuccessful={handleAddContactSuccessful} />
                 <Container className="mid_right">
-                    <SettingBodyMid userType={props.userType} socialInfo={socialMedia ? socialMedia : facilitySocialMedia ? facilitySocialMedia : null} profissional={profissional} educational={educational} departments={departments} services={services} />
+                    <SettingBodyMid userType={props.userType} socialInfo={socialMedia ? socialMedia : facilitySocialMedia ? facilitySocialMedia : null} profissional={profissional} educational={educational} departments={departments} services={services} healthcareProviderInfo={healthcareProviderInfo} />
                     <SettingBodyRight userType={props.userType} handleAddContact={handleAddContact} emergencyContact={emergencyContacts} workHours={workHours ? workHours : ficilityWorkHours} visitHours={visitHours} />
                 </Container>
             </Container>

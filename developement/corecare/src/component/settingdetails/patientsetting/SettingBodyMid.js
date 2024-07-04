@@ -7,7 +7,7 @@ import { AiFillLinkedin } from "react-icons/ai";
 import { AiFillFacebook } from "react-icons/ai";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { updateUserInfo } from "../../../Recoil/UpdateData";
 import { loginInfo } from "../../../Recoil/Atom";
 import { Toast } from "primereact/toast";
@@ -19,9 +19,14 @@ function SettingBodyMid(props) {
     const profissional = props.profissional ? props.profissional : {};
     const educational = props.educational ? props.educational : {};
     const departments = props.departments ? props.departments : [];
+    const healthcareProviderInfo = props.healthcareProviderInfo ? props.healthcareProviderInfo : {};
     const services = props.services ? props.services : [];
+    const resetUserInfo = useResetRecoilState(updateUserInfo);
 
     const toast = useRef(null);
+    const [Password, setPassword] = useState(true);
+    const loginInfoValue = useRecoilValue(loginInfo);
+    const updateUserInfoValue = useRecoilValue(updateUserInfo);
 
     const medicalSpecializations = [
         'Anesthetics',
@@ -45,9 +50,7 @@ function SettingBodyMid(props) {
         'Sexual Health',
         'Urology'
     ]
-    const [Password, setPassword] = useState(true);
-    const loginInfoValue = useRecoilValue(loginInfo);
-    const updateUserInfoValue = useRecoilValue(updateUserInfo);
+
     const toggleEditPassword = async () => {
 
         if (updateUserInfoValue.newPassword !== updateUserInfoValue.confirmPassword) {
@@ -81,12 +84,15 @@ function SettingBodyMid(props) {
             console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Password Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated Password' });
+                resetUserInfo();
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                resetUserInfo();
             }
         } catch (error) {
             console.error(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating password' });
+            resetUserInfo();
         }
         setPassword(!Password);
     };
@@ -118,12 +124,15 @@ function SettingBodyMid(props) {
             console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Socailmedia accounts updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Socailmedia accounts updated successfully' });
+                resetUserInfo();
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                resetUserInfo();
             }
         } catch (error) {
             console.error(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating socialmedia' });
+            resetUserInfo();
         }
         setSocial(!Social);
     };
@@ -132,6 +141,7 @@ function SettingBodyMid(props) {
     const toggleEditGeneral = async () => {
         if (!profissional.doctorid) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Doctor ID is required' });
+            resetUserInfo();
             return;
         }
         const data = {
@@ -155,33 +165,141 @@ function SettingBodyMid(props) {
             console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Proffesional Info Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Proffesional Info Updated Successfully' });
+                resetUserInfo();
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                resetUserInfo();
             }
         } catch (error) {
             console.error(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating Proffisional info' });
+            resetUserInfo();
         }
         setGeneral(!General);
     };
 
     const [Educational, setEducational] = useState(true);
-    const toggleEditEducational = () => {
+    const toggleEditEducational = async () => {
+        if (!profissional.doctorid) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Doctor ID is required' });
+            resetUserInfo();
+            return;
+        }
+        const data = {
+            medschool: updateUserInfoValue.medschool,
+            internships: updateUserInfoValue.internships,
+            residencies: updateUserInfoValue.residencies,
+            fellowships: updateUserInfoValue.fellowships,
+        };
+        console.log('data:', data);
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/doctors/updateeducationalinfo/${profissional.doctorid}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Updated Educational Info Successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Updated Educational Info Successfully' });
+                resetUserInfo();
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                resetUserInfo();
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Updated Educational Info' });
+            resetUserInfo();
+        }
         setEducational(!Educational);
     };
 
-    const [Service, setService] = useState(true);
-    const toggleEditService = () => {
-        setService(!Service);
-    };
+    // const [Service, setService] = useState(true);
+    // const toggleEditService = () => {
+    //     setService(!Service);
+    // };
 
     const [Department, setDepartment] = useState(true);
-    const toggleEditDepartment = () => {
+    const toggleEditDepartment = async () => {
+        if (!healthcareProviderInfo.id) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Health Provider ID is required' });
+            resetUserInfo();
+            return;
+        }
+        if (!updateUserInfoValue.newDepartment) {
+            resetUserInfo();
+            return;
+        }
+        const data = {
+            departments: updateUserInfoValue.departments,
+            newDepartment: updateUserInfoValue.newDepartment
+        };
+        console.log('data:', data);
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/healthcareproviders/updatedepartments/${healthcareProviderInfo.id}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Departments Updated Successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Departments Updated Successfully' });
+                resetUserInfo();
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                resetUserInfo();
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Departments Updated' });
+            resetUserInfo();
+        }
         setDepartment(!Department);
     };
 
     const [Emergency, setEmergency] = useState(true);
-    const toggleEditEmergency = () => {
+    const toggleEditEmergency = async () => {
+        if (!healthcareProviderInfo.id) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Health Provider ID is required' });
+            resetUserInfo();
+            return;
+        }
+        const data = {
+            services: updateUserInfoValue.services,
+            newService: updateUserInfoValue.newService
+        };
+        console.log('data:', data);
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/healthcareproviders/updateservices/${healthcareProviderInfo.id}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("res = " + response);
+            const jsonData = await response.json();
+            console.log('message from server: ' + jsonData.message);
+            if (jsonData.message === "Services Updated Successfully") {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Services Updated Successfully' });
+                resetUserInfo();
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                resetUserInfo();
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Services Updated' });
+            resetUserInfo();
+        }
         setEmergency(!Emergency);
     };
 
@@ -264,19 +382,19 @@ function SettingBodyMid(props) {
                                 padding: '5px',
                                 backgroundColor: '#272c34',
                                 cursor: 'pointer',
-                            }} onClick={toggleEditEducational}
+                            }} onClick={() => setEducational(!Educational)}
                             ><MdModeEdit /></span>
-                            <SettingInput class_name="SettingInput" type="text" name="Medical School" label="Medical School:" placeholder="" disabled={Educational} value={educational.medschool} />
-                            <SettingInput class_name="SettingInput" type="text" name="Internships  " label="Internships  :" placeholder="" disabled={Educational} value={educational.internships} />
-                            <SettingInput class_name="SettingInput" type="text" name="Residencies " label="Residencies :" placeholder="" disabled={Educational} value={educational.residencies} />
-                            <SettingInput class_name="SettingInput" type="text" name="Fellowships " label="Fellowships :" placeholder="" disabled={Educational} value={educational.fellowships} />
+                            <SettingInput class_name="SettingInput" type="text" name="medschool" label="Medical School:" placeholder="" disabled={Educational} value={educational.medschool} />
+                            <SettingInput class_name="SettingInput" type="text" name="internships" label="Internships  :" placeholder="" disabled={Educational} value={educational.internships} />
+                            <SettingInput class_name="SettingInput" type="text" name="residencies" label="Residencies :" placeholder="" disabled={Educational} value={educational.residencies} />
+                            <SettingInput class_name="SettingInput" type="text" name="fellowships" label="Fellowships :" placeholder="" disabled={Educational} value={educational.fellowships} />
                         </SettingForm>
                     </>
                 ) : null}
 
                 {props.userType === "Laboratory" || props.userType === "Radiology" || props.userType === "Pharmacy" ? (
                     <>
-                        <SettingForm name="SettingForm_form" legend="Service Provided" btn="Add Service" show={Service} TheEvent={toggleEditService}>
+                        <SettingForm name="SettingForm_form" legend="Service Provided" btn="Add Service" show={Emergency} TheEvent={toggleEditEmergency}>
                             <span style={{
                                 color: 'white',
                                 position: 'absolute', right: '40px', top: '-15px',
@@ -285,9 +403,14 @@ function SettingBodyMid(props) {
                                 padding: '5px',
                                 backgroundColor: '#272c34',
                                 cursor: 'pointer',
-                            }} onClick={toggleEditService}
+                            }} onClick={() => setEmergency(!Emergency)}
                             ><MdModeEdit /></span>
-                            <SettingInput class_name="SettingInput" type="text" name="Service Name" label="Service Name:" placeholder="" disabled={Service} />
+                            {
+                                services && services.map((service, index) => (
+                                    <SettingInput key={index} class_name="SettingInput" type="text" name="services" label={`Service ${index + 1}:`} placeholder="" disabled={Emergency} value={service.name} id={service.id} />
+                                ))
+                            }
+                            <SettingInput class_name="SettingInput" type="text" name="newService" label="New Service:" placeholder="New Service Name...." disabled={Emergency} />
                         </SettingForm>
                     </>
                 ) : null}
@@ -303,15 +426,14 @@ function SettingBodyMid(props) {
                                 padding: '5px',
                                 backgroundColor: '#272c34',
                                 cursor: 'pointer',
-                            }} onClick={toggleEditDepartment}
+                            }} onClick={() => setDepartment(!Department)}
                             ><MdModeEdit /></span>
                             {
                                 departments && departments.map((department, index) => (
-
-                                    <SettingInput key={index} class_name="SettingInput" type="text" name="Department" label={`Department ${index + 1}:`} placeholder="" disabled={Department} value={department.name} />
+                                    <SettingInput key={index} class_name="SettingInput" type="text" name="departments" label={`Department ${index + 1}:`} placeholder="" disabled={Department} value={department.name} id={department.id} />
                                 ))
                             }
-                            <SettingInput class_name="SettingInput" type="text" name="Department" label="New Department" placeholder="" disabled={Department} />
+                            <SettingInput class_name="SettingInput" type="text" name="newDepartment" label="New Department" placeholder="New Department Name..." disabled={Department} />
                         </SettingForm>
 
                         <SettingForm name="SettingForm_form" legend="Emergency Services" btn="Add Services" show={Emergency} TheEvent={toggleEditEmergency}>
@@ -323,14 +445,14 @@ function SettingBodyMid(props) {
                                 padding: '5px',
                                 backgroundColor: '#272c34',
                                 cursor: 'pointer',
-                            }} onClick={toggleEditEmergency}
+                            }} onClick={() => setEmergency(!Emergency)}
                             ><MdModeEdit /></span>
                             {
                                 services && services.map((service, index) => (
-                                    <SettingInput key={index} class_name="SettingInput" type="text" name="Emergency Services" label={`Service ${index + 1}:`} placeholder="" disabled={Emergency} value={service.name} />
+                                    <SettingInput key={index} class_name="SettingInput" type="text" name="services" label={`Service ${index + 1}:`} placeholder="" disabled={Emergency} value={service.name} id={service.id} />
                                 ))
                             }
-                            <SettingInput class_name="SettingInput" type="text" name="Emergency Services" label="New Service:" placeholder="" disabled={Emergency} />
+                            <SettingInput class_name="SettingInput" type="text" name="newService" label="New Service:" placeholder="New Service Name..." disabled={Emergency} />
                         </SettingForm>
                     </>
                 ) : null}
