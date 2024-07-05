@@ -606,9 +606,9 @@ export function AddAccountForm(props) {
         event.preventDefault();
     }
     return (
-        <form style={{ marginTop: '20px' }}>
+        <form onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
             {props.children}
-            <Button label="Submit" icon="pi pi-check-circle" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 self-center" onClick={handleSubmit} />
+            <Button type="submit" label={props.label} icon="pi pi-check-circle" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 self-center"  />
         </form>
     );
 }
@@ -627,11 +627,21 @@ export function AddAccountInput(props) {
         color: '#fff'
     }
 
+    const [value, setValue] = useState(props.value || '');
     return (
         <>
             <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
                 <label style={lab}>{props.label}</label>
-                <input style={inp} type={props.type} value={props.value} disabled={props.disabled} />
+                <input style={inp}
+                    type={props.type}
+                    placeholder={props.placeholder}
+                    onChange={(e)=>setValue(e.target.value)}
+                    name={props.name}
+                    disabled={props.disabled}
+                    autoFocus={props.autoFocus}
+                    required={props.required}
+                    value={value}
+                />
             </div>
         </>
     );
@@ -659,7 +669,7 @@ export function AddAccountSelect(props) {
     return (
         <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
             <label style={lab}>{props.label}</label>
-            <select style={inp} placeholder="" name={props.name} disabled={props.disabled}>
+            <select required={props.required} style={inp} placeholder="" name={props.name} disabled={props.disabled}>
                 <option disabled selected hidden>{hidtext}</option>
                 {listItems}
             </select>
@@ -675,7 +685,7 @@ export function AddAccountCountry(props) {
     return (
         <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
             <label style={lab}>{props.label}</label>
-            <AddCountry value={props.value} />
+            <AddCountry required={props.required} value={props.value} />
         </div>
     );
 };
@@ -691,15 +701,20 @@ export function AddAccountCheckbox(props) {
             <label style={lab}>{props.label}</label>
 
             <label style={lab}>{props.ch1}
-                <input type='checkbox' value={props.value} name={props.name} />
+                <input type='checkbox' value={props.value} name={props.name} 
+                onChange={props.onChange1}
+                checked={props.checked1}/>
             </label>
 
             <label style={lab}>{props.ch2}
-                <input type='checkbox' value={props.value} name={props.name} />
+                <input type='checkbox' value={props.value} name={props.name} 
+                onChange={props.onChange2}
+                checked={props.checked2}/>
             </label>
         </div>
     );
 };
+
 export function AddAccountPassport(props) {
 
     const inp = {
@@ -762,4 +777,112 @@ export function AddAccountPassport(props) {
         </div>
     );
 
+};
+
+export function AddAccountSpecialization(props) {
+    const lab = {
+        color: '#fff',
+        fontWeight: '700',
+    }
+    const inp = {
+        width: 'calc(100% - 50%)',
+        borderBottom: '1px solid #3f4652',
+        outline: 'none',
+        fontWeight: '500',
+        backgroundColor: '#181a1f',
+        color: '#fff'
+    }
+    const [selectedValue, setSelectedValue] = useState();
+
+    const handleChange = (event) => {
+        setSelectedValue(event.target.value);
+        console.log(event.target.value)
+    };
+    const options = props.optionsList.map((option, index) => {
+        return (
+            <option key={index} value={option}>{option}</option>
+        );
+    });
+    return (
+        <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+            <label style={lab} >{props.label}</label>
+            <select
+                placeholder={props.placeholder}
+                value={selectedValue}
+                onChange={handleChange}
+                disabled={props.disabled}
+                style={inp}
+            >
+                <option disabled selected hidden value="" style={{ textAlign: 'left' }}>{props.value}</option>
+                {options}
+            </select>
+        </div>
+    );
+};
+
+export function AddAccountMedicalDegree(props) {
+    const lab = {
+        color: '#fff',
+        fontWeight: '700',
+    }
+    const inp = {
+        width: 'calc(100% - 50%)',
+        borderBottom: '1px solid #3f4652',
+        outline: 'none',
+        fontWeight: '500',
+        backgroundColor: '#181a1f',
+        color: '#fff'
+    }
+    const items = {
+        "General Medical Practice Degrees":
+            [
+                "Doctor of Medicine(MD)",
+                "Doctor of Osteopathic Medicine(DO)",
+                "Bachelor of Medicine, Bachelor of Surgery(MBBS or MBChB)"
+            ],
+        "Specialized Medical Practice Degrees":
+            [
+                "Doctor of Dental Surgery (DDS)",
+                "Doctor of Dental Medicine (DMD)",
+                "Doctor of Podiatric Medicine (DPM)",
+                "Doctor of Optometry (OD)",
+                "Doctor of Pharmacy (PharmD)",
+                "Doctor of Chiropractic (DC)",
+                "Doctor of Veterinary Medicine (DVM)"
+            ]
+    };
+
+    const selectItems = Object.keys(items).map((optgroup) => {
+        return (
+            <optgroup key={optgroup} label={optgroup}>
+                {items[optgroup].map((item) => {
+                    return (
+                        <option key={item} value={item}>{item}</option>
+                    );
+                }
+                )
+                }
+            </optgroup>
+        );
+    }
+    );
+
+    const [selectedValue, setSelectedValue] = useState();
+
+    const handleChange = (event) => {
+        setSelectedValue(event.target.value);
+        console.log(event.target.value)
+    };
+
+    return (
+        <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+            <label style={lab}>{props.label}</label>
+            <select id="dino-select" value={selectedValue} onChange={handleChange} disabled={props.disabled} style={inp}>
+                <option disabled selected hidden>{props.value}</option>
+                {selectItems}
+            </select>
+        </div>
+
+
+    );
 };

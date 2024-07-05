@@ -8,14 +8,15 @@ function DoctorPage() {
     const location = useLocation();
     const { accessKey } = location.state || {};
     console.log(accessKey);
+    const userType ="Pharmacy";
     return (
 
         <div className="doctor bg-[#181a1f] flex flex-col text-white overflow-hidden">
             <DoctorHeader />
-            <DoctorBody />
+            <DoctorBody userType={userType} />
             <FormlessFooter />
         </div>
-    )
+    );
 }
 
 export default DoctorPage

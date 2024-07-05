@@ -8,9 +8,13 @@ import { useState } from "react";
 import Diagnosis from "./Diagnosis";
 import Radiology from "./Radiology";
 import LabTest from "./LabTest";
+import UpdateHealthInfo from "../healthproviderdetails/UpdateHealthInfo";
+import FileLaboratoryTable from "../healthproviderdetails/FileLaboratoryTable";
+import FileRadiologyTable from "../healthproviderdetails/FileRadiologyTable";
+import FilePharmacyTable from "../healthproviderdetails/FilePharmacyTable";
 
-function DoctorBodyRight() {
-    const [active, setActive] = useState('records')
+function DoctorBodyRight(props) {
+    const [active, setActive] = useState(props.useType === "Doctor" ? 'records' : 'laboratory')
 
     const handleRecordslClick = () => {
         setActive('records');
@@ -31,6 +35,23 @@ function DoctorBodyRight() {
     const handlePrescriptionClick = () => {
         setActive('prescription');
     }
+    // ================================
+    const handleLaboratoryClick = () => {
+        setActive('laboratory');
+    }
+    // ================================
+    const handleRadiologyClick = () => {
+        setActive('radiology');
+    }
+    // ================================
+    const handlePharmacyClick = () => {
+        setActive('pharmacy');
+    }
+
+    const handleUpdateClick = () => {
+        setActive('update');
+    }
+    // ================================
 
     const allRecords = {
         firstRow: {
@@ -130,22 +151,32 @@ function DoctorBodyRight() {
 
     const Result = Object.keys(allRecords).length;
     const RecordsResult = "Showing " + Result + " Records Result";
+
     return (
         <div className="flex flex-col w-full">
+
             <MediCondiContainer />
+
             <DoctorNavContainer
+                userType={props.userType}
                 active={active}
                 handleRecordslClick={handleRecordslClick}
                 handleDiagnosisClick={handleDiagnosisClick}
                 handleLabClick={handleLabClick}
                 handleXrayClick={handleXrayClick}
                 handlePrescriptionClick={handlePrescriptionClick}
+                handleLaboratoryClick={handleLaboratoryClick}
+                handleRadiologyClick={handleRadiologyClick}
+                handlePharmacyClick={handlePharmacyClick}
+                handleUpdateClick={handleUpdateClick}
             />
-            {active === 'records' ? <SharedRecords
-                RecordsResult={RecordsResult}
-                icons={icons}
-                allRecords={allRecords}
-            />
+            
+            {active === 'records' ?
+                <SharedRecords
+                    RecordsResult={RecordsResult}
+                    icons={icons}
+                    allRecords={allRecords}
+                />
                 : active === 'diagnosis' ? <Diagnosis
                     handleLabClick={handleLabClick}
                     handleXrayClick={handleXrayClick}
@@ -153,9 +184,24 @@ function DoctorBodyRight() {
                 />
                     : active === 'lab' ? <LabTest handleDiagnosisClick={handleDiagnosisClick} />
                         : active === 'xray' ? <Radiology handleDiagnosisClick={handleDiagnosisClick} />
-                            : <Prescription
-                                handleDiagnosisClick={handleDiagnosisClick}
-                            />
+                            : active === 'prescription' ? <Prescription handleDiagnosisClick={handleDiagnosisClick} />
+                                : active === 'laboratory' ? <FileLaboratoryTable
+                                    RecordsResult={RecordsResult}
+                                    icons={icons}
+                                    allRecords={allRecords}
+                                />
+                                    : active === 'radiology' ? <FileRadiologyTable
+                                        RecordsResult={RecordsResult}
+                                        icons={icons}
+                                        allRecords={allRecords}
+                                    />
+                                        : active === 'pharmacy' ? <FilePharmacyTable
+                                            RecordsResult={RecordsResult}
+                                            icons={icons}
+                                            allRecords={allRecords}
+                                        />
+                                    : active === 'update' ? <UpdateHealthInfo handleUpdateClick={handleUpdateClick} />
+                                        : null
             }
         </div>
     );

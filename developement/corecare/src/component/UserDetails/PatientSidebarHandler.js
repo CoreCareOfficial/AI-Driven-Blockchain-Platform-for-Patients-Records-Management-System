@@ -19,6 +19,8 @@ import { FaFilePrescription } from "react-icons/fa6";
 import { LuFolderPlus } from "react-icons/lu";
 import { FaHospitalUser } from "react-icons/fa6";
 import SideBar from "./SideBar";
+import { HiOutlineUserAdd } from "react-icons/hi";
+
 
 function PatientSidebarHandler(props) {
     const [activeButton, setActiveButton] = useState("Profile");
@@ -112,30 +114,37 @@ function PatientSidebarHandler(props) {
                         <SideBtn
                             name="sideBtn"
                             id={activeButton === "Add Patient" ? "active" : ""}
-                            icon={<FaFolderOpen />}
+                            icon={<HiOutlineUserAdd />}
                             text="Add Patient"
                             onClick={() => handleButtonClick("Add Patient")}
                         />
                         <SideBtn
                             name="sideBtn"
                             id={activeButton === "Add Doctor" ? "active" : ""}
-                            icon={<MdOutlineReceiptLong />}
+                            icon={<HiOutlineUserAdd />}
                             text="Add Doctor"
                             onClick={() => handleButtonClick("Add Doctor")}
                         />
                         <SideBtn
                             name="sideBtn"
                             id={activeButton === "Add Laboratory" ? "active" : ""}
-                            icon={<FaRegFileLines />}
+                            icon={<HiOutlineUserAdd />}
                             text="Add Laboratory"
                             onClick={() => handleButtonClick("Add Laboratory")}
                         />
                         <SideBtn
                             name="sideBtn"
                             id={activeButton === "Add Radiology" ? "active" : ""}
-                            icon={<FaXRay />}
+                            icon={<HiOutlineUserAdd />}
                             text="Add Radiology"
                             onClick={() => handleButtonClick("Add Radiology")}
+                        />
+                        <SideBtn
+                            name="sideBtn"
+                            id={activeButton === "Add Pharmacy" ? "active" : ""}
+                            icon={<HiOutlineUserAdd />}
+                            text="Add Pharmacy"
+                            onClick={() => handleButtonClick("Add Pharmacy")}
                         />
                     </DropDownButton>
                     ) : null}
