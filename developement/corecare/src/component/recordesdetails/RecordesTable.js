@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MdMoreHoriz } from "react-icons/md";
 import { IoStarSharp } from "react-icons/io5";
 import H1 from '../H1';
@@ -9,182 +9,188 @@ import { Column } from 'primereact/column';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputText } from 'primereact/inputtext';
+import { Toast } from 'primereact/toast';
+import { loginInfo } from '../../Recoil/Atom';
+import { useRecoilValue } from 'recoil';
 // ========================================
 
 function RecordesTable(props) {
+    const toast = useRef(null);
+    const [records, setRecords] = useState([]);
 
-    // const [idSelected, setIdSelected] = useState();
-    // const [itemTop, setItemTop] = useState(270);
+    const [idSelected, setIdSelected] = useState();
+    const [itemTop, setItemTop] = useState(270);
     const [isOpen, setIsOpen] = useState(false);
-    // const itemRight = 35;
+    const itemRight = 35;
 
     const handleMenuClick = ((e) => {
-        // setIdSelected(e.target.id);
-        // const newTop = (Number(e.target.id) * 50) + 220;
-        // setItemTop(newTop);
+        setIdSelected(e.target.id);
+        const newTop = (Number(e.target.id) * 50) + 220;
+        setItemTop(newTop);
         setIsOpen(!isOpen);
         console.log(isOpen);
     });
     // =================================
-    const menu = <span style={{ cursor: 'pointer', fontSize:'1.5em' }}  onClick={handleMenuClick}
-    ><MdMoreHoriz/></span>
-    
+    const menu = <span style={{ cursor: 'pointer', fontSize: '1.5em' }} onClick={handleMenuClick}
+    ><MdMoreHoriz /></span>
+
     // *********************************
-    const stars = <span style={{fontSize:'1.3em' }}>
-    <IoStarSharp /></span>
+    const stars = <span style={{ fontSize: '1.3em' }}>
+        <IoStarSharp /></span>
 
     const b = true;
-    const nodes =[
+    const nodes = [
         {
-            
+
             key: '0',
-            data: { name: 'Record 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Record',date: "1/1/2024" },
+            data: { name: 'Record 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Record', date: "1/1/2024" },
             children: [
                 {
                     key: '0-0',
                     data: {
-                        name: 'Diagnosis 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu,date: "1/1/2024", stars: b && stars 
+                        name: 'Diagnosis 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu, date: "1/1/2024", stars: b && stars
                     },
                 },
                 {
                     key: '0-1',
                     data: {
-                        name: 'Note 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu,date: "1/1/2024"
+                        name: 'Note 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-2',
                     data: {
-                        name: 'Prescription',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu,date: "1/1/2024"
+                        name: 'Prescription', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-3',
                     data: {
-                        name: 'Laboratory Result',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu,date: "1/1/2024"
+                        name: 'Laboratory Result', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-4',
                     data: {
-                        name: 'Radiology',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu,date: "1/1/2024"
+                        name: 'Radiology', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu, date: "1/1/2024"
                     },
                 },
-                
+
             ]
         },
         {
             key: '1',
-            data: { name: 'Documents', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Folder',date: "1/1/2024" },
+            data: { name: 'Documents', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Folder', date: "1/1/2024" },
             children: [
                 {
                     key: '0-0',
                     data: {
-                        name: 'Diagnosis 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu,date: "1/1/2024", stars: b && stars 
+                        name: 'Diagnosis 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu, date: "1/1/2024", stars: b && stars
                     },
                 },
                 {
                     key: '0-1',
                     data: {
-                        name: 'Note 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu,date: "1/1/2024"
+                        name: 'Note 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-2',
                     data: {
-                        name: 'Prescription',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu,date: "1/1/2024"
+                        name: 'Prescription', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-3',
                     data: {
-                        name: 'Laboratory Result',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu,date: "1/1/2024"
+                        name: 'Laboratory Result', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-4',
                     data: {
-                        name: 'Radiology',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Radiology', menu: menu,date: "1/1/2024"
+                        name: 'Radiology', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Radiology', menu: menu, date: "1/1/2024"
                     },
                 },
-                
+
             ]
         },
         {
             key: '2',
-            data: { name: 'Documents', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Folder',date: "1/1/2024" },
+            data: { name: 'Documents', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Folder', date: "1/1/2024" },
             children: [
                 {
                     key: '0-0',
                     data: {
-                        name: 'Dignosis 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu,date: "1/1/2024", stars: b && stars 
+                        name: 'Dignosis 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu, date: "1/1/2024", stars: b && stars
                     },
                 },
                 {
                     key: '0-1',
                     data: {
-                        name: 'Note 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu,date: "1/1/2024"
+                        name: 'Note 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-2',
                     data: {
-                        name: 'Prescription',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu,date: "1/1/2024"
+                        name: 'Prescription', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-3',
                     data: {
-                        name: 'Laboratory Result',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu,date: "1/1/2024"
+                        name: 'Laboratory Result', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-4',
                     data: {
-                        name: 'Radiology',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Radiology', menu: menu,date: "1/1/2024"
+                        name: 'Radiology', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Radiology', menu: menu, date: "1/1/2024"
                     },
                 },
-                
+
             ]
         },
         {
             key: '3',
-            data: { name: 'Documents', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Folder',date: "1/1/2024" },
+            data: { name: 'Documents', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Folder', date: "1/1/2024" },
             children: [
                 {
                     key: '0-0',
                     data: {
-                        name: 'Dignosis 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu,date: "1/1/2024", stars: b && stars 
+                        name: 'Dignosis 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu, date: "1/1/2024", stars: b && stars
                     },
                 },
                 {
                     key: '0-1',
                     data: {
-                        name: 'Note 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu,date: "1/1/2024"
+                        name: 'Note 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-2',
                     data: {
-                        name: 'Prescription',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu,date: "1/1/2024"
+                        name: 'Prescription', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-3',
                     data: {
-                        name: 'Laboratory Result',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu,date: "1/1/2024"
+                        name: 'Laboratory Result', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu, date: "1/1/2024"
                     },
                 },
                 {
                     key: '0-4',
                     data: {
-                        name: 'Radiology',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Radiology', menu: menu,date: "1/1/2024"
+                        name: 'Radiology', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Radiology', menu: menu, date: "1/1/2024"
                     },
                 },
-                
+
             ]
         },
     ];
+
 
     const getItemsList = (type, nodes) => {
         console.log(type);
@@ -198,8 +204,8 @@ function RecordesTable(props) {
                 }
             });
         });
-        console.log("hhhh"+itemsList.length);
-        console.log("hhhh"+itemsList);
+        console.log("hhhh" + itemsList.length);
+        console.log("hhhh" + itemsList);
         return itemsList;
     };
 
@@ -238,15 +244,50 @@ function RecordesTable(props) {
     };
     let header = getHeader();
     // **********************************
+    const loginInfoValue = useRecoilValue(loginInfo);
+    const allRecordsFromDatabase = async () => {
+        if (!loginInfoValue.patientId) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please Login First' });
+            return <p>Error In Loading Your Info!!</p>
+        }
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/records/${loginInfoValue.patientId}`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Records Not found' });
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const jsonData = await response.json();
+            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Download Records Successfully' });
+            console.log("jsonData = " + jsonData);
+            console.log(jsonData);
+            setRecords(jsonData);
+            console.log("res = " + response);
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error jsonData' });
+        }
+    };
+
+    useEffect(() => {
+        // if (!records)
+        allRecordsFromDatabase();
+    }, []);
+
 
     return (
         <>
+            <Toast ref={toast} />
             <div className="Recordes_result">
                 <H1 name="result_title" title={props.tableTitle} />
                 <P name="result_text" title={`Showing ${handleRecordsResult()} Records Results`} />
             </div>
 
-            {/* <table className="records_table">
+            <table className="records_table">
 
                 <thead className="records_thead">
                     <tr className="thead_tr">
@@ -261,6 +302,8 @@ function RecordesTable(props) {
                 </thead>
 
                 <tbody>
+
+
 
                     {Object.keys(props.allRecords).map((record) => (
                         props.tableTitle !== "All Records" ?
@@ -292,16 +335,16 @@ function RecordesTable(props) {
 
                 </tbody>
                 {isOpen && <RecordesMenu id={idSelected} top={itemTop} right={itemRight} open={true} handleMenuClick={handleMenuClick} />}
-            </table> */}
+            </table>
 
-            <TreeTable value={nodes}  filterMode={filterMode} tableStyle={{ minWidth: '100%' }}>
+            {/* <TreeTable value={records} filterMode={filterMode} tableStyle={{ minWidth: '100%' }}>
                 <Column field="stars"></Column>
                 <Column field="name" header="Name" expander filter filterPlaceholder="Filter by name"></Column>
                 <Column field="type" header="Type" filter filterPlaceholder="Filter by type"></Column>
                 <Column field="Name Of Health Provider" header="Health Provider" filter filterPlaceholder="Filter by Provider"></Column>
-                <Column field= "date" header="Date" filter filterPlaceholder="Filter by Date"></Column>
+                <Column field="date" header="Date" filter filterPlaceholder="Filter by Date"></Column>
                 <Column field="menu"></Column>
-            </TreeTable>
+            </TreeTable> */}
             {/* {isOpen&&<RecordesMenu id={idSelected} top={itemTop} right={itemRight} open={true} handleMenuClick={handleMenuClick} />} */}
         </>
     );

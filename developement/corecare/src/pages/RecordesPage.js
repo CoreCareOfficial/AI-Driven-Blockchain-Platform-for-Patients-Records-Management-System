@@ -1,422 +1,98 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ProfileHeaderIcon from '../component/UserDetails/ProfileHeaderIcon';
 import RecordesSearch from "../component/recordesdetails/RecordesSearch";
-import RecordesTable from '../component/recordesdetails/RecordesTable';
 import ahmed from '../assets/ahmed.jpg';
 import { MdOutlineReceiptLong } from "react-icons/md";
 import { FaRegFileLines } from "react-icons/fa6";
 import { FaXRay } from "react-icons/fa6";
 import { FaFilePrescription } from "react-icons/fa";
 import { FaFileLines } from "react-icons/fa6";
-import { MdMoreHoriz } from "react-icons/md";
-import { IoStarSharp } from "react-icons/io5";
+import AllRecords from '../component/recordesdetails/AllRecords';
+import { useRecoilValue } from 'recoil';
+import { loginInfo } from '../Recoil/Atom';
+import { Toast } from 'primereact/toast';
+import { LuFolderPlus } from 'react-icons/lu';
 
 function RecordesPage(props) {
-
+    const toast = useRef(null);
+    const [records, setRecords] = useState([]);
+    const [reports, setReports] = useState([]);
+    const [labTests, setLabTests] = useState([]);
+    const [radiologies, setRadiologies] = useState([]);
+    const [prescriptons, setPrescriptons] = useState([]);
     const [view, setView] = useState(true);
-    const handleViewClick = () => {
-        setView(!view);
-    };
-    //========================================
+    const handleViewClick = () => setView(!view);
+
     const icons = {
         "Report": <MdOutlineReceiptLong />,
         "Summary": <FaRegFileLines />,
-        "Ray": <FaXRay />,
+        "Radiology Result": <FaXRay />,
         "Prescription": <FaFilePrescription />,
-        "Lab test": <FaFileLines />
+        "Lab Result": <FaFileLines />,
+        "Additional": <LuFolderPlus />
     };
 
-    // const allRecords = {
-    //     firstRow: {
-    //         "id": 1,
-    //         "fav": true,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Report",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     secondRow: {
-    //         "id": 2,
-    //         "fav": true,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     thirdRow: {
-    //         "id": 3,
-    //         "Name Of Record": "oooooooooooooooooooooooooooo",
-    //         "Type": "Summary",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     fourthRow: {
-    //         "id": 4,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     fifthRow: {
-    //         "id": 5,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Lab test",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     sixRow: {
-    //         "id": 6,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Prescription",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     sevenRow: {
-    //         "id": 7,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     eightRow: {
-    //         "id": 8,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     nineRow: {
-    //         "id": 9,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     tenRow: {
-    //         "id": 10,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     elevRow: {
-    //         "id": 11,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     twelRow: {
-    //         "id": 12,
-    //         "Name Of Record": "Report-12 of patient's heart.form",
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    // }
+    const loginInfoValue = useRecoilValue(loginInfo);
+    const hasEffectRun = useRef(false);
 
-    // =================================
-    // const allRecords = {
-    //     firstRow: {
-    //         "id": 1,
-    //         "fav": true,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Report",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     secondRow: {
-    //         "id": 2,
-    //         "fav": true,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     thirdRow: {
-    //         "id": 3,
-    //         "Record": {
-    //             "Name Of Record": "oooooooooooooooooooooooooooo"
-    //         },
-    //         "Type": "Summary",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     fourthRow: {
-    //         "id": 4,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     fifthRow: {
-    //         "id": 5,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Lab test",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     sixRow: {
-    //         "id": 6,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Prescription",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     sevenRow: {
-    //         "id": 7,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     eightRow: {
-    //         "id": 8,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     nineRow: {
-    //         "id": 9,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     tenRow: {
-    //         "id": 10,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     elevRow: {
-    //         "id": 11,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    //     twelRow: {
-    //         "id": 12,
-    //         "Record": {
-    //             "Name Of Record": "Report-12 of patient's heart.form"
-    //         },
-    //         "Type": "Ray",
-    //         "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-    //         "Date Of Upload": "22/5/2024"
-    //     },
-    // };
-    // *********************************************************************
-    
-    // const menu = <span style={{ cursor: 'pointer', fontSize:'1.5em' }}
-    // ><MdMoreHoriz/></span>
-    
-    // // *********************************************************************
-    // const stars = <span style={{fontSize:'1.3em' }}>
-    // <IoStarSharp /></span>
+    useEffect(() => {
+        const allRecordsFromDatabase = async () => {
+            if (!loginInfoValue.patientId) {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please Login First' });
+                return <p>Error In Loading Your Info!!</p>;
+            }
+            try {
+                const response = await fetch(`http://192.168.137.1:5000/records/${loginInfoValue.patientId}`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                    toast.current.show({ severity: 'error', summary: 'Error', detail: 'Records Not found' });
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const jsonData = await response.json();
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Download Records Successfully' });
+                setRecords(jsonData);
+            } catch (error) {
+                console.error(error.message);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error jsonData' });
+            }
+        };
+        if (!hasEffectRun.current) {
+            allRecordsFromDatabase();
+            hasEffectRun.current = true;
+        }
+    }, [props.title, loginInfoValue.patientId]);
 
-    // const b = true;
-    // const [nodes, setNodes] = useState([
-    //     {
-            
-    //         key: '0',
-    //         data: { name: 'Record 1', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Record',date: "1/1/2024" },
-    //         children: [
-    //             {
-    //                 key: '0-0',
-    //                 data: {
-    //                     name: 'Diagnosis 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu,date: "1/1/2024", stars: b && stars 
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-1',
-    //                 data: {
-    //                     name: 'Note 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-2',
-    //                 data: {
-    //                     name: 'Prescription',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-3',
-    //                 data: {
-    //                     name: 'Laboratory Result',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-4',
-    //                 data: {
-    //                     name: 'Radiology',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Radiology', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-                
-    //         ]
-    //     },
-    //     {
-    //         key: '1',
-    //         data: { name: 'Documents', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Folder',date: "1/1/2024" },
-    //         children: [
-    //             {
-    //                 key: '0-0',
-    //                 data: {
-    //                     name: 'Diagnosis 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu,date: "1/1/2024", stars: b && stars 
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-1',
-    //                 data: {
-    //                     name: 'Note 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-2',
-    //                 data: {
-    //                     name: 'Prescription',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-3',
-    //                 data: {
-    //                     name: 'Laboratory Result',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-4',
-    //                 data: {
-    //                     name: 'Radiology',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Radiology', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-                
-    //         ]
-    //     },
-    //     {
-    //         key: '2',
-    //         data: { name: 'Documents', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Folder',date: "1/1/2024" },
-    //         children: [
-    //             {
-    //                 key: '0-0',
-    //                 data: {
-    //                     name: 'Dignosis 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu,date: "1/1/2024", stars: b && stars 
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-1',
-    //                 data: {
-    //                     name: 'Note 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-2',
-    //                 data: {
-    //                     name: 'Prescription',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-3',
-    //                 data: {
-    //                     name: 'Laboratory Result',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-4',
-    //                 data: {
-    //                     name: 'Radiology',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Radiology', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-                
-    //         ]
-    //     },
-    //     {
-    //         key: '3',
-    //         data: { name: 'Documents', "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Folder',date: "1/1/2024" },
-    //         children: [
-    //             {
-    //                 key: '0-0',
-    //                 data: {
-    //                     name: 'Dignosis 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Diagnosis', menu: menu,date: "1/1/2024", stars: b && stars 
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-1',
-    //                 data: {
-    //                     name: 'Note 1',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Note', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-2',
-    //                 data: {
-    //                     name: 'Prescription',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Prescription', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-3',
-    //                 data: {
-    //                     name: 'Laboratory Result',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Laboratory', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-    //             {
-    //                 key: '0-4',
-    //                 data: {
-    //                     name: 'Radiology',"Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed", type: 'Radiology', menu: menu,date: "1/1/2024"
-    //                 },
-    //             },
-                
-    //         ]
-    //     },
-    // ]);
+    useEffect(() => {
+        const filterByType = (type) => {
+            let filteredRecords = [];
+            records.forEach(record => {
+                record.children.forEach(child => {
+                    if (child.data.type === type) {
+                        filteredRecords.push(child);
+                    }
+                });
+            });
+            return filteredRecords;
+        };
 
-    // const getItemsList = (type, nodes) => {
-    //     console.log(type);
-    //     let itemsList = [];
-    //     nodes.forEach(node => {
-    //         node.children.forEach(child => {
-    //             console.log(child.data.type);
-    //             if (child.data.type === type) {
-    //                 itemsList.push(child.data);
-    //                 console.log(child.data.type);
-    //             }
-    //         });
-    //     });
-    //     console.log("hhhh"+itemsList.length);
-    //     return itemsList;
-    // };
+        setLabTests(filterByType("Lab Result"));
+        setReports(filterByType("Report"));
+        setRadiologies(filterByType("Radiology Result"));
+        setPrescriptons(filterByType("Prescription"));
+    }, [props.title, records]);
 
-    // const recordsList = 
-    //     props.title === 'All Records' ? nodes : 
-    //     getItemsList(props.title, nodes);
-    
     return (
         <>
+            <Toast ref={toast} />
             <div style={{ width: '100%', height: '100px', padding: '10px' }}>
                 <ProfileHeaderIcon image={ahmed} />
             </div>
             <RecordesSearch view={view} handleViewClick={handleViewClick} />
-            <RecordesTable icons={icons}  tableTitle={props.title}/>
+            <AllRecords icons={icons} tableTitle={props.title} records={records} prescriptons={prescriptons} radiologies={radiologies} labTests={labTests} reports={reports} />
         </>
     );
 }

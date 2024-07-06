@@ -54,7 +54,8 @@ export const loginInfo = atom({
         login: '',
         userName: '',
         email: '',
-        password: ''
+        password: '',
+        patientId: '',
     }
 })
 

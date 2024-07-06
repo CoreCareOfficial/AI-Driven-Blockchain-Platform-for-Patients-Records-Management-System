@@ -1,72 +1,77 @@
-.continerP{
-    
+.continerP {
+
     display: flex;
-    justify-content:space-around;
+    justify-content: space-around;
     align-items: center;
     flex-direction: row;
     gap: 20px;
     color: aliceblue;
-    background-color:#272C34    ;
-    height:90px;
+    background-color: #272C34;
+    height: 90px;
     width: 700px;
-    border-radius:20px;
-    margin-top:3%;
+    border-radius: 20px;
+    margin-top: 3%;
 
 }
 
-.Porinfo{
-    
+.Porinfo {
+
     width: 250px;
     display: flex;
-    justify-content:space-around;
+    justify-content: space-around;
     align-items: center;
     flex-direction: row;
-    
+
 }
 
-.Porinfo .image7{
+.Porinfo .image7 {
     width: 70px;
     height: 70px;
-    border-radius:50px ;
-    
-}
-.Porinfo .photo{
-    border-radius:50px ;
-    
-    background-color: #d7dbe2;
-    
+    border-radius: 50px;
 
-} 
-h6{
-    font-size:xx-large
 }
-.Porinfo .ProName{
+
+.Porinfo .photo {
+    border-radius: 50px;
+
+    background-color: #d7dbe2;
+
+
+}
+
+.Porinfo .ProName {
     display: flex;
     flex-direction: column;
-    align-items:center;
+    align-items: center;
     /* margin-left: 60px; */
 
 }
-.Hethinfo{
-    
+
+.Hethinfo {
+
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
     flex-direction: row;
     gap: 10px;
     overflow: hidden;
     padding-right: 20px;
 }
-.Hethinf2, .Hethinf3, .Hethinf4{
+
+.Hethinf2,
+.Hethinf3,
+.Hethinf4 {
     text-align: center;
     padding-left: 20px;
-    border-left:1px solid white ;
+    border-left: 1px solid white;
 }
-.Hethinf1{
+
+.Hethinf1 {
     text-align: center;
 
 }
-.line{
-   
-    border-bottom:1px solid white ;
+
+.line {
+
+    border-bottom: 1px solid white;
 }

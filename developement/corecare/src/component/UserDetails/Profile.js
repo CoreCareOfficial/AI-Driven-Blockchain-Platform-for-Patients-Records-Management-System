@@ -2,7 +2,7 @@ import "../../css/UserPageStyle/profile.css"
 import defaultPic from '../../assets/user_signup.png'
 import ProfileHeader from "./ProfileHeader";
 import ProfileBody from "./ProfileBody";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 import { useEffect, useRef, useState } from "react";
 import ProfileSkeleton from "../skeletons/ProfileSkeleton";
@@ -10,6 +10,7 @@ import ProfileSkeleton from "../skeletons/ProfileSkeleton";
 
 function Profile(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
+    const setLoginInfo = useSetRecoilState(loginInfo);
     const [userInfo, setUserInfo] = useState(null);
     const [error, setError] = useState(null);
     const hasEffectRun = useRef(false);
@@ -51,6 +52,15 @@ function Profile(props) {
             }, 350);
         }
     }, [userType, loginInfoValue.login]);
+
+    useEffect(() => {
+        if ((props.userType === "Patient" || props.userType === "Doctor") && userInfo) {
+            setLoginInfo((perviousLoginInfoValue) => ({
+                ...perviousLoginInfoValue,
+                patientId: userInfo.patientid,
+            }));
+        }
+    }, [props.userType, userInfo, setLoginInfo]);
 
     console.log('userInfo:', userInfo);
     console.log(userInfo);

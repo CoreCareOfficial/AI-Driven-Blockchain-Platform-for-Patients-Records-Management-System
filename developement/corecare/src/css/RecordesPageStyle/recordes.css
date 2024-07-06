@@ -1,138 +1,165 @@
 :root {
     --mainBlue-color: #3146ff;
     --altBlue-color: #1787e0;
-    --darkBlack-color:#181a1f;
-    --lightBlack:#272c34;
-    --minGray:#3f4652;
-    --lightGray:#eaeaea;
-    --white-color:#fff;
+    --darkBlack-color: #181a1f;
+    --lightBlack: #272c34;
+    --minGray: #3f4652;
+    --lightGray: #eaeaea;
+    --white-color: #fff;
     --main-transition-duration: 0.6s;
 }
-.RecordesSearch{
-    background-color: transparent; 
+
+.RecordesSearch {
+    background-color: transparent;
     border-top: 1px solid var(--lightBlack);
     border-bottom: 1px solid var(--lightBlack);
     border-radius: 0px;
     max-height: 100px;
     position: relative;
 }
-.RecordesSearch .my_container{
+
+.RecordesSearch .my_container {
     /* background-color: greenyellow; */
     margin-top: 0%;
     padding: 0%;
     height: inherit;
 }
-.RecordesSearch_form{
+
+.RecordesSearch_form {
     width: 40%;
 }
-.RecordesSearch .form-control{
+
+.RecordesSearch .form-control {
     color: var(--white-color);
     width: 100%;
     padding: 0px 30px;
 }
-.RecordesSearch_button{
+
+.RecordesSearch_button {
     /* background-color: red; */
     width: 50%;
     display: flex;
-    justify-content:flex-end;
+    justify-content: flex-end;
     gap: 0px 10px;
 }
-.RecordesSearch_button button{
+
+.RecordesSearch_button button {
     display: flex;
     justify-content: space-between;
     font-size: 1em;
     font-weight: 600;
 }
-.RecordesSearch_button span{
+
+.RecordesSearch_button span {
     font-size: 1.3em;
-    margin:1% 5% 0% 0%;
+    margin: 1% 5% 0% 0%;
 }
-.RecordesSearch_form_div{
+
+.RecordesSearch_form_div {
     position: relative;
     padding: 1%;
 }
-.RecordesSearch_form_div .record_sec_SI{
+
+.RecordesSearch_form_div .record_sec_SI {
     color: aliceblue;
     font-size: 1.3em;
     position: absolute;
     left: 10px;
     bottom: 25%;
 }
+
 /* ================= */
-.Recordes_result{
-    width:100%;
-    height:45px;
+.Recordes_result {
+    width: 100%;
+    height: 45px;
     display: flex;
     justify-content: space-between;
-    padding:5px 45px;
+    padding: 5px 45px;
     border-bottom: 1px solid var(--lightBlack);
 }
-.Recordes_result .result_title{
+
+.Recordes_result .result_title {
     font-size: 1.5em;
     color: var(--white-color);
 }
-.Recordes_result .result_text{
+
+.Recordes_result .result_text {
     font-size: 1em;
-    color: var(--white-color);   
+    color: var(--white-color);
 }
+
 /* =============================== */
 
-.records_table{
+.records_table {
     color: var(--white-color);
     height: auto;
 }
-.tbody_tr{
+
+.tbody_tr {
     height: 50px;
 }
-.tbody_tr td{
+
+.tbody_tr td {
     border: 4px solid transparent;
 }
-.records_thead tr{
+
+.records_thead tr {
     height: 30px;
 }
-.tbody_tr span{
+
+.tbody_tr span {
     font-size: 1.1em;
 }
- /* ===== */
-.p-treetable-table{
+
+/* ===== */
+.p-treetable-table {
     background-color: #272c34;
     color: #1787e0;
 }
-.p-treetable-thead tr th:first-child,th:last-child{
+
+.p-treetable-thead tr th:first-child,
+th:last-child {
     width: 8%;
 }
-.p-treetable-thead tr th input{
+
+.p-treetable-thead tr th input {
     width: 90%;
 }
-.p-treetable-thead tr th:first-child .p-filter-column{
+
+.p-treetable-thead tr th:first-child .p-filter-column {
     display: none;
 }
+
 /* ===== */
-.p-treetable-thead tr th:last-child .p-filter-column{
+.p-treetable-thead tr th:last-child .p-filter-column {
     display: none;
 }
+
 /* ====================== */
-.RecordesMen{
+.RecordesMen {
     background-color: var(--minGray);
     position: absolute;
     min-width: 15%;
     border-radius: 15px;
     /* right: 35px; */
 }
-.RecordesMen_card{
-background-color: transparent;
-position: relative;
-max-height: 220px;
+
+.RecordesMen_card {
+    background-color: transparent;
+    position: relative;
+    max-height: 220px;
 }
-.RecordesMen_close{
-    color:var(--white-color);
+
+.RecordesMen_close {
+    color: var(--white-color);
     font-size: 1em;
     position: absolute;
-    top:10px;
+    top: 10px;
     right: 20px;
-    cursor:grab;
+    cursor: grab;
 }
-.RecordesMen button{
+
+.RecordesMen button {
     display: flex;
     margin: 3% 0%;
     justify-content: left;
@@ -141,71 +168,83 @@ max-height: 220px;
     font-weight: 600;
     color: var(--white-color);
 }
-.RecordesMen button:hover{
+
+.RecordesMen button:hover {
     color: var(--white-color);
 }
-.RecordesMen .span{
+
+.RecordesMen .span {
     font-size: 1.1em;
     border-radius: 50%;
     padding: 2px;
     background-color: var(--white-color);
     border: 1px solid var(--mainBlue-color);
     color: var(--mainBlue-color);
-    margin:0% 5% 0% 0%;
+    margin: 0% 5% 0% 0%;
 }
+
 /* =================================== */
-.RecordesGride{
+.RecordesGride {
     background-color: var(--darkBlack-color);
     display: grid;
     grid-template-columns: repeat(4, 1fr);
 }
-.RecordesGride .RecordesGride_card{
+
+.RecordesGride .RecordesGride_card {
     background-color: var(--lightBlack);
     min-height: 238px;
     margin: 5% 0%;
     width: 15rem;
     position: relative;
 }
-.RecordesGride_card .RecordesMen{
+
+.RecordesGride_card .RecordesMen {
     z-index: 1200;
     width: 12rem;
-    max-height: 220px; 
+    max-height: 220px;
     bottom: 0;
     right: 15%;
 }
-.RecordesGride_innerCard{
+
+.RecordesGride_innerCard {
     background-color: var(--darkBlack-color);
     position: relative;
     height: 70%;
     padding: 7% 0%;
     align-items: center;
 }
-.RecordesGride_card p{
+
+.RecordesGride_card p {
     color: var(--white-color);
 }
-.RecordesGride_innerCard .RecordesGride_Ic_menu{
+
+.RecordesGride_innerCard .RecordesGride_Ic_menu {
     color: var(--white-color);
     position: absolute;
-    top:5px;
+    top: 5px;
     right: 0px;
 }
+
 /* three point icon */
-.RecordesGride_Ic{ 
+.RecordesGride_Ic {
     margin: 5px;
     cursor: pointer;
 }
-.RecordesGride_innerCard .RecordesGride_icon{
+
+.RecordesGride_innerCard .RecordesGride_icon {
     color: var(--white-color);
     font-size: 4em;
 }
+
 @media screen and (max-width: 1300px) {
-    .RecordesGride{
+    .RecordesGride {
         grid-template-columns: repeat(3, 1fr);
         gap: 0px;
     }
 }
+
 @media screen and (max-width: 1020px) {
-    .RecordesGride{
+    .RecordesGride {
         grid-template-columns: repeat(2, 1fr);
     }
 }
