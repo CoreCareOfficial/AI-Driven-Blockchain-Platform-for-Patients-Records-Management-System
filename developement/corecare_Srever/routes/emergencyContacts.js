@@ -12,6 +12,9 @@ router.post('/', async (req, res) => {
             return res.json(400).send({ message: 'Contact Not found' });
         }
         const newEmergenyContact = await pool.query('INSERT INTO emergency_contacts (patientid, chosenuserid) VALUES ($1, $2) RETURNING *', [patientid, chosenuserid.rows[0].patientid]);
+        if (newEmergenyContact.rows.length === 0) {
+            return res.status(400).json({ message: 'Emergency Contact Not Added' });
+        }
         res.status(200).json({ message: 'Emergency Contact Added Successfully' });
 
     } catch (err) {
