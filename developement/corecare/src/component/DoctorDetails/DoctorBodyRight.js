@@ -14,7 +14,13 @@ import FileRadiologyTable from "../healthproviderdetails/FileRadiologyTable";
 import FilePharmacyTable from "../healthproviderdetails/FilePharmacyTable";
 
 function DoctorBodyRight(props) {
-    const [active, setActive] = useState(props.useType === "Doctor" ? 'records' : 'laboratory')
+    const [active, setActive] = useState(
+        props.userType==="Doctor" ? 'records':
+        props.userType==="Pharmacy" ? 'pharmacy':
+        props.userType==="Hospital" ? 'laboratory':
+        props.userType==="Laboratory" ? 'laboratory':
+        props.userType==="Radiology" ? 'radiology': null
+    );
 
     const handleRecordslClick = () => {
         setActive('records');

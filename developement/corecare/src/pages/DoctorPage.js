@@ -8,7 +8,7 @@ function DoctorPage() {
     const location = useLocation();
     const { accessKey } = location.state || {};
     console.log(accessKey);
-    const userType ="Pharmacy";
+    const userType ="Hospital";
     return (
 
         <div className="doctor bg-[#181a1f] flex flex-col text-white overflow-hidden">
