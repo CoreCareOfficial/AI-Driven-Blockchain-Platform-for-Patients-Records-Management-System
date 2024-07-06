@@ -290,9 +290,18 @@ router.put('/updatehealthcareprovider/:emailorusername', async (req, res) => {
     const { emailorusername } = req.params;
     const { name, phonenumber, country, address } = req.body;
     try {
+        const oldHealthcareProviderQUuery = await pool.query('SELECT name, phonenumber, country, address from healthcare_provider WHERE username = $1 or email = $1', [emailorusername]);
+        if (oldHealthcareProviderQUuery.rows.length === 0) {
+            return res.status(404).json('Healthcare Provider not found');
+        }
+        const oldHealthcareProvider = oldHealthcareProviderQUuery.rows[0];
+        const uname = name !== '' ? name : oldHealthcareProvider.name;
+        const uphonenumber = phonenumber !== '' ? phonenumber : oldHealthcareProvider.phonenumber;
+        const ucountry = country !== '' ? country : oldHealthcareProvider.country;
+        const uaddress = address !== '' ? address : oldHealthcareProvider.address;
         const updatedHealthcareProvider = await pool.query(
             `UPDATE healthcare_provider SET name = $1, phoneNumber = $2, country = $3, address = $4 WHERE username = $5 or email = $5 RETURNING *`,
-            [name, phonenumber, country, address, emailorusername]
+            [uname, uphonenumber, ucountry, uaddress, emailorusername]
         );
         res.json('Healthcare Provider Updated Successfully');
     } catch (err) {

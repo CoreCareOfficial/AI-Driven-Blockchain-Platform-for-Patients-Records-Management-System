@@ -18,6 +18,8 @@ import visitHoursRoutes from './routes/visitHoursRoutes.js';
 import departmentsRoutes from './routes/departmentsRoutes.js';
 import servicesRoutes from './routes/ServicesRoutes.js';
 import emergencyContacts from './routes/emergencyContacts.js';
+import records from './routes/recordsRoutes.js';
+import prescriptionRoutes from './routes/prescriptionRoutes.js';
 import verification from './routes/verification.js';
 import dotenv from 'dotenv';
 
@@ -49,6 +51,8 @@ app.use('/visithours', visitHoursRoutes);
 app.use('/departments', departmentsRoutes);
 app.use('/services', servicesRoutes);
 app.use('/emergencycontacts', emergencyContacts);
+app.use('/records', records);
+app.use('/prescription', prescriptionRoutes);
 app.use('/verification', verification);
 
 app.listen(PORT, () => {

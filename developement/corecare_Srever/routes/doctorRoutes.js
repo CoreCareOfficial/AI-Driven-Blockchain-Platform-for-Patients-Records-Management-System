@@ -243,10 +243,10 @@ router.put('/updatepracticeinfo/:doctorID', async (req, res) => {
         }
         const oldpractice = getPracticeInfo.rows[0];
 
-        const updatedPracticeLocation = practicelocation !== '' ? medschool : oldpractice.practicelocation;
-        const updatedAffiliations = affiliations !== '' ? internships : oldpractice.affiliations;
-        const updatedPracticehours = practicehours !== '' ? residencies : oldpractice.practicehours;
-        const updatedLanguagesspoken = languagesspoken !== '' ? fellowships : oldpractice.languagesspoken;
+        const updatedPracticeLocation = practicelocation !== '' ? practicelocation : oldpractice.practicelocation;
+        const updatedAffiliations = affiliations !== '' ? affiliations : oldpractice.affiliations;
+        const updatedPracticehours = practicehours !== '' ? practicehours : oldpractice.practicehours;
+        const updatedLanguagesspoken = languagesspoken !== '' ? languagesspoken : oldpractice.languagesspoken;
 
         const updatePracticeInfo = await pool.query(
             `INSERT INTO PRACTICE_INFO (practicelocation, affiliations, practicehours, languagesspoken, doctorID)
