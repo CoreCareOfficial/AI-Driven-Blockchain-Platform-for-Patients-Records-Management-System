@@ -61,6 +61,7 @@ function AllRecords(props) {
         const year = date.getFullYear();
         return `${day}-${month}-${year}`;
     };
+    let c = 0;
 
     return (
         <>
@@ -73,8 +74,8 @@ function AllRecords(props) {
                     <tr className="thead_tr">
                         <th></th>
                         <th></th>
-                        <th colSpan={2} style={{ width: '39%', textAlign: 'center' }}>Name Of Record</th>
-                        <th style={{ width: '12%' }}>Type</th>
+                        <th colSpan={2} style={{ width: '39%' }}>Name Of Record</th>
+                        <th style={{ width: '13%' }}>Type</th>
                         <th>Name Of Health Provider</th>
                         <th>Date Of Upload</th>
                         <th></th>
@@ -82,11 +83,11 @@ function AllRecords(props) {
                 </thead>
                 <tbody>
                     {props.tableTitle === "All Records" ? (
-                        allRecords.map((record) => {
+                        allRecords.map((record, index) => {
                             const isExpanded = !!expanded[record.key];
                             return (
                                 <React.Fragment key={record.key}>
-                                    <tr className="tbody_tr">
+                                    <tr className={`tbody_tr ${c % 2 === 0 && "tr_color"}`}>
                                         <td>
                                             <div className="dropdown-button" onClick={() => handleClick(record.key)}>
                                                 <p><span style={{ fontSize: '25px' }}>{isExpanded ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />}</span></p>
@@ -98,24 +99,28 @@ function AllRecords(props) {
                                         <td>{formatDate(record.data["date"])}</td>
                                         <td></td>
                                     </tr>
-                                    {isExpanded && record.children && record.children.map((child) => (
-                                        <tr className="tbody_tr" key={child.key}>
-                                            <td></td>
-                                            <td><span style={{ display: child.data["star"] ? 'block' : 'none', fontSize: '16px' }}><IoStarSharp /></span></td>
-                                            <td><span>{props.icons[child.data["type"]]}</span></td>
-                                            <td>{child.data["name"]}</td>
-                                            <td>{child.data["type"]}</td>
-                                            <td>{child.data["Name Of Health Provider"]}</td>
-                                            <td>{formatDate(child.data["date"])}</td>
-                                            <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={record.key} onClick={handleMenuClick} /></span></td>
-                                        </tr>
+                                    <p style={{ display: 'none' }}>{c++}</p>
+                                    {isExpanded && record.children && record.children.map((child, ind) => (
+                                        <>
+                                            <tr className={`tbody_tr ${c % 2 === 0 && "tr_color"}`} key={child.key}>
+                                                <td></td>
+                                                <td><span style={{ display: child.data["star"] ? 'block' : 'none', fontSize: '16px' }}><IoStarSharp /></span></td>
+                                                <td><span>{props.icons[child.data["type"]]}</span></td>
+                                                <td>{child.data["name"]}</td>
+                                                <td>{child.data["type"]}</td>
+                                                <td>{child.data["Name Of Health Provider"]}</td>
+                                                <td>{formatDate(child.data["date"])}</td>
+                                                <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={record.key} onClick={handleMenuClick} /></span></td>
+                                            </tr>
+                                            <p style={{ display: 'none' }}>{c++}</p>
+                                        </>
                                     ))}
                                 </React.Fragment>
                             );
                         })
                     ) : (
-                        recordsList.map((record) => (
-                            <tr className="tbody_tr" key={record.key}>
+                        recordsList.map((record, i) => (
+                            <tr className={`tbody_tr ${i % 2 === 0 && "tr_color"}`} key={record.key}>
                                 <td></td>
                                 <td><span style={{ display: record.data["star"] ? 'block' : 'none', fontSize: '16px' }}><IoStarSharp /></span></td>
                                 <td><span>{props.icons[record.data["type"]]}</span></td>
@@ -129,7 +134,7 @@ function AllRecords(props) {
                     )}
                 </tbody>
                 {isOpen && <RecordesMenu id={idSelected} top={itemTop} right={itemRight} open={true} handleMenuClick={handleMenuClick} />}
-            </table>
+            </table >
         </>
     );
 }
