@@ -83,7 +83,7 @@ function AllRecords(props) {
                 </thead>
                 <tbody>
                     {props.tableTitle === "All Records" ? (
-                        allRecords.map((record, index) => {
+                        allRecords.map((record) => {
                             const isExpanded = !!expanded[record.key];
                             return (
                                 <React.Fragment key={record.key}>
@@ -100,7 +100,7 @@ function AllRecords(props) {
                                         <td></td>
                                     </tr>
                                     <p style={{ display: 'none' }}>{c++}</p>
-                                    {isExpanded && record.children && record.children.map((child, ind) => (
+                                    {isExpanded && record.children && record.children.map((child) => (
                                         <>
                                             <tr className={`tbody_tr ${c % 2 === 0 && "tr_color"}`} key={child.key}>
                                                 <td></td>

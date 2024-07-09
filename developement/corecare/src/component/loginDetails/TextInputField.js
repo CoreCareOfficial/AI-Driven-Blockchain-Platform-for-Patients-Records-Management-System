@@ -77,6 +77,10 @@ export function TextInputField(props) {
             [props.name]: event.target.value
         }));
         console.log(event.target.value);
+        if (props.isLogin) {
+            sessionStorage.setItem('email', event.target.value);
+            console.log('email:', sessionStorage.getItem('email'));
+        }
     };
     const handleBlur = (event) => {
         if (props.onBlur)

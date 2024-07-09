@@ -188,7 +188,7 @@ function RecordesPage(props) {
             {view ? (
                 <AllRecords icons={icons} tableTitle={props.title} records={records} prescriptons={prescriptons} radiologies={radiologies} labTests={labTests} reports={reports} />
             ) :
-                <RecordesGride allRecords={allRecords} icons={icons} tableTitle="All Records" />
+                <RecordesGride records={records} icons={icons} tableTitle={props.title} prescriptons={prescriptons} radiologies={radiologies} labTests={labTests} reports={reports} />
             }
         </>
     );

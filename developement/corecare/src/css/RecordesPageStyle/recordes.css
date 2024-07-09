@@ -106,10 +106,17 @@
 .tbody_tr td {
     border: 4px solid transparent;
 }
-.tbody_tr:hover{
+
+.tbody_tr:hover {
     color: #1787e0;
     background-color: #eaeaea;
 }
+
+.tbody_tr:hover span {
+    color: #1787e0;
+    /* background-color: #eaeaea; */
+}
+
 .tbody_tr td:first-child {
     border-top-left-radius: 25px;
     border-bottom-left-radius: 25px;
@@ -119,7 +126,8 @@
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
 }
-.tr_color{
+
+.tr_color {
     background-color: #3f4652;
 }
 

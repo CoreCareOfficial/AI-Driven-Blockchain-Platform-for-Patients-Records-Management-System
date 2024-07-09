@@ -20,14 +20,29 @@ import { LuFolderPlus } from "react-icons/lu";
 import { FaHospitalUser } from "react-icons/fa6";
 import SideBar from "./SideBar";
 import { HiOutlineUserAdd } from "react-icons/hi";
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { loginInfo } from '../../Recoil/Atom';
 
 
 function PatientSidebarHandler(props) {
     const [activeButton, setActiveButton] = useState("Profile");
+    const navigate = useNavigate();
 
     const handleButtonClick = (buttonText) => {
         setActiveButton(buttonText);
         props.handleButtonClick(buttonText);
+    };
+    const setUserInfo = useSetRecoilState(loginInfo);
+
+    const handleGoout = () => {
+        sessionStorage.removeItem('email');
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            login: ''
+        }));
+        navigate('/');
+
     };
 
     const logoutIcon =
@@ -60,98 +75,98 @@ function PatientSidebarHandler(props) {
 
                     {/* ================================== */}
 
-                    {props.userType ==="Patient" || props.userType ==="Doctor"? (
-                    <DropDownButton icon={<FaFileMedical />} text="Patient Records" >
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "All Records" ? "active" : ""}
-                            icon={<FaFolderOpen />}
-                            text="All Records"
-                            onClick={() => handleButtonClick("All Records")}
-                        />
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "Report" ? "active" : ""}
-                            icon={<MdOutlineReceiptLong />}
-                            text="Reports"
-                            onClick={() => handleButtonClick("Report")}
-                        />
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "Lab test" ? "active" : ""}
-                            icon={<FaRegFileLines />}
-                            text="Lab Tests"
-                            onClick={() => handleButtonClick("Lab test")}
-                        />
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "Radiology" ? "active" : ""}
-                            icon={<FaXRay />}
-                            text="Radiology"
-                            onClick={() => handleButtonClick("Radiology")}
-                        />
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "Prescription" ? "active" : ""}
-                            icon={<FaFilePrescription />}
-                            text="Prescription"
-                            onClick={() => handleButtonClick("Prescription")}
-                        />
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "Additional Records" ? "active" : ""}
-                            icon={<LuFolderPlus />}
-                            text="Additional Records"
-                            onClick={() => handleButtonClick("Additional Records")}
-                        />
-                    </DropDownButton>
+                    {props.userType === "Patient" || props.userType === "Doctor" ? (
+                        <DropDownButton icon={<FaFileMedical />} text="Patient Records" >
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "All Records" ? "active" : ""}
+                                icon={<FaFolderOpen />}
+                                text="All Records"
+                                onClick={() => handleButtonClick("All Records")}
+                            />
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "Report" ? "active" : ""}
+                                icon={<MdOutlineReceiptLong />}
+                                text="Reports"
+                                onClick={() => handleButtonClick("Report")}
+                            />
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "Lab test" ? "active" : ""}
+                                icon={<FaRegFileLines />}
+                                text="Lab Tests"
+                                onClick={() => handleButtonClick("Lab test")}
+                            />
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "Radiology" ? "active" : ""}
+                                icon={<FaXRay />}
+                                text="Radiology"
+                                onClick={() => handleButtonClick("Radiology")}
+                            />
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "Prescription" ? "active" : ""}
+                                icon={<FaFilePrescription />}
+                                text="Prescription"
+                                onClick={() => handleButtonClick("Prescription")}
+                            />
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "Additional Records" ? "active" : ""}
+                                icon={<LuFolderPlus />}
+                                text="Additional Records"
+                                onClick={() => handleButtonClick("Additional Records")}
+                            />
+                        </DropDownButton>
                     ) : null}
 
                     {/* ================================== */}
 
-                    {props.userType ==="Hospital"? (
-                    <DropDownButton icon={<FaFileMedical />} text="Add Account" >
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "Add Patient" ? "active" : ""}
-                            icon={<HiOutlineUserAdd />}
-                            text="Add Patient"
-                            onClick={() => handleButtonClick("Add Patient")}
-                        />
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "Add Doctor" ? "active" : ""}
-                            icon={<HiOutlineUserAdd />}
-                            text="Add Doctor"
-                            onClick={() => handleButtonClick("Add Doctor")}
-                        />
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "Add Laboratory" ? "active" : ""}
-                            icon={<HiOutlineUserAdd />}
-                            text="Add Laboratory"
-                            onClick={() => handleButtonClick("Add Laboratory")}
-                        />
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "Add Radiology" ? "active" : ""}
-                            icon={<HiOutlineUserAdd />}
-                            text="Add Radiology"
-                            onClick={() => handleButtonClick("Add Radiology")}
-                        />
-                        <SideBtn
-                            name="sideBtn"
-                            id={activeButton === "Add Pharmacy" ? "active" : ""}
-                            icon={<HiOutlineUserAdd />}
-                            text="Add Pharmacy"
-                            onClick={() => handleButtonClick("Add Pharmacy")}
-                        />
-                    </DropDownButton>
+                    {props.userType === "Hospital" ? (
+                        <DropDownButton icon={<FaFileMedical />} text="Add Account" >
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "Add Patient" ? "active" : ""}
+                                icon={<HiOutlineUserAdd />}
+                                text="Add Patient"
+                                onClick={() => handleButtonClick("Add Patient")}
+                            />
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "Add Doctor" ? "active" : ""}
+                                icon={<HiOutlineUserAdd />}
+                                text="Add Doctor"
+                                onClick={() => handleButtonClick("Add Doctor")}
+                            />
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "Add Laboratory" ? "active" : ""}
+                                icon={<HiOutlineUserAdd />}
+                                text="Add Laboratory"
+                                onClick={() => handleButtonClick("Add Laboratory")}
+                            />
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "Add Radiology" ? "active" : ""}
+                                icon={<HiOutlineUserAdd />}
+                                text="Add Radiology"
+                                onClick={() => handleButtonClick("Add Radiology")}
+                            />
+                            <SideBtn
+                                name="sideBtn"
+                                id={activeButton === "Add Pharmacy" ? "active" : ""}
+                                icon={<HiOutlineUserAdd />}
+                                text="Add Pharmacy"
+                                onClick={() => handleButtonClick("Add Pharmacy")}
+                            />
+                        </DropDownButton>
                     ) : null}
 
                     {/* ================================== */}
 
-                    {props.userType !=="Patient"? (
+                    {props.userType !== "Patient" ? (
                         <SideBtn
                             name="sideBtn"
                             id={activeButton === "Patient Access Management" ? "active" : ""}
@@ -165,13 +180,13 @@ function PatientSidebarHandler(props) {
 
                     {/* ================================== */}
 
-                    {props.userType ==="Patient" || props.userType ==="Doctor"? (
+                    {props.userType === "Patient" || props.userType === "Doctor" ? (
                         <SideBtn
-                        name="sideBtn"
-                        id={activeButton === "Appointment Schedule" ? "active" : ""}
-                        icon={<MdEventNote />}
-                        text="Appointment Schedule"
-                        onClick={() => handleButtonClick("Appointment Schedule")}
+                            name="sideBtn"
+                            id={activeButton === "Appointment Schedule" ? "active" : ""}
+                            icon={<MdEventNote />}
+                            text="Appointment Schedule"
+                            onClick={() => handleButtonClick("Appointment Schedule")}
                         />
                     ) : null}
 
@@ -186,19 +201,19 @@ function PatientSidebarHandler(props) {
                     />
                 </div>
                 <div className="flex flex-col flex-wrap max-w-full">
-                    
-                    {props.userType ==="Patient" || props.userType ==="Doctor"? (
+
+                    {props.userType === "Patient" || props.userType === "Doctor" ? (
                         <Button name="button secondary" label="Summarize Records" IconComponent={SummarizeIcon} />
-                    ) : null }
-                    
-                    {/* ========================== */}
-
-                    {props.userType ==="Patient" || props.userType ==="Doctor"? (
-                    <Button name="button primary" label="Create Access Key" IconComponent={plusIcon} />
-                    ):null}
+                    ) : null}
 
                     {/* ========================== */}
-                    <Button name="button logout" label="Logout" IconComponent={logoutIcon} />
+
+                    {props.userType === "Patient" || props.userType === "Doctor" ? (
+                        <Button name="button primary" label="Create Access Key" IconComponent={plusIcon} />
+                    ) : null}
+
+                    {/* ========================== */}
+                    <Button name="button logout" label="Logout" IconComponent={logoutIcon} onClick={handleGoout} />
                 </div>
             </SideBar >
         </>

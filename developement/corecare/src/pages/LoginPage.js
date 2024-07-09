@@ -44,10 +44,12 @@ function LoginPage() {
                 // toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successful' });
                 navigate('/userprofile', { state: { userType: jsonData.userType === "Radiology Center" ? 'Radiology' : jsonData.userType } });
             } else {
+                sessionStorage.clear();
                 console.log("failed signin");
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Invalid Password or Email' });
             }
         } catch (error) {
+            sessionStorage.clear();
             console.log(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Invalid Password or Email' });
         }

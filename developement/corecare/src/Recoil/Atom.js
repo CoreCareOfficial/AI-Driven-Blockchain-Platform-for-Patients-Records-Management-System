@@ -51,7 +51,7 @@ export const GeneralData = atom({
 export const loginInfo = atom({
     key: 'loginInfo',
     default: {
-        login: '',
+        login: sessionStorage.getItem('email'),
         userName: '',
         email: '',
         password: '',
