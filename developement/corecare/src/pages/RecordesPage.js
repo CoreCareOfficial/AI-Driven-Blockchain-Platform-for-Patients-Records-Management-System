@@ -12,6 +12,7 @@ import { useRecoilValue } from 'recoil';
 import { loginInfo } from '../Recoil/Atom';
 import { Toast } from 'primereact/toast';
 import { LuFolderPlus } from 'react-icons/lu';
+import RecordesGride from '../component/recordesdetails/RecordesGride';
 
 function RecordesPage(props) {
     const toast = useRef(null);
@@ -31,6 +32,98 @@ function RecordesPage(props) {
         "Lab Result": <FaFileLines />,
         "Additional": <LuFolderPlus />
     };
+
+    const allRecords = {
+        firstRow: {
+            "id": 1,
+            "fav": true,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Report",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        secondRow: {
+            "id": 2,
+            "fav": true,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Ray",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        thirdRow: {
+            "id": 3,
+            "Name Of Record": "oooooooooooooooooooooooooooo",
+            "Type": "Summary",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        fourthRow: {
+            "id": 4,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Ray",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        fifthRow: {
+            "id": 5,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Lab test",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        sixRow: {
+            "id": 6,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Prescripation",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        sevenRow: {
+            "id": 7,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Ray",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        eightRow: {
+            "id": 8,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Ray",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        nineRow: {
+            "id": 9,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Ray",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        tenRow: {
+            "id": 10,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Ray",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        elevRow: {
+            "id": 11,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Ray",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+        twelRow: {
+            "id": 12,
+            "Name Of Record": "Report-12 of patient's heart.form",
+            "Type": "Ray",
+            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
+            "Date Of Upload": "22/5/2024"
+        },
+    }
+
+
+
 
     const loginInfoValue = useRecoilValue(loginInfo);
     const hasEffectRun = useRef(false);
@@ -92,7 +185,11 @@ function RecordesPage(props) {
                 <ProfileHeaderIcon image={ahmed} />
             </div>
             <RecordesSearch view={view} handleViewClick={handleViewClick} />
-            <AllRecords icons={icons} tableTitle={props.title} records={records} prescriptons={prescriptons} radiologies={radiologies} labTests={labTests} reports={reports} />
+            {view ? (
+                <AllRecords icons={icons} tableTitle={props.title} records={records} prescriptons={prescriptons} radiologies={radiologies} labTests={labTests} reports={reports} />
+            ) :
+                <RecordesGride allRecords={allRecords} icons={icons} tableTitle="All Records" />
+            }
         </>
     );
 }

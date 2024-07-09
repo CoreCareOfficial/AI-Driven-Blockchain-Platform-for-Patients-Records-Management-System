@@ -12,6 +12,7 @@ import { Toast } from "primereact/toast";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddCountry from "../hospitaldetails/AddCountry";
 import { updateUserInfo } from "../../Recoil/UpdateData";
+import { AiOutlineSearch } from "react-icons/ai";
 
 
 export function UpdateImage(props) {
@@ -375,7 +376,8 @@ export function SettingInput(props) {
             />
         </div>
     );
-}
+};
+
 export function SettingTimeInput(props) {
     const setUserInfo = useSetRecoilState(updateUserInfo);
     const [timeValue, setTimeValue] = useState(props.value1 ? props.value1 : "");
@@ -884,5 +886,68 @@ export function AddAccountMedicalDegree(props) {
         </div>
 
 
+    );
+};
+
+// =======
+export function CreateAccessSelect(props) {
+
+    const hidtext = props.value;
+
+    const inp = {
+        width: 'calc(100% - 40%)',
+        borderBottom: '1px solid #272c34',
+        borderRadius:'8px',
+        outline: 'none',
+        fontWeight: '500',
+        backgroundColor: '#fff',
+        color: '#000',
+        margin:'5px auto',
+    }
+
+    const listItems = props.items.map((item, index) => (
+        <option key={index}>{item}</option>
+    ));
+    return (
+        <div style={{ minHeight:'55px',borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+            <select required={props.required} style={inp} placeholder="" name={props.name} disabled={props.disabled}>
+                <option disabled selected hidden>{hidtext}</option>
+                {listItems}
+            </select>
+        </div>
+    );
+};
+
+export function SearchToAccessInput(props) {
+    const inp = {
+        width: 'calc(100% - 40%)',
+        borderBottom: '1px solid #272c34',
+        borderRadius:'8px',
+        outline: 'none',
+        fontWeight: '500',
+        backgroundColor: '#fff',
+        color: '#000',
+        margin:'0px auto',
+        paddingLeft:'10px',
+        alignItems:'center',
+    }
+
+    const [value, setValue] = useState(props.value || '');
+    return (
+        <>
+            <div style={{position:'relative', borderRadius: '8px',minHeight:'45px', width: '100%', padding: '5px', margin: '10px 5px' ,display:'flex', justifyContent:'space-between'}}>
+                <input style={inp}
+                    type={props.type}
+                    placeholder={props.placeholder}
+                    onChange={(e)=>setValue(e.target.value)}
+                    name={props.name}
+                    disabled={props.disabled}
+                    autoFocus={props.autoFocus}
+                    required={props.required}
+                    value={value}
+                />
+                {/* <span style={{position:'absolute'}}><AiOutlineSearch /></span> */}
+            </div>
+        </>
     );
 };

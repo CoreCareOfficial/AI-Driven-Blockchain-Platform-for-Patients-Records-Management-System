@@ -10,3 +10,31 @@
 .slick-next:hover {
     transform: translate(0, -50%);
 }
+
+.AccessKeyCards{
+    background-color: #3f4652;
+    min-height: 35vh;
+    max-width: 80%;
+    border-radius: 8px;
+    text-align: center;
+    margin: 0px 25px;
+}
+.AccessKeyCards:hover{
+
+}
+.AccessKeyCards .AccessKeyCards-img{
+    width: 120px;
+    height: 120px;
+    margin: 5px auto;
+    border-radius: 50%;
+}
+.AccessKeyCards .AccessKeyCards-h1{
+color: #fff;
+margin: 15px auto;
+font-weight: 600;
+}
+.AccessKeyCards .AccessKeyCards-p{
+color: #fff;
+margin: 15px auto;
+font-weight: 600;
+}

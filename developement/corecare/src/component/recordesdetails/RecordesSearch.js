@@ -10,7 +10,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { MdViewList } from "react-icons/md";
 
-function RecordesSearch(){
+function RecordesSearch({view,handleViewClick}){
 
     return(
         <>
@@ -26,13 +26,13 @@ function RecordesSearch(){
             </Form>
 
             <div className="RecordesSearch_button">
-                {/* <Link to="" className="link_route">
+                {/* <Link to="" className="link_route"> */}
                     <Button variant="dark" style={{transition: '0.7s ease'}}
                     onClick={handleViewClick}>
                     <span>{view ? <MdGridView />:<MdViewList />}</span>
                         View
                     </Button>{' '}
-                </Link> */}
+                {/* </Link> */}
 
                 <Link to="">
                     <Button variant="light" style={{transition: '0.7s ease',color:'#3146ff'}}>
