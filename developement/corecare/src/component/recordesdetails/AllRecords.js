@@ -63,11 +63,13 @@ function AllRecords(props) {
     };
     let c = 0;
 
+    const title = props.tableTitle === "All Records" ? "Records" : `${props.tableTitle}s`;
+
     return (
         <>
             <div className="Recordes_result">
-                <H1 name="result_title" title={props.tableTitle} />
-                <P name="result_text" title={`Showing ${recordsList.length} Records Results`} />
+                <H1 name="result_title" title={`All ${title}`} />
+                <P name="result_text" title={`Showing ${recordsList.length} ${title} Results`} />
             </div>
             <table className="records_table">
                 <thead className="records_thead">

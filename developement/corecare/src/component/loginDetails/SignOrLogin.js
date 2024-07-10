@@ -16,7 +16,7 @@ function SignOrLogin(props) {
                 textAlign: 'center',
                 fontFamily: 'DM Sans',
                 backgroundColor: "#272c34",
-                fontSize: '12px',
+                fontSize: '16px',
                 marginTop: "12px",
             }}>
                 {props.goSign ? goToSignUp : goToLogin}

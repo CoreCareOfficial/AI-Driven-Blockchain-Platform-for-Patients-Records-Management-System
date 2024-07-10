@@ -150,7 +150,7 @@ function RecordesPage(props) {
                 setRecords(jsonData);
             } catch (error) {
                 console.error(error.message);
-                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error jsonData' });
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Records Not found' });
             }
         };
         if (!hasEffectRun.current) {
@@ -178,11 +178,12 @@ function RecordesPage(props) {
         setPrescriptons(filterByType("Prescription"));
     }, [props.title, records]);
 
+
     return (
         <>
             <Toast ref={toast} />
             <div style={{ width: '100%', height: '100px', padding: '10px' }}>
-                <ProfileHeaderIcon image={ahmed} />
+                <ProfileHeaderIcon image={loginInfoValue.photo} />
             </div>
             <RecordesSearch view={view} handleViewClick={handleViewClick} />
             {view ? (

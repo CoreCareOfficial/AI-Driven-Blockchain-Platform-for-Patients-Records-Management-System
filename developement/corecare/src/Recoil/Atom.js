@@ -1,3 +1,4 @@
+import defaultPic from '../assets/user_signup.png'
 import { atom } from 'recoil';
 
 export const userInfo = atom({
@@ -52,6 +53,7 @@ export const loginInfo = atom({
     key: 'loginInfo',
     default: {
         login: sessionStorage.getItem('email'),
+        photo: defaultPic,
         userName: '',
         email: '',
         password: '',

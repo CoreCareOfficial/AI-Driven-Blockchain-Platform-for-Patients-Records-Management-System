@@ -82,11 +82,13 @@ function RecordesGride(props) {
             [id]: !prevState[id],
         }));
     };
+
+    const title = props.tableTitle === "All Records" ? "Records" : `${props.tableTitle}s`;
     return (
         <>
             <div className="Recordes_result">
-                <H1 name="result_title" title={`${props.tableTitle}s`} />
-                <P name="result_text" title={`Showing ${recordsList.length} Records Results`} />
+                <H1 name="result_title" title={`All ${title}`} />
+                <P name="result_text" title={`Showing ${recordsList.length} ${title} Results`} />
             </div>
 
             {props.tableTitle === "All Records" ? (

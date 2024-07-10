@@ -54,11 +54,19 @@ function Profile(props) {
     }, [userType, loginInfoValue.login]);
 
     useEffect(() => {
-        if ((props.userType === "Patient" || props.userType === "Doctor") && userInfo) {
-            setLoginInfo((perviousLoginInfoValue) => ({
-                ...perviousLoginInfoValue,
-                patientId: userInfo.patientid,
-            }));
+        if (userInfo) {
+            if (props.userType === "Patient" || props.userType === "Doctor") {
+                setLoginInfo((previousLoginInfoValue) => ({
+                    ...previousLoginInfoValue,
+                    patientId: userInfo.patientid,
+                    photo: userInfo.personalphoto ? `data:image/jpeg;base64,${userInfo.personalphoto}` : defaultPic
+                }));
+            } else {
+                setLoginInfo((previousLoginInfoValue) => ({
+                    ...previousLoginInfoValue,
+                    photo: userInfo.facilityphoto ? `data:image/jpeg;base64,${userInfo.facilityphoto}` : defaultPic
+                }));
+            }
         }
     }, [props.userType, userInfo, setLoginInfo]);
 
