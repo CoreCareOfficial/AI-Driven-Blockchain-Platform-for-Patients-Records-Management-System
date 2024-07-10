@@ -8,6 +8,7 @@ import H1 from '../H1';
 import P from '../P';
 import { MdKeyboardArrowDown, MdKeyboardArrowRight } from "react-icons/md";
 import "../../css/UserPageStyle/dropdownbutton.css";
+import { IoStarSharp } from 'react-icons/io5';
 
 function RecordesGride(props) {
 
@@ -120,6 +121,7 @@ function RecordesGride(props) {
                                     isExpanded && record.children && record.children.map((child) => (
                                         <DynamicCard name="RecordesGride_card" key={child.key}>
                                             <DynamicCard name="RecordesGride_innerCard">
+                                            <span style={{display: child.data["star"] ? 'block' : 'none', position:'absolute',left:'10px', top:'10px', color:'#fff', fontSize: '1.1rem' }}><IoStarSharp /></span>
                                                 <span className="RecordesGride_Ic_menu" >
                                                     <IconContext.Provider value={{ className: "RecordesGride_Ic", size: "1.3rem" }}>
                                                         <BsThreeDotsVertical id={child.key} onClick={handleMenuClick} />
@@ -147,6 +149,7 @@ function RecordesGride(props) {
                         {recordsList.map((child) => (
                             <DynamicCard name="RecordesGride_card" key={child.key}>
                                 <DynamicCard name="RecordesGride_innerCard">
+                                <span style={{display: child.data["star"] ? 'block' : 'none', position:'absolute',left:'10px', top:'10px', color:'#fff', fontSize: '1.1rem' }}><IoStarSharp /></span>
                                     <span className="RecordesGride_Ic_menu" >
                                         <IconContext.Provider value={{ className: "RecordesGride_Ic", size: "1.3rem" }}>
                                             <BsThreeDotsVertical id={child.key} onClick={handleMenuClick} />

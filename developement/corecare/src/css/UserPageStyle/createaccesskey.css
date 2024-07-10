@@ -1,4 +1,15 @@
-.time-div h3:hover{
-    color: blue;
+.AccessKeyCards{
+    transition: 0.7s ease;
+}
+.AccessKeyCards:hover{
+    transform:scale(1.01);
+}
+
+.time-div{
+    transition: 0.7s ease;
+}
+
+.time-div:hover{
     cursor: pointer;
+    transform:scale(1.1);
 }

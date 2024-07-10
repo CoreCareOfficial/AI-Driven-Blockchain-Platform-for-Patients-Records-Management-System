@@ -36,7 +36,9 @@ function CreateAccessKey() {
                 height: '100%',
                 padding: '10px',
                 overflow: 'hidden',
-                backgroundColor: '#272c34',
+                backgroundColor: 'transparent',
+                zIndex:'9999',
+                position:'absolute',
             }}>
 
                 <div

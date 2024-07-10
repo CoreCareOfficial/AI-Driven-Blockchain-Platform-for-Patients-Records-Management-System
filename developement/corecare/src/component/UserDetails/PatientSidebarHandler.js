@@ -23,6 +23,7 @@ import { HiOutlineUserAdd } from "react-icons/hi";
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { loginInfo } from '../../Recoil/Atom';
+import CreateAccessKey from './CreateAccessKey';
 
 
 function PatientSidebarHandler(props) {
@@ -209,7 +210,7 @@ function PatientSidebarHandler(props) {
                     {/* ========================== */}
 
                     {props.userType === "Patient" || props.userType === "Doctor" ? (
-                        <Button name="button primary" label="Create Access Key" IconComponent={plusIcon} />
+                        <Button name="button primary" label="Create Access Key" IconComponent={plusIcon} onClick={props.handleCreateAccessKeyClick}/>
                     ) : null}
 
                     {/* ========================== */}

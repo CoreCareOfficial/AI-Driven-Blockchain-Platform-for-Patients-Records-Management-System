@@ -9,14 +9,14 @@ import LaboratoryRecords from "../component/recordesdetails/LaboratoryRecords";
 function ContactPage(){
     return(
         <>
-        <Header/>
+        {/* <Header/>
         <Section1/>
         <Section2/>
         <FormlessFooter mail="corecareofficial@gmail.com" 
         phoneNumber="+967 711 379 934" textLogo="@corecare 2024" 
-        followText="Follow for more" />
-        {/* <Prescription/> */}
-        {/* <LaboratoryRecords type="Laboratory"/> */}
+        followText="Follow for more" /> */}
+        <Prescription/> 
+        <LaboratoryRecords type="Laboratory"/>
         </>
     );
 }
