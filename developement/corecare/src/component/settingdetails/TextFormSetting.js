@@ -895,7 +895,7 @@ export function CreateAccessSelect(props) {
     const hidtext = props.value;
 
     const inp = {
-        width: 'calc(100% - 40%)',
+        width: 'calc(100% - 10%)',
         borderBottom: '1px solid #272c34',
         borderRadius:'8px',
         outline: 'none',
@@ -920,7 +920,7 @@ export function CreateAccessSelect(props) {
 
 export function SearchToAccessInput(props) {
     const inp = {
-        width: 'calc(100% - 40%)',
+        width: 'calc(100% - 10%)',
         borderBottom: '1px solid #272c34',
         borderRadius:'8px',
         outline: 'none',
@@ -935,7 +935,7 @@ export function SearchToAccessInput(props) {
     const [value, setValue] = useState(props.value || '');
     return (
         <>
-            <div style={{position:'relative', borderRadius: '8px',minHeight:'45px', width: '100%', padding: '5px', margin: '10px 5px' ,display:'flex', justifyContent:'space-between'}}>
+            <div style={{position:'relative', borderRadius: '8px',height:'45px', width: '100%', padding: '5px', margin: '15px 5px' ,display:'flex', justifyContent:'space-between'}}>
                 <input style={inp}
                     type={props.type}
                     placeholder={props.placeholder}
