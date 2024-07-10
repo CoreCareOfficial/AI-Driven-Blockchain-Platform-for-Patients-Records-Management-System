@@ -35,9 +35,11 @@ const formatWorkHours = (data) => {
     return result;
 };
 
-router.get('/:email', async (req, res) => {
+router.get('/:emailorusername', async (req, res) => {
     try {
-        const { email } = req.params;
+        const { emailorusername } = req.params;
+        const emailQuery = await pool.query('SELECT email FROM login WHERE email = $1 OR username = $1', [emailorusername]);
+        const email = emailQuery.rows[0].email;
         const workHours = await pool.query(
             `SELECT 
             WORK_DAYS.facilityName, 

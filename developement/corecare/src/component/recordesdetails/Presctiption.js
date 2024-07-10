@@ -12,10 +12,10 @@ function Prescription() {
     };
 
     const items = [
-        { medicalName: "dixamithazon", dosage: "1*3", note: "hhhhhhh" },
-        { medicalName: "mutilen", dosage: "1*3", note: "nnnnnnnnnn" },
-        { medicalName: "banadol", dosage: "1*3", note: "lllllllllllll" },
-        { medicalName: "zimasef", dosage: "1*3", note: "pppppppppppp" },
+        { medicalName: "dexamethazone", dosage: "1*1", note: "before sleep" },
+        { medicalName: "Augmen", dosage: "2*1", note: "after meal" },
+        { medicalName: "panadol", dosage: "3*1", note: "every 8 hours" },
+        { medicalName: "Lanbrol", dosage: "1*1", note: "before breakfast" },
     ];
 
 
@@ -52,7 +52,7 @@ function Prescription() {
                         width: '90%',
                         minHeight: '20vh',
                         borderRadius: '8px',
-                        margin:'0px auto',
+                        margin: '0px auto',
                     }}
                     >
 
@@ -66,7 +66,7 @@ function Prescription() {
                         }}>
                             <h1 style={h_1}>Dr.Ahmed Qahtan</h1>
                             <h1 style={h_1}>E.N.T</h1>
-                            <h1 style={h_1}>Taiz university</h1>
+                            <h1 style={h_1}>Althawrah Hospital</h1>
                         </div>
 
                         {/* image */}
@@ -87,10 +87,10 @@ function Prescription() {
                         }}>
                             <h1 style={h_1}>Yemen-Taiz</h1>
                             <h1 style={h_1}>+967774714500</h1>
-                            <h1 style={h_1}>time 2:00pm - 8:00am</h1>
+                            <h1 style={h_1}>time 8:00am - 2:00pm</h1>
                         </div>
                     </div>
-                    <hr style={{ color: '#000', height: '2px', margin: '5px auto',width:'90%' }} />
+                    <hr style={{ color: '#000', height: '2px', margin: '5px auto', width: '90%' }} />
 
                     {/* details div */}
                     <div
@@ -99,7 +99,7 @@ function Prescription() {
                             flexWrap: 'wrap',
                             justifyContent: 'space-between',
                             width: '90%',
-                            margin:'0px auto',
+                            margin: '0px auto',
                             minHeight: '20vh',
                             borderRadius: '8px',
                             padding: '5px',
@@ -113,8 +113,8 @@ function Prescription() {
                                 minHeight: '10vh',
                                 margin: '5px',
                             }}>
-                            <DynamicInput label="Name : " type="text" disabled={true} value="Ahmed Qahtan" />
-                            <DynamicInput label="Age : " type="text" disabled={true} value="Ahmed Qahtan" />
+                            <DynamicInput label="Name : " type="text" disabled={true} value="Osama Alathwari" />
+                            <DynamicInput label="Age : " type="text" disabled={true} value="24" />
                         </div>
 
                         <div
@@ -124,8 +124,8 @@ function Prescription() {
                                 minHeight: '10vh',
                                 margin: '5px',
                             }}>
-                            <DynamicInput label="Sex : " type="text" disabled={true} value="Ahmed Qahtan" />
-                            <DynamicInput label="Date : " type="text" disabled={true} value="Ahmed Qahtan" />
+                            <DynamicInput label="Sex : " type="text" disabled={true} value="Male" />
+                            <DynamicInput label="Date : " type="text" disabled={true} value="01-07-2024" />
                         </div>
 
                         <div
@@ -135,12 +135,12 @@ function Prescription() {
                                 minHeight: '8vh',
                                 margin: '5px',
                             }}>
-                            <DynamicInput label="Diagnosis : " type="text" disabled={true} value="Ahmed Qahtan" />
+                            <DynamicInput label="Diagnosis : " type="text" disabled={true} value="Cold and flu" />
                         </div>
 
                     </div>
                     {/* ============================= */}
-                    <hr style={{ color: '#000', height: '2px', margin: '10px auto' ,width:'90%' }} />
+                    <hr style={{ color: '#000', height: '2px', margin: '10px auto', width: '90%' }} />
                     {/* ============================= */}
 
                     {/* Medicen div */}
@@ -183,7 +183,7 @@ function Prescription() {
                                     minHeight: '10vh',
                                     margin: '0px',
                                 }}>
-                                <DynamicInput label="Dosage : " type="text" disabled={true} value={item.dosage}/>
+                                <DynamicInput label="Dosage : " type="text" disabled={true} value={item.dosage} />
                             </div>
                             <div
                                 style={{

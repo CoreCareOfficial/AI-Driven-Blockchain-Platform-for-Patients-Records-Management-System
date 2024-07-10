@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
     try {
         const chosenuserid = await pool.query('SELECT patientid from Patient where email = $1 or username = $1', [emailorusername]);
         if (chosenuserid.rows.length === 0) {
-            return res.json(400).send({ message: 'Contact Not found' });
+            return res.status(400).json({ message: 'Contact Not found' });
         }
         const newEmergenyContact = await pool.query('INSERT INTO emergency_contacts (patientid, chosenuserid) VALUES ($1, $2) RETURNING *', [patientid, chosenuserid.rows[0].patientid]);
         if (newEmergenyContact.rows.length === 0) {

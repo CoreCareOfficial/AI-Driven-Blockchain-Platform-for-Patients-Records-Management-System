@@ -35,9 +35,11 @@ const formatVisitHours = (data) => {
     return result;
 };
 
-router.get('/:email', async (req, res) => {
+router.get('/:emailorusername', async (req, res) => {
     try {
-        const { email } = req.params;
+        const { emailorusername } = req.params;
+        const emailQuery = await pool.query('SELECT email FROM login WHERE email = $1 OR username = $1', [emailorusername]);
+        const email = emailQuery.rows[0].email;
         const visitHours = await pool.query(
             `SELECT 
             VISIT_DAYS.facilityName, 
@@ -72,13 +74,15 @@ router.get('/:email', async (req, res) => {
 router.post('/', async (req, res) => {
     console.log(req.body);
     try {
+
         const { email, hospitalName, visitDays, DayvisitHours, NightvisitHours } = req.body;
+        const emailQuery = await pool.query('SELECT email FROM login WHERE email = $1 or username = $2', [email]);
         // Insert into VISIT_DAYS table
         const newVisitDay = await pool.query(
             `INSERT INTO VISIT_DAYS (email, facilityName, days)
             VALUES ($1, $2, $3)
             RETURNING id`,
-            [email, hospitalName, visitDays]
+            [emailQuery.rows[0].email, hospitalName, visitDays]
         );
 
         const visitDayID = newVisitDay.rows[0].id;

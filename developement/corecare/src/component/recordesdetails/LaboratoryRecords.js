@@ -19,17 +19,17 @@ function LaboratoryRecords(props) {
         width: 'calc(100% - 80px)',
         borderBottom: '1px solid #3146ff',
         outline: 'none',
-        fontWeight:'500',
+        fontWeight: '500',
     }
 
     const items = [
-        { testName: "dixamithazon" },
-        { testName: "mutilen" },
-        { testName: "banadol" },
-        { testName: "zimasef" },
+        { testName: "CT Scan" },
+        { testName: "MRI" },
+        { testName: "Ultrasound" },
+        // { testName: "C.R.P" },
     ];
 
-    const note="jjjjjjjjjjj";
+    const note = "The patient should take the test after 12 hours of fasting and should not drink water before the test.";
 
     return (
         <>
@@ -77,7 +77,7 @@ function LaboratoryRecords(props) {
                         }}>
                             <h1 style={h_1}>Dr.Ahmed Qahtan</h1>
                             <h1 style={h_1}>E.N.T</h1>
-                            <h1 style={h_1}>Taiz university</h1>
+                            <h1 style={h_1}>Althawrah Hospital</h1>
                         </div>
 
                         {/* image */}
@@ -98,7 +98,7 @@ function LaboratoryRecords(props) {
                         }}>
                             <h1 style={h_1}>Yemen-Taiz</h1>
                             <h1 style={h_1}>+967774714500</h1>
-                            <h1 style={h_1}>time 2:00pm - 8:00am</h1>
+                            <h1 style={h_1}>time 8:00am - 2:00pm</h1>
                         </div>
                     </div>
 
@@ -125,8 +125,8 @@ function LaboratoryRecords(props) {
                                 minHeight: '10vh',
                                 margin: '5px',
                             }}>
-                            <DynamicInput label="Name : " type="text" disabled={true} value="Ahmed Qahtan" />
-                            <DynamicInput label="Age : " type="text" disabled={true} value="Ahmed Qahtan" />
+                            <DynamicInput label="Name : " type="text" disabled={true} value="Osama Alathwari" />
+                            <DynamicInput label="Age : " type="text" disabled={true} value="24" />
                         </div>
 
                         <div
@@ -136,8 +136,8 @@ function LaboratoryRecords(props) {
                                 minHeight: '10vh',
                                 margin: '5px',
                             }}>
-                            <DynamicInput label="Sex : " type="text" disabled={true} value="Ahmed Qahtan" />
-                            <DynamicInput label="Date : " type="text" disabled={true} value="Ahmed Qahtan" />
+                            <DynamicInput label="Sex : " type="text" disabled={true} value="Male" />
+                            <DynamicInput label="Date : " type="text" disabled={true} value="01-07-2024" />
                         </div>
 
                         <div
@@ -147,7 +147,7 @@ function LaboratoryRecords(props) {
                                 minHeight: '8vh',
                                 margin: '5px',
                             }}>
-                            <DynamicInput label="Diagnosis : " type="text" disabled={true} value="Ahmed Qahtan" />
+                            <DynamicInput label="Diagnosis : " type="text" disabled={true} value="Cold and flu" />
                         </div>
 
                     </div>
