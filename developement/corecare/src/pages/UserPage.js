@@ -4,6 +4,7 @@ import Content from "../component/UserDetails/Content";
 import PatientSidebarHandler from "../component/UserDetails/PatientSidebarHandler";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import CreateAccessKey from "../component/UserDetails/CreateAccessKey";
 function UserPage() {
 
     const location = useLocation();
@@ -15,14 +16,20 @@ function UserPage() {
         setActive(text);
     };
 
+    const [createAccessKey, setCreateAccessKey] = useState(false);
+    const handleCreateAccessKeyClick = ((e) => {
 
-
+        setCreateAccessKey(!createAccessKey);
+    });
     return (
         <>
             {userType ?
                 <>
+                        {
+                            createAccessKey && <CreateAccessKey />
+                        }
                     <div className="user">
-                        <PatientSidebarHandler userType={userType} handleButtonClick={handleButtonClick} />
+                        <PatientSidebarHandler userType={userType} handleButtonClick={handleButtonClick} handleCreateAccessKeyClick={handleCreateAccessKeyClick} />
                         <Content userType={userType} active={active} />
                     </div>
                     <FormlessFooter />

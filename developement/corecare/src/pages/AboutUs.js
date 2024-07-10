@@ -10,13 +10,13 @@ import CreateAccessKey from "../component/UserDetails/CreateAccessKey";
 function AboutUsPage(){
     return(
         <>
-        {/* <Header />
+        <Header />
         <Section1/>
         <Section2/>
         <Section3/>
         <Section4/>
-        <FormFooter/> */}
-        <CreateAccessKey/>
+        <FormFooter/>
+        
         </>
     );
 }
