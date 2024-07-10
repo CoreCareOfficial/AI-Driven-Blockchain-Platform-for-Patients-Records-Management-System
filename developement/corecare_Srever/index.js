@@ -22,6 +22,9 @@ import records from './routes/recordsRoutes.js';
 import prescriptionRoutes from './routes/prescriptionRoutes.js';
 import resultRoutes from './routes/resultRoutes.js';
 import verification from './routes/verification.js';
+import apiDocumentation from './API/API_Documentaion.js';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 import dotenv from 'dotenv';
 
@@ -29,6 +32,30 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+// Swagger definition
+const swaggerDefinition = {
+    openapi: '3.0.0',
+    info: {
+        title: 'AI-Driven Blockchain Platform for Enhanced Patient Records Management',
+        version: '1.0.0',
+        description: 'API documentation for patient records management system',
+    },
+    servers: [
+        {
+            url: 'http://localhost:5000',
+            description: 'Development server',
+        },
+    ],
+};
+
+const options = {
+    swaggerDefinition,
+    // Paths to files containing OpenAPI definitions
+    apis: ['./API/API_Documentaion.js'],
+};
+
+const swaggerSpec = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
@@ -36,6 +63,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // Configure CORS
 app.use(cors());
 
+app.use('/api', apiDocumentation);
 app.use('/login', loginRoutes);
 app.use('/patients', patientRoutes);
 app.use('/doctors', doctorRoutes);
