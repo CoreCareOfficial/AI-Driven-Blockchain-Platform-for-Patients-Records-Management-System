@@ -30,7 +30,7 @@ router.get('/:patientid', async (req, res) => {
     console.log(patientid);
 
     try {
-        const recordsQuery = await pool.query('SELECT * FROM record WHERE patientid = $1', [patientid]);
+        const recordsQuery = await pool.query('SELECT * FROM record WHERE patientid = $1 ORDER BY dateofcreation DESC', [patientid]);
         if (recordsQuery.rows.length === 0) {
             return res.status(400).json({ message: 'Records Not found' });
         }
@@ -66,7 +66,7 @@ router.get('/:patientid', async (req, res) => {
                 return {
                     key: `${result.id}`,
                     data: {
-                        name: `${result.type} Result ${idx + 1}`,
+                        name: `${result.type} ${idx + 1}`,
                         "Name Of Health Provider": healthcareProviderName,
                         type: result.type,
                         date: result.dateofupload,
@@ -138,34 +138,36 @@ router.get('/getresult/:resultid', async (req, res) => {
 
         const result = resultQuery.rows[0];
         const data = await readFileContent(result.file);
+        const filetype = path.extname(result.file).substring(1).toLocaleLowerCase();
 
-        res.status(200).json({ ...result, data });
+        res.status(200).json({ ...result, data, filetype });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
 
 // to get medicines in prescription
-router.get('/get/prescription', async (req, res) => {
-    const { prescriptionid } = req.body;
-    console.log(prescriptionid);
-
+router.post('/get/prescription', async (req, res) => {
+    const prescribedMedicine = req.body;
+    console.log(req.body);
+    console.log(prescribedMedicine);
     try {
         const prescriptions = [];
 
-        for (let i = 0; i < prescriptionid.length; i++) {
-            const prescriptionQuery = await pool.query('SELECT * FROM prescription WHERE id = $1', [prescriptionid[i]]);
+        for (let i = 0; i < prescribedMedicine.length; i++) {
+            const prescriptionQuery = await pool.query('SELECT * FROM prescription WHERE id = $1', [prescribedMedicine[i]]);
             if (prescriptionQuery.rows.length === 0) {
                 return res.status(400).json({ message: 'Prescription Not found' });
             }
 
             prescriptions.push(prescriptionQuery.rows[0]);
         }
+        const prescriptionDiagnostic = await pool.query('SELECT diagnosis FROM record WHERE recordid = $1', [prescriptions[0].recordid]);
         const patientInfo = await pool.query('SELECT firstname, lastname, sex, dateofbirth FROM patient WHERE patientid = $1', [prescriptions[0].patientid]);
         const doctorInfo = await pool.query('SELECT patientid, specialization, locationofwork FROM doctor WHERE doctorid = $1', [prescriptions[0].doctorid]);
         const doctorPersonInfo = await pool.query('SELECT firstname, lastname, country, address, phonenumber FROM patient WHERE patientid = $1', [doctorInfo.rows[0].patientid]);
 
-        res.status(200).json({ prescriptions, patientInfo: patientInfo.rows[0], doctorInfo: doctorInfo.rows[0], doctorPersonInfo: doctorPersonInfo.rows[0] });
+        res.status(200).json({ prescriptions, patientInfo: patientInfo.rows[0], doctorInfo: doctorInfo.rows[0], doctorPersonInfo: doctorPersonInfo.rows[0], diagnosis: prescriptionDiagnostic.rows[0] });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
