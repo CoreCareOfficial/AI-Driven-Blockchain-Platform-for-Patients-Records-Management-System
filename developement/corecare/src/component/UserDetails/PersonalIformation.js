@@ -71,11 +71,11 @@ function PersonalInformation(props) {
 
     useEffect(() => {
         const userId = userInfo.patientid;
-        fetchData(`http://192.168.137.1:5000/healthinfo/${userId}`, "healthInfo");
-        fetchData(`http://192.168.137.1:5000/allergies/${userId}`, "allergies");
-        fetchData(`http://192.168.137.1:5000/medications/${userId}`, "medications");
-        fetchData(`http://192.168.137.1:5000/pastconditions/${userId}`, "pastConditions");
-        fetchData(`http://192.168.137.1:5000/previousdoctors/${userId}`, "previousDoctors");
+        fetchData(`http://localhost:5000/healthinfo/${userId}`, "healthInfo");
+        fetchData(`http://localhost:5000/allergies/${userId}`, "allergies");
+        fetchData(`http://localhost:5000/medications/${userId}`, "medications");
+        fetchData(`http://localhost:5000/pastconditions/${userId}`, "pastConditions");
+        fetchData(`http://localhost:5000/previousdoctors/${userId}`, "previousDoctors");
     }, [userInfo.patientid]);
 
     const { healthInfo, allergies, medications, pastConditions, previousDoctors, isLoading } = userData;

@@ -1,5 +1,5 @@
 import { Routes, Route, Outlet } from 'react-router-dom';
-import HomePage from '../pages/HomePage'
+import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import SignupPage from '../pages/SignupPage';
 import SignupPage1 from '../pages/SignupPage1';
@@ -18,11 +18,14 @@ import DoctorSignupPage from '../pages/DoctorSignupPage';
 import HealthcareFacilitySignupPage from '../pages/HealthcareFacilitySignupPage';
 import HealthcareFacilitySignupPage2 from '../pages/HealthcareFacilitySignupPage2';
 import ForgetPasswordPage from '../pages/ForgetPasswordPage';
-
+import ScrollToTop from '../utiles/ScrollToTop';
+import PdfViewer from '../component/FilesUploadAndViw/PdfViewer';
+import FileUpload from '../component/FilesUploadAndViw/FileUpload';
 
 function Root() {
     return (
         <>
+            <ScrollToTop />
             <Routes>
                 <Route path='/' element={<HomePage />} />
                 <Route path='about_us' element={<AboutUsPage />} />
@@ -45,9 +48,11 @@ function Root() {
                     <Route path='verify-code' element={<VerifyCodePage />} />
                     <Route path='end_step' element={<EndSignupPage />} />
                 </Route>
+                <Route path='read-pdf' element={<PdfViewer />} />
+                <Route path='pdf' element={<FileUpload />} />
             </Routes>
         </>
     );
-};
+}
 
 export default Root;

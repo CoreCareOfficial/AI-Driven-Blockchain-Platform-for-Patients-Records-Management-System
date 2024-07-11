@@ -30,7 +30,7 @@ function LoginPage() {
         };
 
         try {
-            const userResponse = await fetch("http://192.168.137.1:5000/login/get", {
+            const userResponse = await fetch("http://localhost:5000/login/get", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

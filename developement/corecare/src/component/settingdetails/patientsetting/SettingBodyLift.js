@@ -100,7 +100,7 @@ function SettingBodyLift(props) {
             thirdname: thirdName,
         };
         try {
-            const response = await fetch(`http://192.168.137.1:5000/patients/general/${userInfo.patientid}`, {
+            const response = await fetch(`http://localhost:5000/patients/general/${userInfo.patientid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -133,7 +133,7 @@ function SettingBodyLift(props) {
             name: updateUserInfoValue.name,
         };
         try {
-            const response = await fetch(`http://192.168.137.1:5000/healthcareproviders/updatehealthcareprovider/${loginInfoValue.login}`, {
+            const response = await fetch(`http://localhost:5000/healthcareproviders/updatehealthcareprovider/${loginInfoValue.login}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -165,7 +165,7 @@ function SettingBodyLift(props) {
             allergies: updateUserInfoValue.allergies
         };
         try {
-            const response = await fetch(`http://192.168.137.1:5000/patients/healthinfo/${userInfo.patientid}`, {
+            const response = await fetch(`http://localhost:5000/patients/healthinfo/${userInfo.patientid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -201,7 +201,7 @@ function SettingBodyLift(props) {
             return;
         }
         try {
-            const response = await fetch(`http://192.168.137.1:5000/doctors/updatepracticeinfo/${doctorid}`, {
+            const response = await fetch(`http://localhost:5000/doctors/updatepracticeinfo/${doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'

@@ -26,7 +26,7 @@ function ForgetPasswordPage() {
             email: v
         };
         try {
-            const response = await fetch("http://192.168.137.1:5000/login/checkemail", {
+            const response = await fetch("http://localhost:5000/login/checkemail", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
