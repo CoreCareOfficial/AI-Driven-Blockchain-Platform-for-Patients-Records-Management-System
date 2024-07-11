@@ -23,7 +23,7 @@ function RecordesMenu(props) {
         }
 
         try {
-            const response = await fetch(`http://localhost:5000/records/getresult/${selectedFile.id}`, {
+            const response = await fetch(`http://192.168.137.1:5000/records/getresult/${selectedFile.id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

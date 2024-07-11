@@ -17,7 +17,7 @@ const DicomViewer = ({ dicomUrl }) => {
                 const response = await fetch(dicomUrl);
                 const arrayBuffer = await response.arrayBuffer();
                 const byteArray = new Uint8Array(arrayBuffer);
-                const imageId = `dicomweb://localhost/${dicomUrl}`;
+                const imageId = `dicomweb://192.168.137.1/${dicomUrl}`;
 
                 cornerstone.registerImageLoader('dicomweb', (imageId) => {
                     const image = dicomParser.parseDicom(byteArray);

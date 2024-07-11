@@ -26,7 +26,7 @@ function UserPage() {
             {userType ?
                 <>
                         {
-                            createAccessKey && <CreateAccessKey />
+                            createAccessKey && <CreateAccessKey handleCreateAccessKeyClick={handleCreateAccessKeyClick}/>
                         }
                     <div className="user">
                         <PatientSidebarHandler userType={userType} handleButtonClick={handleButtonClick} handleCreateAccessKeyClick={handleCreateAccessKeyClick} />

@@ -37,7 +37,7 @@ export function UpdateImage(props) {
         formData.append('facilityPhoto', imageFile);
         formData.append('type', props.userType)
         try {
-            const response = await fetch(`http://localhost:5000/healthcareproviders/updatefacilityphoto/${props.username}`, {
+            const response = await fetch(`http://192.168.137.1:5000/healthcareproviders/updatefacilityphoto/${props.username}`, {
                 method: "PUT",
                 body: formData
             });
@@ -64,7 +64,7 @@ export function UpdateImage(props) {
         const formData = new FormData();
         formData.append('personalPhoto', imageFile);
         try {
-            const response = await fetch(`http://localhost:5000/patients/personalphoto/${props.username}`, {
+            const response = await fetch(`http://192.168.137.1:5000/patients/personalphoto/${props.username}`, {
                 method: "PUT",
                 body: formData
             });
@@ -199,7 +199,7 @@ export function AddEmergency(props) {
             patientid: props.userid
         };
         try {
-            const response = await fetch(`http://localhost:5000/emergencycontacts`, {
+            const response = await fetch(`http://192.168.137.1:5000/emergencycontacts`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -608,9 +608,9 @@ export function AddAccountForm(props) {
         event.preventDefault();
     }
     return (
-        <form onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
+        <form onSubmit={handleSubmit} style={{ marginTop: '20px' }} className="relative">
             {props.children}
-            <Button type="submit" label={props.label} icon="pi pi-check-circle" className="bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2 self-center" />
+            <Button type="submit" label={props.label} icon="pi pi-check-circle" className="absolute right-0 bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2" />
         </form>
     );
 }
@@ -951,3 +951,43 @@ export function SearchToAccessInput(props) {
         </>
     );
 };
+
+// ========
+export function AddAccessKeyInput(props) {
+    // const lab = {
+    //     color: '#fff',
+    //     fontWeight: '700',
+    // }
+    const inp = {
+        width: 'calc(100% - 0%)',
+        borderBottom: '1px solid #3f4652',
+        outline: 'none',
+        fontWeight: '500',
+        backgroundColor: '#181a1f',
+        color: '#fff',
+        height:'5vh',
+        borderRadius:'5px',
+        paddingLeft:'5px',
+        display: props.isShow ? 'block' : 'none'
+        
+    }
+
+    const [value, setValue] = useState(props.value || '');
+    return (
+        <>
+            <div style={{ borderRadius: '8px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                {/* <label style={lab}>{props.label}</label> */}
+                <input style={inp}
+                    type={props.type}
+                    placeholder={props.placeholder}
+                    onChange={(e) => setValue(e.target.value)}
+                    name={props.name}
+                    disabled={props.disabled}
+                    autoFocus={props.autoFocus}
+                    required={props.required}
+                    value={value}
+                />
+            </div>
+        </>
+    );
+}

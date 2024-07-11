@@ -66,7 +66,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`http://localhost:5000/workhours/${id}`, {
+            const response = await fetch(`http://192.168.137.1:5000/workhours/${id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -111,7 +111,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`http://localhost:5000/workhours`, {
+            const response = await fetch(`http://192.168.137.1:5000/workhours`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -153,7 +153,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`http://localhost:5000/visithours/${id}`, {
+            const response = await fetch(`http://192.168.137.1:5000/visithours/${id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -196,7 +196,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`http://localhost:5000/visithours`, {
+            const response = await fetch(`http://192.168.137.1:5000/visithours`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -258,7 +258,7 @@ function SettingBodyRight(props) {
         setEmergencyContacts(newEmergencyContacts);
 
         try {
-            const response = await fetch(`http://localhost:5000/emergencycontacts/${id}`, {
+            const response = await fetch(`http://192.168.137.1:5000/emergencycontacts/${id}`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

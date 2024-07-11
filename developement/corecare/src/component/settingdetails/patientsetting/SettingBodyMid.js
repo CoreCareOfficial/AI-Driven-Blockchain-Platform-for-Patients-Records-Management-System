@@ -72,7 +72,7 @@ function SettingBodyMid(props) {
             newPassword: hashedPassword,
         };
         try {
-            const response = await fetch("http://localhost:5000/login/change", {
+            const response = await fetch("http://192.168.137.1:5000/login/change", {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ function SettingBodyMid(props) {
             whatsapp: updateUserInfoValue.whatsapp
         };
         try {
-            const response = await fetch(`http://localhost:5000/socialmedia/${loginInfoValue.login}`, {
+            const response = await fetch(`http://192.168.137.1:5000/socialmedia/${loginInfoValue.login}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -153,7 +153,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`http://localhost:5000/doctors/updateprofissionalinfo/${profissional.doctorid}`, {
+            const response = await fetch(`http://192.168.137.1:5000/doctors/updateprofissionalinfo/${profissional.doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -193,7 +193,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`http://localhost:5000/doctors/updateeducationalinfo/${profissional.doctorid}`, {
+            const response = await fetch(`http://192.168.137.1:5000/doctors/updateeducationalinfo/${profissional.doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -240,7 +240,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`http://localhost:5000/healthcareproviders/updatedepartments/${healthcareProviderInfo.id}`, {
+            const response = await fetch(`http://192.168.137.1:5000/healthcareproviders/updatedepartments/${healthcareProviderInfo.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -278,7 +278,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`http://localhost:5000/healthcareproviders/updateservices/${healthcareProviderInfo.id}`, {
+            const response = await fetch(`http://192.168.137.1:5000/healthcareproviders/updateservices/${healthcareProviderInfo.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'

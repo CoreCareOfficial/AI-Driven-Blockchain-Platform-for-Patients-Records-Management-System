@@ -42,7 +42,7 @@ function RecordesPage(props) {
                 return <p>Error In Loading Your Info!!</p>;
             }
             try {
-                const response = await fetch(`http://localhost:5000/records/${loginInfoValue.patientId}`, {
+                const response = await fetch(`http://192.168.137.1:5000/records/${loginInfoValue.patientId}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'

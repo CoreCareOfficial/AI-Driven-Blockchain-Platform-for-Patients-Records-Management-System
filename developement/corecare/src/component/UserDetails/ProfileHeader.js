@@ -10,7 +10,7 @@ function ProfileHeader(props) {
 
     const getUserData = async (userId) => {
         try {
-            const response = await fetch(`http://localhost:5000/socialmedia/${userId}`, {
+            const response = await fetch(`http://192.168.137.1:5000/socialmedia/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
