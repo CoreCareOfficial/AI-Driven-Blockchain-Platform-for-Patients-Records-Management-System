@@ -32,6 +32,13 @@ function Prescription() {
         fontWeight: '700',
         textAlign: 'center',
     };
+    const h_6 = {
+        color: '#3146ff',
+        fontSize: '1.3em',
+        margin: '5px 20px',
+        fontWeight: '700',
+        textAlign: 'center',
+    }
 
     const items = [
         { medicalName: "dexamethazone", dosage: "1*1", note: "before sleep" },
@@ -175,67 +182,91 @@ function Prescription() {
                         textAlign: 'center',
                     }}>Prescription</h1>
 
-                    {prescriptionsInfo.prescriptions.map((item, index) => (
-                        <div key={index}
-                            style={{
-                                border: '1px solid #272c34',
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                justifyContent: 'space-between',
-                                width: '90%',
-                                minHeight: '15vh',
-                                margin: '15px auto',
-                                padding: '15px',
-                                borderRadius: '8px',
-                            }}>
-                            <div
-                                style={{
-                                    width: '40%',
-                                    minHeight: '10vh',
-                                    margin: '0px',
-                                }}>
-                                <DynamicInput label="Name : " type="text" disabled={true} value={item.medicinename}>
-                                    <input type='checkbox' value={item.medicinename} name="Prescription" />
-                                </DynamicInput>
-                            </div>
-                            <div
-                                style={{
-                                    width: '40%',
-                                    minHeight: '10vh',
-                                    margin: '0px',
-                                }}>
-                                <DynamicInput label="Dosage : " type="text" disabled={true} value={item.dosage} />
-                            </div>
-                            <div
-                                style={{
-                                    width: '50%',
-                                    minHeight: '8vh',
-                                    margin: '0px auto',
-                                    alignItems: 'center',
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                }}>
-                                <label
+                    <div style={{
+                        border: '1px solid #272c34',
+                        width: '90%',
+                        margin: '15px auto',
+                        minHeight: '15vh',
+                        borderRadius: '8px',
+                    }}>
+                        {prescriptionsInfo.prescriptions.map((item, index) => (
+                            <>
+                                <div key={index}
                                     style={{
-                                        color: '#272c34',
-                                        fontWeight: '700',
-                                    }}>Note : </label>
-                                <textarea
-                                    style={{
-                                        resize: 'none',
-                                        outline: 'none',
-                                        borderBottom: '1px solid #3146ff',
-                                        width: 'calc(100% - 85px)',
-                                        paddingLeft: '5px',
-                                    }}
+                                        // border: '1px solid #272c34',
+                                        display: 'flex',
+                                        flexWrap: 'wrap',
+                                        justifyContent: 'space-between',
+                                        width: '100%',
+                                        minHeight: '15vh',
+                                        // margin: '15px auto',
+                                        padding: '15px',
+                                        // borderRadius: '8px',
+                                    }}>
+                                    <div
+                                        style={{
+                                            width: '40%',
+                                            minHeight: '10vh',
+                                            margin: '0px',
+                                        }}>
+                                        <DynamicInput label="Name : " type="text" disabled={true} value={item.medicinename}>
+                                            <input type='checkbox' value={item.medicinename} name="Prescription" />
+                                        </DynamicInput>
+                                    </div>
+                                    <div
+                                        style={{
+                                            width: '40%',
+                                            minHeight: '10vh',
+                                            margin: '0px',
+                                        }}>
+                                        <DynamicInput label="Dosage : " type="text" disabled={true} value={item.dosage} />
+                                    </div>
+                                    <div
+                                        style={{
+                                            width: '50%',
+                                            minHeight: '8vh',
+                                            margin: '0px auto',
+                                            alignItems: 'center',
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                        }}>
+                                        <label
+                                            style={{
+                                                color: '#272c34',
+                                                fontWeight: '700',
+                                            }}>Note : </label>
+                                        <textarea
+                                            style={{
+                                                resize: 'none',
+                                                outline: 'none',
+                                                borderBottom: '1px solid #3146ff',
+                                                width: 'calc(100% - 85px)',
+                                                paddingLeft: '5px',
+                                            }}
 
-                                    value={item.notes}
-                                    disabled={true}>
-                                </textarea>
-                            </div>
+                                            value={item.notes}
+                                            disabled={true}>
+                                        </textarea>
+                                    </div>
 
-                        </div>
-                    ))}
+                                </div>
+
+                                {/* ====br=== */}
+                                <div
+                                    style={{ 
+                                    margin: '10px auto', 
+                                    width: '90%', 
+                                    height: '10px', 
+                                    color: '#272c34', 
+                                    borderBottom: '1px dashed  #272c34' 
+                                }}
+                                >
+                                </div>
+                            </>
+                        ))}
+                    </div>
+                <h6 style={h_6}>Created By CoreCare Platform</h6>
+                <p style={{textAlign:'center'}}>Developed By Comment Soft</p>
                 </div>
             </section >
         </>

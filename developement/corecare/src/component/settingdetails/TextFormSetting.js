@@ -1084,3 +1084,26 @@ export function AddAccessKeyInput(props) {
         </>
     );
 }
+
+// ========
+export function DynamicRecordInput(props) {
+    const lab = {
+        color: '#272c34',
+        fontWeight: '700',
+    }
+    const inp = {
+        width: 'calc(100% - 0px)',
+        borderBottom: '1px solid #3146ff',
+        outline: 'none',
+        fontWeight: '500',
+    }
+
+    return (
+        <>
+            <div style={{width:'100%', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+                {props.children}
+                <input style={inp} type={props.type} value={props.value} disabled={props.disabled} />
+            </div>
+        </>
+    );
+}

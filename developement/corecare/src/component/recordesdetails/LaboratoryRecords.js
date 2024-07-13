@@ -10,6 +10,13 @@ function LaboratoryRecords(props) {
         fontWeight: '700',
         textAlign: 'center',
     };
+    const h_6 = {
+        color: '#3146ff',
+        fontSize: '1.3em',
+        margin: '5px 20px',
+        fontWeight: '700',
+        textAlign: 'center',
+    }
 
     const lab = {
         color: '#272c34',
@@ -234,6 +241,8 @@ function LaboratoryRecords(props) {
                             </textarea>
                         </div>
                     </div>
+                <h6 style={h_6}>Created By CoreCare Platform</h6>
+                <p style={{textAlign:'center'}}>Developed By Comment Soft</p>
                 </div>
             </section >
         </>
