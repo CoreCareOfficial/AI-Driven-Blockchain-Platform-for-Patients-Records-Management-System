@@ -62,11 +62,11 @@ function DoctorSignupPage() {
                     />
                     <Upload title="Upload license document *" name='licenseDocument' />
                     <TextInputField
-                        label='Location of Work'
+                        label='Location of Work *'
                         type='text'
                         name='locationOfWork'
                         placeholder='Enter your Location of work'
-                        required={true}
+
                     />
                 </FormLogin>
             </div>

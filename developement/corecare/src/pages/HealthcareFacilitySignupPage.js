@@ -68,14 +68,6 @@ function HealthcareFacilitySignupPage() {
                     />
                     <CountrySelectorField name='country' isFacility={true} />
                     <TextInputField
-                        label={`${facilityType} Phone Number`}
-                        type='text'
-                        name='phoneNumber'
-                        placeholder={`Enter the ${facilityType} phone number`}
-                        required={true}
-                        isFacility={true}
-                    />
-                    <TextInputField
                         label={`${facilityType} Email`}
                         type='email'
                         name='email'
@@ -85,6 +77,15 @@ function HealthcareFacilitySignupPage() {
                         onBlur={handleOnBlur}
                         min={13}
                     />
+                    <TextInputField
+                        label={`${facilityType} Phone Number`}
+                        type='text'
+                        name='phoneNumber'
+                        placeholder={`Enter the ${facilityType} phone number`}
+                        required={true}
+                        isFacility={true}
+                    />
+
                 </FormLogin>
             </div>
         </CardLogin>

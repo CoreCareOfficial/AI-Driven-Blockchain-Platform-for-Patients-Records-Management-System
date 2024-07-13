@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import countryList from 'react-select-country-list';
+import { HealthcareFacilityInfo, userInfo } from '../../Recoil/Atom';
+import { useSetRecoilState } from 'recoil';
+
 function AddCountry(props) {
 
     const [value, setValue] = useState(props.value);
     const [options, setOptions] = useState([]); // Initialize options state
     const [isLoading, setIsLoading] = useState(false); // Track loading state
     const [error, setError] = useState(null); // Store any errors
+    const user = props.isFacility ? HealthcareFacilityInfo : userInfo;
+    const setUserInfo = useSetRecoilState(user);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,6 +30,11 @@ function AddCountry(props) {
 
     const changeHandler = (e) => {
         setValue(e.target.value);
+        console.log(e.target.value);
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: e.target.value
+        }));
     };
 
     const inp = {
@@ -32,8 +42,8 @@ function AddCountry(props) {
         borderBottom: '1px solid #3f4652',
         outline: 'none',
         fontWeight: '500',
-                backgroundColor:'#181a1f',
-        color:'#fff'
+        backgroundColor: '#181a1f',
+        color: '#fff'
     }
     return (
         <>
@@ -45,7 +55,7 @@ function AddCountry(props) {
                         {value}
                     </option> {/* Default option */}
                     {options.map((country) => (
-                        <option key={country.value} value={country.value}>
+                        <option key={country.value} value={country.value.label}>
                             {country.label}
                         </option>
                     ))}

@@ -4,7 +4,7 @@ import { IoIosEyeOff } from "react-icons/io";
 import SettingCountrySelector from './SettingCountrySelector';
 import { Button } from "primereact/button";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { userHealthInfo } from "../../Recoil/Atom";
+import { HealthcareFacilityInfo, userHealthInfo, userInfo } from "../../Recoil/Atom";
 import { Image } from "react-bootstrap";
 import defaultPic from '../../assets/user_signup.png';
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
@@ -606,6 +606,9 @@ export function AddAccountForm(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (props.onSubmit) {
+            props.onSubmit();
+        }
     }
     return (
         <form onSubmit={handleSubmit} style={{ marginTop: '20px' }} className="relative">
@@ -616,6 +619,8 @@ export function AddAccountForm(props) {
 }
 
 export function AddAccountInput(props) {
+    const user = props.isFacility ? HealthcareFacilityInfo : userInfo;
+    const setUserInfo = useSetRecoilState(user);
     const lab = {
         color: '#fff',
         fontWeight: '700',
@@ -630,6 +635,14 @@ export function AddAccountInput(props) {
     }
 
     const [value, setValue] = useState(props.value || '');
+    const handleBlur = (event) => {
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: event.target.value
+        }));
+        if (props.onBlur)
+            props.onBlur(event.target.value, setValue);
+    };
     return (
         <>
             <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
@@ -643,6 +656,55 @@ export function AddAccountInput(props) {
                     autoFocus={props.autoFocus}
                     required={props.required}
                     value={value}
+                    onBlur={handleBlur}
+                />
+            </div>
+        </>
+    );
+}
+export function AddAccountInput2(props) {
+    const user = props.isFacility ? HealthcareFacilityInfo : userInfo;
+    const setUserInfo = useSetRecoilState(user);
+
+    const lab = {
+        color: '#fff',
+        fontWeight: '700',
+    }
+    const inp = {
+        width: '100%',
+        borderBottom: '1px solid #3f4652',
+        outline: 'none',
+        fontWeight: '500',
+        backgroundColor: '#181a1f',
+        color: '#fff',
+        marginTop: '10px'
+    }
+
+
+    const handleBlur = (event) => {
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: event.target.value
+        }));
+        if (props.onBlur)
+            props.onBlur(event.target.value);
+    };
+
+    const [value, setValue] = useState(props.value || '');
+    return (
+        <>
+            <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between', flexDirection: 'column' }}>
+                <label style={lab}>{props.label}</label>
+                <input style={inp}
+                    type={props.type}
+                    placeholder={props.placeholder}
+                    onChange={(e) => setValue(e.target.value)}
+                    name={props.name}
+                    disabled={props.disabled}
+                    autoFocus={props.autoFocus}
+                    required={props.required}
+                    value={value}
+                    onBlur={handleBlur}
                 />
             </div>
         </>
@@ -650,7 +712,8 @@ export function AddAccountInput(props) {
 }
 
 export function AddAccountSelect(props) {
-
+    const user = props.isFacility ? HealthcareFacilityInfo : userInfo;
+    const setUserInfo = useSetRecoilState(user);
     const hidtext = props.value;
     const lab = {
         color: '#fff',
@@ -664,6 +727,14 @@ export function AddAccountSelect(props) {
         backgroundColor: '#181a1f',
         color: '#fff'
     }
+    const handleBlur = (event) => {
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: event.target.value
+        }));
+        if (props.onBlur)
+            props.onBlur(event.target.value);
+    };
 
     const listItems = props.items.map((item, index) => (
         <option key={index}>{item}</option>
@@ -671,7 +742,7 @@ export function AddAccountSelect(props) {
     return (
         <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
             <label style={lab}>{props.label}</label>
-            <select required={props.required} style={inp} placeholder="" name={props.name} disabled={props.disabled}>
+            <select required={props.required} style={inp} placeholder="" name={props.name} disabled={props.disabled} onBlur={handleBlur}>
                 <option disabled selected hidden>{hidtext}</option>
                 {listItems}
             </select>
@@ -687,7 +758,7 @@ export function AddAccountCountry(props) {
     return (
         <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
             <label style={lab}>{props.label}</label>
-            <AddCountry required={props.required} value={props.value} />
+            <AddCountry required={props.required} value={props.value} name={props.name} isFacility={props.isFacility} />
         </div>
     );
 };
@@ -696,23 +767,25 @@ export function AddAccountCheckbox(props) {
     const lab = {
         color: '#fff',
         fontWeight: '700',
-
+        marginRight: '10px'
     }
     return (
-        <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between', flexDirection: 'column' }}>
             <label style={lab}>{props.label}</label>
 
-            <label style={lab}>{props.ch1}
-                <input type='checkbox' value={props.value} name={props.name}
-                    onChange={props.onChange1}
-                    checked={props.checked1} />
-            </label>
+            <div style={{ marginTop: '10px' }}>
+                <label style={lab}>
+                    <input type='checkbox' value={props.value1} name={props.name}
+                        onChange={props.onChange1}
+                        checked={props.checked1} style={{ marginRight: '6px' }} />{props.ch1}
+                </label>
 
-            <label style={lab}>{props.ch2}
-                <input type='checkbox' value={props.value} name={props.name}
-                    onChange={props.onChange2}
-                    checked={props.checked2} />
-            </label>
+                <label style={lab}>
+                    <input type='checkbox' value={props.value2} name={props.name}
+                        onChange={props.onChange2}
+                        checked={props.checked2} style={{ marginRight: '6px' }} />{props.ch2}
+                </label>
+            </div>
         </div>
     );
 };
@@ -734,7 +807,7 @@ export function AddAccountPassport(props) {
     // const [selectedFile, setSelectedFile] = useState(null);
     const fileRef = useRef(null);
     const toast = useRef(null);
-    // const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
+    const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -743,10 +816,10 @@ export function AddAccountPassport(props) {
         }
 
         // setSelectedFile(file);
-        // setUserInfo((prevUserInfo) => ({
-        //     ...prevUserInfo,
-        //     [props.name]: file
-        // }));
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: file
+        }));
 
         toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successful Photo Uploaded' });
 
@@ -805,6 +878,15 @@ export function AddAccountSpecialization(props) {
             <option key={index} value={option}>{option}</option>
         );
     });
+
+    const user = props.isFacility ? HealthcareFacilityInfo : userInfo;
+    const setUserInfo = useSetRecoilState(user);
+    const handleBlur = (event) => {
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            [props.name]: event.target.value
+        }));
+    }
     return (
         <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
             <label style={lab} >{props.label}</label>
@@ -813,6 +895,7 @@ export function AddAccountSpecialization(props) {
                 value={selectedValue}
                 onChange={handleChange}
                 disabled={props.disabled}
+                onBlur={handleBlur}
                 style={inp}
             >
                 <option disabled selected hidden value="" style={{ textAlign: 'left' }}>{props.value}</option>
@@ -876,10 +959,20 @@ export function AddAccountMedicalDegree(props) {
         console.log(event.target.value)
     };
 
+
+    const user = props.isFacility ? HealthcareFacilityInfo : userInfo;
+    const setUserInfo = useSetRecoilState(user);
+    const handleBlur = (event) => {
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            academicDegree: event.target.value
+        }));
+    };
+
     return (
         <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
             <label style={lab}>{props.label}</label>
-            <select id="dino-select" value={selectedValue} onChange={handleChange} disabled={props.disabled} style={inp}>
+            <select id="dino-select" value={selectedValue} onChange={handleChange} disabled={props.disabled} style={inp} onBlur={handleBlur}>
                 <option disabled selected hidden>{props.value}</option>
                 {selectItems}
             </select>

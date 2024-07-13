@@ -39,7 +39,6 @@ function SignupPage() {
 
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
-                // alert(jsonData.message);
                 setUserInfo((prevUserInfo) => ({
                     ...prevUserInfo,
                     email: emailValue

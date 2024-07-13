@@ -31,23 +31,6 @@ function ImageSignup() {
             ...prevUserInfo,
             photo: file
         }));
-        // const formData = new FormData();
-        // formData.append('profileImage', file);
-
-        // // Send the image data to the server for upload
-        // fetch('/upload-profile-image', {
-        //     method: 'POST',
-        //     body: formData,
-        // })
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         // Handle successful upload response (e.g., update user profile state)
-        //         console.log('Image uploaded successfully:', data);
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error uploading image:', error);
-        //         // Handle upload error
-        //     });
         const reader = new FileReader();
         reader.onload = (e) => {
             // setSelectedFile(file);
@@ -60,7 +43,7 @@ function ImageSignup() {
     const styleInputFile = {
         backgroundColor: '#ffffff',
         color: '#3146FF',
-        width: '97%',
+        width: '100%',
         height: '34px',
         borderRadius: '50PX',
         fontFamily: 'DM Sans',

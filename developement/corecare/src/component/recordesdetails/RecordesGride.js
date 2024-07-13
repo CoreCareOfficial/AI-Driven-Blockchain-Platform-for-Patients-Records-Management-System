@@ -38,29 +38,13 @@ function RecordesGride(props) {
         }
     }, [props.tableTitle, reports, labTests, radiologies, prescriptons, allRecords]); // Include dependencies here
 
-    const [idSelected, setIdSelected] = useState(0);
+    const [fileSelected, setFileSelected] = useState({ id: '', data: {} });
     const [isOpen, setIsOpen] = useState(false);
     // =================================
-    const handleMenuClick = ((e) => {
-        setIdSelected(e.target.id);
-        console.log(e.target.id);
+    const handleMenuClick = (e, data) => {
+        setFileSelected({ id: e.target.id, data: data });
         setIsOpen(!isOpen);
-    });
-    // =================================
-    // const handleRecordsResult = () => {
-    //     let count = 0;
-    //     if (props.tableTitle !== "All Records") {
-    //         Object.keys(props.allRecords).forEach((record) => {
-    //             if (props.tableTitle === props.allRecords[record]["Type"]) {
-    //                 count = count + 1;
-    //             }
-    //         });
-    //         return count;
-    //     } else {
-    //         return Object.keys(props.allRecords).length;
-    //     }
-    // };
-    // ===================================
+    };
     const recStyle = {
         color: '#fff',
         fontWeight: '600',
@@ -121,21 +105,20 @@ function RecordesGride(props) {
                                     isExpanded && record.children && record.children.map((child) => (
                                         <DynamicCard name="RecordesGride_card" key={child.key}>
                                             <DynamicCard name="RecordesGride_innerCard">
-                                            <span style={{display: child.data["star"] ? 'block' : 'none', position:'absolute',left:'10px', top:'10px', color:'#fff', fontSize: '1.1rem' }}><IoStarSharp /></span>
+                                                <span style={{ display: child.data["star"] ? 'block' : 'none', position: 'absolute', left: '10px', top: '10px', color: '#fff', fontSize: '1.1rem' }}><IoStarSharp /></span>
                                                 <span className="RecordesGride_Ic_menu" >
                                                     <IconContext.Provider value={{ className: "RecordesGride_Ic", size: "1.3rem" }}>
-                                                        <BsThreeDotsVertical id={child.key} onClick={handleMenuClick} />
+                                                        <BsThreeDotsVertical id={child.key} onClick={(e) => handleMenuClick(e, child.data)} />
                                                     </IconContext.Provider>
                                                 </span>
-                                                {/* ======================== */}
                                                 <span className="RecordesGride_icon">
                                                     {props.icons[child.data["type"]]}
                                                 </span>
                                             </DynamicCard>
                                             <Card.Text>{child.data["name"]}</Card.Text>
                                             {
-                                                isOpen && idSelected === child.key &&
-                                                <RecordesMenu id={idSelected} open={true} handleMenuClick={handleMenuClick} />
+                                                isOpen && fileSelected.id === child.key &&
+                                                <RecordesMenu file={fileSelected} open={true} handleMenuClick={() => setIsOpen(!isOpen)} />
                                             }
                                         </DynamicCard>
                                     ))
@@ -149,21 +132,20 @@ function RecordesGride(props) {
                         {recordsList.map((child) => (
                             <DynamicCard name="RecordesGride_card" key={child.key}>
                                 <DynamicCard name="RecordesGride_innerCard">
-                                <span style={{display: child.data["star"] ? 'block' : 'none', position:'absolute',left:'10px', top:'10px', color:'#fff', fontSize: '1.1rem' }}><IoStarSharp /></span>
+                                    <span style={{ display: child.data["star"] ? 'block' : 'none', position: 'absolute', left: '10px', top: '10px', color: '#fff', fontSize: '1.1rem' }}><IoStarSharp /></span>
                                     <span className="RecordesGride_Ic_menu" >
                                         <IconContext.Provider value={{ className: "RecordesGride_Ic", size: "1.3rem" }}>
-                                            <BsThreeDotsVertical id={child.key} onClick={handleMenuClick} />
+                                            <BsThreeDotsVertical id={child.key} onClick={(e) => handleMenuClick(e, child.data)} />
                                         </IconContext.Provider>
                                     </span>
-                                    {/* ======================== */}
                                     <span className="RecordesGride_icon">
                                         {props.icons[child.data["type"]]}
                                     </span>
                                 </DynamicCard>
                                 <Card.Text>{child.data["name"]}</Card.Text>
                                 {
-                                    isOpen && idSelected === child.key &&
-                                    <RecordesMenu id={idSelected} open={true} handleMenuClick={handleMenuClick} />
+                                    isOpen && fileSelected.id === child.key &&
+                                    <RecordesMenu file={fileSelected} open={true} handleMenuClick={() => setIsOpen(!isOpen)} />
                                 }
                             </DynamicCard>
                         )
@@ -171,52 +153,6 @@ function RecordesGride(props) {
                     </Container>
                 )
             }
-            {/* <Container className="RecordesGride">
-                {Object.keys(props.allRecords).map((record) => (
-                    props.tableTitle !== "All Records" ?
-                        props.tableTitle === props.allRecords[record]["Type"] &&
-                        <>
-                            <DynamicCard name="RecordesGride_card" key={props.allRecords[record]['id']}>
-                                <DynamicCard name="RecordesGride_innerCard">
-                                    <span className="RecordesGride_Ic_menu" >
-                                        <IconContext.Provider value={{ className: "RecordesGride_Ic", size: "1.3rem" }}>
-                                            <BsThreeDotsVertical id={props.allRecords[record]['id']} onClick={handleMenuClick} />
-                                        </IconContext.Provider>
-                                    </span>
-                                    <span className="RecordesGride_icon">
-                                        {props.icons[props.allRecords[record]["Type"]]}
-                                    </span>
-                                </DynamicCard>
-                                <Card.Text>{props.allRecords[record]["Name Of Record"]}</Card.Text>
-                                {
-                                    isOpen && idSelected == props.allRecords[record]['id'] &&
-                                    <RecordesMenu id={idSelected} open={true} handleMenuClick={handleMenuClick} />
-                                }
-                            </DynamicCard>
-                        </>
-                        :
-                        <>
-                            <DynamicCard name="RecordesGride_card" key={props.allRecords[record]['id']}>
-                                <DynamicCard name="RecordesGride_innerCard">
-                                    <span className="RecordesGride_Ic_menu" >
-                                        <IconContext.Provider value={{ className: "RecordesGride_Ic", size: "1.3rem" }}>
-                                            <BsThreeDotsVertical id={props.allRecords[record]['id']} onClick={handleMenuClick} />
-                                        </IconContext.Provider>
-                                    </span>
-                                    <span className="RecordesGride_icon">
-                                        {props.icons[props.allRecords[record]["Type"]]}
-                                    </span>
-                                </DynamicCard>
-                                <Card.Text>{props.allRecords[record]["Name Of Record"]}</Card.Text>
-                                {
-                                    isOpen && idSelected == props.allRecords[record]['id'] &&
-                                    <RecordesMenu id={idSelected} open={true} handleMenuClick={handleMenuClick} />
-                                }
-                            </DynamicCard>
-                        </>
-
-                ))}
-            </Container> */}
         </>
     );
 }

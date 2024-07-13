@@ -4,8 +4,13 @@ import React, { useEffect, useRef } from 'react';
 import cornerstone from 'cornerstone-core';
 // import cornerstoneTools from 'cornerstone-tools';
 import dicomParser from 'dicom-parser';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 
-const DicomViewer = ({ dicomUrl }) => {
+const DicomViewer = () => {
+    const location = useLocation();
+    const { dicomUrl } = queryString.parse(location.search);
+
     const elementRef = useRef(null);
 
     useEffect(() => {

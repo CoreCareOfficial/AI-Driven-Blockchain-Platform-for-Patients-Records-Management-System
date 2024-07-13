@@ -13,7 +13,7 @@ function AllRecords(props) {
     const radiologies = props.radiologies || [];
     const prescriptons = props.prescriptons || [];
     const [recordsList, setRecordsList] = useState([]);
-    const [fileSelected, setFileSelected] = useState({ id: '', type: '' });
+    const [fileSelected, setFileSelected] = useState({ id: '', data: {} });
     const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
     const [isOpen, setIsOpen] = useState(false);
     const itemRight = 50;
@@ -38,10 +38,11 @@ function AllRecords(props) {
         }
     }, [props.tableTitle, reports, labTests, radiologies, prescriptons, allRecords]); // Include dependencies here
 
-    const handleMenuClick = (e, type) => {
+    const handleMenuClick = (e, data) => {
+        console.log('data', data);
         const rect = e.target.getBoundingClientRect();
         setMenuPosition({ top: rect.top, left: rect.left });
-        setFileSelected({ id: e.target.id, type: type });
+        setFileSelected({ id: e.target.id, data: data });
         setIsOpen(!isOpen);
     };
 
@@ -112,7 +113,8 @@ function AllRecords(props) {
                                                 <td>{child.data["type"]}</td>
                                                 <td>{child.data["Name Of Health Provider"]}</td>
                                                 <td>{formatDate(child.data["date"])}</td>
-                                                <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={record.key} onClick={(e) => handleMenuClick(e, child.data["type"])} /></span></td>
+                                                {console.log('child.data', child.data)}
+                                                <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={child.key} onClick={(e) => handleMenuClick(e, child.data)} /></span></td>
                                             </tr>
                                             <p style={{ display: 'none' }}>{c++}</p>
                                         </>
@@ -130,7 +132,8 @@ function AllRecords(props) {
                                 <td>{record.data["type"]}</td>
                                 <td>{record.data["Name Of Health Provider"]}</td>
                                 <td>{formatDate(record.data["date"])}</td>
-                                <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={record.key} onClick={(e) => handleMenuClick(e, record.data["type"])} /></span></td>
+                                {console.log('child.data', record.data)}
+                                <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={record.key} onClick={(e) => handleMenuClick(e, record.data)} /></span></td>
                             </tr>
                         ))
                     )}

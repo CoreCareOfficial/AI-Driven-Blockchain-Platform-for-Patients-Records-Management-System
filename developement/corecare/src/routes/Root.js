@@ -21,6 +21,8 @@ import ForgetPasswordPage from '../pages/ForgetPasswordPage';
 import ScrollToTop from '../utiles/ScrollToTop';
 import PdfViewer from '../component/FilesUploadAndViw/PdfViewer';
 import FileUpload from '../component/FilesUploadAndViw/FileUpload';
+import DicomViewer from '../component/FilesUploadAndViw/DicomViewer';
+import Prescription from '../component/recordesdetails/Presctiption';
 
 function Root() {
     return (
@@ -49,6 +51,8 @@ function Root() {
                     <Route path='end_step' element={<EndSignupPage />} />
                 </Route>
                 <Route path='read-pdf' element={<PdfViewer />} />
+                <Route path='view-dicom' element={<DicomViewer />} />
+                <Route path='prescription' element={<Prescription />} />
                 <Route path='pdf' element={<FileUpload />} />
             </Routes>
         </>
