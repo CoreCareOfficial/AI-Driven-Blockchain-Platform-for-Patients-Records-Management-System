@@ -4,12 +4,29 @@ import TextPage from '../component/loginDetails/TextPage';
 import FormLogin from '../component/loginDetails/FormLogin';
 import { SelectInputField, TextInputField } from '../component/loginDetails/TextInputField';
 import ImageSignup from '../component/loginDetails/ImageSignup';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Upload from '../component/loginDetails/Upload';
 import { userInfo } from "../Recoil/Atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigate } from 'react-router-dom';
+import { Toast } from 'primereact/toast';
 
+
+const useOptimistic = (initialValue, callback) => {
+    const [value, setValue] = useState(initialValue);
+
+    const updateValue = async (newValue) => {
+        const previousValue = value;
+        setValue(newValue);
+        try {
+            await callback(newValue);
+        } catch (error) {
+            setValue(previousValue);
+        }
+    };
+
+    return [value, updateValue];
+};
 
 function SignupPage3() {
 
@@ -18,7 +35,7 @@ function SignupPage3() {
 
     const setUserInfo = useSetRecoilState(userInfo);
     const userInfoValue = useRecoilValue(userInfo);
-
+    const toast = useRef(null);
 
     const handleIdTypeChangeNational = (event) => {
         setSelectedNational(true);
@@ -60,14 +77,88 @@ function SignupPage3() {
     const navigate = useNavigate();
     const text = userInfoValue.typeUser === "Doctor" ? `Welcome Dr. ${userInfoValue.firstName} ${userInfoValue.lastName}` :
         `Welcome ${userInfoValue.firstName} ${userInfoValue.lastName}`;
+
+
+    const [userInfoOptimistic, setUserInfoOptimistic] = useOptimistic(userInfo, async (newUserInfoValue) => {
+        const formData = new FormData();
+        formData.append('id', newUserInfoValue.id);
+        formData.append('image', newUserInfoValue.FIdCardPhoto ? newUserInfoValue.FIdCardPhoto : newUserInfoValue.passportPhoto);
+
+        // Show the loading toast
+        toast.current.show({ severity: 'info', summary: 'Processing', detail: 'Checking your ID card and ID, please wait...', life: 3000 });
+
+        try {
+            const response = await fetch("http://192.168.137.1:5000/ai/checkidentity", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                navigate(nextPage);
+                // Optionally show a success toast
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'ID check successful' });
+            } else {
+                const errorData = await response.json();
+                toast.current.show({ severity: 'error', summary: 'Error', detail: errorData.message || 'Invalid Data' });
+                throw new Error(errorData.message || 'Invalid Data');
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
+        }
+    });
+
+    const handleOnSubmit = async () => {
+        if (!userInfoValue.id && (!userInfoValue.FIdCardPhoto || !userInfoValue.passportPhoto)) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'ID card photo or passport photo is required' });
+            return;
+        }
+
+        try {
+            await setUserInfoOptimistic(userInfoValue);
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
+        }
+    };
+    // const handleOnSubmit = async () => {
+    //     if (!userInfoValue.id && (!userInfoValue.FIdCardPhoto || !userInfoValue.passportPhoto)) {
+    //         toast.current.show({ severity: 'error', summary: 'Error', detail: 'ID card photo or passport photo is required' });
+    //         return;
+    //     }
+    //     const formData = new FormData();
+    //     formData.append('id', userInfoValue.id);
+    //     formData.append('image', userInfoValue.FIdCardPhoto ? userInfoValue.FIdCardPhoto : userInfoValue.passportPhoto);
+
+    //     try {
+    //         const response = await fetch("http://192.168.137.1:5000/checkidentity", {
+    //             method: "POST",
+    //             body: formData
+    //         });
+    //         if (response.ok) {
+    //             const data = await response.json();
+    //             console.log(data);
+    //             navigate(nextPage);
+    //         } else {
+    //             const errorData = await response.json(); // Parse the error response if any
+    //             toast.current.show({ severity: 'error', summary: 'Error', detail: errorData.message || 'Invalid Data' });
+    //         }
+    //     } catch (error) {
+    //         console.error(error.message);
+    //         toast.current.show({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
+    //     }
+    // };
     return (
         <CardLogin step={3}>
+            <Toast ref={toast} />
             {userInfoValue.phoneNumber ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />
                     <TextPage text={text} />
-                    <FormLogin buttonName='Continue' onContinue={() => navigate(nextPage)}>
+                    <FormLogin buttonName='Continue' onContinue={handleOnSubmit}>
                         <div className='row' style={{ padding: '0 10px' }}>
                             <div className='col col-lg-4' style={{ padding: '0px', alignItems: 'center' }}>
                                 <ImageSignup />

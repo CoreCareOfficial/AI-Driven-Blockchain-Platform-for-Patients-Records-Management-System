@@ -73,7 +73,7 @@ function SignupPage4() {
     return (
         <CardLogin step={step}>
             <Toast ref={toast} />
-            {(userInfoValue.phoneNumber || HealthcareFacilityInfoValue.licenseNumber || userGeneralData.isForgetton) ?
+            {((userInfoValue.phoneNumber && userInfoValue.id && (userInfoValue.FIdCardPhoto || userInfoValue.passportPhoto)) || (HealthcareFacilityInfoValue.licenseNumber && HealthcareFacilityInfoValue.licenseDocument) || userGeneralData.isForgetton) ?
                 <div className='card-body d-flex flex-column justify-content-center'
                     style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                     <TitlePage title="Sign Up" />

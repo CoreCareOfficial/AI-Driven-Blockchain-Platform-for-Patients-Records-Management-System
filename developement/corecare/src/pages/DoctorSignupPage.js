@@ -7,6 +7,24 @@ import TextPage from "../component/loginDetails/TextPage";
 import TitlePage from "../component/loginDetails/TitlePage";
 import Upload from "../component/loginDetails/Upload";
 import { useNavigate } from "react-router-dom";
+import { Toast } from "primereact/toast";
+import { useRef, useState } from "react";
+
+const useOptimistic = (initialValue, callback) => {
+    const [value, setValue] = useState(initialValue);
+
+    const updateValue = async (newValue) => {
+        const previousValue = value;
+        setValue(newValue);
+        try {
+            await callback(newValue);
+        } catch (error) {
+            setValue(previousValue);
+        }
+    };
+
+    return [value, updateValue];
+};
 
 function DoctorSignupPage() {
 
@@ -35,13 +53,61 @@ function DoctorSignupPage() {
     const navigate = useNavigate();
 
     const userInfoValue = useRecoilValue(userInfo);
+    const toast = useRef(null);
+
+    const [userInfoOptimistic, setUserInfoOptimistic] = useOptimistic(userInfo, async (newUserInfoValue) => {
+        const formData = new FormData();
+        formData.append('id', newUserInfoValue.licenseNumber);
+        formData.append('image', newUserInfoValue.licenseDocument);
+
+        // Show the loading toast
+        toast.current.show({ severity: 'info', summary: 'Processing', detail: 'Checking your license Document and license Number, please wait...', life: 5000 });
+
+        try {
+            const response = await fetch("http://192.168.137.1:5000/ai/checklicense", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                navigate('/signup/password-step');
+                // Optionally show a success toast
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'License Number check successful' });
+            } else {
+                const errorData = await response.json();
+                toast.current.show({ severity: 'error', summary: 'Error', detail: errorData.message || 'Invalid Data' });
+                throw new Error(errorData.message || 'Invalid Data');
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
+        }
+    });
+
+
+    const handleOnSubmit = async () => {
+        if (!userInfoValue.licenseNumber && !userInfoValue.licenseDocument) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'License Document is required' });
+            return;
+        }
+
+        try {
+            await setUserInfoOptimistic(userInfoValue);
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
+        }
+    };
     return (
         <CardLogin step={4}>
+            <Toast ref={toast} />
             <div className='card-body d-flex flex-column justify-content-center'
                 style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
                 <TextPage text={`Welcome Dr. ${userInfoValue.firstName} ${userInfoValue.lastName}`} />
-                <FormLogin buttonName='Continue' onContinue={() => navigate('/signup/password-step')}>
+                <FormLogin buttonName='Continue' onContinue={handleOnSubmit}>
                     <SelectInputField
                         label='Medical Specialization'
                         placeholder='Select your Medical Specialization...'

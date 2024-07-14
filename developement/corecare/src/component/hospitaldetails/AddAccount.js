@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Container } from "react-bootstrap";
-import { AddAccountCheckbox, AddAccountCountry, AddAccountForm, AddAccountInput, AddAccountInput2, AddAccountPassport, AddAccountSelect, UpdateImage } from "../settingdetails/TextFormSetting";
+import { AddAccountCheckbox, AddAccountCountry, AddAccountForm, AddAccountInput, AddAccountInput2, AddAccountPassport, AddAccountSelect } from "../settingdetails/TextFormSetting";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import ImageSignup from "../loginDetails/ImageSignup";
 import { userInfo } from "../../Recoil/Atom";
@@ -90,7 +90,7 @@ function AddAccount(props) {
             userInfoValue.phoneNumber.slice(-3);
         console.log('username = ' + username);
         let email = '';
-        // let password = '';
+        let password = '';
         let successfulAddUser = false;
         const formData = new FormData();
         formData.append('username', username);
@@ -120,14 +120,16 @@ function AddAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("http://192.168.137.1:5000/patients", {
+            const response = await fetch("http://192.168.137.1:5000/patients/addpatient", {
                 method: "POST",
                 body: formData
             });
             if (response.ok) {
                 console.log("res = " + response);
+                const { patientID, hashedPassword } = await response.json();
+                password = hashedPassword;
                 console.log('Added Patient Successful');
-                toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
+                // toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
                 successfulAddUser = true;
             }
         } catch (error) {
@@ -135,8 +137,34 @@ function AddAccount(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
             successfulAddUser = false;
         }
-        if (successfulAddUser && email && username) {
+        if (successfulAddUser && email && password && username) {
             console.log("save in login");
+            const loginData = {
+                email: email,
+                password: password,
+                userType: 'Patient',
+                username: username
+            };
+
+            try {
+                const userResponse = await fetch("http://192.168.137.1:5000/login/add", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                });
+                if (userResponse.ok) {
+                    console.log("User Added Successful");
+                    toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
+                } else {
+                    toast.current.show({ severity: 'error', summary: 'Error', detail: 'User could not be added' });
+                }
+            } catch (error) {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
+            }
+        } else {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Something error' });
         }
     };
 

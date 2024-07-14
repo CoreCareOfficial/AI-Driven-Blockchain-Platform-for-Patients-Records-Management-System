@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Container } from "react-bootstrap";
-import { AddAccountCheckbox, AddAccountCountry, AddAccountForm, AddAccountInput, AddAccountPassport, AddAccountSelect, UpdateImage } from "../settingdetails/TextFormSetting";
+import { AddAccountCheckbox, AddAccountCountry, AddAccountForm, AddAccountInput, AddAccountPassport } from "../settingdetails/TextFormSetting";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { HealthcareFacilityInfo } from "../../Recoil/Atom";
 import { Toast } from "primereact/toast";
@@ -89,7 +89,7 @@ function AddRadiologyAccount(props) {
             userInfoValue.licenseNumber.slice(-2);
         console.log('username = ' + username);
         let email = '';
-        // let password = '';
+        let password = '';
         let successfulAddUser = false;
         const formData = new FormData();
         formData.append('username', username);
@@ -108,13 +108,15 @@ function AddRadiologyAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("http://192.168.137.1:5000/healthcareproviders", {
+            const response = await fetch("http://192.168.137.1:5000/healthcareproviders/addhealthcareprovider", {
                 method: "POST",
                 body: formData
             });
             if (response.ok) {
                 console.log("res = " + response);
-                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Radiology Added Successfully' });
+                const { hashedPassword } = await response.json();
+                password = hashedPassword;
+                // toast.current.show({ severity: 'success', summary: 'Success', detail: 'Radiology Added Successfully' });
                 successfulAddUser = true;
             } else {
                 successfulAddUser = false;
@@ -125,8 +127,34 @@ function AddRadiologyAccount(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
             successfulAddUser = false;
         }
-        if (successfulAddUser && email && username) {
-            console.log('save to login');
+        if (successfulAddUser && email && password && username) {
+            console.log("save in login");
+            const loginData = {
+                email: email,
+                password: password,
+                userType: 'Radiology Center',
+                username: username
+            };
+
+            try {
+                const userResponse = await fetch("http://192.168.137.1:5000/login/add", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                });
+                if (userResponse.ok) {
+                    console.log("User Added Successful");
+                    toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
+                } else {
+                    toast.current.show({ severity: 'error', summary: 'Error', detail: 'User could not be added' });
+                }
+            } catch (error) {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
+            }
+        } else {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Something error' });
         }
     };
 
