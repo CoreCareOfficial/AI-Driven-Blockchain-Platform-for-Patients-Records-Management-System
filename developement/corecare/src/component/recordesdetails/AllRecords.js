@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import RecordesMenu from './RecordesMenu';
 import H1 from '../H1';
 import { MdMoreHoriz, MdKeyboardArrowDown, MdKeyboardArrowRight } from 'react-icons/md';
 import { IoStarSharp } from 'react-icons/io5';
 import P from '../P';
 import "../../css/UserPageStyle/dropdownbutton.css";
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { Toast } from 'primereact/toast';
 
 function AllRecords(props) {
     const allRecords = props.records || [];
@@ -16,6 +18,7 @@ function AllRecords(props) {
     const [fileSelected, setFileSelected] = useState({ id: '', data: {} });
     const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpen2, setIsOpen2] = useState(false);
     const itemRight = 50;
 
     useEffect(() => {
@@ -41,7 +44,8 @@ function AllRecords(props) {
     const handleMenuClick = (e, data) => {
         console.log('data', data);
         const rect = e.target.getBoundingClientRect();
-        setMenuPosition({ top: rect.top, left: rect.left });
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        setMenuPosition({ top: rect.top + scrollTop, left: rect.left });
         setFileSelected({ id: e.target.id, data: data });
         setIsOpen(!isOpen);
     };
@@ -55,6 +59,16 @@ function AllRecords(props) {
         }));
     };
 
+    const handleMenuVerticalClick = (e, data) => {
+        console.log('e,id', e.target.id);
+        const rect = e.target.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        // const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        setMenuPosition({ top: rect.top + scrollTop, left: rect.left });
+        setFileSelected({ id: e.target.id, data: data });
+        setIsOpen2(true);
+    };
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -66,8 +80,14 @@ function AllRecords(props) {
 
     const title = props.tableTitle === "All Records" ? "Records" : `${props.tableTitle}s`;
 
+    const toast = useRef(null);
+    const handleToast = (t) => {
+        toast.current.show(t)
+    };
+
     return (
         <>
+            <Toast ref={toast} />
             <div className="Recordes_result">
                 <H1 name="result_title" title={`All ${title}`} />
                 <P name="result_text" title={`Showing ${recordsList.length} ${title} Results`} />
@@ -81,6 +101,7 @@ function AllRecords(props) {
                         <th style={{ width: '13%' }}>Type</th>
                         <th>Name Of Health Provider</th>
                         <th>Date Of Upload</th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -101,6 +122,9 @@ function AllRecords(props) {
                                         <td>{record.data["Name Of Health Provider"]}</td>
                                         <td>{formatDate(record.data["date"])}</td>
                                         <td></td>
+                                        <td><span style={{ cursor: "pointer" }} >
+                                            <BsThreeDotsVertical id={record.key} onClick={(e) => handleMenuVerticalClick(e, record.data)} />
+                                        </span></td>
                                     </tr>
                                     <p style={{ display: 'none' }}>{c++}</p>
                                     {isExpanded && record.children && record.children.map((child) => (
@@ -115,6 +139,7 @@ function AllRecords(props) {
                                                 <td>{formatDate(child.data["date"])}</td>
                                                 {console.log('child.data', child.data)}
                                                 <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={child.key} onClick={(e) => handleMenuClick(e, child.data)} /></span></td>
+                                                <td></td>
                                             </tr>
                                             <p style={{ display: 'none' }}>{c++}</p>
                                         </>
@@ -134,11 +159,13 @@ function AllRecords(props) {
                                 <td>{formatDate(record.data["date"])}</td>
                                 {console.log('child.data', record.data)}
                                 <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={record.key} onClick={(e) => handleMenuClick(e, record.data)} /></span></td>
+                                <td></td>
                             </tr>
                         ))
                     )}
                 </tbody>
-                {isOpen && <RecordesMenu file={fileSelected} top={menuPosition.top} right={itemRight} open={true} handleMenuClick={() => setIsOpen(!isOpen)} />}
+                {isOpen && <RecordesMenu file={fileSelected} top={menuPosition.top} right={itemRight} toast={handleToast} open={true} handleMenuClick={() => setIsOpen(!isOpen)} />}
+                {isOpen2 && <RecordesMenu file={fileSelected} top={menuPosition.top} right={itemRight} toast={handleToast} open={true} handleMenuClick={() => setIsOpen2(!isOpen2)} isRecord={true} handleExpanded={handleClick} />}
             </table >
         </>
     );

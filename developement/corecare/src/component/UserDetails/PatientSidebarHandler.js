@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { BsPerson } from "react-icons/bs";
 import { FaFileMedical } from "react-icons/fa";
 import { MdEventNote } from "react-icons/md"
@@ -21,20 +21,37 @@ import { FaHospitalUser } from "react-icons/fa6";
 import SideBar from "./SideBar";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { loginInfo } from '../../Recoil/Atom';
-import CreateAccessKey from './CreateAccessKey';
+import { Toast } from 'primereact/toast';
 
+const useOptimistic = (initialValue, callback) => {
+    const [value, setValue] = useState(initialValue);
+
+    const updateValue = async (newValue) => {
+        const previousValue = value;
+        setValue(newValue);
+        try {
+            await callback(newValue);
+        } catch (error) {
+            setValue(previousValue);
+        }
+    };
+
+    return [value, updateValue];
+};
 
 function PatientSidebarHandler(props) {
     const [activeButton, setActiveButton] = useState("Profile");
     const navigate = useNavigate();
+    const toast = useRef(null);
 
     const handleButtonClick = (buttonText) => {
         setActiveButton(buttonText);
         props.handleButtonClick(buttonText);
     };
     const setUserInfo = useSetRecoilState(loginInfo);
+    const userInfoValue = useRecoilValue(loginInfo);
 
     const handleGoout = () => {
         sessionStorage.removeItem('email');
@@ -45,6 +62,55 @@ function PatientSidebarHandler(props) {
         navigate('/');
 
     };
+
+    const [userInfoOptimistic, setUserInfoOptimistic] = useOptimistic(loginInfo, async (newUserInfoValue) => {
+        console.log(newUserInfoValue.patientId);
+        toast.current.show({ severity: 'info', summary: 'Processing', detail: 'Summarizing Medical Records, please wait...', life: 5000 });
+
+        const data = {
+            patientid: newUserInfoValue.patientId
+        }
+        try {
+            const response = await fetch("http://192.168.137.1:5000/ai/summarizerecords", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                // navigate('/signup/password-step');
+                // Optionally show a success toast
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Summarized Medical records successful' });
+            } else {
+                const errorData = await response.json();
+                toast.current.show({ severity: 'error', summary: 'Error', detail: errorData.message || 'Invalid Data' });
+                throw new Error(errorData.message || 'Invalid Data');
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
+        }
+
+
+    });
+    const handleSummarizeRecords = async () => {
+        if (userInfoValue.patientId === '') {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Sorry Error Occured, Session expired please login in again' });
+            return;
+        }
+        console.log(userInfoValue.patientId);
+        try {
+            await setUserInfoOptimistic(userInfoValue);
+        } catch (error) {
+            console.error(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
+        }
+
+    }
 
     const logoutIcon =
         <IconContext.Provider value={{ className: "logout", size: "2rem" }}>
@@ -63,6 +129,7 @@ function PatientSidebarHandler(props) {
 
     return (
         <>
+            <Toast ref={toast} />
             <SideBar >
                 <div className="sidebar-content">
                     <H1 name="Title" title="Core Care" />
@@ -204,13 +271,13 @@ function PatientSidebarHandler(props) {
                 <div className="flex flex-col flex-wrap max-w-full">
 
                     {props.userType === "Patient" || props.userType === "Doctor" ? (
-                        <Button name="button secondary" label="Summarize Records" IconComponent={SummarizeIcon} />
+                        <Button name="button secondary" label="Summarize Records" IconComponent={SummarizeIcon} onClick={handleSummarizeRecords} />
                     ) : null}
 
                     {/* ========================== */}
 
                     {props.userType === "Patient" || props.userType === "Doctor" ? (
-                        <Button name="button primary" label="Create Access Key" IconComponent={plusIcon} onClick={props.handleCreateAccessKeyClick}/>
+                        <Button name="button primary" label="Create Access Key" IconComponent={plusIcon} onClick={props.handleCreateAccessKeyClick} />
                     ) : null}
 
                     {/* ========================== */}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DynamicCard from "../bootcomponent/DynamicCard";
 import { Button } from "react-bootstrap";
 import { MdOutlineFileOpen } from "react-icons/md";
@@ -8,8 +8,30 @@ import { MdOutlineNoteAlt } from "react-icons/md";
 import { MdOutlineStarBorder } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import queryString from 'query-string';
+import { Toast } from "primereact/toast";
+import { useRecoilValue } from "recoil";
+import { loginInfo } from "../../Recoil/Atom";
+
+
+const useOptimistic = (initialValue, callback) => {
+    const [value, setValue] = useState(initialValue);
+
+    const updateValue = async (newValue) => {
+        const previousValue = value;
+        setValue(newValue);
+        try {
+            await callback(newValue);
+        } catch (error) {
+            setValue(previousValue);
+        }
+    };
+
+    return [value, updateValue];
+};
 
 function RecordesMenu(props) {
+    const userInfoValue = useRecoilValue(loginInfo);
+
     // const selectedFile = props.file || { id: '', data: {} };
     const [selectedFile, setSelectedFile] = useState({ id: '', data: {} });
 
@@ -84,20 +106,80 @@ function RecordesMenu(props) {
 
     const handleOpenFile = async () => {
         if (selectedFile.id === '') {
-            alert('No file selected');
+            alert('No Record selected');
             return;
         }
         if (!selectedFile.data) {
-            alert('No data file selected');
+            alert('No data Record selected');
             return;
         }
         if (selectedFile.data['type'] === "Lab Result" || selectedFile.data['type'] === "Radiology Result") {
             fetchFile(selectedFile.id);
         } else if (selectedFile.data['type'] === "Prescription") {
             fetchPrescption(selectedFile.data['prescribedMedicine']);
+        } else if (selectedFile.data['type'] === "Record") {
+            if (props.handleExpanded)
+                props.handleExpanded(selectedFile.id);
+            if (props.handleMenuClick)
+                props.handleMenuClick();
         }
 
     };
+
+    const [userInfoOptimistic, setUserInfoOptimistic] = useOptimistic(loginInfo, async (newUserInfoValue) => {
+        console.log(newUserInfoValue.patientId);
+        props.toast({ severity: 'info', summary: 'Processing', detail: 'Summarizing Medical Record, please wait...', life: 5000 });
+
+        const data = !props.isRecord ? {
+            patientid: newUserInfoValue.patientId,
+            resultid: selectedFile.id
+        } : {
+            patientid: newUserInfoValue.patientId,
+            recordid: selectedFile.id
+        }
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/ai/${props.isRecord ? 'summarizeonerecord' : 'summarizresult'}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                // navigate('/signup/password-step');
+                // Optionally show a success toast
+                props.toast({ severity: 'success', summary: 'Success', detail: 'Summarized Medical record successful' });
+            } else {
+                const errorData = await response.json();
+                props.toast({ severity: 'error', summary: 'Error', detail: errorData.message || 'Invalid Data' });
+                throw new Error(errorData.message || 'Invalid Data');
+            }
+        } catch (error) {
+            console.error(error.message);
+            props.toast({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
+        }
+
+
+    });
+    const handleSummarizeRecord = async () => {
+        if (props.handleMenuClick)
+            props.handleMenuClick();
+        if (userInfoValue.patientId === '' && selectedFile.id === '') {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'Sorry Error Occured,Session expired please login in again' });
+            return;
+        }
+        console.log(userInfoValue.patientId);
+        try {
+            await setUserInfoOptimistic(userInfoValue);
+        } catch (error) {
+            props.toast({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
+            console.error(error.message);
+        }
+
+    }
 
     return (
         <>
@@ -111,12 +193,12 @@ function RecordesMenu(props) {
                     <Button variant="" style={{ transition: '0.7s ease' }} onClick={handleOpenFile}>
                         <span className="span"><MdOutlineFileOpen /></span> Open
                     </Button>{' '}
-                    <Button variant="" style={{ transition: '0.7s ease' }}>
+                    <Button variant="" style={{ transition: '0.7s ease' }} onClick={handleSummarizeRecord}>
                         <span className="span"><MdOutlineSummarize /></span> Summarize
                     </Button>{' '}
-                    <Button variant="" style={{ transition: '0.7s ease' }}>
+                    {!props.isRecord && <Button variant="" style={{ transition: '0.7s ease' }}>
                         <span className="span"><MdOutlineLocalPrintshop /></span> Print
-                    </Button>{' '}
+                    </Button>}{' '}
                     <Button variant="" style={{ transition: '0.7s ease' }}>
                         <span className="span"><MdOutlineNoteAlt /></span> Write Note
                     </Button>{' '}
