@@ -834,7 +834,7 @@ export function AddAccountPassport(props) {
                 // className="form-control"
                 style={inp}
                 onChange={handleFileChange}
-                required
+                // required
             />
             <div
                 style={{ textAlign: 'center', borderRadius: '8px', borderBottom: '1px solid #000', backgroundColor: '#fff', width: '100%', cursor: 'pointer' }}

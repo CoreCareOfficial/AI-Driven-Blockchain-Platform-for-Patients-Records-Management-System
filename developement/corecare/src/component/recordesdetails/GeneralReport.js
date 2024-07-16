@@ -336,6 +336,7 @@ function GeneralReport() {
                             </div>
                         </>
                     </div>
+                    
                     <h6 style={h_6}>Created By CoreCare Platform</h6>
                     <p style={{textAlign:'center'}}>Developed By Comment Soft</p>
                 </div>
