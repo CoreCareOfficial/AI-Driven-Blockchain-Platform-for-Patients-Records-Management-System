@@ -23,6 +23,7 @@ import PdfViewer from '../component/FilesUploadAndViw/PdfViewer';
 import FileUpload from '../component/FilesUploadAndViw/FileUpload';
 import DicomViewer from '../component/FilesUploadAndViw/DicomViewer';
 import Prescription from '../component/recordesdetails/Presctiption';
+import ReportPage from '../pages/ReportPage';
 
 function Root() {
     return (
@@ -53,6 +54,7 @@ function Root() {
                 <Route path='read-pdf' element={<PdfViewer />} />
                 <Route path='view-dicom' element={<DicomViewer />} />
                 <Route path='prescription' element={<Prescription />} />
+                <Route path='open-report' element={<ReportPage />} />
                 <Route path='pdf' element={<FileUpload />} />
             </Routes>
         </>

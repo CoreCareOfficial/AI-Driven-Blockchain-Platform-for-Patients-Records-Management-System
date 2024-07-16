@@ -1,0 +1,48 @@
+.Summarized-section{
+    /* background-color: red; */
+    
+}
+
+.Summarized-Pat-det-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0px auto;
+    height: fit-content;
+    border-radius: 8px;
+    padding: 5px;
+    border: 1px solid #3146ff;
+}
+
+@media print{
+
+    .Summarized-section{
+        height: 100%;
+    }
+    .Summarized-Pat-det-container{
+        width: 75%;
+    }
+
+    .ReportBody{
+        height: fit-content;
+    }
+
+    .space{
+        height: 13vh;
+    }
+
+    .Summarized-Pat-det-container,.ReportFooter-container{
+        position: fixed;
+        left: 0;
+        right: 0;
+        margin: 0px auto;
+    }
+    .Summarized-Pat-det-container{
+        top: 35px;
+    }
+
+    .ReportFooter-container{
+        bottom: 0;
+    }
+}

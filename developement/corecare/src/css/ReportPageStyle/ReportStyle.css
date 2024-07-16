@@ -1,0 +1,169 @@
+.ReportPage-open{
+    max-width: 100%;
+    min-height: 100vh;
+    height: 100%;
+    padding: 10px;
+    overflow: hidden;
+    background-color: #272c34;
+}
+
+.ReportPage-print{
+    max-width: 100%;
+    min-height: 100vh;
+    height: 100%;
+    padding: 10px;
+    overflow: hidden;
+    background-color: rgba(177, 177, 177, 0.5);
+    position: relative;
+}
+
+.h_6{
+    color: #3146ff;
+    font-size: 1.3em;
+    margin: 5px 20px;
+    font-weight: 700;
+    text-align: center;
+}
+.h_1{
+    color: #272c34;
+    font-size: 1.3em;
+    margin: 5px 0px;
+    font-weight: 700;
+    text-align: center;
+}
+.h_1_t{
+    color: #272c34;
+    font-size: 1.3em;
+    margin: 25px 20px;
+    font-weight: 700;
+}
+/* ========header========= */
+.ReportHeader-container{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    min-height: 20vh;
+    border-radius: 8px;
+    margin: 0px auto;
+}
+
+.ReportHeader-left{
+    min-width: 20%;
+    width: fit-content;
+    min-height: 18vh;
+    margin: 10px;
+}
+
+.ReportHeader-right{
+    width: max-content;
+    min-width: 20%;
+    min-height: 18vh;
+    margin: 10px;
+}
+
+.ReportHeader-Pat-det-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 90%;
+    margin: 0px auto;
+    min-height: 20vh;
+    border-radius: 8px;
+    padding: 5px;
+    border: 1px solid #3146ff;
+}
+/* =====end header====== */
+
+/* ======general report========== */
+.GeneralReport-container{
+    border: 1px solid #272c34;
+    width: 90%;
+    margin: 15px auto;
+    min-height: 15vh;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.GeneralReport-inp-div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 15vh;
+    padding: 15px;
+}
+
+.Prescribed-div{
+    width: 75%;
+    min-height: 10vh;
+    margin: 25px  auto 5px 14%;
+    border: 1px solid #272c34;
+    border-radius: 8px;
+}
+
+/* ==========end general report========= */
+
+/* Prescription Report */
+.PrescriptionReport-container{
+    border: 1px solid #272c34;
+    width: 90%;
+    margin: 15px auto;
+    min-height: 15vh;
+    border-radius: 8px;
+    flex: 1;
+}
+/* =====end Prescription report  */
+
+/* ======LabAndRad Report======== */
+.LabAndRadReport-container{
+    border: 1px solid #272c34;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 90%;
+    min-height: 12vh;
+    margin: 15px auto;
+    padding: 10px;
+    border-radius: 8px;
+}
+/* ======end LabAndRad Report======== */
+
+@media screen {
+    .ReportBody{
+        border: solid 2px red;
+        margin: 20px;
+        padding: 20px;
+    }
+    
+}
+
+
+@media print{
+
+    .PrescriptionReport-container{
+        box-sizing: border-box;
+    }
+    .ReportBody{
+        min-width: 100%;
+    }
+
+    .ReportHeader-Pat-det-container{
+        margin-top: -80px;
+        padding: 0px;
+        height: 20vh;
+    }
+
+    .ReportHeader,.ReportFooter-container{
+        position: fixed;
+        left: 0;
+        right: 0;
+        margin: 0px auto;
+    }
+    .ReportHeader{
+        top: 0;
+    }
+
+    .ReportFooter-container{
+        bottom: 0;
+    }
+}

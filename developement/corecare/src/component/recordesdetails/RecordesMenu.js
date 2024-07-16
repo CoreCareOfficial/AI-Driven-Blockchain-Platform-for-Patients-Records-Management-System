@@ -96,8 +96,8 @@ function RecordesMenu(props) {
             }
             const jsonData = await response.json();
             console.log(`Success loading:`, jsonData);
-            const query = queryString.stringify({ prescriptionsInfo: JSON.stringify(jsonData) });
-            window.open(`/prescription?${query}`, '_blank');
+            const query = queryString.stringify({ info: JSON.stringify(jsonData) , type:'prescription', action:'print'});
+            window.open(`/open-report?${query}`, '_blank');
         } catch (err) {
             console.error("Error:", err);
             alert('Error loading prescription');

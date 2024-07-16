@@ -68,6 +68,7 @@ function Prescription() {
         const year = date.getFullYear();
         return `${day}-${month}-${year}`;
     };
+    
     return (
         <>
             <section style={{
@@ -127,6 +128,7 @@ function Prescription() {
                             <h1 style={h_1}>time 8:00am - 2:00pm</h1>
                         </div>
                     </div>
+
                     <hr style={{ color: '#000', height: '2px', margin: '5px auto', width: '90%' }} />
 
                     <div
@@ -172,6 +174,7 @@ function Prescription() {
                         </div>
 
                     </div>
+
                     <hr style={{ color: '#000', height: '2px', margin: '10px auto', width: '90%' }} />
 
                     <h1 style={{
@@ -265,8 +268,10 @@ function Prescription() {
                             </>
                         ))}
                     </div>
+
                 <h6 style={h_6}>Created By CoreCare Platform</h6>
                 <p style={{textAlign:'center'}}>Developed By Comment Soft</p>
+
                 </div>
             </section >
         </>
