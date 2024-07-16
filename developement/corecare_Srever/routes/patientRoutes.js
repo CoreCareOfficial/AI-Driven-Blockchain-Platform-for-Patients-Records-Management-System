@@ -385,16 +385,11 @@ router.put('/general/:patientID', async (req, res) => {
 
         // Assign old values if new values are undefined
         firstname = firstname !== '' ? firstname : oldPatient.firstname;
-        secondname = secondname !== '' ? secondname : oldPatient.secondname;
-        thirdname = thirdname !== '' ? thirdname : oldPatient.thirdname;
         lastname = lastname !== '' ? lastname : oldPatient.lastname;
         phonenumber = phonenumber !== '' ? phonenumber : oldPatient.phonenumber;
         address = address !== '' ? address : oldPatient.address;
         country = country !== '' ? country : oldPatient.country;
-        job = job !== '' ? job : oldPatient.job;
-        sex = sex !== '' ? sex : oldPatient.sex;
         dateofbirth = dateofbirth !== '' ? dateofbirth : oldPatient.dateofbirth;
-        status = status !== '' ? status : oldPatient.status;
 
         console.log('Updated values:', firstname, secondname, thirdname, lastname, phonenumber, address, country, job, sex, dateofbirth, status);
 

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { ethers } from 'ethers';
+import { BrowserProvider, ethers } from 'ethers';
 import { GeneralData, userInfo } from '../Recoil/Atom';
 import CardLogin from '../component/bootcomponent/CardLogin';
 import TitlePage from '../component/loginDetails/TitlePage';
@@ -10,7 +10,7 @@ import { RadioField } from '../component/loginDetails/TextInputField';
 import SignOrLogin from '../component/loginDetails/SignOrLogin';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Toast } from "primereact/toast";
-import { useRef } from "react";
+
 
 function SignupPage1() {
     const hasUseEffect = useRef(false);
@@ -19,9 +19,12 @@ function SignupPage1() {
     const setGeneralData = useSetRecoilState(GeneralData);
     const [selectedType, setSelectedType] = useState('Patient');
     const [steps, setSteps] = useState(0);
+    const [isConnecting, setIsConnecting] = useState(false);
     const [walletAddress, setWalletAddress] = useState('');
+    const [isInstalled, setIsInstalled] = useState(false);
 
     useEffect(() => {
+
         const stepsN =
             selectedType === "Patient" ? 5
                 : selectedType === "Doctor" ? 6
@@ -30,47 +33,55 @@ function SignupPage1() {
                             : selectedType === "Laboratory" ? 4
                                 : selectedType === "Pharmacy" ? 4
                                     : selectedType === "Researcher" ? 0 : 0;
-        setSteps(stepsN);
+        setSteps(stepsN)
     }, [selectedType]);
 
     useEffect(() => {
-        const connectToMetaMask = async () => {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    console.log('eth');
-                    const provider = new ethers.BrowserProvider(window.ethereum);
-                    await provider.send('eth_requestAccounts', []);
-                    const signer = await provider.getSigner();
-                    const address = await signer.getAddress();
-                    setWalletAddress(address);
-                    setUserInfo((prevUserInfo) => ({
-                        ...prevUserInfo,
-                        PublicWalletAddress: address,
-                    }));
-
-                } catch (error) {
-                    console.error("MetaMask connection error:", error);
-                    // toast.current.show({ severity: 'error', summary: 'MetaMask Connection Error', detail: error.message });
-                }
-            } else {
-                window.open('https://metamask.io/download.html', '_blank');
-                toast.current.show({ severity: 'info', summary: 'MetaMask Not Installed', detail: 'Please install MetaMask and then come back to this page and Refresh.', life: 200000 });
-            }
-        };
-
-        const checkMetaMaskStatus = () => {
-            if (typeof window.ethereum !== 'undefined') {
-                connectToMetaMask();
-            } else {
-                window.open('https://metamask.io/download.html', '_blank');
-                toast.current.show({ severity: 'info', summary: 'MetaMask Not Installed', detail: 'Please install MetaMask and then come back to this page and Refresh.', life: 200000 });
-            }
-        };
         if (!hasUseEffect.current) {
-            checkMetaMaskStatus();
-            hasUseEffect.current = true;
+            if (typeof window.ethereum === 'undefined') {
+                console.log(window.ethereum);
+                toast.current.show({ severity: 'info', summary: 'MetaMask Not Installed', detail: 'Please install MetaMask and then come back to this page and Refresh.', life: 3000 });
+                hasUseEffect.current = true;
+            }
+            else {
+                connectToMetaMask();
+            }
         }
     }, []);
+
+    const connectToMetaMask = async () => {
+        setIsConnecting(true);
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                console.log('eth');
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                await provider.send('eth_requestAccounts', []);
+                const signer = await provider.getSigner();
+                const address = await signer.getAddress();
+                setWalletAddress(address);
+                setUserInfo((prevUserInfo) => ({
+                    ...prevUserInfo,
+                    PublicWalletAddress: address,
+                }));
+                setIsConnecting(false);
+                setIsInstalled(true);
+            } catch (error) {
+                console.error("MetaMask connection error:", error);
+                setIsConnecting(false);
+                toast.current.show({ severity: 'error', summary: 'MetaMask Connection Error', detail: 'You have to connect to metamask to continue' });
+            }
+        } else {
+            if (!isInstalled) {
+                window.open('https://metamask.io/download.html', '_blank', 'noreferrer, noopener');
+                toast.current.show({ severity: 'info', summary: 'MetaMask Not Installed', detail: 'Please install MetaMask and then come back to this page and Refresh.', life: 3000 });
+                setIsConnecting(false)
+                setIsInstalled(true);
+            }
+            else {
+                window.location.reload();
+            }
+        }
+    }
 
     const handleChangeUserType = (e) => {
         setSelectedType(e.target.value);
@@ -100,7 +111,8 @@ function SignupPage1() {
             }));
             navigate(nextPage); // Redirect on successful submission
         } else {
-            toast.current.show({ severity: 'error', summary: 'MetaMask Wallet not Connected', detail: 'Please Refresh the page Connect to MetaMask wallet', life: 3000 });
+            toast.current.show({ severity: 'error', summary: 'MetaMask Wallet not Connected', detail: 'Please connect to Metamask', life: 3000 });
+
         }
     };
 
@@ -119,6 +131,9 @@ function SignupPage1() {
                         <RadioField label1='Radiology Center' name='users' onSelected={handleChangeUserType} selectedTypeValue={selectedType} />
                     </div>
                 </FormLogin>
+                <button className='bg-[#3146FF] text-white rounded-[50px] w-[85%] min-w-[40px] h-[34px] mx-0 mt-[14] mb-[16]' onClick={connectToMetaMask}>
+                    {isConnecting ? 'Connecting...' : 'Connect to MetaMask'}
+                </button>
                 <SignOrLogin goSign={false} />
             </div>
             <Outlet />
