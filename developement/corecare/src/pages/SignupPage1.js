@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { BrowserProvider, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { GeneralData, userInfo } from '../Recoil/Atom';
 import CardLogin from '../component/bootcomponent/CardLogin';
 import TitlePage from '../component/loginDetails/TitlePage';
@@ -10,7 +10,6 @@ import { RadioField } from '../component/loginDetails/TextInputField';
 import SignOrLogin from '../component/loginDetails/SignOrLogin';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Toast } from "primereact/toast";
-
 
 function SignupPage1() {
     const hasUseEffect = useRef(false);
@@ -24,7 +23,6 @@ function SignupPage1() {
     const [isInstalled, setIsInstalled] = useState(false);
 
     useEffect(() => {
-
         const stepsN =
             selectedType === "Patient" ? 5
                 : selectedType === "Doctor" ? 6
@@ -33,27 +31,27 @@ function SignupPage1() {
                             : selectedType === "Laboratory" ? 4
                                 : selectedType === "Pharmacy" ? 4
                                     : selectedType === "Researcher" ? 0 : 0;
-        setSteps(stepsN)
+        setSteps(stepsN);
     }, [selectedType]);
 
     useEffect(() => {
-        if (!hasUseEffect.current) {
-            if (typeof window.ethereum === 'undefined') {
-                console.log(window.ethereum);
-                toast.current.show({ severity: 'info', summary: 'MetaMask Not Installed', detail: 'Please install MetaMask and then come back to this page and Refresh.', life: 3000 });
+        const checkMetaMask = async () => {
+            if (!hasUseEffect.current) {
+                if (typeof window.ethereum === 'undefined') {
+                    toast.current.show({ severity: 'info', summary: 'MetaMask Not Installed', detail: 'Please install MetaMask and then come back to this page and Refresh.', life: 3000 });
+                } else {
+                    await connectToMetaMask();
+                }
                 hasUseEffect.current = true;
             }
-            else {
-                connectToMetaMask();
-            }
-        }
+        };
+        checkMetaMask();
     }, []);
 
     const connectToMetaMask = async () => {
         setIsConnecting(true);
         if (typeof window.ethereum !== 'undefined') {
             try {
-                console.log('eth');
                 const provider = new ethers.BrowserProvider(window.ethereum);
                 await provider.send('eth_requestAccounts', []);
                 const signer = await provider.getSigner();
@@ -65,23 +63,23 @@ function SignupPage1() {
                 }));
                 setIsConnecting(false);
                 setIsInstalled(true);
+                toast.current.show({ severity: 'success', summary: 'Successfully connected', detail: 'MetaMask Connected Successfully', life: 3000 });
             } catch (error) {
                 console.error("MetaMask connection error:", error);
                 setIsConnecting(false);
-                toast.current.show({ severity: 'error', summary: 'MetaMask Connection Error', detail: 'You have to connect to metamask to continue' });
+                console.error("MetaMask connection error:", error);
             }
         } else {
             if (!isInstalled) {
                 window.open('https://metamask.io/download.html', '_blank', 'noreferrer, noopener');
                 toast.current.show({ severity: 'info', summary: 'MetaMask Not Installed', detail: 'Please install MetaMask and then come back to this page and Refresh.', life: 3000 });
-                setIsConnecting(false)
+                setIsConnecting(false);
                 setIsInstalled(true);
-            }
-            else {
+            } else {
                 window.location.reload();
             }
         }
-    }
+    };
 
     const handleChangeUserType = (e) => {
         setSelectedType(e.target.value);
@@ -96,7 +94,7 @@ function SignupPage1() {
                     : selectedType === "Radiology Center" ? '/signup/HealthcareFacility-step-1'
                         : selectedType === "Laboratory" ? '/signup/HealthcareFacility-step-1'
                             : selectedType === "Pharmacy" ? '/signup/HealthcareFacility-step-1'
-                                : selectedType === "Researcher" ? '' : '';
+                                : '';
 
     const handleContinue = () => {
         if (walletAddress !== '') {
@@ -107,12 +105,11 @@ function SignupPage1() {
             setGeneralData((prevUserInfo) => ({
                 ...prevUserInfo,
                 steps: steps,
-                isForgetton: false
+                isForgetton: false,
             }));
             navigate(nextPage); // Redirect on successful submission
         } else {
-            toast.current.show({ severity: 'error', summary: 'MetaMask Wallet not Connected', detail: 'Please connect to Metamask', life: 3000 });
-
+            toast.current.show({ severity: 'error', summary: 'MetaMask Wallet not Connected', detail: 'Please connect to MetaMask', life: 3000 });
         }
     };
 
@@ -121,6 +118,13 @@ function SignupPage1() {
             <Toast ref={toast} />
             <div className='card-body d-flex flex-column justify-content-center' style={{ width: '100%', alignItems: 'center', marginTop: '-40px' }}>
                 <TitlePage title="Sign Up" />
+                <button
+                    className='bg-white text-[#3146FF] rounded-[50px] w-[85%] min-w-[40px] h-[34px] mx-0 mt-[14] mb-[16]'
+                    onClick={connectToMetaMask}
+                    disabled={isConnecting}
+                >
+                    {typeof window.ethereum !== 'undefined' ? (isConnecting ? 'Connecting...' : 'Connect to MetaMask') : 'Install MetaMask'}
+                </button>
                 <FormLogin buttonName='Continue' onContinue={handleContinue}>
                     <div style={{ height: '200px', padding: '20px', backgroundColor: '#3F4652', borderRadius: '25px' }}>
                         <TextPage text='Sign up as' />
@@ -131,9 +135,6 @@ function SignupPage1() {
                         <RadioField label1='Radiology Center' name='users' onSelected={handleChangeUserType} selectedTypeValue={selectedType} />
                     </div>
                 </FormLogin>
-                <button className='bg-[#3146FF] text-white rounded-[50px] w-[85%] min-w-[40px] h-[34px] mx-0 mt-[14] mb-[16]' onClick={connectToMetaMask}>
-                    {isConnecting ? 'Connecting...' : 'Connect to MetaMask'}
-                </button>
                 <SignOrLogin goSign={false} />
             </div>
             <Outlet />
