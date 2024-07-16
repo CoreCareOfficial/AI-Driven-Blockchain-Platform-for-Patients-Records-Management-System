@@ -6,10 +6,72 @@ import fs from 'fs/promises';
 import fss from 'fs';
 import { fileURLToPath } from 'url';
 import moment from 'moment-timezone';
+import bcrypt from 'bcryptjs';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+import { google } from 'googleapis';
 
+dotenv.config();
 const router = express.Router();
 
+const OAuth2 = google.auth.OAuth2;
 
+const createTransporter = async () => {
+    try {
+
+        const oauth2Client = new OAuth2(
+            process.env.CLIENT_ID,
+            process.env.CLIENT_SECRET,
+            "https://developers.google.com/oauthplayground"
+        );
+
+        oauth2Client.setCredentials({
+            refresh_token: process.env.REFRESH_TOKEN
+        });
+
+        const accessToken = await new Promise((resolve, reject) => {
+            oauth2Client.getAccessToken((err, token) => {
+                if (err) {
+                    console.error('Error getting access token:', err);
+                    reject("Failed to create access token");
+                }
+                resolve(token);
+            });
+        });
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                type: "OAuth2",
+                user: process.env.EMAIL,
+                accessToken,
+                clientId: process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                refreshToken: process.env.REFRESH_TOKEN
+            }
+        });
+
+        return transporter;
+    } catch (error) {
+        console.error('Error in createTransporter:', error);
+        throw error;
+    }
+};
+
+let transporter;
+let transporterReady = false;
+
+const initializeTransporter = async () => {
+    try {
+        transporter = await createTransporter();
+        transporterReady = true;
+        console.log('Transporter initialized successfully');
+    } catch (error) {
+        console.error('Failed to initialize transporter:', error);
+    }
+};
+
+initializeTransporter();
 
 // Set up storage engine using multer
 const storage = multer.diskStorage({
@@ -112,6 +174,131 @@ router.post('/', upload.fields([
         );
         // res.json(newPatient.rows[0].patientID);
         res.json(patientID);
+    } catch (err) {
+        console.error('Error inserting patient:', err);
+        if (err.code === '23505') {
+            res.status(400).send('Email already exists');
+        } else {
+            res.status(500).send('Server error');
+        }
+    }
+});
+
+// add patient account from hospital
+router.post('/addpatient', upload.fields([
+    { name: 'personalPhoto', maxCount: 1 },
+    { name: 'FIDCardPhoto', maxCount: 1 },
+    { name: 'BIDCardPhoto', maxCount: 1 },
+    { name: 'passportDocument', maxCount: 1 }
+]), async (req, res) => {
+    const PAT = "PAT-";
+    const { username, firstName, secondName, thirdName, lastName, email, dateOfBirth, country, sex, phoneNumber, status, address, job, idType, nationalID, passportNo, passportType, passportCountryCode, PublicWalletAddress, bloodType } = req.body;
+
+
+    if (!transporterReady) {
+        console.log("Transporter not ready, waiting...");
+        await new Promise((resolve, reject) => {
+            const checkTransporter = setInterval(() => {
+                if (transporterReady) {
+                    clearInterval(checkTransporter);
+                    resolve();
+                }
+            }, 100);
+            // Add a timeout of 30 seconds
+            setTimeout(() => {
+                clearInterval(checkTransporter);
+                reject(new Error('Transporter initialization timed out'));
+            }, 30000);
+        });
+    }
+
+    try {
+        // Get the last ID from the table
+        const result = await pool.query('SELECT MAX(ID) as maxID FROM PATIENT');
+        const lastID = result.rows[0].maxid || 0;
+        const newID = lastID + 1;
+        const patientID = PAT + newID;
+
+        // Check if the username already exists
+        let uniqueUsername = username;
+        const usernameResult = await pool.query('SELECT username FROM PATIENT WHERE username = $1', [username]);
+
+        if (usernameResult.rows.length > 0) {
+            // Append random two-digit string until a unique username is found
+            let isUnique = false;
+            while (!isUnique) {
+                uniqueUsername = username + generateRandomTwoDigitString();
+                const newUsernameResult = await pool.query('SELECT username FROM PATIENT WHERE username = $1', [uniqueUsername]);
+                if (newUsernameResult.rows.length === 0) {
+                    isUnique = true;
+                }
+            }
+        }
+
+        // File paths
+        const personalPhotoPath = req.files.personalPhoto ? req.files.personalPhoto[0].path : null;
+        const FIDCardPhotoPath = req.files.FIDCardPhoto ? req.files.FIDCardPhoto[0].path : null;
+        const BIDCardPhotoPath = req.files.BIDCardPhoto ? req.files.BIDCardPhoto[0].path : null;
+        const passportDocumentPath = req.files.passportDocument ? req.files.passportDocument[0].path : null;
+
+        const generatedPassword = Math.floor(1000 + Math.random() * 900000).toString(); // Generate a 6-digit code
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(generatedPassword, salt);
+        console.log(generatedPassword);
+        console.log(hashedPassword);
+
+
+        const newPatient = await pool.query(
+            `INSERT INTO PATIENT (patientID, firstName, secondName, thirdName, lastName, email, password, dateOfBirth, country, sex, phoneNumber, status, address, job, personalPhoto, idType, nationalID, passportNo, FIDCardPhoto, BIDCardPhoto, passportType, passportCountryCode, passportDocument, PublicWalletAddress, username, bloodtype) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26) 
+            RETURNING *`,
+            [patientID, firstName, secondName, thirdName, lastName, email, hashedPassword, dateOfBirth, country, sex, phoneNumber, status, address, job, personalPhotoPath, idType, nationalID, passportNo, FIDCardPhotoPath, BIDCardPhotoPath, passportType, passportCountryCode, passportDocumentPath, PublicWalletAddress, uniqueUsername, bloodType]
+        );
+        if (newPatient.rows[0].length === 0) {
+            return res.json({ message: "error adding new patient" })
+        }
+        const mailOptions = {
+            from: "CoreCare <corecareofficial@gmail.com>",
+            to: email,
+            subject: 'Password to signin to corecare platform',
+            text: `
+    Hello,
+    
+    Thank you for signing up with CoreCare. To signin to your account, please use this password: ${generatedPassword}
+    
+    Then you can change this password in your settings page
+    
+    If you didn't use your email to create an account in our platform, please ignore this email.
+    
+    Best regards,
+    CoreCare Team
+    
+    This is an automated message, please do not reply.
+      `,
+            html: `
+    <html>
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <div style="border: 1px solid white; border-radius:25px; padding: 10px;">
+      <div style="padding: 10px;">
+      <h2 style="color: #4a4a4a;">Password to signin to corecare platform</h2>
+      <p>Hello,</p>
+      <p>Thank you for signing up with CoreCare. </p>
+      <p>To signin to your account, please use this password:</p>
+      <h1 style="font-size: 32px; font-weight: bold; color: #007bff; letter-spacing: 5px;">${generatedPassword}</h1>
+      <p>Then you can change this password in your settings page.</p>
+      <p>If you didn't use your email to create an account in our platform, please ignore this email.</p>
+      <p>Best regards,<br>CoreCare Team</p>
+      <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+      <p style="font-size: 12px; color: #888;">This is an automated message, please do not reply.</p>
+      </div>
+      </div>
+    </body>
+    </html>
+      `
+        };
+
+        res.json({ patientID, hashedPassword });
+        await transporter.sendMail(mailOptions);
     } catch (err) {
         console.error('Error inserting patient:', err);
         if (err.code === '23505') {

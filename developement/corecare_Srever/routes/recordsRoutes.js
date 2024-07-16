@@ -58,6 +58,27 @@ router.get('/:patientid', async (req, res) => {
                 star = prescription.star;
             });
 
+            let prescribedLabtests = []
+            const labtestQuery = await pool.query('SELECT * FROM lab_test WHERE recordid = $1', [record.recordid]);
+            if (labtestQuery.rows.length > 0) {
+
+                const labtestsQuery = await pool.query('SELECT * FROM lab_tests WHERE labtestid = $1', [labtestQuery.rows[0].id]);
+                const labtestsextractiom = labtestsQuery.rows.map((labtest, idx) => {
+                    prescribedLabtests.push(labtest.id);
+                });
+            }
+
+            let prescribedRadiologies = []
+            const radiologyQuery = await pool.query('SELECT * FROM radiology WHERE recordid = $1', [record.recordid]);
+            if (radiologyQuery.rows.length > 0) {
+
+                const radiologiesQuery = await pool.query('SELECT * FROM radiologies WHERE radiologyid = $1', [radiologyQuery.rows[0].id]);
+                const labtestsextractiom = radiologiesQuery.rows.map((radiology, idx) => {
+                    prescribedRadiologies.push(radiology.id);
+                });
+            }
+
+
             const resultsQuery = await pool.query('SELECT * FROM result WHERE recordid = $1', [record.recordid]);
             const results = await Promise.all(resultsQuery.rows.map(async (result, idx) => {
                 const healthcareProviderQuery = await pool.query('SELECT name FROM healthcare_provider WHERE id = $1', [result.healthcareproviderid]);
@@ -105,16 +126,39 @@ router.get('/:patientid', async (req, res) => {
                         prescribedMedicine: prescribedMedicine,
                     }
                 },
+                prescribedLabtests.length > 0 && {
+                    key: `ss`,
+                    data: {
+                        name: `Lab Tests`,
+                        "Name Of Health Provider": doctorName,
+                        type: 'Report',
+                        date: labtestQuery.rows[0].testdate,
+                        // star: star,
+                        prescribedLabtests: prescribedLabtests,
+                    }
+                },
+                prescribedRadiologies.length > 0 && {
+                    key: `ee`,
+                    data: {
+                        name: `Radiology Tests`,
+                        "Name Of Health Provider": doctorName,
+                        type: 'Report',
+                        date: radiologyQuery.rows[0].radiologydate,
+                        // star: star,
+                        prescribedRadiologies: prescribedRadiologies,
+                    }
+                },
                 ...results
             ].filter(Boolean); // Remove falsy values
 
             return {
                 key: `${record.recordid}`,
                 data: {
-                    name: `Record ${index + 1}`,
+                    name: record.name,
                     "Name Of Health Provider": doctorName,
                     type: 'Record',
                     date: record.dateofcreation,
+                    star: record.star,
                 },
                 children: children
             };

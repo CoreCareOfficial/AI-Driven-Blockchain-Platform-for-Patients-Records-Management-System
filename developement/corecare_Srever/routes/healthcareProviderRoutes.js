@@ -5,8 +5,72 @@ import fss from 'fs';
 import path from 'path';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
+import bcrypt from 'bcryptjs';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+import { google } from 'googleapis';
 
+dotenv.config();
 const router = express.Router();
+
+const OAuth2 = google.auth.OAuth2;
+
+const createTransporter = async () => {
+    try {
+
+        const oauth2Client = new OAuth2(
+            process.env.CLIENT_ID,
+            process.env.CLIENT_SECRET,
+            "https://developers.google.com/oauthplayground"
+        );
+
+        oauth2Client.setCredentials({
+            refresh_token: process.env.REFRESH_TOKEN
+        });
+
+        const accessToken = await new Promise((resolve, reject) => {
+            oauth2Client.getAccessToken((err, token) => {
+                if (err) {
+                    console.error('Error getting access token:', err);
+                    reject("Failed to create access token");
+                }
+                resolve(token);
+            });
+        });
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                type: "OAuth2",
+                user: process.env.EMAIL,
+                accessToken,
+                clientId: process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                refreshToken: process.env.REFRESH_TOKEN
+            }
+        });
+
+        return transporter;
+    } catch (error) {
+        console.error('Error in createTransporter:', error);
+        throw error;
+    }
+};
+
+let transporter;
+let transporterReady = false;
+
+const initializeTransporter = async () => {
+    try {
+        transporter = await createTransporter();
+        transporterReady = true;
+        console.log('Transporter initialized successfully');
+    } catch (error) {
+        console.error('Failed to initialize transporter:', error);
+    }
+};
+
+initializeTransporter();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,6 +82,7 @@ const storage = multer.diskStorage({
         const username = req.body.username ?? req.params.username;
 
         console.log(userType);
+        console.log(username);
 
         // Define paths based on the file type
         const basePath = `Users/${userType}/${username}`;
@@ -143,6 +208,96 @@ router.post('/', upload.fields([
             [username, name, phoneNumber, email, country, address, licenseNumber, licenseDocumentPath, publicWalletAddress, facility_id, facilityPhoto]
         );
         res.json(newHealthcareProvider.rows[0]);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+router.post('/addhealthcareprovider', upload.fields([
+    { name: 'licenseDocument', maxCount: 1 }
+]), async (req, res) => {
+    const { username, name, phoneNumber, email, country, address, licenseNumber, publicWalletAddress, facility_id, facilityPhoto } = req.body;
+
+    if (!transporterReady) {
+        console.log("Transporter not ready, waiting...");
+        await new Promise((resolve, reject) => {
+            const checkTransporter = setInterval(() => {
+                if (transporterReady) {
+                    clearInterval(checkTransporter);
+                    resolve();
+                }
+            }, 100);
+            // Add a timeout of 30 seconds
+            setTimeout(() => {
+                clearInterval(checkTransporter);
+                reject(new Error('Transporter initialization timed out'));
+            }, 30000);
+        });
+    }
+
+    try {
+
+
+        // File paths
+        const licenseDocumentPath = req.files.licenseDocument ? req.files.licenseDocument[0].path : null;
+
+        const generatedPassword = Math.floor(1000 + Math.random() * 900000).toString(); // Generate a 6-digit code
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(generatedPassword, salt);
+        console.log(generatedPassword);
+        console.log(hashedPassword);
+
+        const newHealthcareProvider = await pool.query(
+            `INSERT INTO healthcare_provider (username, name, phoneNumber, email, country, address, licenseNumber, licensedocument, publicWalletAddress, facility_id, facilityphoto) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
+            RETURNING *`,
+            [username, name, phoneNumber, email, country, address, licenseNumber, licenseDocumentPath, publicWalletAddress, facility_id, facilityPhoto]
+        );
+        if (newHealthcareProvider.rows[0].length === 0) {
+            return res.json({ message: "error adding new healthcare provider" })
+        }
+        const mailOptions = {
+            from: "CoreCare <corecareofficial@gmail.com>",
+            to: email,
+            subject: 'Password to signin to corecare platform',
+            text: `
+    Hello,
+    
+    Thank you for signing up with CoreCare. To signin to your account, please use this password: ${generatedPassword}
+    
+    Then you can change this password in your settings page
+    
+    If you didn't use your email to create an account in our platform, please ignore this email.
+    
+    Best regards,
+    CoreCare Team
+    
+    This is an automated message, please do not reply.
+      `,
+            html: `
+    <html>
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <div style="border: 1px solid white; border-radius:25px; padding: 10px;">
+      <div style="padding: 10px;">
+      <h2 style="color: #4a4a4a;">Password to signin to corecare platform</h2>
+      <p>Hello,</p>
+      <p>Thank you for signing up with CoreCare. </p>
+      <p>To signin to your account, please use this password:</p>
+      <h1 style="font-size: 32px; font-weight: bold; color: #007bff; letter-spacing: 5px;">${generatedPassword}</h1>
+      <p>Then you can change this password in your settings page.</p>
+      <p>If you didn't use your email to create an account in our platform, please ignore this email.</p>
+      <p>Best regards,<br>CoreCare Team</p>
+      <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+      <p style="font-size: 12px; color: #888;">This is an automated message, please do not reply.</p>
+      </div>
+      </div>
+    </body>
+    </html>
+      `
+        };
+
+        res.json({ hashedPassword });
+        await transporter.sendMail(mailOptions);
     } catch (err) {
         res.status(500).send(err.message);
     }

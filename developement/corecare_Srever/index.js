@@ -23,6 +23,7 @@ import prescriptionRoutes from './routes/prescriptionRoutes.js';
 import resultRoutes from './routes/resultRoutes.js';
 import verification from './routes/verification.js';
 import apiDocumentation from './API/API_Documentaion.js';
+import checkDocsAuthenticity from './routes/checkDocsAuthenticity.js'
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
@@ -84,6 +85,7 @@ app.use('/emergencycontacts', emergencyContacts);
 app.use('/records', records);
 app.use('/prescription', prescriptionRoutes);
 app.use('/results', resultRoutes);
+app.use('/ai', checkDocsAuthenticity);
 app.use('/verification', verification);
 
 app.listen(PORT, () => {
