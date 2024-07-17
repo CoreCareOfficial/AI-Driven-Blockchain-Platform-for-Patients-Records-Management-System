@@ -104,8 +104,6 @@ function GeneralReport(props) {
                         <DynamicInput label="Reason:" type="text" disabled={true} value="" />
                         <DynamicInput label="Date: " type="text" disabled={true} value="" />
 
-                            {/* <DynamicRecordInput label='' type="text" disabled={true} value="" />
-                            <DynamicRecordInput label='' type="text" disabled={true} value="" /> */}
                         </div>
                     </div>
 
