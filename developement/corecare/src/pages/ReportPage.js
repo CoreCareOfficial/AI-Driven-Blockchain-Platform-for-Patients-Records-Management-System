@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { IoMdCloseCircle } from "react-icons/io";
 import { Button } from "primereact/button";
+import Summarized from "../component/summarizedetails/Summarized";
 
 
 
@@ -44,15 +45,20 @@ function ReportPage() {
     const bodyReport = () => {
         return (
             <ReportBody>
-                <ReportHeader info={info ? info : null} />
+                {reportType!=="summarized" ? (
+                    <ReportHeader info={info ? info : null} />
+                ):null}
 
-                {reportType === "General" ? (
+                {reportType === "general" ? (
                     <GeneralReport />
                 ) : reportType === "prescription" ? (
                     <PrescriptionReport prescriptions={prescriptionsInfo ? prescriptionsInfo : null} />
-                ) : reportType === "lab" || reportType === "rad" ? (
-                    <LabAndRadReport />
-                ) : null}
+                ) : (reportType === "lab" || reportType === "rad") ? (
+                    <LabAndRadReport type={reportType}/>
+
+                ) : reportType === "summarized" ? (<Summarized/>
+
+                ):null}
 
                 <ReportFooter h6="Created By CoreCare Platform" p="Developed By Comment Soft" />
             </ReportBody>

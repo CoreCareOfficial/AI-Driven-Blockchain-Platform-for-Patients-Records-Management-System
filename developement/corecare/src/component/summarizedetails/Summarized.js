@@ -9,10 +9,10 @@ function Summarized() {
         <>
             <section className="Summarized-section">
                 <div style={{
-                    width: '80%', height: 'inherit'
+                    width: '90%', height: 'inherit'
                     , margin: '10px auto',
                     padding: '5px',
-                    border: '2px solid #000',
+                    // border: '2px solid #000',
                     position: 'relative',
                     borderRadius:'8px'
                 }}>

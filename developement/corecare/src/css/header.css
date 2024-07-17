@@ -87,6 +87,8 @@ header .li_div:hover::before {
     background-color: var(--main-color);
 }
 
+
+
 @media screen and (max-width: 997px) {
     .header nav{
         width: 500px;

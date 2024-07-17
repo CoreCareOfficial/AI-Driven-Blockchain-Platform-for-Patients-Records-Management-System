@@ -8,7 +8,7 @@ function LabAndRadReport(props) {
     }
     return (
         <>
-            {props.type === "Laboratory" ? (
+            {props.type === "lab" ? (
                 <h1 className="h_1">Laboratory Test</h1>
 
             ) : <h1 className="h_1">Radiology Test</h1>

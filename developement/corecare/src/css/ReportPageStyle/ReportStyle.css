@@ -131,26 +131,43 @@
 @media screen {
     .ReportBody{
         border: solid 2px red;
-        margin: 20px;
-        padding: 20px;
+        margin: 0px;
+        padding: 0px;
     }
     
 }
 
 
 @media print{
-
+    /* .ReportBody .titleReport{
+        margin-top: 380px;
+    }
     .PrescriptionReport-container{
-        box-sizing: border-box;
+        margin-top: 10px;
     }
-    .ReportBody{
-        min-width: 100%;
+    .PrescriptionReport-item{
+        height: 10vh;
+    } */
+    .PrescriptionReport-container{
+        
     }
-
+    .PrescriptionReport-item{
+        max-height: 8vh;
+    }
+    .pre-space{
+        height: 35vh;
+    }
+    .ReportHeader-container{
+        margin-top: 50px;
+    }
     .ReportHeader-Pat-det-container{
         margin-top: -80px;
         padding: 0px;
-        height: 20vh;
+        height: fit-content;
+    }
+    .ReportHeader{
+        width: 80%;
+        height: fit-content;
     }
 
     .ReportHeader,.ReportFooter-container{
@@ -165,5 +182,6 @@
 
     .ReportFooter-container{
         bottom: 0;
+        z-index: 999;
     }
 }
