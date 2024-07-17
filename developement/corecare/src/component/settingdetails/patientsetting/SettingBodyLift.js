@@ -1,15 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DynamicCard from '../../bootcomponent/DynamicCard';
 import { Card } from "react-bootstrap";
 import { SettingForm, SettingInput, SettingSelect, SettingCountry, UpdateImage } from "../TextFormSetting";
 import { MdModeEdit } from "react-icons/md";
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { updateUserInfo } from "../../../Recoil/UpdateData";
 import { Toast } from "primereact/toast";
 import { loginInfo } from "../../../Recoil/Atom";
+import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
 
 function SettingBodyLift(props) {
     const toast = useRef(null);
+    const setUpdateValue = useSetRecoilState(updateUserInfo);
     const {
         userInfo = {
             firstname: "",
@@ -22,7 +24,7 @@ function SettingBodyLift(props) {
             country: "",
             job: "",
             sex: "",
-            dateOfBirth: "0000-01-01",
+            dateofbirth: "0000-01-01",
             status: "",
             bloodtype: "",
             personalphoto: null,
@@ -54,7 +56,62 @@ function SettingBodyLift(props) {
     console.log('allergies', allergies);
     console.log('healthcareProviderInfo', healthcareProviderInfo);
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        console.log('date', `${day}-${month}-${year}`);
+        return `${year}-${month}-${day}`;
+    };
+
+    useEffect(() => {
+        setUpdateValue(prevUserInfo => {
+            const newUserInfo = {
+                personalphoto: userInfo.personalphoto || healthcareProviderInfo.facilityphoto || null,
+                username: userInfo.username || healthcareProviderInfo.username || '',
+                fullname: props.userType === "Patient" || props.userType === "Doctor"
+                    ? `${userInfo.firstname} ${userInfo.secondname} ${userInfo.thirdname} ${userInfo.lastname}`
+                    : healthcareProviderInfo.name,
+                phonenumber: props.userType === "Patient" || props.userType === "Doctor"
+                    ? userInfo.phonenumber : healthcareProviderInfo.phonenumber,
+                country: props.userType === "Patient" || props.userType === "Doctor"
+                    ? userInfo.country : healthcareProviderInfo.country,
+                address: props.userType === "Patient" || props.userType === "Doctor"
+                    ? userInfo.address : healthcareProviderInfo.address,
+                job: userInfo.job,
+                sex: userInfo.sex,
+                dateofbirth: formatDate(userInfo.dateofbirth),
+                status: userInfo.status,
+                bloodtype: userInfo.bloodtype,
+                patientid: userInfo.patientid,
+                weight: healthInfo.weight,
+                height: healthInfo.height,
+                allergies: allergies.allergyname,
+                practicelocation: practice.practicelocation,
+                affiliations: practice.affiliations,
+                practicehours: practice.practicehours,
+                languagesspoken: practice.languagesspoken,
+            };
+
+            // Check if there are any changes
+            if (JSON.stringify(prevUserInfo) !== JSON.stringify(newUserInfo)) {
+                return newUserInfo;
+            }
+            return prevUserInfo;
+        });
+    }, [userInfo, healthcareProviderInfo, props.userType, setUpdateValue, allergies, healthInfo, practice]);
+
+
     const [General, setGeneral] = useState(true);
+    const [isConfirm, setIsConfirm] = useState(false);
+    const [title, setTitle] = useState('');
+    const [message, setMessage] = useState('');
+    const [handle, setHandle] = useState(null);
+
+    const handleConfirm = () => {
+        setIsConfirm(!isConfirm);
+    };
 
     function splitFullName(fullName) {
         const nameParts = fullName.trim().split(/\s+/); // Split by whitespace
@@ -84,7 +141,7 @@ function SettingBodyLift(props) {
     }
 
     const updateUserInfoValue = useRecoilValue(updateUserInfo);
-    const toggleEditGeneral = async () => {
+    const updateGeneralInfo = async () => {
         const { firstName, secondName, thirdName, lastName } = splitFullName(updateUserInfoValue.fullname);
         const data = {
             address: updateUserInfoValue.address,
@@ -112,14 +169,23 @@ function SettingBodyLift(props) {
             console.log('message from server: ' + jsonData);
             if (jsonData === "Patient updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
+                setIsConfirm(false);
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                setIsConfirm(false);
             }
         } catch (error) {
             console.error(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating general info' });
+            setIsConfirm(false);
         }
         console.log("new info of patient:", updateUserInfoValue);
+    }
+    const toggleEditGeneral = async () => {
+        setIsConfirm(!isConfirm);
+        setTitle('Update General Information');
+        setMessage('Are You Sure You Want To Update General Information?');
+        setHandle(() => updateGeneralInfo);
         setGeneral(!General);
     };
 
@@ -223,14 +289,6 @@ function SettingBodyLift(props) {
         setPractice(!Practice);
     };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    };
-
     return (
         <>
             <Toast ref={toast} />
@@ -282,7 +340,7 @@ function SettingBodyLift(props) {
                         <>
                             <SettingInput class_name="SettingInput" type="text" name="job" label="Job:" placeholder="" disabled={General} value={userInfo.job} />
                             <SettingSelect items={['Male', 'Female']} label="Sex:" name="sex" disabled={General} value={userInfo.sex} />
-                            <SettingInput class_name="SettingInput" type="date" name="dateofbirth" label="Date Of Birth:" placeholder="" disabled={General} value={formatDate(userInfo.dateOfBirth)} />
+                            <SettingInput class_name="SettingInput" type="date" name="dateofbirth" label="Date Of Birth:" placeholder="" disabled={General} value={formatDate(userInfo.dateofbirth)} />
                             <SettingSelect items={['Single', 'Married']} label="Status:" name="status" disabled={General} value={userInfo.status} />
                         </>
                     ) : null}
@@ -327,6 +385,7 @@ function SettingBodyLift(props) {
                 ) : null}
 
             </DynamicCard>
+            <ConfirmedDialog show={isConfirm} handleClose={handleConfirm} message={message} handleOk={handle} title={title} />
         </>
     );
 }

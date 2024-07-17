@@ -5,18 +5,17 @@ import Section3 from "../component/aboutdetails/AboutSection3";
 import Section4 from "../component/aboutdetails/AboutSection4";
 import FormFooter from "../component/FormFooter";
 import Header from '../component/Header';
-import CreateAccessKey from "../component/UserDetails/CreateAccessKey";
 
-function AboutUsPage(){
-    return(
+function AboutUsPage() {
+    return (
         <>
-        <Header />
-        <Section1/>
-        <Section2/>
-        <Section3/>
-        <Section4/>
-        <FormFooter/>
-        
+            <Header />
+            <Section1 />
+            <Section2 />
+            <Section3 />
+            <Section4 />
+            <FormFooter />
+
         </>
     );
 }

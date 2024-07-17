@@ -18,19 +18,20 @@ function UserPage() {
 
     const [createAccessKey, setCreateAccessKey] = useState(false);
     const handleCreateAccessKeyClick = ((e) => {
-
+        console.log("createAccessKey", createAccessKey);
         setCreateAccessKey(!createAccessKey);
+        console.log("createAccessKey", createAccessKey);
     });
     return (
         <>
             {userType ?
                 <>
-                        {
-                            createAccessKey && <CreateAccessKey handleCreateAccessKeyClick={handleCreateAccessKeyClick}/>
-                        }
+                    {
+                        createAccessKey && <CreateAccessKey handleCreateAccessKeyClick={handleCreateAccessKeyClick} />
+                    }
                     <div className="user">
                         <PatientSidebarHandler userType={userType} handleButtonClick={handleButtonClick} handleCreateAccessKeyClick={handleCreateAccessKeyClick} />
-                        <Content userType={userType} active={active} />
+                        <Content userType={userType} active={active} handleCreateAccessKeyClick={handleCreateAccessKeyClick} />
                     </div>
                     <FormlessFooter />
                 </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DynamicCard from "../bootcomponent/DynamicCard";
 import { Button } from "react-bootstrap";
 import { MdOutlineFileOpen } from "react-icons/md";
@@ -8,7 +8,6 @@ import { MdOutlineNoteAlt } from "react-icons/md";
 import { MdOutlineStarBorder } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import queryString from 'query-string';
-import { Toast } from "primereact/toast";
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 
@@ -31,10 +30,7 @@ const useOptimistic = (initialValue, callback) => {
 
 function RecordesMenu(props) {
     const userInfoValue = useRecoilValue(loginInfo);
-
-    // const selectedFile = props.file || { id: '', data: {} };
     const [selectedFile, setSelectedFile] = useState({ id: '', data: {} });
-
     useEffect(() => {
         setSelectedFile(props.file);
     }, [props.file, selectedFile])
@@ -71,14 +67,15 @@ function RecordesMenu(props) {
                 const query = queryString.stringify({ dicomUrl: fileUrl });
                 window.open(`/view-dicom?${query}`, '_blank');
             } else {
-                alert('Unsupported file type');
+                props.toast({ severity: 'error', summary: 'Error', detail: 'Unsupported file type' });
             }
         } catch (err) {
             console.error("Error:", err);
+            props.toast({ severity: 'error', summary: 'Error', detail: `"Error:, ${err}` });
         }
     };
 
-    const fetchPrescption = async (prescribedMedicine) => {
+    const fetchPrescption = async (prescribedMedicine, action) => {
         if (!prescribedMedicine) {
             alert('No medicine prescribed');
             return;
@@ -92,36 +89,37 @@ function RecordesMenu(props) {
                 body: JSON.stringify(prescribedMedicine),
             });
             if (!response.ok) {
+                props.toast({ severity: 'error', summary: 'Error', detail: 'Error loading prescription' });
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const jsonData = await response.json();
             console.log(`Success loading:`, jsonData);
-            const query = queryString.stringify({ info: JSON.stringify(jsonData) , type:'prescription', action:'print'});
+            const query = queryString.stringify({ info: JSON.stringify(jsonData), type: 'prescription', action: action });
             window.open(`/open-report?${query}`, '_blank');
         } catch (err) {
             console.error("Error:", err);
-            alert('Error loading prescription');
+            props.toast({ severity: 'error', summary: 'Error', detail: 'Error loading prescription' });
         }
     };
 
     const handleOpenFile = async () => {
+        if (props.handleMenuClick)
+            props.handleMenuClick();
         if (selectedFile.id === '') {
-            alert('No Record selected');
+            props.toast({ severity: 'error', summary: 'Error', detail: 'No Record selected' });
             return;
         }
         if (!selectedFile.data) {
-            alert('No data Record selected');
+            props.toast({ severity: 'error', summary: 'Error', detail: 'No data Record selected' });
             return;
         }
         if (selectedFile.data['type'] === "Lab Result" || selectedFile.data['type'] === "Radiology Result") {
             fetchFile(selectedFile.id);
         } else if (selectedFile.data['type'] === "Prescription") {
-            fetchPrescption(selectedFile.data['prescribedMedicine']);
+            fetchPrescption(selectedFile.data['prescribedMedicine'], 'open');
         } else if (selectedFile.data['type'] === "Record") {
             if (props.handleExpanded)
                 props.handleExpanded(selectedFile.id);
-            if (props.handleMenuClick)
-                props.handleMenuClick();
         }
 
     };
@@ -149,6 +147,8 @@ function RecordesMenu(props) {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data);
+                if (props.handleSummarize)
+                    props.handleSummarize(data);
                 // navigate('/signup/password-step');
                 // Optionally show a success toast
                 props.toast({ severity: 'success', summary: 'Success', detail: 'Summarized Medical record successful' });
@@ -179,6 +179,99 @@ function RecordesMenu(props) {
             console.error(error.message);
         }
 
+    };
+
+    const handlePrint = async () => {
+        if (props.handleMenuClick)
+            props.handleMenuClick();
+        if (selectedFile.id === '') {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'No Record selected' });
+
+            return;
+        }
+        if (!selectedFile.data) {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'No data Record selected' });
+            return;
+        }
+        // if (selectedFile.data['type'] === "Lab Result" || selectedFile.data['type'] === "Radiology Result") {
+        //     fetchFile(selectedFile.id);
+        // } else 
+        if (selectedFile.data['type'] === "Prescription") {
+            fetchPrescption(selectedFile.data['prescribedMedicine'], 'print');
+        }
+    };
+
+    const fetchStar = async (data, api) => {
+        if (props.handleMenuClick)
+            props.handleMenuClick();
+        console.log('data star', data);
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/records/${api}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+            if (!response.ok) {
+                props.toast({ severity: 'error', summary: 'Error', detail: `Error ${selectedFile.data.type} starred` });
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            props.toast({ severity: 'success', summary: 'Success', detail: selectedFile.data.star ? `${selectedFile.data.type} Unstarred` : `${selectedFile.data.type} Starred` });
+            props.refresh(selectedFile.id, true);
+        }
+        catch (error) {
+            console.error(error.message);
+            props.toast({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
+        }
+    }
+    const handleStar = async () => {
+        if (selectedFile.id === '') {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'No file selected' });
+            return;
+        }
+        if (!selectedFile.data) {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'No data file selected' });
+            return;
+        }
+        if (selectedFile.data['type'] === "Record" || selectedFile.data['type'] === "General Report") {
+            const data = {
+                recordid: selectedFile.id,
+                star: !selectedFile.data.star
+            }
+            fetchStar(data, 'updaterecordstar');
+        }
+        else if (selectedFile.data['type'] === "Prescription") {
+            const data = {
+                prescribedMedicine: selectedFile.data['prescribedMedicine'],
+                star: !selectedFile.data.star
+            }
+            fetchStar(data, 'updateprescriptionstar');
+        }
+        else if (selectedFile.data['type'] === "Lab Result" || selectedFile.data['type'] === "Radiology Result") {
+            const data = {
+                resultid: selectedFile.id,
+                star: !selectedFile.data.star
+            }
+            fetchStar(data, 'updateresultstar');
+        }
+        else if (selectedFile.data['type'] === "prescribed lab test") {
+            const data = {
+                mainid: selectedFile.data['mainid'],
+                star: !selectedFile.data.star
+            }
+            fetchStar(data, 'updatelabteststar');
+        }
+        else if (selectedFile.data['type'] === "prescribed radiology test") {
+            const data = {
+                mainid: selectedFile.data['mainid'],
+                star: !selectedFile.data.star
+            }
+            fetchStar(data, 'updateradiologystar');
+        }
+        else {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'This type of files can not be starred' })
+        }
     }
 
     return (
@@ -193,17 +286,18 @@ function RecordesMenu(props) {
                     <Button variant="" style={{ transition: '0.7s ease' }} onClick={handleOpenFile}>
                         <span className="span"><MdOutlineFileOpen /></span> Open
                     </Button>{' '}
-                    <Button variant="" style={{ transition: '0.7s ease' }} onClick={handleSummarizeRecord}>
-                        <span className="span"><MdOutlineSummarize /></span> Summarize
-                    </Button>{' '}
-                    {!props.isRecord && <Button variant="" style={{ transition: '0.7s ease' }}>
+                    {(selectedFile.data['type'] === "Lab Result" || selectedFile.data['type'] === "Radiology Result" || selectedFile.data['type'] === 'Record') &&
+                        <Button variant="" style={{ transition: '0.7s ease' }} onClick={handleSummarizeRecord}>
+                            <span className="span"><MdOutlineSummarize /></span> Summarize
+                        </Button>}{' '}
+                    {!props.isRecord && <Button variant="" style={{ transition: '0.7s ease' }} onClick={handlePrint}>
                         <span className="span"><MdOutlineLocalPrintshop /></span> Print
                     </Button>}{' '}
                     <Button variant="" style={{ transition: '0.7s ease' }}>
                         <span className="span"><MdOutlineNoteAlt /></span> Write Note
                     </Button>{' '}
-                    <Button variant="" style={{ transition: '0.7s ease' }}>
-                        <span className="span"><MdOutlineStarBorder /></span> Stars
+                    <Button variant="" style={{ transition: '0.7s ease' }} onClick={handleStar}>
+                        <span className="span"><MdOutlineStarBorder /></span> {selectedFile.data.star ? `Unstar` : `Star`}
                     </Button>{' '}
                 </DynamicCard>
             </div>

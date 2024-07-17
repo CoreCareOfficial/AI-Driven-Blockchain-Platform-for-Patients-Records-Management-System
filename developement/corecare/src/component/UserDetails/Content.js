@@ -16,11 +16,11 @@ function Content(props) {
             <div className="contentContainer">
                 {
                     props.active === "Profile" ? <Profile userType={props.userType} />
-                        : props.active === "All Records" ? <RecordesPage title={props.active} />
-                            : props.active === "Report" ? <RecordesPage title={props.active} />
-                                : props.active === "Lab test" ? <RecordesPage title={props.active} />
-                                    : props.active === "Radiology" ? <RecordesPage title={props.active} />
-                                        : props.active === "Prescription" ? <RecordesPage title={props.active} />
+                        : props.active === "All Records" ? <RecordesPage title={props.active} handleCreateAccessKeyClick={props.handleCreateAccessKeyClick} />
+                            : props.active === "Report" ? <RecordesPage title={props.active} handleCreateAccessKeyClick={props.handleCreateAccessKeyClick} />
+                                : props.active === "Lab test" ? <RecordesPage title={props.active} handleCreateAccessKeyClick={props.handleCreateAccessKeyClick} />
+                                    : props.active === "Radiology" ? <RecordesPage title={props.active} handleCreateAccessKeyClick={props.handleCreateAccessKeyClick} />
+                                        : props.active === "Prescription" ? <RecordesPage title={props.active} handleCreateAccessKeyClick={props.handleCreateAccessKeyClick} />
                                             : props.active === "Add Patient" ? <AddAccount userType={props.userType} title={props.active} />
                                                 : props.active === "Add Doctor" ? <AddDoctorAccount userType={props.userType} title={props.active} />
                                                     : props.active === "Add Laboratory" ? <AddLaboratoryAccount userType={props.userType} title={props.active} />

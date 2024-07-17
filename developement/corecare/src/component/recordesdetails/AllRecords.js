@@ -7,6 +7,9 @@ import P from '../P';
 import "../../css/UserPageStyle/dropdownbutton.css";
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { Toast } from 'primereact/toast';
+import ConfirmedDialog from '../../utiles/ConfirmedDialog';
+import { useRecoilValue } from 'recoil';
+import { loginInfo } from '../../Recoil/Atom';
 
 function AllRecords(props) {
     const allRecords = props.records || [];
@@ -19,6 +22,8 @@ function AllRecords(props) {
     const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
+    const [isOpenSummarize, setIsOpenSummarize] = useState(false);
+    const [dataSummarize, setDataSummarize] = useState({ summary: '' });
     const itemRight = 50;
 
     useEffect(() => {
@@ -50,6 +55,43 @@ function AllRecords(props) {
         setIsOpen(!isOpen);
     };
 
+    const handleSummarize = (data) => {
+        setDataSummarize(data);
+        setIsOpenSummarize(!isOpenSummarize);
+    }
+
+    const userInfoValue = useRecoilValue(loginInfo);
+    const handleSaveSummarize = async () => {
+        if (userInfoValue.patientId === '' && dataSummarize.summary === '') {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please Login First' });
+            return;
+        }
+        const data = {
+            patientid: userInfoValue.patientId,
+            summary: dataSummarize.summary,
+            recordid: dataSummarize.recordid,
+            resultid: dataSummarize.resultid,
+        }
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/records/savesummary`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Summary Saved' });
+            } else {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Summary Saved' });
+            }
+        } catch (error) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Summary Saved' });
+        }
+        console.log('Save Summarize');
+        setIsOpenSummarize(!isOpenSummarize);
+    }
+
     const [expanded, setExpanded] = useState({});
 
     const handleClick = (id) => {
@@ -58,14 +100,38 @@ function AllRecords(props) {
             [id]: !prevState[id],
         }));
     };
+    const [starred, setStarred] = useState({});
+    const handleStarred = (id, state) => {
+        console.log('id', id);
+        setStarred((prevState) => ({
+            ...prevState,
+            [id]: state,
+        }));
+    };
+
+    const parseRecordString = (recordString) => {
+        let htmlContent = recordString
+            .replace(/## (.*)/g, '<h2>$1</h2>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n\* (.*?)/g, '<li>$1</li>') // Replace bullet points with list items
+            .replace(/\n/g, '<br>'); // Replace newlines with <br>
+
+        // Wrap list items with <ul>
+        htmlContent = htmlContent.replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>');
+
+        // Remove unnecessary <br> before <ul> and after </ul>
+        htmlContent = htmlContent.replace(/<br><ul>/g, '<ul>').replace(/<\/ul><br>/g, '</ul>');
+
+        return htmlContent;
+    };
 
     const handleMenuVerticalClick = (e, data) => {
-        console.log('e,id', e.target.id);
+        console.log('e.id', e.target.id);
         const rect = e.target.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         // const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
         setMenuPosition({ top: rect.top + scrollTop, left: rect.left });
-        setFileSelected({ id: e.target.id, data: data });
+        setFileSelected({ id: e.target.id, data: data, handleStarred: () => handleStarred });
         setIsOpen2(true);
     };
 
@@ -109,6 +175,10 @@ function AllRecords(props) {
                     {props.tableTitle === "All Records" ? (
                         allRecords.map((record) => {
                             const isExpanded = !!expanded[record.key];
+                            let isStarred = false;
+                            if ((record.data.star && !starred[record.key]) || (starred[record.key] && !record.data.star)) {
+                                isStarred = true;
+                            }
                             return (
                                 <React.Fragment key={record.key}>
                                     <tr className={`tbody_tr ${c % 2 === 0 && "tr_color"}`}>
@@ -121,51 +191,66 @@ function AllRecords(props) {
                                         <td>{record.data["type"]}</td>
                                         <td>{record.data["Name Of Health Provider"]}</td>
                                         <td>{formatDate(record.data["date"])}</td>
-                                        <td></td>
+                                        <td><span style={{ display: isStarred ? 'block' : 'none', fontSize: '16px' }}><IoStarSharp /></span></td>
                                         <td><span style={{ cursor: "pointer" }} >
                                             <BsThreeDotsVertical id={record.key} onClick={(e) => handleMenuVerticalClick(e, record.data)} />
                                         </span></td>
                                     </tr>
                                     <p style={{ display: 'none' }}>{c++}</p>
-                                    {isExpanded && record.children && record.children.map((child) => (
-                                        <>
-                                            <tr className={`tbody_tr ${c % 2 === 0 && "tr_color"}`} key={child.key}>
-                                                <td></td>
-                                                <td><span style={{ display: child.data["star"] ? 'block' : 'none', fontSize: '16px' }}><IoStarSharp /></span></td>
-                                                <td><span>{props.icons[child.data["type"]]}</span></td>
-                                                <td>{child.data["name"]}</td>
-                                                <td>{child.data["type"]}</td>
-                                                <td>{child.data["Name Of Health Provider"]}</td>
-                                                <td>{formatDate(child.data["date"])}</td>
-                                                {console.log('child.data', child.data)}
-                                                <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={child.key} onClick={(e) => handleMenuClick(e, child.data)} /></span></td>
-                                                <td></td>
-                                            </tr>
-                                            <p style={{ display: 'none' }}>{c++}</p>
-                                        </>
-                                    ))}
+                                    {isExpanded && record.children && record.children.map((child) => {
+                                        let isStarred = false;
+                                        if ((child.data.star && !starred[child.key]) || (starred[child.key] && !child.data.star)) {
+                                            isStarred = true;
+                                        }
+                                        return (
+                                            <>
+                                                <tr className={`tbody_tr ${c % 2 === 0 && "tr_color"}`} key={child.key}>
+                                                    <td></td>
+                                                    <td><span style={{ display: isStarred ? 'block' : 'none', fontSize: '16px' }}><IoStarSharp /></span></td>
+                                                    <td><span>{props.icons[child.data["type"]]}</span></td>
+                                                    <td>{child.data["name"]}</td>
+                                                    <td>{child.data["type"]}</td>
+                                                    <td>{child.data["Name Of Health Provider"]}</td>
+                                                    <td>{formatDate(child.data["date"])}</td>
+                                                    {console.log('child.data', child.data)}
+                                                    <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={child.key} onClick={(e) => handleMenuClick(e, child.data)} /></span></td>
+                                                    <td></td>
+                                                </tr>
+                                                <p style={{ display: 'none' }}>{c++}</p>
+                                            </>
+                                        )
+                                    }
+                                    )}
                                 </React.Fragment>
                             );
                         })
                     ) : (
-                        recordsList.map((record, i) => (
-                            <tr className={`tbody_tr ${i % 2 === 0 && "tr_color"}`} key={record.key}>
-                                <td></td>
-                                <td><span style={{ display: record.data["star"] ? 'block' : 'none', fontSize: '16px' }}><IoStarSharp /></span></td>
-                                <td><span>{props.icons[record.data["type"]]}</span></td>
-                                <td>{record.data["name"]}</td>
-                                <td>{record.data["type"]}</td>
-                                <td>{record.data["Name Of Health Provider"]}</td>
-                                <td>{formatDate(record.data["date"])}</td>
-                                {console.log('child.data', record.data)}
-                                <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={record.key} onClick={(e) => handleMenuClick(e, record.data)} /></span></td>
-                                <td></td>
-                            </tr>
-                        ))
+                        recordsList.map((record, i) => {
+                            let isStarred = false;
+                            if ((record.data.star && !starred[record.key]) || (starred[record.key] && !record.data.star)) {
+                                isStarred = true;
+                            }
+                            return (
+                                <tr className={`tbody_tr ${i % 2 === 0 && "tr_color"}`} key={record.key}>
+                                    <td></td>
+                                    <td><span style={{ display: isStarred ? 'block' : 'none', fontSize: '16px' }}><IoStarSharp /></span></td>
+                                    <td><span>{props.icons[record.data["type"]]}</span></td>
+                                    <td>{record.data["name"]}</td>
+                                    <td>{record.data["type"]}</td>
+                                    <td>{record.data["Name Of Health Provider"]}</td>
+                                    <td>{formatDate(record.data["date"])}</td>
+                                    {console.log('child.data', record.data)}
+                                    <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={record.key} onClick={(e) => handleMenuClick(e, record.data)} /></span></td>
+                                    <td></td>
+                                </tr>
+                            )
+                        }
+                        )
                     )}
                 </tbody>
-                {isOpen && <RecordesMenu file={fileSelected} top={menuPosition.top} right={itemRight} toast={handleToast} open={true} handleMenuClick={() => setIsOpen(!isOpen)} />}
-                {isOpen2 && <RecordesMenu file={fileSelected} top={menuPosition.top} right={itemRight} toast={handleToast} open={true} handleMenuClick={() => setIsOpen2(!isOpen2)} isRecord={true} handleExpanded={handleClick} />}
+                <ConfirmedDialog show={isOpenSummarize} handleClose={() => setIsOpenSummarize(!isOpenSummarize)} message={parseRecordString(dataSummarize.summary)} handleOk={handleSaveSummarize} title='AI Summarizing' isSummary={true} />
+                {isOpen && <RecordesMenu file={fileSelected} top={menuPosition.top} right={itemRight} toast={handleToast} open={true} handleMenuClick={() => setIsOpen(!isOpen)} refresh={handleStarred} handleSummarize={handleSummarize} />}
+                {isOpen2 && <RecordesMenu file={fileSelected} top={menuPosition.top} right={itemRight} toast={handleToast} open={true} handleMenuClick={() => setIsOpen2(!isOpen2)} isRecord={true} handleExpanded={handleClick} refresh={handleStarred} handleSummarize={handleSummarize} />}
             </table >
         </>
     );
