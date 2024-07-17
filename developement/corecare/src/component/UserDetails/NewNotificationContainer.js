@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Link } from "react-router-dom";
 import Slider from 'react-slick';
 import { Button } from 'primereact/button';
-import { MdContentCopy } from 'react-icons/md';
+import { MdKey } from "react-icons/md";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../../css/UserPageStyle/newnotificationcontainer.css'
@@ -38,11 +38,11 @@ function NewNotificationContainer(props) {
                                     <div className="py-[2px] px-[5px] font text-[12px] bg-[#3146FF] rounded-[10%]">{Object.keys(props.notifications).length}</div>
                                 </div>
 
-                                <div className="flex flex-row bg-[#272C34] mx-auto my-2  rounded-xl p-2 justify-around gap-2 w-3/4">
+                                <div className="flex flex-row-reverse bg-[#272C34] mx-auto my-2  rounded-xl p-2 justify-around gap-2 w-3/4">
                                     <div className="border-1 border-[#545864] text-white p-2 w-full rounded-xl">
                                         <p className="text-center">{props.notifications[notification].accessKey}</p>
                                     </div>
-                                    <div className="text-white text-center align-middle text-xl m-auto cursor-pointer"><MdContentCopy /></div>
+                                    <div className="text-white text-center align-middle text-xl m-auto cursor-pointer"><MdKey /></div>
                                 </div>
                                 <div className="flex flex-row justify-end gap-4 m-4">
                                     <Link to="/doctor" className='w-[13%]' state={{ accessKey: props.notifications[notification].accessKey }}>

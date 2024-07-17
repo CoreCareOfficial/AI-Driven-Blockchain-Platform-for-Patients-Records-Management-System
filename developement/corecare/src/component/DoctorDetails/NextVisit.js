@@ -10,7 +10,7 @@ const NextVisit = ({ date, onDateChange, reason, onReasonChange }) => (
                 onChange={onReasonChange}
             />
             <input
-                type="date"
+                type="datetime-local"
                 className=" bg-transparent border-1 border-[#272C34] outline-none p-1 w-2/3"
                 value={date}
                 onChange={onDateChange}

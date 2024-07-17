@@ -277,7 +277,7 @@ router.post('/summarizerecords', upload.single('file'), async (req, res) => {
 router.post('/summarizeonerecord', upload.single('file'), async (req, res) => {
     const { patientid, recordid } = req.body
     console.log(patientid, recordid);
-    const prompt = "Summarize medical record files , extract relevant information such as patient demographics, medical history, diagnoses, treatments, and outcomes. Identify key trends and patterns in the data. Here is the process you will follow to summarize the medical record files: 1. *Review the files.* you will carefully review all of the medical record files that i send you. This may include doctor's notes, hospital records, lab results, and imaging studies. 2. *Extract relevant information.* you will extract the following information from the medical record files:   * Patient demographics: name, date of birth, gender, address, etc.   * Medical history: past illnesses, surgeries, hospitalizations, etc.    * Diagnoses: all of the medical conditions that have been diagnosed for the patient.    * Treatments: all of the treatments that have been prescribed for the patient.    * Outcomes: the results of the treatments. 3. *Identify key trends and patterns.* you will look for any key trends or patterns in the data. For example, you may look for changes in the patient's symptoms over time, or you may look for any relationships between the patient's medical conditions and their treatments.\n4. *Summarize the information.* you will summarize the information that youI have extracted from the medical record files in a clear and concise manner. The summary will include the patient's demographics, medical history, diagnoses, treatments, outcomes, and any key trends or patterns that you have identified.  provide me with a comprehensive and accurate summary of the medical record files."
+    const prompt = "Summarize medical record files , extract relevant information such as patient demographics, medical history, diagnoses, treatments, and outcomes. Identify key trends and patterns in the data. Here is the process you will follow to summarize the medical record files: 1. *Review the files.* you will carefully review all of the medical record files that i send you. This may include doctor's notes, hospital records, lab results, and imaging studies. 2. *Extract relevant information.* you will extract the following information from the medical record files:   * Patient demographics: name, date of birth, gender, address, etc.   * Medical history: past illnesses, surgeries, hospitalizations, etc.    * Diagnoses: all of the medical conditions that have been diagnosed for the patient.    * Treatments: all of the treatments that have been prescribed for the patient.    * Outcomes: the results of the treatments. 3. *Identify key trends and patterns.* you will look for any key trends or patterns in the data. For example, you may look for changes in the patient's symptoms over time, or you may look for any relationships between the patient's medical conditions and their treatments.\n4. *Summarize the information.* you will summarize the information that youI have extracted from the medical record files in a clear and concise manner. The summary will include the patient's demographics, medical history, diagnoses, treatments, outcomes, and any key trends or patterns that you have identified.  provide me with a comprehensive and accurate summary of the medical record files. give me the response in english then in arabic seperate them with <hr>, the response must be in well formateda and styled html tags only"
 
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
@@ -369,7 +369,7 @@ router.post('/summarizeonerecord', upload.single('file'), async (req, res) => {
         const sumresponse = await result.response;
         const text = await sumresponse.text();
 
-        res.json({ summary: text });
+        res.json({ summary: text, recordid: recordid });
         console.log(text);
         // console.log(text);
     } catch (error) {
@@ -391,40 +391,6 @@ router.post('/summarizresult', upload.single('file'), async (req, res) => {
     }
 
     try {
-        // const recordsQuery = await pool.query('SELECT * FROM record WHERE patientid = $1 and recordid = $2 ORDER BY dateofcreation DESC', [patientid, recordid]);
-        // if (recordsQuery.rows.length === 0) {
-        //     return res.status(400).json({ message: 'Records Not found' });
-        // }
-
-        // const records = recordsQuery.rows;
-
-        // const response = await Promise.all(records.map(async (record, index) => {
-        //     const prescriptionQuery = await pool.query('SELECT * FROM prescription WHERE recordid = $1', [record.recordid]);
-        //     const prescriptions = prescriptionQuery.rows.map(prescription => ({
-        //         id: prescription.id,
-        //         name: prescription.medicinename,
-        //         dosage: prescription.dosage,
-        //         notes: prescription.notes,
-        //     }));
-
-        //     const resultsQuery = await pool.query('SELECT * FROM result WHERE recordid = $1', [record.recordid]);
-        //     const results = resultsQuery.rows.map(result => ({
-        //         id: result.id,
-        //         filepath: result.file,
-        //         type: result.type,
-        //         date: result.dateofupload,
-        //     }));
-
-        //     return {
-        //         id: record.recordid,
-        //         name: `Record ${index + 1}`,
-        //         diagnosis: record.diagnosis,
-        //         notes: record.notes,
-        //         date: record.dateofcreation,
-        //         prescriptions: prescriptions,
-        //         results: results,
-        //     };
-        // }));
 
         const resultQuery = await pool.query('SELECT * FROM result WHERE patientid = $1 and id = $2', [patientid, resultid]);
         if (resultQuery.rows.length === 0) {
@@ -434,26 +400,11 @@ router.post('/summarizresult', upload.single('file'), async (req, res) => {
         const results = resultQuery.rows[0];
         const filePaths = [results.file];
 
-        // Extract file paths from results
-        // const filePaths = response.flatMap(record => record.results.map(result => result.filepath));
-
         // Extract text from the PDF file paths
         const pdfResults = await extractPdfContent(filePaths);
 
-        // Map PDF text back to their respective records
-        // response.forEach(record => {
-        //     record.results.forEach(result => {
-        //         const pdfResult = pdfResults.find(pdf => pdf.filePath === result.filepath);
-        //         if (pdfResult) {
-        //             result.text = pdfResult.text;
-        //         }
-        //     });
-        // });
-
         // Enhanced prompt creation
         const combinedPrompt = `Prompt: ${prompt}\nFile Content: ${pdfResults.map(pdf => pdf.text).join('\n\n')}`;
-
-        // const fullPrompt = `Prompt: ${prompt}\n\n${combinedPrompt}`;
 
         const generationConfig = {
             temperature: 0.9,
@@ -478,9 +429,8 @@ router.post('/summarizresult', upload.single('file'), async (req, res) => {
         const sumresponse = await result.response;
         const text = await sumresponse.text();
 
-        res.json({ summary: text });
+        res.json({ summary: text, recordid: results.recordid, resultid: resultid });
         console.log(text);
-        // console.log(text);
     } catch (error) {
         console.error('Error generating content:', error);
         res.status(500).send('Internal Server Error');
