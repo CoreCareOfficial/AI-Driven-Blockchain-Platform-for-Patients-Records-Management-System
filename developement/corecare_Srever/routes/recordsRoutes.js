@@ -422,7 +422,7 @@ router.post('/get/generalreport', async (req, res) => {
         const doctorInfo = await pool.query('SELECT patientid, specialization, locationofwork FROM doctor WHERE doctorid = $1', [generalDiagnosisQuery.rows[0].doctorid]);
         const doctorPersonInfo = await pool.query('SELECT firstname, lastname, country, address, phonenumber FROM patient WHERE patientid = $1', [doctorInfo.rows[0].patientid]);
 
-        res.status(200).json({ diagnosis: generalDiagnosis.rows[0], notes: generalNotes.rows[0], reportdate, prescriptions: prescriptionQuery.rows && prescriptionQuery.rows, labtests: labtestsQuery.rows, radiologies: radiologiesQuery.rows, appointments: appointmentsQuery.rows, patientInfo: patientInfo.rows[0], doctorInfo: doctorInfo.rows[0], doctorPersonInfo: doctorPersonInfo.rows[0] });
+        res.status(200).json({ diagnosis: generalDiagnosis.rows[0], notes: generalNotes.rows[0], reportdate, prescriptions: prescriptionQuery.rows && prescriptionQuery.rows, labtests: labtestsQuery.rows, radiologies: radiologiesQuery.rows, appointments: appointmentsQuery.rows && appointmentsQuery.rows, patientInfo: patientInfo.rows[0], doctorInfo: doctorInfo.rows[0], doctorPersonInfo: doctorPersonInfo.rows[0] });
 
 
 
