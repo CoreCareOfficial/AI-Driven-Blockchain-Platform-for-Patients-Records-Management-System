@@ -1,25 +1,29 @@
-.CreateAccessKey-section{
+.CreateAccessKey-section {
     max-width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.5);;
+    background-color: rgba(255, 255, 255, 0.5);
+    ;
     z-index: 9999;
-    position: fixed;    
+    position: fixed;
 
 }
-.AccessKeyCards{
+
+.AccessKeyCards {
+    transition: 0.7s ease;
+    cursor: pointer;
+}
+
+.AccessKeyCards:hover {
+    transform: scale(1.01);
+}
+
+.time-div {
     transition: 0.7s ease;
 }
-.AccessKeyCards:hover{
-    transform:scale(1.01);
-}
 
-.time-div{
-    transition: 0.7s ease;
-}
-
-.time-div:hover{
+.time-div:hover {
     cursor: pointer;
     border: 1px solid #3146ff;
-    transform:scale(1.1);
+    transform: scale(1.1);
 }

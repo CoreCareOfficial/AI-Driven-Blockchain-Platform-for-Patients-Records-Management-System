@@ -1,12 +1,61 @@
-import { AddAccessKeyInput, AddAccountForm, AddAccountInput, CreateAccessForm, CreateAccessSelect, SearchToAccessInput } from "../settingdetails/TextFormSetting";
-import { Button } from "primereact/button";
-import React, { useState } from "react";
+import { AddAccessKeyInput, CreateAccessForm, CreateAccessSelect, SearchToAccessInput } from "../settingdetails/TextFormSetting";
+import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
-import img from '../../assets/ahmed.jpg';
 import '../../css/UserPageStyle/createaccesskey.css';
 import { IoMdCloseCircle } from "react-icons/io";
+import defaultPic from '../../assets/user_signup.png'
+import { Toast } from "primereact/toast";
+import { loginInfo } from "../../Recoil/Atom";
+import { useRecoilValue } from "recoil";
 
 function CreateAccessKey({ handleCreateAccessKeyClick }) {
+    const toast = useRef(null);
+    const hasEffectRun = useRef(false);
+    const [providers, setProviders] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedType, setSelectedType] = useState('All');
+    const [filteredProviders, setFilteredProviders] = useState(providers);
+    const [period, setPeriod] = useState('');
+    const [timeOther, setTimeOther] = useState('');
+    const [keyuser, setKeyUser] = useState('');
+    const userInfoValue = useRecoilValue(loginInfo);
+
+    useEffect(() => {
+        const fetchProviders = async () => {
+            try {
+                const response = await fetch('http://192.168.137.1:5000/accesskey/getproviders', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const jsonData = await response.json();
+                setProviders(jsonData);
+                setFilteredProviders(jsonData);
+                console.log('Success:', jsonData);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        if (!hasEffectRun.current) {
+            fetchProviders();
+            hasEffectRun.current = true;
+        }
+    }, []);
+
+    useEffect(() => {
+        const filtered = providers.filter(provider => {
+            const matchesType = selectedType === 'All' || provider.type === selectedType;
+            const matchesName = provider.name.toLowerCase().startsWith(searchTerm.toLowerCase());
+            return matchesType && matchesName;
+        });
+        console.log('filtered:', filtered);
+        setFilteredProviders(filtered);
+    }, [searchTerm, selectedType, providers]);
+
     var settings = {
         dots: true,
         infinite: true,
@@ -41,11 +90,13 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
 
     const handleIsShowClick = () => {
         setIsShow(!isShow);
+        handleIsBorderClick(20, '');
     };
 
     const [isBorder, setIsBorder] = useState({});
 
-    const handleIsBorderClick = (id) => {
+    const handleIsBorderClick = (id, time) => {
+        setPeriod(time);
         setIsBorder((prevState) => {
             // Reset all to false except for the clicked one
             const newState = {};
@@ -57,6 +108,48 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
         });
     };
 
+    const handleSubmit = async () => {
+        console.log('priod', period);
+        console.log('timeother', timeOther);
+        console.log('keyuser', keyuser);
+
+        if (keyuser === '') {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please select the Provider' });
+            return;
+        }
+        if (period === '' && timeOther === '') {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please select the period' });
+            return;
+        }
+        if (userInfoValue.patientId === '') {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please Login First' });
+            return;
+        }
+
+        const data = {
+            patientid: userInfoValue.patientId,
+            keyuser: keyuser,
+            period: period,
+            specificDateTime: timeOther,
+        }
+        try {
+            const response = await fetch('http://192.168.137.1:5000/accesskey/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            if (!response.ok) {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Failed to create access key' });
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Access key created successfully' });
+            // handleMenuClick();
+        } catch (error) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Failed to create access key' });
+        }
+    }
     return (
         <>
             <section className="CreateAccessKey-section" style={{ display: isOpen ? 'block' : 'none', }}>
@@ -70,6 +163,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
                 }}>
                     <IoMdCloseCircle onClick={handleMenuClick} />
                 </span>
+                <Toast ref={toast} />
                 <div
                     style={{
                         position: 'relative',
@@ -82,7 +176,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
                         borderRadius: '15px',
                         padding: '0px',
                     }}>
-                    <CreateAccessForm label="Create">
+                    <CreateAccessForm label="Create" onSubmit={handleSubmit}>
                         <h1 style={{
                             textAlign: 'center',
                             color: '#fff',
@@ -91,8 +185,17 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
                         }}>Create Access Key</h1>
 
                         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                            <CreateAccessSelect items={['Doctor', 'Hospital', 'Laboratory', 'Radiology', 'Pharmacy']} value="Select Healthcare Provider" />
-                            <SearchToAccessInput name="" value="" type="text" placeholder="search.." />
+                            <CreateAccessSelect value={selectedType}
+                                onChange={(e) => setSelectedType(e.target.value)}
+                                items={['All', 'Doctor', 'Hospital', 'Laboratory', 'Radiology', 'Pharmacy']}
+                            />
+                            <SearchToAccessInput
+                                name=""
+                                type="text"
+                                placeholder="Search by name"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e)}
+                            />
                         </div>
 
                         <div style={{
@@ -106,19 +209,19 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
                         }}>
 
                             <Slider {...settings} >
-
-                                <div className="AccessKeyCards">
-                                    <img className="AccessKeyCards-img" src={img} alt="error" />
-                                    <h1 className="AccessKeyCards-h1">ahmed qahtan</h1>
-                                    <p className="AccessKeyCards-p">Taiz-Yemen</p>
-                                </div>
-
-                                <div className="AccessKeyCards">
-                                    <img className="AccessKeyCards-img" src={img} alt="error" />
-                                    <h1 className="AccessKeyCards-h1">ahmed qahtan</h1>
-                                    <p className="AccessKeyCards-p">Taiz-Yemen</p>
-                                </div>
-
+                                {
+                                    filteredProviders && filteredProviders.map((provider) => (
+                                        <div key={provider.id}
+                                            className="AccessKeyCards"
+                                            style={{ border: '2px solid #3146ff !important' }}
+                                            onClick={() => setKeyUser(provider.id)}
+                                        >
+                                            <img className="AccessKeyCards-img" src={provider.personalphoto ? `data:image/jpeg;base64,${provider.personalphoto}` : defaultPic} alt="error" />
+                                            <h1 className="AccessKeyCards-h1">{provider.name}</h1>
+                                            <p className="AccessKeyCards-p">{provider.specialization}</p>
+                                        </div>
+                                    ))
+                                }
                             </Slider>
                         </div>
 
@@ -132,7 +235,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
                                 display: 'flex',
                                 flexWrap: 'wrap',
                                 paddingLeft: '10px',
-                                padding:'5px'
+                                padding: '5px'
 
                             }}>
                             {/*===== time div====== */}
@@ -152,8 +255,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
                                             textAlign: 'center',
                                             border: isBorderState ? '2px solid #3146ff' : 'none',
 
-                                        }} onClick={() => handleIsBorderClick(itemList.id)}>
-                                        {console.log('item', itemList.time)}
+                                        }} onClick={() => handleIsBorderClick(itemList.id, itemList.time)}>
                                         <h3 style={{
                                             fontWeight: 'bold', color: '#fff',
                                         }}>{itemList.time}</h3>
@@ -179,7 +281,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
 
                             {/*=============== input div=========== */}
                             <div style={{ marginTop: '5px', width: 'calc(100% - 115px)', height: '5vh' }}>
-                                <AddAccessKeyInput isShow={isShow} name="" value="" type="datetime-local" placeholder="ddddddddd" />
+                                <AddAccessKeyInput isShow={isShow} name="" value="" type="datetime-local" placeholder="ddddddddd" onChange={(e) => setTimeOther(e)} />
                             </div>
 
                         </div>

@@ -611,7 +611,7 @@ export function AddAccountForm(props) {
         }
     }
     return (
-        <form onSubmit={handleSubmit} style={{ marginTop: '20px',padding:'10px'}} className="relative">
+        <form onSubmit={handleSubmit} style={{ marginTop: '20px', padding: '10px' }} className="relative">
             {props.children}
             <Button type="submit" label={props.label} icon="pi pi-check-circle" className="absolute right-0 bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2" />
         </form>
@@ -834,7 +834,7 @@ export function AddAccountPassport(props) {
                 // className="form-control"
                 style={inp}
                 onChange={handleFileChange}
-                // required
+            // required
             />
             <div
                 style={{ textAlign: 'center', borderRadius: '8px', borderBottom: '1px solid #000', backgroundColor: '#fff', width: '100%', cursor: 'pointer' }}
@@ -992,7 +992,7 @@ export function CreateAccessForm(props) {
         }
     }
     return (
-        <form onSubmit={handleSubmit} style={{ marginTop: '20px',padding:'10px'}} className="relative">
+        <form onSubmit={handleSubmit} style={{ marginTop: '20px', padding: '10px' }} className="relative">
             {props.children}
             <Button type="submit" label={props.label} icon="pi pi-check-circle" className="absolute right-5 bottom-2 bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2" />
         </form>
@@ -1018,7 +1018,7 @@ export function CreateAccessSelect(props) {
     ));
     return (
         <div style={{ minHeight: '55px', borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
-            <select required={props.required} style={inp} placeholder="" name={props.name} disabled={props.disabled}>
+            <select required={props.required} style={inp} placeholder="" name={props.name} value={props.value} disabled={props.disabled} onChange={props.onChange && props.onChange}>
                 <option disabled selected hidden>{hidtext}</option>
                 {listItems}
             </select>
@@ -1041,13 +1041,19 @@ export function SearchToAccessInput(props) {
     }
 
     const [value, setValue] = useState(props.value || '');
+
+    const handleChange = (e) => {
+        setValue(e.target.value);
+        if (props.onChange)
+            props.onChange(e.target.value);
+    }
     return (
         <>
             <div style={{ position: 'relative', borderRadius: '8px', height: '45px', width: '100%', padding: '5px', margin: '15px 5px', display: 'flex', justifyContent: 'space-between' }}>
                 <input style={inp}
                     type={props.type}
                     placeholder={props.placeholder}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChange={handleChange}
                     name={props.name}
                     disabled={props.disabled}
                     autoFocus={props.autoFocus}
@@ -1073,14 +1079,19 @@ export function AddAccessKeyInput(props) {
         fontWeight: '500',
         backgroundColor: '#181a1f',
         color: '#fff',
-        height:'5vh',
-        borderRadius:'5px',
-        paddingLeft:'5px',
+        height: '5vh',
+        borderRadius: '5px',
+        paddingLeft: '5px',
         display: props.isShow ? 'block' : 'none'
-        
+
     }
 
     const [value, setValue] = useState(props.value || '');
+    const handleOnChange = (e) => {
+        setValue(e.target.value);
+        if (props.onChange)
+            props.onChange(e.target.value);
+    }
     return (
         <>
             <div style={{ borderRadius: '8px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
@@ -1088,7 +1099,7 @@ export function AddAccessKeyInput(props) {
                 <input style={inp}
                     type={props.type}
                     placeholder={props.placeholder}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChange={handleOnChange}
                     name={props.name}
                     disabled={props.disabled}
                     autoFocus={props.autoFocus}
@@ -1115,7 +1126,7 @@ export function DynamicRecordInput(props) {
 
     return (
         <>
-            <div style={{width:'100%', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ width: '100%', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
                 {props.children}
                 <input style={inp} type={props.type} value={props.value} disabled={props.disabled} />
             </div>
