@@ -69,7 +69,7 @@ router.post('/create', async (req, res) => {
 router.get('/get/:doctorid', async (req, res) => {
     const doctorid = req.params.doctorid;
     try {
-        const accessKeysQuery = await pool.query('SELECT * FROM temp_access WHERE keyuser = $1', [doctorid]);
+        const accessKeysQuery = await pool.query('SELECT * FROM temp_access WHERE keyuser = $1 ORDER BY created_at', [doctorid]);
         if (accessKeysQuery.rows.length === 0) {
             return res.status(404).json({ message: 'No access keys found' });
         }
