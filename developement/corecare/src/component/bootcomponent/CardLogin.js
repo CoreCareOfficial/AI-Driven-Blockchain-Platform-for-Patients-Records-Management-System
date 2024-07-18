@@ -16,7 +16,9 @@ function CardLogin(props) {
         margin: 'auto',
         alignItems: 'center',
         flexDirection: 'column',
-        verticalAlign: 'center'
+        verticalAlign: 'center',
+        boxShadow: '#f8f9fa 0px 0px 25px 0px',
+
     }
     const styleStep = {
         fontFamily: 'DM Sans',

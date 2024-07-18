@@ -22,6 +22,7 @@ import records from './routes/recordsRoutes.js';
 import prescriptionRoutes from './routes/prescriptionRoutes.js';
 import accesskeyRoutes from './routes/accesskeyRoutes.js';
 import resultRoutes from './routes/resultRoutes.js';
+import previousPatientsRoutes from './routes/previousPatientsRoutes.js';
 import verification from './routes/verification.js';
 import apiDocumentation from './API/API_Documentaion.js';
 import checkDocsAuthenticity from './routes/checkDocsAuthenticity.js'
@@ -84,6 +85,7 @@ app.use('/departments', departmentsRoutes);
 app.use('/services', servicesRoutes);
 app.use('/emergencycontacts', emergencyContacts);
 app.use('/records', records);
+app.use('/previouspatients', previousPatientsRoutes);
 app.use('/prescription', prescriptionRoutes);
 app.use('/results', resultRoutes);
 app.use('/accesskey', accesskeyRoutes);
