@@ -48,6 +48,7 @@ button:hover, .link_route:hover {
 .H_section1 img {
     width: 40%;
     max-height: 20%;
+    /* position: absolute; */
     
 }
 
@@ -208,11 +209,12 @@ li {
 .H_section5 .H_section5_card {
     background-color: var(--darkBlack-color);
     border: none;
-    margin-top: 5%;
+    margin-top: 0%;
 }
-.H_section5 .step {
+.H_container5_div .step {
     background-color: var(--darkBlack-color);
     border: none;
+    width: 60%;
 }
 .H_section5 .H_section5_card .h5 {
     color: var(--white-color);
@@ -236,15 +238,18 @@ li {
 }
 .H_section5 hr {
     height: 3px;
-    color: var(--white-color);
+    color: var(--altBlue-color);
     margin-top: 1rem;
 }
+
 .H_section5 img {
     position: absolute;
-    width: 400px;
-    height: 400px;
-    left: 18%;
-    top: 2%;
+    width: 320px;
+    height: 350px;
+    left: 16%;
+    top: 3%;
+    z-index: 999;
+    
 }
 @media screen and (max-width: 1200px) {
     .H_section5 img {

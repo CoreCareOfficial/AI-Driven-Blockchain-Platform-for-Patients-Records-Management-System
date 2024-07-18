@@ -16,9 +16,12 @@ function Section1() {
                         <Card.Text>'We offer secure storage, ensuring all your data is
                             protected from unauthorized access.'
                         </Card.Text>
-                        <Link to="/signup">
+                        {/* <Link to="">
                             <Button variant="primary" style={{ transition: '0.7s ease' }}>Get Started</Button>{' '}
-                        </Link>
+                        </Link> */}
+                        <a href="#How-To-Signup">
+                            <Button variant="primary" style={{ transition: '0.7s ease' }}>Get Started</Button>{' '}
+                        </a>
                     </DynamicCard>
                     <RectImage path={computer_image} />
                 </Flex_Container>

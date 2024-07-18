@@ -611,7 +611,7 @@ export function AddAccountForm(props) {
         }
     }
     return (
-        <form onSubmit={handleSubmit} style={{ marginTop: '20px' }} className="relative">
+        <form onSubmit={handleSubmit} style={{ marginTop: '20px',padding:'10px'}} className="relative">
             {props.children}
             <Button type="submit" label={props.label} icon="pi pi-check-circle" className="absolute right-0 bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2" />
         </form>
@@ -983,6 +983,21 @@ export function AddAccountMedicalDegree(props) {
 };
 
 // =======
+export function CreateAccessForm(props) {
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (props.onSubmit) {
+            props.onSubmit();
+        }
+    }
+    return (
+        <form onSubmit={handleSubmit} style={{ marginTop: '20px',padding:'10px'}} className="relative">
+            {props.children}
+            <Button type="submit" label={props.label} icon="pi pi-check-circle" className="absolute right-5 bottom-2 bg-[#3146FF] my-2 text-white font-bold rounded-[10px] p-2" />
+        </form>
+    );
+}
 export function CreateAccessSelect(props) {
 
     const hidtext = props.value;

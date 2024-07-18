@@ -1,4 +1,4 @@
-import { AddAccessKeyInput, AddAccountForm, AddAccountInput, CreateAccessSelect, SearchToAccessInput } from "../settingdetails/TextFormSetting";
+import { AddAccessKeyInput, AddAccountForm, AddAccountInput, CreateAccessForm, CreateAccessSelect, SearchToAccessInput } from "../settingdetails/TextFormSetting";
 import { Button } from "primereact/button";
 import React, { useState } from "react";
 import Slider from "react-slick";
@@ -76,13 +76,13 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
                         backgroundColor: '#3f4652',
                         boxShadow: '0px 0px 13px gray',
                         width: '45%',
-                        height: 'max-content',
-                        minHeight: '92vh',
+                        height: 'fit-content',
+                        // minHeight: '92vh',
                         margin: '15px auto',
                         borderRadius: '15px',
-                        padding: '10px',
+                        padding: '0px',
                     }}>
-                    <AddAccountForm label="Create">
+                    <CreateAccessForm label="Create">
                         <h1 style={{
                             textAlign: 'center',
                             color: '#fff',
@@ -132,6 +132,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
                                 display: 'flex',
                                 flexWrap: 'wrap',
                                 paddingLeft: '10px',
+                                padding:'5px'
 
                             }}>
                             {/*===== time div====== */}
@@ -184,7 +185,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
                         </div>
 
 
-                    </AddAccountForm>
+                    </CreateAccessForm>
                 </div>
 
             </section>

@@ -5,6 +5,7 @@ import { Container } from "react-bootstrap";
 import Flex_Container from "../bootcomponent/flex_Container";
 import DynamicCard from "../bootcomponent/DynamicCard";
 import { Card,Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function Section4(){
 
@@ -20,7 +21,10 @@ function Section4(){
                     <DynamicCard name="A_section4_card">
                         <Card.Title>Get started with Core-care today</Card.Title>
                         <Card.Text>Start organizing your healthcare records today.</Card.Text>
-                        <Button variant="primary" style={{transition: '0.7s ease'}}>sign up now</Button>{' '}
+                        <Link to="/signup">
+                                <Button variant="primary" style={{ width:'30%', transition: '0.7s ease' }}>sign up now</Button>{' '}
+                            </Link>
+                        {/* <Button variant="primary" style={{transition: '0.7s ease'}}>sign up now</Button>{' '} */}
                     </DynamicCard>
                     <RectImage path={image4}/>
                 </Flex_Container>
