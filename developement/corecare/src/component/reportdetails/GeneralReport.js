@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DynamicInput, DynamicRecordInput } from "../settingdetails/TextFormSetting";
 function GeneralReport(props) {
+    const [info, setInfo] = useState(null);
+    useEffect(() => {
+        setInfo(props.info);
+    }, [props.info]);
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    };
+
     return (
         <>
             <h1 className="h_1">General Report</h1>
@@ -15,7 +28,7 @@ function GeneralReport(props) {
                                 minHeight: '10vh',
                                 margin: '0px',
                             }}>
-                            <DynamicInput label="General Diagnosis : " type="text" disabled={true} value="" />
+                            <DynamicInput label="General Diagnosis: " type="text" disabled={true} value={info && info.diagnosis.diagnosis} />
                         </div>
 
                     </div>
@@ -41,7 +54,7 @@ function GeneralReport(props) {
                                     paddingLeft: '5px',
                                 }}
 
-                                value=""
+                                value={info && info.notes.notes}
                                 disabled={true}>
                             </textarea>
                         </div>
@@ -57,53 +70,44 @@ function GeneralReport(props) {
                             border: '1px solid #272c34',
                             borderRadius: '8px',
                         }}>
-                        {/* {prescriptionsInfo.prescriptions.map((item, index) => ( */}
-                        <div style={{ margin: '5px', display: 'flex' }}>
-                            <DynamicRecordInput label='' type="text" disabled={true} value="" />
-                            <DynamicRecordInput label='' type="text" disabled={true} value="" />
-                        </div>
-                        <div style={{ margin: '5px', display: 'flex' }}>
-                            <DynamicRecordInput label='' type="text" disabled={true} value="" />
-                            <DynamicRecordInput label='' type="text" disabled={true} value="" />
-                        </div>
-                        {/* ))} */}
+                        {
+                            info && info.prescriptions && info.prescriptions.map((item, index) => (
+                                <div style={{ margin: '5px', display: 'flex' }}>
+                                    <DynamicRecordInput label='' type="text" disabled={true} value={`${index + 1}- ${item.medicinename}`} />
+                                    <DynamicRecordInput label='' type="text" disabled={true} value={item.dosage} />
+                                </div>
+                            ))
+                        }
                     </div>
-                    {/* =============================== */}
 
-                    {/*  Prescribed Lab Test*/}
                     <h1 className="h_1_t"> Prescribed Lab Test</h1>
                     <div className="Prescribed-div">
-                        {/* {prescriptionsInfo.prescriptions.map((item, index) => ( */}
-                        <div style={{ margin: '5px', display: 'flex' }}>
-                            <DynamicRecordInput label='' type="text" disabled={true} value="" />
-                        </div>
-                        {/* ))} */}
-                    </div>
-                    {/* =============================== */}
 
-                    {/*  Prescribed  Radiology*/}
+                        {
+                            info && info.labtests && info.labtests.map((item, index) => (
+                                <div style={{ margin: '5px', display: 'flex' }}>
+                                    <DynamicRecordInput label='' type="text" disabled={true} value={`${index + 1}- ${item.name}`} />
+                                </div>
+                            ))
+                        }
+                    </div>
 
                     <h1 className="h_1_t"> Prescribed Radiology</h1>
                     <div className="Prescribed-div">
-
-                        {/* {prescriptionsInfo.prescriptions.map((item, index) => ( */}
-
-                        <div style={{ margin: '5px', display: 'flex' }}>
-                            <DynamicRecordInput label='' type="text" disabled={true} value="" />
-                        </div>
-
-                        {/* ))} */}
+                        {
+                            info && info.radiologies && info.radiologies.map((item, index) => (
+                                <div style={{ margin: '5px', display: 'flex' }}>
+                                    <DynamicRecordInput label='' type="text" disabled={true} value={`${index + 1}- ${item.name}`} />
+                                </div>
+                            ))
+                        }
                     </div>
-                    {/* =============================== */}
 
-                    {/* visit hours */}
                     <h1 className="h_1_t">Next Visit</h1>
-
                     <div className="Prescribed-div">
-                        <div style={{ margin: '5px', display: 'flex', justifyContent:'space-around' }}>
-                        <DynamicInput label="Reason:" type="text" disabled={true} value="" />
-                        <DynamicInput label="Date: " type="text" disabled={true} value="" />
-
+                        <div style={{ margin: '5px', display: 'flex', justifyContent: 'space-around' }}>
+                            <DynamicInput label="Reason:" type="text" disabled={true} value={info && info.appointments[0].visitreason} />
+                            <DynamicInput label="Date: " type="text" disabled={true} value={info && `${formatDate(info.appointments[0].nextvisitdate)} ${info.appointments[0].nextvisittime}`} />
                         </div>
                     </div>
 

@@ -21,15 +21,16 @@ function Content(props) {
                                 : props.active === "Lab test" ? <RecordesPage title={props.active} handleCreateAccessKeyClick={props.handleCreateAccessKeyClick} />
                                     : props.active === "Radiology" ? <RecordesPage title={props.active} handleCreateAccessKeyClick={props.handleCreateAccessKeyClick} />
                                         : props.active === "Prescription" ? <RecordesPage title={props.active} handleCreateAccessKeyClick={props.handleCreateAccessKeyClick} />
-                                            : props.active === "Add Patient" ? <AddAccount userType={props.userType} title={props.active} />
-                                                : props.active === "Add Doctor" ? <AddDoctorAccount userType={props.userType} title={props.active} />
-                                                    : props.active === "Add Laboratory" ? <AddLaboratoryAccount userType={props.userType} title={props.active} />
-                                                        : props.active === "Add Radiology" ? <AddRadiologyAccount userType={props.userType} title={props.active} />
-                                                            : props.active === "Add Pharmacy" ? <AddPharmacyAccount userType={props.userType} title={props.active} />
-                                                                : props.active === "Patient Access Management" ? <PatientAccessManagement />
-                                                                    : props.active === "Appointment Schedule" ? <div className="text-white">Appointment</div>
-                                                                        : props.active === "Settings" ? <PatientSettingPage userType={props.userType} />
-                                                                            : null
+                                            : props.active === "Summarized Files" ? <RecordesPage title={props.active} handleCreateAccessKeyClick={props.handleCreateAccessKeyClick} />
+                                                : props.active === "Add Patient" ? <AddAccount userType={props.userType} title={props.active} />
+                                                    : props.active === "Add Doctor" ? <AddDoctorAccount userType={props.userType} title={props.active} />
+                                                        : props.active === "Add Laboratory" ? <AddLaboratoryAccount userType={props.userType} title={props.active} />
+                                                            : props.active === "Add Radiology" ? <AddRadiologyAccount userType={props.userType} title={props.active} />
+                                                                : props.active === "Add Pharmacy" ? <AddPharmacyAccount userType={props.userType} title={props.active} />
+                                                                    : props.active === "Patient Access Management" ? <PatientAccessManagement />
+                                                                        : props.active === "Appointment Schedule" ? <div className="text-white">Appointment</div>
+                                                                            : props.active === "Settings" ? <PatientSettingPage userType={props.userType} />
+                                                                                : null
                 }
             </div>
         </>

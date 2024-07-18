@@ -31,11 +31,8 @@ function ReportPage() {
             setAction(actionSting);
             if (type === 'prescription') {
                 setPrescriptionsInfo(parsedInfo);
-                console.log('info', parsedInfo);
-                console.log('doctorInfo', parsedInfo.doctorInfo);
-                console.log('doctorPersonInfo', parsedInfo.doctorPersonInfo);
-                console.log('patientInfo', parsedInfo.patientInfo);
-                console.log('prescriptions', parsedInfo.prescriptions);
+            } else if (type === 'lab') {
+                console.log('lab', parsedInfo);
             }
         } else {
             console.log('no data');
@@ -45,20 +42,19 @@ function ReportPage() {
     const bodyReport = () => {
         return (
             <ReportBody>
-                {reportType!=="summarized" ? (
+                {reportType !== "summarized" ? (
                     <ReportHeader info={info ? info : null} />
-                ):null}
+                ) : null}
 
                 {reportType === "general" ? (
-                    <GeneralReport />
+                    <GeneralReport info={info} />
                 ) : reportType === "prescription" ? (
                     <PrescriptionReport prescriptions={prescriptionsInfo ? prescriptionsInfo : null} />
                 ) : (reportType === "lab" || reportType === "rad") ? (
-                    <LabAndRadReport type={reportType}/>
-
-                ) : reportType === "summarized" ? (<Summarized/>
-
-                ):null}
+                    <LabAndRadReport type={reportType} info={info} />
+                ) : reportType === "summarized" ? (
+                    <Summarized info={info} />
+                ) : null}
 
                 <ReportFooter h6="Created By CoreCare Platform" p="Developed By Comment Soft" />
             </ReportBody>

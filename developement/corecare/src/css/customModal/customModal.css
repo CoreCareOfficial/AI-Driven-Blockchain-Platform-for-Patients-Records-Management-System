@@ -1,4 +1,6 @@
 .custom-modal .modal-content {
-    background-color: #f0f0f0;
+    background-color: #eaeaea;
+    padding: 28xp;
+    border-radius: 25px;
     /* Change this to your desired background color */
 }

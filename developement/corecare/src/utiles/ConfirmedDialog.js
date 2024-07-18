@@ -10,7 +10,11 @@ function ConfirmedDialog(props) {
             dialogClassName="custom-modal"
             size={props.isSummary ? 'lg' : ''}
         >
-            <Modal.Header closeButton>
+            <Modal.Header
+                closeButton
+                dialogClassName="custom-modal-header"
+                style={{ backgroundColor: "#3146ff", color: "white" }}
+            >
                 <Modal.Title>{props.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>

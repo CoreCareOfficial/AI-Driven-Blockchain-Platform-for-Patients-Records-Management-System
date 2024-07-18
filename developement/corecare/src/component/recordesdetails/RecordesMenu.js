@@ -35,7 +35,7 @@ function RecordesMenu(props) {
         setSelectedFile(props.file);
     }, [props.file, selectedFile])
 
-    const fetchFile = async (id) => {
+    const fetchFile = async (id, action) => {
         try {
             const response = await fetch(`http://192.168.137.1:5000/records/getresult/${id}`, {
                 method: "GET",
@@ -59,13 +59,18 @@ function RecordesMenu(props) {
                 const blob = new Blob([byteArray], { type: 'application/pdf' });
                 const fileUrl = URL.createObjectURL(blob);
                 const query = queryString.stringify({ pdfUrl: fileUrl });
-                window.open(`/read-pdf?${query}`, '_blank');
+                action === 'open'
+                    ? window.open(`/read-pdf?${query}`, '_blank')
+                    : window.open(`/print-pdf?${query}`, '_blank');
+                console.log('action', action);
             } else if (jsonData.filetype === 'dicom') {
                 const byteArray = new Uint8Array(atob(jsonData.data).split("").map(char => char.charCodeAt(0)));
                 const blob = new Blob([byteArray], { type: 'application/dicom' });
                 const fileUrl = URL.createObjectURL(blob);
                 const query = queryString.stringify({ dicomUrl: fileUrl });
-                window.open(`/view-dicom?${query}`, '_blank');
+                action === 'open'
+                    ? window.open(`/view-dicom?${query}`, '_blank')
+                    : window.open(`/print-dicom?${query}`, '_blank');
             } else {
                 props.toast({ severity: 'error', summary: 'Error', detail: 'Unsupported file type' });
             }
@@ -102,6 +107,111 @@ function RecordesMenu(props) {
         }
     };
 
+    const fetchlab = async (prescribedLabtests, action) => {
+        if (!prescribedLabtests) {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'No lab tests prescribed' });
+            return;
+        }
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/records/get/labtest`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(prescribedLabtests),
+            });
+            if (!response.ok) {
+                props.toast({ severity: 'error', summary: 'Error', detail: 'Error loading lab test' });
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const jsonData = await response.json();
+            console.log(`Success loading:`, jsonData);
+            const query = queryString.stringify({ info: JSON.stringify(jsonData), type: 'lab', action: action });
+            window.open(`/open-report?${query}`, '_blank');
+        } catch (err) {
+            console.error("Error:", err);
+            props.toast({ severity: 'error', summary: 'Error', detail: 'Error loading lab test' });
+        }
+    };
+    const fetchRad = async (prescribedRadiologies, action) => {
+        if (!prescribedRadiologies) {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'No radiology tests prescribed' });
+            return;
+        }
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/records/get/radiology`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(prescribedRadiologies),
+            });
+            if (!response.ok) {
+                props.toast({ severity: 'error', summary: 'Error', detail: 'Error loading radiology test' });
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const jsonData = await response.json();
+            console.log(`Success loading:`, jsonData);
+            const query = queryString.stringify({ info: JSON.stringify(jsonData), type: 'rad', action: action });
+            window.open(`/open-report?${query}`, '_blank');
+        } catch (err) {
+            console.error("Error:", err);
+            props.toast({ severity: 'error', summary: 'Error', detail: 'Error loading radiology test' });
+        }
+    };
+    const fetchSummary = async (action) => {
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/records/get/savedsummary/${selectedFile.id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                props.toast({ severity: 'error', summary: 'Error', detail: 'Error loading Summary' });
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const jsonData = await response.json();
+            console.log(`Success loading:`, jsonData);
+            const query = queryString.stringify({ info: JSON.stringify(jsonData), type: 'summarized', action: action });
+            window.open(`/open-report?${query}`, '_blank');
+        } catch (err) {
+            console.error("Error:", err);
+            props.toast({ severity: 'error', summary: 'Error', detail: 'Error loading Summary' });
+        }
+    };
+    const fetchGeneralReport = async (action) => {
+        if (userInfoValue.patientId === '') {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'You Should Login again' });
+            return;
+        }
+        const data = {
+            patientid: userInfoValue.patientId,
+            recordid: selectedFile.id
+        }
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/records/get/generalreport`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+            if (!response.ok) {
+                props.toast({ severity: 'error', summary: 'Error', detail: 'Error loading General Report' });
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const jsonData = await response.json();
+            console.log(`Success loading:`, jsonData);
+            const query = queryString.stringify({ info: JSON.stringify(jsonData), type: 'general', action: action });
+            window.open(`/open-report?${query}`, '_blank');
+        } catch (err) {
+            console.error("Error:", err);
+            props.toast({ severity: 'error', summary: 'Error', detail: 'Error loading General Report' });
+        }
+    };
+
+
     const handleOpenFile = async () => {
         if (props.handleMenuClick)
             props.handleMenuClick();
@@ -114,15 +224,52 @@ function RecordesMenu(props) {
             return;
         }
         if (selectedFile.data['type'] === "Lab Result" || selectedFile.data['type'] === "Radiology Result") {
-            fetchFile(selectedFile.id);
+            fetchFile(selectedFile.id, 'open');
         } else if (selectedFile.data['type'] === "Prescription") {
             fetchPrescption(selectedFile.data['prescribedMedicine'], 'open');
         } else if (selectedFile.data['type'] === "Record") {
             if (props.handleExpanded)
                 props.handleExpanded(selectedFile.id);
+        } else if (selectedFile.data['type'] === "prescribed lab test") {
+            fetchlab(selectedFile.data['prescribedLabtests'], 'open');
+        }
+        else if (selectedFile.data['type'] === "prescribed radiology test") {
+            fetchRad(selectedFile.data['prescribedRadiologies'], 'open');
+        } else if (selectedFile.data['type'] === "Summary") {
+            fetchSummary('open');
+        } else if (selectedFile.data['type'] === "General Report") {
+            fetchGeneralReport('open');
         }
 
     };
+
+    const handlePrint = async () => {
+        if (props.handleMenuClick)
+            props.handleMenuClick();
+        if (selectedFile.id === '') {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'No Record selected' });
+            return;
+        }
+        if (!selectedFile.data) {
+            props.toast({ severity: 'error', summary: 'Error', detail: 'No data Record selected' });
+            return;
+        }
+        if (selectedFile.data['type'] === "Lab Result" || selectedFile.data['type'] === "Radiology Result") {
+            fetchFile(selectedFile.id, 'print');
+        } else if (selectedFile.data['type'] === "Prescription") {
+            fetchPrescption(selectedFile.data['prescribedMedicine'], 'print');
+        } else if (selectedFile.data['type'] === "prescribed lab test") {
+            fetchlab(selectedFile.data['prescribedLabtests'], 'print');
+        }
+        else if (selectedFile.data['type'] === "prescribed radiology test") {
+            fetchRad(selectedFile.data['prescribedRadiologies'], 'print');
+        } else if (selectedFile.data['type'] === "Summary") {
+            fetchSummary('print');
+        } else if (selectedFile.data['type'] === "General Report") {
+            fetchGeneralReport('print');
+        }
+    };
+
 
     const [userInfoOptimistic, setUserInfoOptimistic] = useOptimistic(loginInfo, async (newUserInfoValue) => {
         console.log(newUserInfoValue.patientId);
@@ -179,26 +326,6 @@ function RecordesMenu(props) {
             console.error(error.message);
         }
 
-    };
-
-    const handlePrint = async () => {
-        if (props.handleMenuClick)
-            props.handleMenuClick();
-        if (selectedFile.id === '') {
-            props.toast({ severity: 'error', summary: 'Error', detail: 'No Record selected' });
-
-            return;
-        }
-        if (!selectedFile.data) {
-            props.toast({ severity: 'error', summary: 'Error', detail: 'No data Record selected' });
-            return;
-        }
-        // if (selectedFile.data['type'] === "Lab Result" || selectedFile.data['type'] === "Radiology Result") {
-        //     fetchFile(selectedFile.id);
-        // } else 
-        if (selectedFile.data['type'] === "Prescription") {
-            fetchPrescption(selectedFile.data['prescribedMedicine'], 'print');
-        }
     };
 
     const fetchStar = async (data, api) => {

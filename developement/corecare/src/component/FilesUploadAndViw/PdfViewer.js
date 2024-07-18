@@ -15,7 +15,7 @@ const PdfViewer = () => {
         return <div>No PDF URL provided</div>;
     }
 
-    console.log('pdf');
+    console.log('pdf', pdfUrl);
     return (
         <div style={{ height: '750px' }}>
             <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>

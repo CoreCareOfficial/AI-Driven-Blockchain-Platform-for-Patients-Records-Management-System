@@ -22,6 +22,7 @@ function RecordesPage(props) {
     const [labTests, setLabTests] = useState([]);
     const [radiologies, setRadiologies] = useState([]);
     const [prescriptons, setPrescriptons] = useState([]);
+    const [summarizedFiles, setSummarizedFiles] = useState([]);
     const [view, setView] = useState(true);
     const loginInfoValue = useRecoilValue(loginInfo);
     const hasEffectRun = useRef(false);
@@ -69,8 +70,33 @@ function RecordesPage(props) {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Records Not found' });
             }
         };
+        const summarizedFilesFromDatabase = async () => {
+            if (!loginInfoValue.patientId) {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please Login First' });
+                return;
+            }
+            try {
+                const response = await fetch(`http://192.168.137.1:5000/records/getsummary/${loginInfoValue.patientId}`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                    toast.current.show({ severity: 'error', summary: 'Error', detail: 'Summarized files Not found' });
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const jsonData = await response.json();
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Downloaded Summarized Files Successfully' });
+                setSummarizedFiles(jsonData);
+            } catch (error) {
+                console.error(error.message);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Summarized Files Not found' });
+            }
+        };
         if (!hasEffectRun.current) {
             allRecordsFromDatabase();
+            summarizedFilesFromDatabase();
             hasEffectRun.current = true;
         }
     }, [loginInfoValue.patientId]);
@@ -109,6 +135,7 @@ function RecordesPage(props) {
                     radiologies={radiologies}
                     labTests={labTests}
                     reports={reports}
+                    summarizedFiles={summarizedFiles}
                     refresh={refreshComponent}
                 />
             ) : (
@@ -120,6 +147,7 @@ function RecordesPage(props) {
                     radiologies={radiologies}
                     labTests={labTests}
                     reports={reports}
+                    summarizedFiles={summarizedFiles}
                     refresh={refreshComponent}
                 />
             )}

@@ -241,10 +241,10 @@ function PatientSidebarHandler(props) {
                             />
                             <SideBtn
                                 name="sideBtn"
-                                id={activeButton === "Additional Records" ? "active" : ""}
+                                id={activeButton === "Summarized Files" ? "active" : ""}
                                 icon={<LuFolderPlus />}
-                                text="Additional Records"
-                                onClick={() => handleButtonClick("Additional Records")}
+                                text="Summarized Files"
+                                onClick={() => handleButtonClick("Summarized Files")}
                             />
                         </DropDownButton>
                     ) : null}

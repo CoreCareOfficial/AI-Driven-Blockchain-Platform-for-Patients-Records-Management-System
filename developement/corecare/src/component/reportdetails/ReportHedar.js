@@ -35,7 +35,7 @@ function ReportHeader(props) {
     return (
         <>
             <div className="ReportHeader">
-                
+
                 <div className="ReportHeader-container">
 
                     <div className="ReportHeader-left">
@@ -78,7 +78,9 @@ function ReportHeader(props) {
                             margin: '5px',
                         }}>
                         <DynamicInput label="Sex : " type="text" disabled={true} value={info.patientInfo.sex} />
-                        <DynamicInput label="Date : " type="text" disabled={true} value={formatDate(info.prescriptions[0].prescriptiondate)} />
+                        <DynamicInput label="Date : " type="text" disabled={true}
+                            value={formatDate(info.prescriptions ? info.prescriptions[0].prescriptiondate : info.reportdate)}
+                        />
                     </div>
 
                     <div

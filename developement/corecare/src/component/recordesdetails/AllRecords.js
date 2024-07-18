@@ -17,6 +17,7 @@ function AllRecords(props) {
     const labTests = props.labTests || [];
     const radiologies = props.radiologies || [];
     const prescriptons = props.prescriptons || [];
+    const summarizedFiles = props.summarizedFiles || [];
     const [recordsList, setRecordsList] = useState([]);
     const [fileSelected, setFileSelected] = useState({ id: '', data: {} });
     const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
@@ -39,6 +40,9 @@ function AllRecords(props) {
                 break;
             case "Prescription":
                 setRecordsList(prescriptons);
+                break;
+            case "Summarized Files":
+                setRecordsList(summarizedFiles);
                 break;
             default:
                 setRecordsList(allRecords);
@@ -163,8 +167,8 @@ function AllRecords(props) {
                     <tr className="thead_tr">
                         <th></th>
                         <th></th>
-                        <th colSpan={2} style={{ width: '39%' }}>Name Of Record</th>
-                        <th style={{ width: '13%' }}>Type</th>
+                        <th colSpan={2} style={{ width: '35%' }}>Name Of Record</th>
+                        <th style={{ width: '16%' }}>Type</th>
                         <th>Name Of Health Provider</th>
                         <th>Date Of Upload</th>
                         <th></th>
@@ -202,6 +206,7 @@ function AllRecords(props) {
                                         if ((child.data.star && !starred[child.key]) || (starred[child.key] && !child.data.star)) {
                                             isStarred = true;
                                         }
+                                        const typeFile = child.data["type"] === "prescribed lab test" ? "Prescribed Lab" : child.data["type"] === "prescribed radiology test" ? "Prescribed Radiology" : child.data["type"];
                                         return (
                                             <>
                                                 <tr className={`tbody_tr ${c % 2 === 0 && "tr_color"}`} key={child.key}>
@@ -209,7 +214,7 @@ function AllRecords(props) {
                                                     <td><span style={{ display: isStarred ? 'block' : 'none', fontSize: '16px' }}><IoStarSharp /></span></td>
                                                     <td><span>{props.icons[child.data["type"]]}</span></td>
                                                     <td>{child.data["name"]}</td>
-                                                    <td>{child.data["type"]}</td>
+                                                    <td>{typeFile}</td>
                                                     <td>{child.data["Name Of Health Provider"]}</td>
                                                     <td>{formatDate(child.data["date"])}</td>
                                                     {console.log('child.data', child.data)}
@@ -230,13 +235,14 @@ function AllRecords(props) {
                             if ((record.data.star && !starred[record.key]) || (starred[record.key] && !record.data.star)) {
                                 isStarred = true;
                             }
+                            const typeFile = record.data["type"] === "prescribed lab test" ? "Prescribed Lab" : record.data["type"] === "prescribed radiology test" ? "Prescribed Radiology" : record.data["type"];
                             return (
                                 <tr className={`tbody_tr ${i % 2 === 0 && "tr_color"}`} key={record.key}>
                                     <td></td>
                                     <td><span style={{ display: isStarred ? 'block' : 'none', fontSize: '16px' }}><IoStarSharp /></span></td>
                                     <td><span>{props.icons[record.data["type"]]}</span></td>
                                     <td>{record.data["name"]}</td>
-                                    <td>{record.data["type"]}</td>
+                                    <td>{typeFile}</td>
                                     <td>{record.data["Name Of Health Provider"]}</td>
                                     <td>{formatDate(record.data["date"])}</td>
                                     {console.log('child.data', record.data)}

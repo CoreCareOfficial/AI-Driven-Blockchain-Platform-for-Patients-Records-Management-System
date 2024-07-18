@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 function LabAndRadReport(props) {
     const inp = {
         width: 'calc(100% - 80px)',
         borderBottom: '1px solid #3146ff',
         outline: 'none',
         fontWeight: '500',
+    }
+
+    const [info, setInfo] = useState(null);
+    useEffect(() => {
+        setInfo(props.info);
+    }, [props.info]);
+
+    if (!info) {
+        return <div>Loading...</div>;
     }
     return (
         <>
@@ -15,23 +24,18 @@ function LabAndRadReport(props) {
             }
 
             <div className="LabAndRadReport-container">
-                {/* {items.map((item, index) => ( */}
-                    <div 
-                    // key={index}
-                        style={{
-                            width: '100%',
-                            minHeight: '8vh',
-                            margin: '0px',
-                        }}>
-
-                        <div style={{ margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
-                            <input type='checkbox' value="" name="LaboratoryTest" checked={true} />
-                            <input style={inp} type="text" value="" disabled={true} />
-                            {/* <input type='checkbox' value={item.testName} name="LaboratoryTest" checked={true} />
-                            <input style={inp} type="text" value={item.testName} disabled={true} /> */}
-                        </div>
-                    </div>
-                {/* ))} */}
+                {
+                    info.testsList && info.testsList.map((labTest) => {
+                        return (
+                            <div key={labTest.id} style={{ width: '100%', minHeight: '8vh', margin: '0px', }}>
+                                <div style={{ margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+                                    <input type='checkbox' value="" name="LaboratoryTest" checked={true} />
+                                    <input style={inp} type="text" value={labTest.name} disabled={true} />
+                                </div>
+                            </div>
+                        )
+                    })
+                }
                 <div
                     style={{
                         width: '50%',
@@ -45,7 +49,7 @@ function LabAndRadReport(props) {
                         style={{
                             color: '#272c34',
                             fontWeight: '700',
-                        }}>Note : </label>
+                        }}>Notes : </label>
                     <textarea
                         style={{
                             resize: 'none',
@@ -54,9 +58,7 @@ function LabAndRadReport(props) {
                             width: 'calc(100% - 85px)',
                             paddingLeft: '5px',
                         }}
-
-                        value=""
-                        // value={note}
+                        value={info.notes.notes}
                         disabled={true}>
                     </textarea>
                 </div>
