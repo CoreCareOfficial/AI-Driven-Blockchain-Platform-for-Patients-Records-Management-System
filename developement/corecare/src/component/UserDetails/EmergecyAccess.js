@@ -2,7 +2,6 @@
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 import { useEffect, useRef, useState } from "react";
-import img from '../../assets/ahmed.jpg';
 import defaultPic from '../../assets/user_signup.png'
 import { GiKeyLock } from "react-icons/gi";
 
@@ -50,7 +49,7 @@ function EmergencyAccess(props) {
                     {
                         emergencyContacts.map((contact) => (
 
-                            <div key={contact.patientid} className="bg-[#3f4652] rounded mx-4 p-2 w-[15%] text-center cursor-pointer hover:scale-[1.01] transition-all">
+                            <div key={contact.patientid} className="bg-[#3f4652] rounded mx-4 p-2 w-[15%] text-center cursor-pointer hover:scale-[1.01] transition-all" onClick={(e) => props.handleCreateAccessKeyClick(e)}>
                                 <img className="w-[120px] h-[120px] my-[5px] mx-auto rounded-full" src={contact.personalphoto ? `data:image/jpeg;base64,${contact.personalphoto}` : defaultPic} alt="error" />
                                 <h1 className="text-white">{contact.name}</h1>
                                 <p className="text-white">{contact.sex}</p>
