@@ -1,7 +1,30 @@
 import express from 'express';
 import pool from '../db.js';
+import path from 'path';
+import fs from 'fs/promises';
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Helper function to read file content
+const readFileContent = async (filePath) => {
+    if (!filePath) {
+        console.log(`Skipping file read for null or undefined path`);
+        return null;
+    }
+    try {
+        const fullPath = path.resolve(__dirname, '..', filePath);
+        const data = await fs.readFile(fullPath);
+        return data.toString('base64');
+    } catch (error) {
+        console.error(`Error reading file from path ${filePath}:`, error);
+        return null;
+    }
+}
 
 router.post('/', async (req, res) => {
     const { emailorusername, patientid } = req.body;
@@ -36,5 +59,31 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+router.get('/:chosenuserid', async (req, res) => {
+    const { chosenuserid } = req.params;
+    try {
+        const chosenUserQuery = await pool.query('SELECT * FROM emergency_contacts WHERE chosenuserid = $1', [chosenuserid]);
+        if (chosenUserQuery.rows.length === 0) {
+            return res.status(400).json({ message: 'Emergency Contacts Not found' });
+        }
+
+        const emergencyContacts = []
+        for (let i = 0; i < chosenUserQuery.rows.length; i++) {
+            const chosenUser = await pool.query('SELECT firstname, lastname, personalphoto, sex FROM patient WHERE patientid = $1', [chosenUserQuery.rows[i].patientid]);
+            emergencyContacts.push({
+                id: chosenUserQuery.rows[i].id,
+                chosenuserid: chosenUserQuery.rows[i].chosenuserid,
+                patientid: chosenUserQuery.rows[i].patientid,
+                name: chosenUser.rows[0].firstname + ' ' + chosenUser.rows[0].lastname,
+                sex: chosenUser.rows[0].sex,
+                personalphoto: await readFileContent(chosenUser.rows[0].personalphoto),
+            })
+        }
+        res.status(200).json(emergencyContacts);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+})
 
 export default router

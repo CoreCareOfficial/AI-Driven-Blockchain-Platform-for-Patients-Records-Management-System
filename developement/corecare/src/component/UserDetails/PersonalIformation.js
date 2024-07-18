@@ -89,7 +89,7 @@ function PersonalInformation(props) {
                         <div className="general-info-container">
                             <GeneralInfoItem icon={<MdPersonOutline />} title="Full Name :" value={`${userInfo.firstname} ${userInfo.secondname} ${userInfo.thirdname} ${userInfo.lastname}`} />
                             <GeneralInfoItem icon={<MdAlternateEmail />} title="Email :" value={userInfo.email} />
-                            <GeneralInfoItem icon={<FaVenusMars />} title="Gender :" value={userInfo.sex} />
+                            <GeneralInfoItem icon={<FaVenusMars />} title="Sex :" value={userInfo.sex} />
                             <GeneralInfoItem icon={<MdLocalPhone />} title="Phone Number :" value={userInfo.phonenumber} />
                             <GeneralInfoItem icon={<MdCalendarToday />} title="Date of Birth :" value={formatDate(userInfo.dateofbirth)} />
                             <GeneralInfoItem icon={<MdLanguage />} title="Nationality :" value={Nationality[userInfo.country]} />

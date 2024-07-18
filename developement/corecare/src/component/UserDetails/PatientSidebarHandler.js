@@ -2,7 +2,8 @@ import { useRef, useState } from 'react';
 import { BsPerson } from "react-icons/bs";
 import { FaFileMedical } from "react-icons/fa";
 import { MdEventNote } from "react-icons/md"
-import { AiFillSetting } from "react-icons/ai";
+import { RiDashboardHorizontalFill } from "react-icons/ri";
+import { GiKeyLock } from "react-icons/gi";
 import H1 from "../H1";
 import SideBtn from "./SideBtn";
 import Button from "./Button";
@@ -321,9 +322,16 @@ function PatientSidebarHandler(props) {
 
                     <SideBtn
                         name="sideBtn"
+                        id={activeButton === "Emergency Access" ? "active" : ""}
+                        icon={<GiKeyLock />}
+                        text="Emergency Access"
+                        onClick={() => handleButtonClick("Emergency Access")}
+                    />
+                    <SideBtn
+                        name="sideBtn"
                         id={activeButton === "Settings" ? "active" : ""}
-                        icon={<AiFillSetting />}
-                        text="Settings"
+                        icon={<RiDashboardHorizontalFill />}
+                        text="Dashboard"
                         onClick={() => handleButtonClick("Settings")}
                     />
                 </div>

@@ -491,7 +491,6 @@ router.get('/get/savedsummary/:id', async (req, res) => {
 });
 
 
-
 // Update record star
 router.put('/updaterecordstar', async (req, res) => {
     const { recordid, star } = req.body;

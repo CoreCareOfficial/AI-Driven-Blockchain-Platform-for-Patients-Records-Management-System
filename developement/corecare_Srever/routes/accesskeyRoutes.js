@@ -102,7 +102,7 @@ router.get('/getproviders', async (req, res) => {
             providers.push({
                 id: doctor.doctorid,
                 personalphoto: await readFileContent(doctorpersonalQuery.rows[0].personalphoto),
-                name: doctorpersonalQuery.rows[0].firstname + ' ' + doctorpersonalQuery.rows[0].lastname,
+                name: 'Dr/  ' + doctorpersonalQuery.rows[0].firstname + ' ' + doctorpersonalQuery.rows[0].lastname,
                 specialization: doctor.specialization,
                 type: 'Doctor',
             })
@@ -122,11 +122,13 @@ router.get('/getproviders', async (req, res) => {
             })
         }
 
-        res.status(200).json({ providers: providers });
+        res.status(200).json(providers);
 
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
+
+
 
 export default router;

@@ -2,6 +2,7 @@ import { CiSettings } from "react-icons/ci";
 import { IoMdNotifications } from "react-icons/io";
 import { MdErrorOutline } from "react-icons/md";
 import { IconContext } from "react-icons";
+import { Link } from "react-router-dom";
 import "../../css/UserPageStyle/profile.css"
 
 
@@ -20,13 +21,13 @@ function ProfileHeaderIcon(props) {
         </IconContext.Provider>
     return (
         <div className="profile-header-icon">
-        <div>{ErrorIcon}</div>
-        <div>{NotificationIcon}</div>
-        <div>{SettingsIcon}</div>
-        <div className="mini-profile-icon">
-            <img className="image" src={props.image} alt="profile"></img>
+            <div>{ErrorIcon}</div>
+            <div>{NotificationIcon}</div>
+            <div>{SettingsIcon}</div>
+            <div className="mini-profile-icon">
+                <img className="image" src={props.image} alt="profile"></img>
+            </div>
         </div>
-    </div>
     )
 }
 

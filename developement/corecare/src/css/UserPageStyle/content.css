@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    overflow: auto;
+    overflow: hidden;
     scrollbar-width: none;
     scrollbar-color: inherit;
 }
