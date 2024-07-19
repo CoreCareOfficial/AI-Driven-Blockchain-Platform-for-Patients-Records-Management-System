@@ -71,7 +71,7 @@ router.get('/get/:emailorusername', async (req, res) => {
     try {
         const providerType = await pool.query('SELECT type from login where email = $1 or username = $1', [emailorusername]);
         const type = providerType.rows[0].type;
-        console.log(type)
+
         let providerid;
         if (type === 'Doctor') {
             const patientid = await pool.query('SELECT patientid from patient where email = $1', [emailorusername]);
@@ -82,7 +82,7 @@ router.get('/get/:emailorusername', async (req, res) => {
             const provideridQuery = await pool.query('SELECT id from healthcare_provider where email = $1', [emailorusername]);
             providerid = provideridQuery.rows[0].id;
         }
-        console.log(providerid)
+
         const accessKeysQuery = await pool.query('SELECT * FROM temp_access WHERE keyuser = $1 ORDER BY created_at', [providerid]);
         if (accessKeysQuery.rows.length === 0) {
             return res.status(404).json({ message: 'No access keys found' });
@@ -109,7 +109,7 @@ router.get('/getnotificationtoast/:emailorusername', async (req, res) => {
     try {
         const providerType = await pool.query('SELECT type from login where email = $1 or username = $1', [emailorusername]);
         const type = providerType.rows[0].type;
-        console.log(type)
+
         let providerid;
         if (type === 'Doctor') {
             const patientid = await pool.query('SELECT patientid from patient where email = $1', [emailorusername]);
@@ -120,7 +120,7 @@ router.get('/getnotificationtoast/:emailorusername', async (req, res) => {
             const provideridQuery = await pool.query('SELECT id from healthcare_provider where email = $1', [emailorusername]);
             providerid = provideridQuery.rows[0].id;
         }
-        console.log(providerid)
+
         const accessKeysQuery = await pool.query('SELECT * FROM temp_access WHERE keyuser = $1 ORDER BY created_at', [providerid]);
         if (accessKeysQuery.rows.length === 0) {
             return res.status(404).json(accessKeysQuery.rows.length);

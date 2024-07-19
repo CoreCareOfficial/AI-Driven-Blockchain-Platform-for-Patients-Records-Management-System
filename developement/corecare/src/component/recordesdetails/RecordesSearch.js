@@ -169,7 +169,7 @@ function RecordesSearch({ view, handleViewClick, handleCreateAccessKeyClick }) {
                         {/* </Link> */}
 
                         {/* <Link to=""> */}
-                        <Button variant="primary" style={{ transition: '0.7s ease' }} onClick={(e) => handleCreateAccessKeyClick(e)}>
+                        <Button variant="primary" style={{ transition: '0.7s ease' }} onClick={() => handleCreateAccessKeyClick()}>
                             <span><HiPlus /></span>
                             Create
                         </Button>{' '}

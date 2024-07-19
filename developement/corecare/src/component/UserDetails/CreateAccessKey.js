@@ -8,7 +8,7 @@ import { Toast } from "primereact/toast";
 import { loginInfo } from "../../Recoil/Atom";
 import { useRecoilValue } from "recoil";
 
-function CreateAccessKey({ handleCreateAccessKeyClick }) {
+function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     const toast = useRef(null);
     const hasEffectRun = useRef(false);
     const [providers, setProviders] = useState([]);
@@ -127,7 +127,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick }) {
         }
 
         const data = {
-            patientid: userInfoValue.patientId,
+            patientid: selectedPatientId ? selectedPatientId : userInfoValue.patientId,
             keyuser: keyuser,
             period: period,
             specificDateTime: timeOther,

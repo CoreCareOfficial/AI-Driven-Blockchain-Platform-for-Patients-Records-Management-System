@@ -11,14 +11,16 @@ function UserPage() {
     const { userType } = location.state || {};
     console.log(userType);
     const [active, setActive] = useState("Profile")
+    const [selectedPatientId, setSelectedPatientId] = useState(null);
 
     const handleButtonClick = (text) => {
         setActive(text);
     };
 
     const [createAccessKey, setCreateAccessKey] = useState(false);
-    const handleCreateAccessKeyClick = ((e) => {
+    const handleCreateAccessKeyClick = ((patientId) => {
         console.log("createAccessKey", createAccessKey);
+        setSelectedPatientId(patientId);
         setCreateAccessKey(!createAccessKey);
         console.log("createAccessKey", createAccessKey);
     });
@@ -27,7 +29,7 @@ function UserPage() {
             {userType ?
                 <>
                     {
-                        createAccessKey && <CreateAccessKey handleCreateAccessKeyClick={handleCreateAccessKeyClick} />
+                        createAccessKey && <CreateAccessKey handleCreateAccessKeyClick={handleCreateAccessKeyClick} selectedPatientId={selectedPatientId} />
                     }
                     <div className="user">
                         <PatientSidebarHandler userType={userType} handleButtonClick={handleButtonClick} handleCreateAccessKeyClick={handleCreateAccessKeyClick} />
