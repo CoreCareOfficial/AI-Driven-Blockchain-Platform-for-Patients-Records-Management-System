@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BsPerson } from "react-icons/bs";
 import { FaFileMedical } from "react-icons/fa";
 import { MdEventNote } from "react-icons/md"
@@ -49,6 +49,7 @@ function PatientSidebarHandler(props) {
     const [activeButton, setActiveButton] = useState("Profile");
     const navigate = useNavigate();
     const toast = useRef(null);
+    const [notificationsCount, setNotificationsCount] = useState(0);
 
     const handleSummarize = (data) => {
         setDataSummarize(data);
@@ -170,7 +171,39 @@ function PatientSidebarHandler(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
         }
 
-    }
+    };
+
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            try {
+                const response = await fetch(`http://192.168.137.1:5000/accesskey/getnotificationtoast/${userInfoValue.login}`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const jsonData = await response.json();
+                console.log(jsonData);
+                setNotificationsCount(jsonData);
+                setUserInfo((prevUserInfo) => ({
+                    ...prevUserInfo,
+                    notificationsCount: jsonData
+                }));
+            }
+            catch (error) {
+                console.error(error.message);
+            }
+        }
+        if (props.userType !== "Patient")
+            setTimeout(() => {
+                fetchNotifications();
+            }, 5000);
+    });
+
+
 
     const logoutIcon =
         <IconContext.Provider value={{ className: "logout", size: "2rem" }}>
@@ -300,8 +333,8 @@ function PatientSidebarHandler(props) {
                             id={activeButton === "Patient Access Management" ? "active" : ""}
                             icon={<FaHospitalUser />}
                             text="Patient Access Management"
-                            numofnotification={10}
-                            display={true}
+                            numofnotification={notificationsCount}
+                            display={notificationsCount > 0}
                             onClick={() => handleButtonClick("Patient Access Management")}
                         />
                     ) : null}

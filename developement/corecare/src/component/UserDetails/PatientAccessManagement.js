@@ -1,17 +1,16 @@
-import { useRecoilValue } from "recoil";
-import Osama from "../../assets/osama.jpg"
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import HeaderContainer from "./HaederContainer";
 import NewNotificationContainer from "./NewNotificationContainer";
 import PatientsTable from "./PatientsTable";
 import { loginInfo } from "../../Recoil/Atom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 
 
 
 function PatientAccessManagement() {
-    const hasEffectRun = useRef(false);
     const userLoginInfo = useRecoilValue(loginInfo);
+    const setUserInfo = useSetRecoilState(loginInfo);
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
@@ -30,38 +29,23 @@ function PatientAccessManagement() {
                 const jsonData = await response.json();
                 console.log(jsonData);
                 setNotifications(jsonData.notifications);
+                setUserInfo((prevUserInfo) => ({
+                    ...prevUserInfo,
+                    notificationsCount: jsonData
+                }));
             }
             catch (error) {
                 console.error(error.message);
             }
         }
-        if (!hasEffectRun.current) {
+        setTimeout(() => {
             fetchNotifications();
-            hasEffectRun.current = true;
-        }
-    }, []);
+        }, 5000);
+    });
 
     if (userLoginInfo.login === '') {
         return <div>you are not a provider</div>
     }
-    // const notifications = {
-    //     notf1: {
-    //         sender: "Ahmed",
-    //         accessKey: "7gkjksdfhgdflkgjdfkl"
-    //     },
-    //     notf2: {
-    //         sender: "osama",
-    //         accessKey: "iredfldkhjfflkgjdfkl"
-    //     },
-    //     notf3: {
-    //         sender: "Muthanna",
-    //         accessKey: "jyiojytjtgdflkgjdfkl"
-    //     },
-    //     notf4: {
-    //         sender: "Azooz",
-    //         accessKey: "otnjrlkjntrpojtrdftf"
-    //     },
-    // };
 
     const patients = {
         patient1: {
