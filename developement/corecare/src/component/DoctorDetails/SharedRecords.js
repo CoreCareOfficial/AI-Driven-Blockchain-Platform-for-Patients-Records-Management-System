@@ -16,6 +16,9 @@ function SharedRecords(props) {
     const labTests = props.labTests || [];
     const radiologies = props.radiologies || [];
     const prescriptons = props.prescriptons || [];
+    const GeneralReport = props.GeneralReport || [];
+    const prescribedradiologytes = props.prescribedradiologytes || [];
+    const prescribedlabtest = props.prescribedlabtes || [];
     const [recordsList, setRecordsList] = useState([]);
     const [fileSelected, setFileSelected] = useState({ id: '', data: {} });
     const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
@@ -38,6 +41,16 @@ function SharedRecords(props) {
                 break;
             case "Prescription":
                 setRecordsList(prescriptons);
+                break;
+            case "General Report":
+                setRecordsList(GeneralReport);
+                break;
+            case "prescribed radiology test":
+                setRecordsList(prescribedradiologytes);
+                break;
+            case "prescribed lab test":
+                setRecordsList(prescribedlabtest);
+                console.log('prescribedlabtest', prescribedlabtest);
                 break;
             default:
                 setRecordsList(allRecords);

@@ -20,7 +20,7 @@ function PatientHealtInfo(props) {
                     <HealthCard image={pressure} title="Blood Pressure :" date={FormatRelativeTime(props.healthInfo.bloodpressuredate)} value={props.healthInfo.bloodpressure} />
                     <HealthCard image={heart} title="Heart Rate (Pulse):" date={FormatRelativeTime(props.healthInfo.heartratedate)} value={props.healthInfo.heartrate ? `${props.healthInfo.heartrate}/m` : ''} />
                     <HealthCard image={respiratory} title="Respiratory Rate :" date={FormatRelativeTime(props.healthInfo.respiratoryratedate)} value={props.healthInfo.respiratoryrate ? `${props.healthInfo.respiratoryrate}/m` : ''} />
-                    <HealthCard image={allergies} title="Allergies :" date={FormatRelativeTime(allergies.allergiesdate)} value={allergies.allergyname} />
+                    <HealthCard image={allergies} title="Allergies :" date={FormatRelativeTime(props.allergies.allergiesdate)} value={props.allergies.allergyname} />
                     <HealthCard image={weight} title="Weight :" date={FormatRelativeTime(props.healthInfo.weightdate)} value={props.healthInfo.weight ? `${props.healthInfo.weight} kg` : ''} />
                     <HealthCard image={height} title="Height :" date={FormatRelativeTime(props.healthInfo.heightdate)} value={props.healthInfo.height ? `${props.healthInfo.height} cm` : ''} />
                 </div>

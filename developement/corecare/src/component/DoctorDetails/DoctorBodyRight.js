@@ -9,9 +9,6 @@ import Diagnosis from "./Diagnosis";
 import Radiology from "./Radiology";
 import LabTest from "./LabTest";
 import UpdateHealthInfo from "../healthproviderdetails/UpdateHealthInfo";
-import FileLaboratoryTable from "../healthproviderdetails/FileLaboratoryTable";
-import FileRadiologyTable from "../healthproviderdetails/FileRadiologyTable";
-import FilePharmacyTable from "../healthproviderdetails/FilePharmacyTable";
 import { LuFolderPlus } from "react-icons/lu";
 
 function DoctorBodyRight(props) {
@@ -66,6 +63,10 @@ function DoctorBodyRight(props) {
     const [labTests, setLabTests] = useState([]);
     const [radiologies, setRadiologies] = useState([]);
     const [prescriptons, setPrescriptons] = useState([]);
+    const [prescribedlabtes, setPrescribedlabtes] = useState([]);
+    const [prescribedradiologytes, setPrescribedradiologytes] = useState([]);
+    const [GeneralReport, setGeneralReport] = useState([]);
+
 
     useEffect(() => {
         setRecords(props.response);
@@ -96,104 +97,15 @@ function DoctorBodyRight(props) {
 
         if (records) {
             setLabTests(filterByType("Lab Result"));
+            setGeneralReport(filterByType("General Report"));
+            setPrescribedlabtes(filterByType("prescribed lab test"));
+            setPrescribedradiologytes(filterByType("prescribed radiology test"));
             setReports(filterReport);
             setRadiologies(filterByType("Radiology Result"));
             setPrescriptons(filterByType("Prescription"));
         }
 
     }, [records])
-
-    const allRecords = {
-        firstRow: {
-            "id": 1,
-            "fav": true,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Report",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        secondRow: {
-            "id": 2,
-            "fav": true,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Ray",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        thirdRow: {
-            "id": 3,
-            "Name Of Record": "oooooooooooooooooooooooooooo",
-            "Type": "Summary",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        fourthRow: {
-            "id": 4,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Ray",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        fifthRow: {
-            "id": 5,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Lab test",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        sixRow: {
-            "id": 6,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Prescripation",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        sevenRow: {
-            "id": 7,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Ray",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        eightRow: {
-            "id": 8,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Ray",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        nineRow: {
-            "id": 9,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Ray",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        tenRow: {
-            "id": 10,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Ray",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        elevRow: {
-            "id": 11,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Ray",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-        twelRow: {
-            "id": 12,
-            "Name Of Record": "Report-12 of patient's heart.form",
-            "Type": "Ray",
-            "Name Of Health Provider": "Dr : Ahmed Fahed Al-mojahed",
-            "Date Of Upload": "22/5/2024"
-        },
-    }
-
-    const Result = Object.keys(allRecords).length;
-    const RecordsResult = "Showing " + Result + " Records Result";
 
     return (
         <div className="flex flex-col w-full">
@@ -223,31 +135,64 @@ function DoctorBodyRight(props) {
                     radiologies={radiologies}
                     labTests={labTests}
                     reports={reports}
+                    GeneralReport={GeneralReport}
+                    prescribedradiologytes={prescribedradiologytes}
+                    prescribedlabtes={prescribedlabtes}
                     patientid={props.patientid}
                 />
-                : active === 'diagnosis' ? <Diagnosis
-                    handleLabClick={handleLabClick}
-                    handleXrayClick={handleXrayClick}
-                    handlePrescriptionClick={handlePrescriptionClick}
-                />
+                : active === 'diagnosis' ?
+                    <Diagnosis
+                        patientid={props.patientid}
+                        keyuser={props.keyuser}
+                        handleLabClick={handleLabClick}
+                        handleXrayClick={handleXrayClick}
+                        handlePrescriptionClick={handlePrescriptionClick}
+                    />
                     : active === 'lab' ? <LabTest handleDiagnosisClick={handleDiagnosisClick} />
                         : active === 'xray' ? <Radiology handleDiagnosisClick={handleDiagnosisClick} />
                             : active === 'prescription' ? <Prescription handleDiagnosisClick={handleDiagnosisClick} />
-                                : active === 'laboratory' ? <FileLaboratoryTable
-                                    RecordsResult={RecordsResult}
-                                    icons={icons}
-                                    allRecords={allRecords}
-                                />
-                                    : active === 'radiology' ? <FileRadiologyTable
-                                        RecordsResult={RecordsResult}
+                                : active === 'laboratory' ?
+                                    <SharedRecords
                                         icons={icons}
-                                        allRecords={allRecords}
+                                        tableTitle="prescribed lab test"
+                                        records={records}
+                                        prescriptons={prescriptons}
+                                        radiologies={radiologies}
+                                        labTests={labTests}
+                                        reports={reports}
+                                        GeneralReport={GeneralReport}
+                                        prescribedradiologytes={prescribedradiologytes}
+                                        prescribedlabtes={prescribedlabtes}
+                                        patientid={props.patientid}
                                     />
-                                        : active === 'pharmacy' ? <FilePharmacyTable
-                                            RecordsResult={RecordsResult}
+                                    : active === 'radiology' ?
+                                        <SharedRecords
                                             icons={icons}
-                                            allRecords={allRecords}
+                                            tableTitle="prescribed radiology test"
+                                            records={records}
+                                            prescriptons={prescriptons}
+                                            radiologies={radiologies}
+                                            labTests={labTests}
+                                            reports={reports}
+                                            GeneralReport={GeneralReport}
+                                            prescribedradiologytes={prescribedradiologytes}
+                                            prescribedlabtes={prescribedlabtes}
+                                            patientid={props.patientid}
                                         />
+                                        : active === 'pharmacy' ?
+                                            <SharedRecords
+                                                icons={icons}
+                                                tableTitle="Prescription"
+                                                records={records}
+                                                prescriptons={prescriptons}
+                                                radiologies={radiologies}
+                                                labTests={labTests}
+                                                reports={reports}
+                                                GeneralReport={GeneralReport}
+                                                prescribedradiologytes={prescribedradiologytes}
+                                                prescribedlabtes={prescribedlabtes}
+                                                patientid={props.patientid}
+                                            />
                                             : active === 'update' ? <UpdateHealthInfo handleUpdateClick={handleUpdateClick} />
                                                 : null
             }

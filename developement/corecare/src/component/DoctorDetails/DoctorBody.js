@@ -63,6 +63,7 @@ function DoctorBody(props) {
                     gender={patientinfo && patientinfo.sex}
                     age={patientinfo && calculateAge(patientinfo.dateofbirth)}
                     healthInfo={info && info.healthinfo}
+                    allergies={info && info.allergies}
                     patientid={props.patientid}
                 />
                 <DoctorBodyRight

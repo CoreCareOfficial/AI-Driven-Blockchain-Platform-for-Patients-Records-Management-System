@@ -54,7 +54,7 @@ function GeneralReport(props) {
                                     paddingLeft: '5px',
                                 }}
 
-                                value={info && info.notes.notes}
+                                value={info && info.notes.notes && info.notes.notes}
                                 disabled={true}>
                             </textarea>
                         </div>
@@ -71,7 +71,7 @@ function GeneralReport(props) {
                             borderRadius: '8px',
                         }}>
                         {
-                            info && info.prescriptions && info.prescriptions.map((item, index) => (
+                            info && info.prescriptions && info.prescriptions.length > 0 && info.prescriptions.map((item, index) => (
                                 <div style={{ margin: '5px', display: 'flex' }}>
                                     <DynamicRecordInput label='' type="text" disabled={true} value={`${index + 1}- ${item.medicinename}`} />
                                     <DynamicRecordInput label='' type="text" disabled={true} value={item.dosage} />
@@ -84,7 +84,7 @@ function GeneralReport(props) {
                     <div className="Prescribed-div">
 
                         {
-                            info && info.labtests && info.labtests.map((item, index) => (
+                            info && info.labtests && info.labtests.length > 0 && info.labtests.map((item, index) => (
                                 <div style={{ margin: '5px', display: 'flex' }}>
                                     <DynamicRecordInput label='' type="text" disabled={true} value={`${index + 1}- ${item.name}`} />
                                 </div>
@@ -95,7 +95,7 @@ function GeneralReport(props) {
                     <h1 className="h_1_t"> Prescribed Radiology</h1>
                     <div className="Prescribed-div">
                         {
-                            info && info.radiologies && info.radiologies.map((item, index) => (
+                            info && info.radiologies && info.radiologies.length > 0 && info.radiologies.map((item, index) => (
                                 <div style={{ margin: '5px', display: 'flex' }}>
                                     <DynamicRecordInput label='' type="text" disabled={true} value={`${index + 1}- ${item.name}`} />
                                 </div>
@@ -106,8 +106,8 @@ function GeneralReport(props) {
                     <h1 className="h_1_t">Next Visit</h1>
                     <div className="Prescribed-div">
                         <div style={{ margin: '5px', display: 'flex', justifyContent: 'space-around' }}>
-                            <DynamicInput label="Reason:" type="text" disabled={true} value={info && info.appointments[0].visitreason} />
-                            <DynamicInput label="Date: " type="text" disabled={true} value={info && `${formatDate(info.appointments[0].nextvisitdate)} ${info.appointments[0].nextvisittime}`} />
+                            <DynamicInput label="Reason:" type="text" disabled={true} value={info && info.appointments && info.appointments.length > 0 ? info.appointments[0].visitreason : ""} />
+                            <DynamicInput label="Date: " type="text" disabled={true} value={info && info.appointments && info.appointments.length > 0 ? `${formatDate(info.appointments[0].nextvisitdate)} ${info.appointments[0].nextvisittime}` : ''} />
                         </div>
                     </div>
 
