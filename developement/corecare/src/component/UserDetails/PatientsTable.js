@@ -3,7 +3,13 @@ import P from '../P';
 
 
 function PatientsTable(props) {
-
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    };
 
     return (
         <>
@@ -19,18 +25,18 @@ function PatientsTable(props) {
                             <th style={{ width: '37%' }}>Patient Name</th>
                             <th style={{ width: '13%' }}> Access Date</th>
                             <th style={{ width: '37%' }}>General Diagnosis</th>
-                            <th style={{ width: '13%' }}> Next Visit Date</th>
+                            <th style={{ width: props.userType === 'Doctor' && '13%', display: props.userType !== 'Doctor' && 'none' }}> {props.userType === 'Doctor' && 'Next Visit Date'}</th>
                         </tr>
                     </thead>
 
                     <tbody>
 
-                        {Object.keys(props.patients).map((patient) => (
-                            <tr className="tbody_tr" key={props.patients[patient].id}>
-                                <td>{props.patients[patient].name}</td>
-                                <td>{props.patients[patient].accessed}</td>
-                                <td>{props.patients[patient].diagnosis}</td>
-                                <td>{props.patients[patient].nextVisit}</td>
+                        {props.patients && props.patients.map((patient) => (
+                            <tr className="tbody_tr" key={patient.id}>
+                                <td>{patient.patientName}</td>
+                                <td>{formatDate(patient.accessdate)}</td>
+                                <td>{patient.diagnosis}</td>
+                                <td>{props.userType === 'Doctor' && formatDate(patient.nextvisitdate)}</td>
                             </tr>
                         ))}
 

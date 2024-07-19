@@ -155,9 +155,8 @@ function PatientSidebarHandler(props) {
             console.error(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
         }
-
-
     });
+
     const handleSummarizeRecords = async () => {
         if (userInfoValue.patientId === '') {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Sorry Error Occured, Session expired please login in again' });
@@ -174,36 +173,8 @@ function PatientSidebarHandler(props) {
     };
 
     useEffect(() => {
-        const fetchNotifications = async () => {
-            try {
-                const response = await fetch(`http://192.168.137.1:5000/accesskey/getnotificationtoast/${userInfoValue.login}`, {
-                    method: "GET",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const jsonData = await response.json();
-                console.log(jsonData);
-                setNotificationsCount(jsonData);
-                setUserInfo((prevUserInfo) => ({
-                    ...prevUserInfo,
-                    notificationsCount: jsonData
-                }));
-            }
-            catch (error) {
-                console.error(error.message);
-            }
-        }
-        if (props.userType !== "Patient")
-            setTimeout(() => {
-                fetchNotifications();
-            }, 5000);
-    });
-
-
+        setNotificationsCount(userInfoValue.notificationsCount);
+    }, [userInfoValue.notificationsCount]);
 
     const logoutIcon =
         <IconContext.Provider value={{ className: "logout", size: "2rem" }}>
