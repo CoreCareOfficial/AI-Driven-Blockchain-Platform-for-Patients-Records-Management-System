@@ -4,6 +4,8 @@ import { loginInfo } from "../../Recoil/Atom";
 import { useEffect, useRef, useState } from "react";
 import defaultPic from '../../assets/user_signup.png'
 import { GiKeyLock } from "react-icons/gi";
+import HeaderContainer from "./HaederContainer";
+
 
 
 function EmergencyAccess(props) {
@@ -40,6 +42,7 @@ function EmergencyAccess(props) {
     return (
         <>
             <div className='flex flex-col flex-wrap justify-between w-full'>
+                <HeaderContainer image={loginInfoValue.photo ? `${loginInfoValue.photo}` : defaultPic} />
                 <div className='flex flex-row justify-center border-top border-bottom m-4 p-4 w-[95%]'>
                     <GiKeyLock className='text-white text-3xl mr-2' />
                     <h3 className='text-white p-2 font-serif'>Users that have granted you emergency access protocol</h3>

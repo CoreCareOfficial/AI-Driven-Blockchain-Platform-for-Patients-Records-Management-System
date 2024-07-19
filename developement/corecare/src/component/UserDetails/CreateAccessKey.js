@@ -110,6 +110,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     const [isBorderDiv, setIsBorderDiv] = useState({});
 
     const handleIsBorderDivClick = (id) => {
+        setKeyUser(id);
         setIsBorderDiv((prevState) => {
             const newState = {};
             filteredProviders.forEach(provider => {

@@ -31,7 +31,7 @@ router.get('/:emailorusername', async (req, res) => {
 
         const previousPatients = [];
         for (let i = 0; i < previousPatientsQuery.rows.length; i++) {
-            const patientNameQuery = await pool.query('SELECT firstname, lastname FROM patient WHERE patientid = $1', [previousPatientsQuery.rows[0].patientid]);
+            const patientNameQuery = await pool.query('SELECT firstname, lastname FROM patient WHERE patientid = $1', [previousPatientsQuery.rows[i].patientid]);
             previousPatients.push({
                 ...previousPatientsQuery.rows[i],
                 patientName: patientNameQuery.rows[0].firstname + ' ' + patientNameQuery.rows[0].lastname,

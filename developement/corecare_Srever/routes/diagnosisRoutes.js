@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     const { patientid, doctorid, diagnosis, notes, prescribedMedicine, prescribedLabTests, prescribedXrays, labTestsNotes, radiologyNotes, nextVisitDate, nextVisitReason } = req.body;
+    console.log(req.body);
+    console.log(patientid, doctorid, diagnosis, notes, prescribedMedicine, prescribedLabTests, prescribedXrays, labTestsNotes, radiologyNotes, nextVisitDate, nextVisitReason);
     let status = false;
     const REC = "REC-";
     try {
@@ -16,12 +18,17 @@ router.post('/', async (req, res) => {
         const recordName = 'Record' + newID;
 
         const createRecordQuery = await pool.query('INSERT INTO record (recordid, doctorid, patientid, diagnosis, notes, dateofcreation, name) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [recordID, doctorid, patientid, diagnosis, notes, new Date(), recordName]);
+        console.log(createRecordQuery.rows.length);
+        const pastCondition = await pool.query('INSERT INTO past_condition(patientid, conditionname, diagnosisdate) VALUES($1, $2, $3)', [patientid, diagnosis, new Date()]);
+        const previousDoctors = await pool.query('INSERT INTO previous_doctors(patientid, doctorid) VALUES($1, $2)', [patientid, doctorid]);
+        const prevousPatients = await pool.query('INSERT INTO previous_patients(providerid, patientid, accessdate, nextvisitdate, diagnosis) VALUES($1, $2, $3, $4, $5)', [doctorid, patientid, new Date(), nextVisitDate ? new Date(nextVisitDate).toISOString().split('T')[0] : null, diagnosis]);
         if (prescribedMedicine) {
             for (let i = 0; i < prescribedMedicine.length; i++) {
-                const { medicineName, dosage, notes } = prescribedMedicine[i];
-                const prescriptionQuery = await pool.query('INSERT INTO prescription (doctorid, patientid, medicinename, dosage, notes, prescriptiondate, recordid) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [doctorid, patientid, medicineName, dosage, notes, new Date(), recordID]);
+                const { medname, dosage, notes } = prescribedMedicine[i];
+                const prescriptionQuery = await pool.query('INSERT INTO prescription (doctorid, patientid, medicinename, dosage, notes, prescriptiondate, recordid) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [doctorid, patientid, medname, dosage, notes, new Date(), recordID]);
                 const prescription = prescriptionQuery.rows[0];
                 console.log(prescription);
+                const medication = await pool.query('INSERT INTO medication (patientid, medname) VALUES($1, $2) ', [patientid, medicineName]);
                 status = true;
             }
         }
@@ -61,6 +68,7 @@ router.post('/', async (req, res) => {
                 'INSERT INTO appointments (doctorid, patientid, nextvisitdate, nextvisittime, visitreason, recordid) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
                 [doctorid, patientid, visitDate, visitTime, nextVisitReason, recordID]
             );
+            status = true;
         }
 
 
@@ -74,6 +82,8 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+
 
 router.get('/', async (req, res) => {
 
