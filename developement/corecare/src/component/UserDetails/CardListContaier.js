@@ -10,7 +10,7 @@ function CardListContainer(props) {
                 <ul>
                     {items.length > 0 ? (
                         items.map((item, index) => (
-                            <li key={index}>{item[props.nameKey]}</li>
+                            <li key={index}>{item.conditionname ? item.conditionname : item.medname}</li>
                         ))
                     ) : (
                         <li>No items to display</li>

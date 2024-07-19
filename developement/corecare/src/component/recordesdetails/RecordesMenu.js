@@ -31,6 +31,7 @@ const useOptimistic = (initialValue, callback) => {
 function RecordesMenu(props) {
     const userInfoValue = useRecoilValue(loginInfo);
     const [selectedFile, setSelectedFile] = useState({ id: '', data: {} });
+    const patientId = props.patientId ? props.patientId : userInfoValue.patientId;
     useEffect(() => {
         setSelectedFile(props.file);
     }, [props.file, selectedFile])
@@ -181,12 +182,12 @@ function RecordesMenu(props) {
         }
     };
     const fetchGeneralReport = async (action) => {
-        if (userInfoValue.patientId === '') {
+        if (patientId === '') {
             props.toast({ severity: 'error', summary: 'Error', detail: 'You Should Login again' });
             return;
         }
         const data = {
-            patientid: userInfoValue.patientId,
+            patientid: patientId,
             recordid: selectedFile.id
         }
         try {
@@ -271,8 +272,9 @@ function RecordesMenu(props) {
     };
 
 
-    const [userInfoOptimistic, setUserInfoOptimistic] = useOptimistic(loginInfo, async (newUserInfoValue) => {
+    const [userInfoOptimistic, setUserInfoOptimistic] = useOptimistic(props.patientId ? props : loginInfo, async (newUserInfoValue) => {
         console.log(newUserInfoValue.patientId);
+        console.log(selectedFile.id);
         props.toast({ severity: 'info', summary: 'Processing', detail: 'Summarizing Medical Record, please wait...', life: 5000 });
 
         const data = !props.isRecord ? {
@@ -314,13 +316,13 @@ function RecordesMenu(props) {
     const handleSummarizeRecord = async () => {
         if (props.handleMenuClick)
             props.handleMenuClick();
-        if (userInfoValue.patientId === '' && selectedFile.id === '') {
+        if (patientId === '' && selectedFile.id === '') {
             props.toast({ severity: 'error', summary: 'Error', detail: 'Sorry Error Occured,Session expired please login in again' });
             return;
         }
-        console.log(userInfoValue.patientId);
+        console.log(patientId);
         try {
-            await setUserInfoOptimistic(userInfoValue);
+            await setUserInfoOptimistic(props.patientId ? props : userInfoValue);
         } catch (error) {
             props.toast({ severity: 'error', summary: 'Error', detail: `Error occurred: ${error.message}` });
             console.error(error.message);

@@ -107,6 +107,18 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
             return newState;
         });
     };
+    const [isBorderDiv, setIsBorderDiv] = useState({});
+
+    const handleIsBorderDivClick = (id) => {
+        setIsBorderDiv((prevState) => {
+            const newState = {};
+            filteredProviders.forEach(provider => {
+                newState[provider.id] = false;
+            });
+            newState[id] = true;
+            return newState;
+        });
+    };
 
     const handleSubmit = async () => {
         console.log('priod', period);
@@ -210,17 +222,20 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
 
                             <Slider {...settings} >
                                 {
-                                    filteredProviders && filteredProviders.map((provider) => (
-                                        <div key={provider.id}
-                                            className="AccessKeyCards"
-                                            style={{ border: '2px solid #3146ff !important' }}
-                                            onClick={() => setKeyUser(provider.id)}
-                                        >
-                                            <img className="AccessKeyCards-img" src={provider.personalphoto ? `data:image/jpeg;base64,${provider.personalphoto}` : defaultPic} alt="error" />
-                                            <h1 className="AccessKeyCards-h1">{provider.name}</h1>
-                                            <p className="AccessKeyCards-p">{provider.specialization}</p>
-                                        </div>
-                                    ))
+                                    filteredProviders && filteredProviders.map((provider) => {
+                                        const isBorderState = !!isBorderDiv[provider.id];
+                                        return (
+                                            <div key={provider.id}
+                                                className={`AccessKeyCards ${isBorderState && 'AccessKeyCardsBorder'}`}
+                                                onClick={() => handleIsBorderDivClick(provider.id)}
+                                            >
+                                                <img className="AccessKeyCards-img" src={provider.personalphoto ? `data:image/jpeg;base64,${provider.personalphoto}` : defaultPic} alt="error" />
+                                                <h1 className="AccessKeyCards-h1">{provider.name}</h1>
+                                                <p className="AccessKeyCards-p">{provider.specialization}</p>
+                                            </div>
+                                        )
+                                    }
+                                    )
                                 }
                             </Slider>
                         </div>

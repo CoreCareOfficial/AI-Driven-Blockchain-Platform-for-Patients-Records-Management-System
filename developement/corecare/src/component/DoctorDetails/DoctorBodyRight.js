@@ -4,7 +4,7 @@ import MediCondiContainer from "./MediCondiContainer";
 import SharedRecords from "./SharedRecords";
 import Prescription from "./Prescription";
 import { FaFileLines, FaFilePrescription, FaRegFileLines, FaXRay } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Diagnosis from "./Diagnosis";
 import Radiology from "./Radiology";
 import LabTest from "./LabTest";
@@ -12,14 +12,15 @@ import UpdateHealthInfo from "../healthproviderdetails/UpdateHealthInfo";
 import FileLaboratoryTable from "../healthproviderdetails/FileLaboratoryTable";
 import FileRadiologyTable from "../healthproviderdetails/FileRadiologyTable";
 import FilePharmacyTable from "../healthproviderdetails/FilePharmacyTable";
+import { LuFolderPlus } from "react-icons/lu";
 
 function DoctorBodyRight(props) {
     const [active, setActive] = useState(
-        props.userType==="Doctor" ? 'records':
-        props.userType==="Pharmacy" ? 'pharmacy':
-        props.userType==="Hospital" ? 'laboratory':
-        props.userType==="Laboratory" ? 'laboratory':
-        props.userType==="Radiology" ? 'radiology': null
+        props.userType === "Doctor" ? 'records' :
+            props.userType === "Pharmacy" ? 'pharmacy' :
+                props.userType === "Hospital" ? 'laboratory' :
+                    props.userType === "Laboratory" ? 'laboratory' :
+                        props.userType === "Radiology" ? 'radiology' : null
     );
 
     const handleRecordslClick = () => {
@@ -58,6 +59,49 @@ function DoctorBodyRight(props) {
         setActive('update');
     }
     // ================================
+
+    // const toast = useRef(null);
+    const [records, setRecords] = useState([]);
+    const [reports, setReports] = useState([]);
+    const [labTests, setLabTests] = useState([]);
+    const [radiologies, setRadiologies] = useState([]);
+    const [prescriptons, setPrescriptons] = useState([]);
+
+    useEffect(() => {
+        setRecords(props.response);
+    }, [props.response])
+
+    const icons = {
+        "General Report": <MdOutlineReceiptLong />,
+        "prescribed lab test": <MdOutlineReceiptLong />,
+        "prescribed radiology test": <MdOutlineReceiptLong />,
+        "Summary": <FaRegFileLines />,
+        "Radiology Result": <FaXRay />,
+        "Prescription": <FaFilePrescription />,
+        "Lab Result": <FaFileLines />,
+        "Additional": <LuFolderPlus />
+    };
+
+    useEffect(() => {
+        const filterByType = (type) => {
+            return records.flatMap(record =>
+                record.children.filter(child => child.data.type === type)
+            );
+        };
+        const filterReport = () => {
+            return records.flatMap(record =>
+                record.children.filter(child => (child.data.type === "General Report" || child.data.type === "prescribed radiology test" || child.data.type === "prescribed lab test"))
+            );
+        };
+
+        if (records) {
+            setLabTests(filterByType("Lab Result"));
+            setReports(filterReport);
+            setRadiologies(filterByType("Radiology Result"));
+            setPrescriptons(filterByType("Prescription"));
+        }
+
+    }, [records])
 
     const allRecords = {
         firstRow: {
@@ -147,13 +191,6 @@ function DoctorBodyRight(props) {
             "Date Of Upload": "22/5/2024"
         },
     }
-    const icons = {
-        "Report": <MdOutlineReceiptLong />,
-        "Summary": <FaRegFileLines />,
-        "Ray": <FaXRay />,
-        "Prescripation": <FaFilePrescription />,
-        "Lab test": <FaFileLines />
-    };
 
     const Result = Object.keys(allRecords).length;
     const RecordsResult = "Showing " + Result + " Records Result";
@@ -161,7 +198,7 @@ function DoctorBodyRight(props) {
     return (
         <div className="flex flex-col w-full">
 
-            <MediCondiContainer />
+            <MediCondiContainer pastCondition={props.pastCondition} medication={props.medication} />
 
             <DoctorNavContainer
                 userType={props.userType}
@@ -176,12 +213,17 @@ function DoctorBodyRight(props) {
                 handlePharmacyClick={handlePharmacyClick}
                 handleUpdateClick={handleUpdateClick}
             />
-            
+
             {active === 'records' ?
                 <SharedRecords
-                    RecordsResult={RecordsResult}
                     icons={icons}
-                    allRecords={allRecords}
+                    tableTitle="All Records"
+                    records={records}
+                    prescriptons={prescriptons}
+                    radiologies={radiologies}
+                    labTests={labTests}
+                    reports={reports}
+                    patientid={props.patientid}
                 />
                 : active === 'diagnosis' ? <Diagnosis
                     handleLabClick={handleLabClick}
@@ -206,8 +248,8 @@ function DoctorBodyRight(props) {
                                             icons={icons}
                                             allRecords={allRecords}
                                         />
-                                    : active === 'update' ? <UpdateHealthInfo handleUpdateClick={handleUpdateClick} />
-                                        : null
+                                            : active === 'update' ? <UpdateHealthInfo handleUpdateClick={handleUpdateClick} />
+                                                : null
             }
         </div>
     );
