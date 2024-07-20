@@ -12,6 +12,7 @@ import { updateUserInfo } from "../../../Recoil/UpdateData";
 import { loginInfo } from "../../../Recoil/Atom";
 import { Toast } from "primereact/toast";
 import bcrypt from 'bcryptjs';
+import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
 
 
 function SettingBodyMid(props) {
@@ -27,6 +28,14 @@ function SettingBodyMid(props) {
     const [Password, setPassword] = useState(true);
     const loginInfoValue = useRecoilValue(loginInfo);
     const updateUserInfoValue = useRecoilValue(updateUserInfo);
+    const [isConfirm, setIsConfirm] = useState(false);
+    const [title, setTitle] = useState('');
+    const [message, setMessage] = useState('');
+    const [handle, setHandle] = useState(null);
+
+    const handleConfirm = () => {
+        setIsConfirm(!isConfirm);
+    };
 
     const medicalSpecializations = [
         'Anesthetics',
@@ -51,8 +60,8 @@ function SettingBodyMid(props) {
         'Urology'
     ]
 
-    const toggleEditPassword = async () => {
-
+    const editPassword = async () => {
+        setIsConfirm(false);
         if (updateUserInfoValue.newPassword !== updateUserInfoValue.confirmPassword) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Passwords do not match' });
             return;
@@ -94,11 +103,18 @@ function SettingBodyMid(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating password' });
             resetUserInfo();
         }
+    };
+    const toggleEditPassword = async () => {
+        setIsConfirm(!isConfirm);
+        setTitle('Edit Password');
+        setMessage('Are You Sure You Want To Edit Password?');
+        setHandle(() => editPassword);
         setPassword(!Password);
     };
 
     const [Social, setSocial] = useState(true);
-    const toggleEditSocial = async () => {
+    const editSocial = async () => {
+        setIsConfirm(false);
         const data = {
             fb: 'facebook',
             facebook: updateUserInfoValue.facebook,
@@ -134,11 +150,18 @@ function SettingBodyMid(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating socialmedia' });
             resetUserInfo();
         }
+    }
+    const toggleEditSocial = async () => {
+        setIsConfirm(!isConfirm);
+        setTitle('Update Social Media Accounts');
+        setMessage('Are You Sure You Want To Update Social Media Accounts?');
+        setHandle(() => editSocial);
         setSocial(!Social);
     };
 
     const [General, setGeneral] = useState(true);
-    const toggleEditGeneral = async () => {
+    const editProfissional = async () => {
+        setIsConfirm(false);
         if (!profissional.doctorid) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Doctor ID is required' });
             resetUserInfo();
@@ -175,11 +198,18 @@ function SettingBodyMid(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating Proffisional info' });
             resetUserInfo();
         }
+    }
+    const toggleEditGeneral = async () => {
+        setIsConfirm(!isConfirm);
+        setTitle('Update Profissioal Information');
+        setMessage('Are You Sure You Want To Update Profissional Information?');
+        setHandle(() => editProfissional);
         setGeneral(!General);
     };
 
     const [Educational, setEducational] = useState(true);
-    const toggleEditEducational = async () => {
+    const editEducational = async () => {
+        setIsConfirm(false);
         if (!profissional.doctorid) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Doctor ID is required' });
             resetUserInfo();
@@ -215,6 +245,12 @@ function SettingBodyMid(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Updated Educational Info' });
             resetUserInfo();
         }
+    }
+    const toggleEditEducational = async () => {
+        setIsConfirm(!isConfirm);
+        setTitle('Update Educational Information');
+        setMessage('Are You Sure You Want To Update Educational Information?');
+        setHandle(() => editEducational);
         setEducational(!Educational);
     };
 
@@ -224,7 +260,8 @@ function SettingBodyMid(props) {
     // };
 
     const [Department, setDepartment] = useState(true);
-    const toggleEditDepartment = async () => {
+    const editDepartments = async () => {
+        setIsConfirm(false);
         if (!healthcareProviderInfo.id) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Health Provider ID is required' });
             resetUserInfo();
@@ -262,11 +299,18 @@ function SettingBodyMid(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Departments Updated' });
             resetUserInfo();
         }
+    }
+    const toggleEditDepartment = async () => {
+        setIsConfirm(!isConfirm);
+        setTitle('Edit Departements');
+        setMessage('Are You Sure You Want To Edit Departements?');
+        setHandle(() => editDepartments);
         setDepartment(!Department);
     };
 
     const [Emergency, setEmergency] = useState(true);
-    const toggleEditEmergency = async () => {
+    const editEmergency = async () => {
+        setIsConfirm(false);
         if (!healthcareProviderInfo.id) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Health Provider ID is required' });
             resetUserInfo();
@@ -300,6 +344,12 @@ function SettingBodyMid(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Services Updated' });
             resetUserInfo();
         }
+    }
+    const toggleEditEmergency = async () => {
+        setIsConfirm(!isConfirm);
+        setTitle('Edit Services');
+        setMessage('Are You Sure You Want To Edit Services?');
+        setHandle(() => editEmergency);
         setEmergency(!Emergency);
     };
 
@@ -457,6 +507,7 @@ function SettingBodyMid(props) {
                     </>
                 ) : null}
             </DynamicCard>
+            <ConfirmedDialog show={isConfirm} handleClose={handleConfirm} message={message} handleOk={handle} title={title} />
         </>
     );
 

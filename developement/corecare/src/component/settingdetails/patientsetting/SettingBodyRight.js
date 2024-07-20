@@ -11,8 +11,17 @@ import { Toast } from "primereact/toast";
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../../Recoil/Atom";
 import { updateUserInfo } from "../../../Recoil/UpdateData";
+import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
 
 function SettingBodyRight(props) {
+    const [isConfirm, setIsConfirm] = useState(false);
+    const [title, setTitle] = useState('');
+    const [message, setMessage] = useState('');
+    const [handle, setHandle] = useState(null);
+
+    const handleConfirm = () => {
+        setIsConfirm(!isConfirm);
+    };
     // let emergencyContacts = props.emergencyContact ? props.emergencyContact : [];
     const [emergencyContacts, setEmergencyContacts] = useState([]);
     const workHours = Array.isArray(props.workHours) ? props.workHours : [];
@@ -248,15 +257,14 @@ function SettingBodyRight(props) {
         display: VisitHoursShow ? "block" : "none",
     };
 
-    const handleDeleteEmergencyContact = async (id) => {
+    const handleDeleteEmergency = async (id) => {
+        setIsConfirm(false);
         if (!id) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'ID is required' });
             return;
         }
-
         const newEmergencyContacts = emergencyContacts.filter((EmergencyContact) => EmergencyContact.id !== id);
         setEmergencyContacts(newEmergencyContacts);
-
         try {
             const response = await fetch(`http://192.168.137.1:5000/emergencycontacts/${id}`, {
                 method: "DELETE",
@@ -276,6 +284,13 @@ function SettingBodyRight(props) {
             console.error(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Emergency Contact Deleted' });
         }
+
+    }
+    const handleDeleteEmergencyContact = async (id) => {
+        setIsConfirm(!isConfirm);
+        setTitle('Delete Emergency Contact');
+        setMessage('Are You Sure You Want To Delete Emergency Contact?');
+        setHandle(() => handleDeleteEmergency.bind(this, id));
     };
 
 
@@ -441,6 +456,7 @@ function SettingBodyRight(props) {
                     </>
                 ) : null}
             </DynamicCard>
+            <ConfirmedDialog show={isConfirm} handleClose={handleConfirm} message={message} handleOk={handle} title={title} />
         </>
     );
 }
