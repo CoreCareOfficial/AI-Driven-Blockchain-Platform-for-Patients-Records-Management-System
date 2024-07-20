@@ -31,6 +31,7 @@ function NewNotificationContainer(props) {
                         notifications.map((notification, index) => (
                             <div className="new-notif-container flex flex-col justify-between bg-[#3F4652] p-1 my-3 rounded-xl max-w-full" key={index}>
                                 <div className="flex flex-row justify-center gap-9 px-2 text-white">
+                                    <div className="py-[2px] px-[5px] font text-[12px] bg-[#3146FF] rounded-[10%]">{index + 1}</div>
                                     <div className="w-full">
                                         <h6 className="text-center">You Have Received a New Access Key From {notification.patientName}</h6>
                                     </div>

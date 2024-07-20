@@ -56,7 +56,7 @@ function SharedRecords(props) {
                 setRecordsList(allRecords);
                 break;
         }
-    }, [props.tableTitle, reports, labTests, radiologies, prescriptons, allRecords]); // Include dependencies here
+    }, [props.tableTitle, reports, labTests, radiologies, prescriptons, allRecords, prescribedlabtest, prescribedradiologytes, GeneralReport]); // Include dependencies here
 
     const handleMenuClick = (e, data) => {
         console.log('data', data);

@@ -193,7 +193,12 @@ function DoctorBodyRight(props) {
                                                 prescribedlabtes={prescribedlabtes}
                                                 patientid={props.patientid}
                                             />
-                                            : active === 'update' ? <UpdateHealthInfo handleUpdateClick={handleUpdateClick} />
+                                            : active === 'update' ? <UpdateHealthInfo
+                                                handleUpdateClick={handleUpdateClick}
+                                                patientid={props.patientid}
+                                                keyuser={props.keyuser}
+                                                userType={props.userType}
+                                            />
                                                 : null
             }
         </div>

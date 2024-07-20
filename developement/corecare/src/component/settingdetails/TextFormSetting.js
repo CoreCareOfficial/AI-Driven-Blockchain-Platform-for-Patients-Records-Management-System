@@ -711,6 +711,44 @@ export function AddAccountInput2(props) {
     );
 }
 
+export function AddAccountInput3(props) {
+    const lab = {
+        color: '#fff',
+        fontWeight: '700',
+    }
+    const inp = {
+        width: 'calc(100% - 50%)',
+        borderBottom: '1px solid #3f4652',
+        outline: 'none',
+        fontWeight: '500',
+        backgroundColor: '#181a1f',
+        color: '#fff'
+    }
+
+    // const [value, setValue] = useState('');
+    const handleHealthInfo = (name, value) => {
+        if (props.handleHealthInfo)
+            props.handleHealthInfo(name, value);
+    }
+    return (
+        <>
+            <div style={{ borderRadius: '8px', width: '100%', padding: '5px', margin: '10px 5px', display: 'flex', justifyContent: 'space-between' }}>
+                <label style={lab}>{props.label}</label>
+                <input style={inp}
+                    type={props.type}
+                    placeholder={props.placeholder}
+                    onChange={(e) => handleHealthInfo(props.name, e.target.value)}
+                    name={props.name}
+                    disabled={props.disabled}
+                    autoFocus={props.autoFocus}
+                    required={props.required}
+                    value={props.value}
+                />
+            </div>
+        </>
+    );
+}
+
 export function AddAccountSelect(props) {
     const user = props.isFacility ? HealthcareFacilityInfo : userInfo;
     const setUserInfo = useSetRecoilState(user);

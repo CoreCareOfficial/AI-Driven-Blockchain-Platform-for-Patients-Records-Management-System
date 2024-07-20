@@ -60,7 +60,7 @@ function Summarized(props) {
                                 margin: '5px',
                             }}>
                             <DynamicInput label="Sex : " type="text" disabled={true} value={info && info.patientinfo.sex} />
-                            <DynamicInput label="Date : " type="text" disabled={true} value={info && formatDate(info.patientinfo.dateofbirth)} />
+                            <DynamicInput label="Date : " type="text" disabled={true} value={info && formatDate(info.patientinfo.summary_date)} />
                         </div>
 
                     </div>

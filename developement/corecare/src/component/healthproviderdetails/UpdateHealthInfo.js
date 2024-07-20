@@ -1,115 +1,119 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Container } from "react-bootstrap";
-import { AddAccountForm, AddAccountInput, AddAccountPassport } from "../settingdetails/TextFormSetting";
+import { AddAccountForm, AddAccountInput3 } from "../settingdetails/TextFormSetting";
+import AdvanceDemo from "../../utiles/Upload";
+import { Toast } from "primereact/toast";
 
 
 function UpdateHealthInfo(props) {
 
-    const {
-        userInfo = {
-            firstname: "",
-            secondname: "",
-            thirdname: "",
-            lastname: "",
-            phonenumber: "",
-            address: "",
-            username: "",
-            country: "",
-            job: "",
-            sex: "",
-            dateOfBirth: "0000-01-01",
-            status: "",
-            bloodtype: "",
-            personalphoto: null
-        },
-        healthInfo = { weight: "", height: "" },
-        allergies = { allergyname: "" },
-        practice = {
-            practicelocation: "",
-            affiliations: "",
-            practicehours: "",
-            languagesspoken: ""
-        }
-    } = props;
-    const h_1 = {
-        color: '#fff',
-        fontSize: '1.5em',
-        fontWeight: '600',
-        margin: '10px 0px 30px 0px',
-        textAlign: 'center',
+    const initialHealthInfo = {
+        blood: '',
+        bloodsugar: '',
+        bloodpressure: '',
+        heartrate: '',
+        respiratoryrate: '',
+        allergies: ''
+    };
+    const [notes, setNotes] = useState('');
+    const [healthInfo, setHealthInfo] = useState(initialHealthInfo);
+
+    const handleHealthInfo = (name, value) => {
+        setHealthInfo((perviousHealth) => ({
+            ...perviousHealth,
+            [name]: value
+        }))
     }
-
-    // function PageTitle(props) {
-    //     const title = props.title.substring(4);
-    //     return title;
+    const resetHealthInfo = () => {
+        setHealthInfo(initialHealthInfo);
+    };
+    const toast = useRef(null);
+    // const handleToast = (t) => {
+    //     toast.current.show(t)
     // };
 
-    // const [selectedGovernment, setSelectedGovernment] = useState(true);
-    // const [selectedPrivate, setSelectedPrivate] = useState(false);
-
-    // const setUserInfo = useSetRecoilState(userInfo);
-    // const userInfoValue = useRecoilValue(userInfo);
-
-    // const handleIdTypeChangeGovernment = (event) => {
-    //     setSelectedGovernment(true);
-    //     setSelectedPrivate(false);
-    //     // setUserInfo((prevUserInfo) => ({
-    //     //     ...prevUserInfo,
-    //     //     'idType': event.target.value
-    //     // }));
-    //     // alert(event.target.value);
-    // };
-
-    // const handleIdTypeChangePrivate = (event) => {
-    //     setSelectedPrivate(true);
-    //     setSelectedGovernment(false);
-    //     // setUserInfo((prevUserInfo) => ({
-    //     //     ...prevUserInfo,
-    //     //     'idType': event.target.value
-    //     // }));
-    //     // alert(event.target.value);
-    // };
-
+    const handleonSubmit = async () => {
+        console.log('healthInfo', healthInfo);
+        if (!props.patientid) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Selected Patient' });
+        }
+        try {
+            const response = await fetch(`http://192.168.137.1:5000/healthinfo/updatehealthinfo/${props.patientid}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(healthInfo)
+            });
+            if (!response.ok) {
+                console.log('An error occurred during the upload.(re)');
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Updating Health Info' });
+                throw new Error('An error occurred during the upload.');
+            }
+            const jsonData = response.json();
+            console.log(jsonData.message)
+            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Health Info Updated Successfully' });
+            resetHealthInfo();
+        } catch (error) {
+            console.log(error.message);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Updating Health Info' });
+        }
+    }
     return (
         <>
+            <Toast ref={toast} />
             <Container style={{ width: '90%' }}>
 
-                <AddAccountForm label="Add">
-                    <div style={{ marginTop: '10px', borderRadius: '8px', backgroundColor: '#272c34', justifyContent: 'space-around', display: 'flex', flexWrap: 'wrap' }}>
-                        <textarea rows={3} placeholder="Write Note .." style={{
-                            margin:'8px 0px',
-                            width: 'calc(100% - 50%)',
+                <div style={{ height: '60vh', margin: '16px auto' }}>
+                    {/* <AddAccountForm label="Add"> */}
+                    <h1 style={{ color: '#fff', fontSize: '1.5em', fontWeight: '600', margin: '10px 0px' }}>Add Notes and Upload Files</h1>
+                    <div style={{ padding: '16px', marginTop: '10px', borderRadius: '8px', backgroundColor: '#272c34', justifyContent: 'space-around', display: 'flex', flexDirection: 'column' }}>
+                        <textarea rows={3} placeholder="  Write Notes .." style={{
+                            margin: '16px auto',
+                            width: '100%',
+                            padding: '6px',
                             borderBottom: '1px solid #3f4652',
                             outline: 'none',
                             fontWeight: '500',
                             backgroundColor: '#181a1f',
                             color: '#fff',
-                            resize:'none',
-                        }}>
+                            resize: 'none',
+                            minHeight: '10vh'
+                        }}
+                            onChange={(e) => setNotes(e.target.value)}
+                        >
 
                         </textarea>
-                        <AddAccountPassport title="Upload the document" />
+                        <AdvanceDemo
+                            patientid={props.patientid}
+                            keyuser={props.keyuser}
+                            userType={props.userType}
+                            notes={notes}
+                        />
+                        {/* <AddAccountPassport title="Upload the document" /> */}
                     </div>
-                </AddAccountForm>
+                    {/* </AddAccountForm> */}
+                </div>
+                <div style={{ height: '30vh' }}>
+                    <AddAccountForm label="Update Health Info" onSubmit={handleonSubmit}>
+                        <h1 style={{ color: '#fff', fontSize: '1.5em', fontWeight: '600', margin: '10px 0px' }}>Update Health Info</h1>
+                        <div style={{ marginTop: '10px', borderRadius: '8px', backgroundColor: '#272c34', justifyContent: 'space-around', display: 'flex', flexWrap: 'wrap' }}>
+                            <>
+                                <div style={{ paddingRight: '5px', marginTop: '10px', width: '40%' }}>
+                                    <AddAccountInput3 label="Blood (HP) :" name="blood" value={healthInfo.blood} type="number" placeholder="" handleHealthInfo={(name, value) => handleHealthInfo(name, value)} />
+                                    <AddAccountInput3 label="Blood Sugar :" name="bloodsugar" value={healthInfo.bloodsugar} type="number" placeholder="" handleHealthInfo={(name, value) => handleHealthInfo(name, value)} />
+                                    <AddAccountInput3 label="Blood Pressure :" name="bloodpressure" value={healthInfo.bloodpressure} type="number" placeholder="" handleHealthInfo={(name, value) => handleHealthInfo(name, value)} />
+                                </div>
 
-                <AddAccountForm label="Add">
-                    <div style={{ marginTop: '10px', borderRadius: '8px', backgroundColor: '#272c34', justifyContent: 'space-around', display: 'flex', flexWrap: 'wrap' }}>
-                        <>
-                            <div style={{ paddingRight: '5px', marginTop: '10px', width: '40%' }}>
-                                <AddAccountInput label="Blood (HP) :" name="" value="" type="number" required={true} placeholder="" />
-                                <AddAccountInput label="Blood Sugar :" name="" value="" type="number" required={true} placeholder="" />
-                                <AddAccountInput label="Blood Pressure :" name="" value="" type="number" required={true} placeholder="" />
-                            </div>
-
-
-                            <div style={{ paddingRight: '5px', marginTop: '10px', width: '40%' }}>
-                                <AddAccountInput label="Heart Rate (Pulse):" name="" value="" type="number" required={true} placeholder="" />
-                                <AddAccountInput label="Respiratory Rate :" name="" value="" type="number" required={true} placeholder="" />
-                                <AddAccountInput label="Allergies :" name="" value="" type="text" required={true} placeholder="" />
-                            </div>
-                        </>
-                    </div>
-                </AddAccountForm>
+                                <div style={{ paddingRight: '5px', marginTop: '10px', width: '40%' }}>
+                                    <AddAccountInput3 label="Heart Rate (Pulse):" name="heartrate" value={healthInfo.heartrate} type="number" placeholder="" handleHealthInfo={(name, value) => handleHealthInfo(name, value)} />
+                                    <AddAccountInput3 label="Respiratory Rate :" name="respiratoryrate" value={healthInfo.respiratoryrate} type="number" placeholder="" handleHealthInfo={(name, value) => handleHealthInfo(name, value)} />
+                                    <AddAccountInput3 label="Allergies :" name="allergies" value={healthInfo.allergies} type="text" placeholder="" handleHealthInfo={(name, value) => handleHealthInfo(name, value)} />
+                                </div>
+                            </>
+                        </div>
+                    </AddAccountForm>
+                </div>
             </Container >
         </>
     );
