@@ -191,7 +191,7 @@ function SettingBodyLift(props) {
 
     const loginInfoValue = useRecoilValue(loginInfo);
 
-    const toggleEditGeneralFacility = async () => {
+    const updateGeneralInfoFacility = async () => {
         const data = {
             address: updateUserInfoValue.address,
             country: updateUserInfoValue.country,
@@ -211,19 +211,28 @@ function SettingBodyLift(props) {
             console.log('message from server: ' + jsonData);
             if (jsonData === "Healthcare Provider Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
+                setIsConfirm(false);
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                setIsConfirm(false);
             }
         } catch (error) {
             console.error(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating general info' });
+            setIsConfirm(false);
         }
         console.log("new info of patient:", updateUserInfoValue);
+    }
+    const toggleEditGeneralFacility = async () => {
+        setIsConfirm(!isConfirm);
+        setTitle('Update General Information');
+        setMessage('Are You Sure You Want To Update General Information?');
+        setHandle(() => updateGeneralInfoFacility);
         setGeneral(!General);
     };
 
     const [Health, setHealth] = useState(true);
-    const toggleEditHealth = async () => {
+    const updateHealthInfo = async () => {
         const data = {
             bloodtype: updateUserInfoValue.bloodtype,
             weight: updateUserInfoValue.weight,
@@ -243,18 +252,27 @@ function SettingBodyLift(props) {
             console.log('message from server: ' + jsonData);
             if (jsonData === "Patient updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
+                setIsConfirm(false);
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                setIsConfirm(false);
             }
         } catch (error) {
             console.error(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating health info' });
+            setIsConfirm(false);
         }
+    }
+    const toggleEditHealth = async () => {
+        setIsConfirm(!isConfirm);
+        setTitle('Update Health Information');
+        setMessage('Are You Sure You Want To Update Health Information?');
+        setHandle(() => updateHealthInfo);
         setHealth(!Health);
     };
 
     const [Practice, setPractice] = useState(true);
-    const toggleEditPractice = async () => {
+    const updatePracticeInfo = async () => {
         const data = {
             practicelocation: updateUserInfoValue.practicelocation,
             affiliations: updateUserInfoValue.affiliations,
@@ -279,13 +297,22 @@ function SettingBodyLift(props) {
             console.log('message from server: ' + jsonData);
             if (jsonData === "Updated Practice Info Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
+                setIsConfirm(false);
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
+                setIsConfirm(false);
             }
         } catch (error) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating practice info' });
             console.error(error.message);
+            setIsConfirm(false);
         }
+    }
+    const toggleEditPractice = async () => {
+        setIsConfirm(!isConfirm);
+        setTitle('Update Practice Information');
+        setMessage('Are You Sure You Want To Update Practice Information?');
+        setHandle(() => updatePracticeInfo);
         setPractice(!Practice);
     };
 
