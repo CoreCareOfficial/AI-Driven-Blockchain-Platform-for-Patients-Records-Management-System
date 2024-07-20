@@ -86,7 +86,7 @@ app.use('/services', servicesRoutes);
 app.use('/emergencycontacts', emergencyContacts);
 app.use('/records', records);
 app.use('/previouspatients', previousPatientsRoutes);
-app.use('/diagosis', diagnosisRoutes);
+app.use('/diagnosis', diagnosisRoutes);
 app.use('/results', resultRoutes);
 app.use('/accesskey', accesskeyRoutes);
 app.use('/ai', checkDocsAuthenticity);

@@ -60,15 +60,30 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.get('/:chosenuserid', async (req, res) => {
-    const { chosenuserid } = req.params;
+router.get('/:emailorusername', async (req, res) => {
+    const { emailorusername } = req.params;
+    console.log(req.params, emailorusername);
+
     try {
-        const chosenUserQuery = await pool.query('SELECT * FROM emergency_contacts WHERE chosenuserid = $1', [chosenuserid]);
-        if (chosenUserQuery.rows.length === 0) {
-            return res.status(400).json({ message: 'Emergency Contacts Not found' });
+        let chosenuserid = '';
+        const usertype = await pool.query('SELECT type FROM login WHERE email = $1 OR username = $1', [emailorusername]);
+
+        if (usertype.rows[0].type === 'Patient' || usertype.rows[0].type === 'Doctor') {
+            const chosenuseridQuery = await pool.query('SELECT patientid FROM patient WHERE email = $1 OR username = $1', [emailorusername]);
+            chosenuserid = chosenuseridQuery.rows[0].patientid;
+        } else {
+            const chosenuseridQuery = await pool.query('SELECT id FROM healthcare_provider WHERE email = $1 OR username = $1', [emailorusername]);
+            chosenuserid = chosenuseridQuery.rows[0].id;
         }
 
-        const emergencyContacts = []
+        console.log(chosenuserid);
+
+        const chosenUserQuery = await pool.query('SELECT * FROM emergency_contacts WHERE chosenuserid = $1', [chosenuserid]);
+        if (chosenUserQuery.rows.length === 0) {
+            return res.status(400).json([]);
+        }
+
+        const emergencyContacts = [];
         for (let i = 0; i < chosenUserQuery.rows.length; i++) {
             const chosenUser = await pool.query('SELECT firstname, lastname, personalphoto, sex FROM patient WHERE patientid = $1', [chosenUserQuery.rows[i].patientid]);
             emergencyContacts.push({
@@ -78,12 +93,15 @@ router.get('/:chosenuserid', async (req, res) => {
                 name: chosenUser.rows[0].firstname + ' ' + chosenUser.rows[0].lastname,
                 sex: chosenUser.rows[0].sex,
                 personalphoto: await readFileContent(chosenUser.rows[0].personalphoto),
-            })
+            });
         }
+
+        console.log(emergencyContacts);
         res.status(200).json(emergencyContacts);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-})
+});
+
 
 export default router

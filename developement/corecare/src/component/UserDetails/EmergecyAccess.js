@@ -35,10 +35,10 @@ function EmergencyAccess(props) {
     useEffect(() => {
         if (!hasEffectRun.current) {
 
-            getEmergencyContactsData(`http://192.168.137.1:5000/emergencycontacts/${loginInfoValue.patientId}`);
+            getEmergencyContactsData(`http://192.168.137.1:5000/emergencycontacts/${loginInfoValue.login}`);
             hasEffectRun.current = true;
         }
-    }, [props.userType, loginInfoValue.patientId])
+    }, [props.userType, loginInfoValue.login])
     return (
         <>
             <div className='flex flex-col flex-wrap justify-between w-full'>
@@ -50,14 +50,14 @@ function EmergencyAccess(props) {
                 <div className="flex flex-row w-full flex-wrap justify-center">
 
                     {
-                        emergencyContacts.map((contact) => (
+                        emergencyContacts.length ? emergencyContacts.map((contact) => (
 
                             <div key={contact.patientid} className="bg-[#3f4652] rounded mx-4 p-2 w-[15%] text-center cursor-pointer hover:scale-[1.01] transition-all" onClick={() => props.handleCreateAccessKeyClick(contact.patientid)}>
                                 <img className="w-[120px] h-[120px] my-[5px] mx-auto rounded-full" src={contact.personalphoto ? `data:image/jpeg;base64,${contact.personalphoto}` : defaultPic} alt="error" />
                                 <h1 className="text-white">{contact.name}</h1>
                                 <p className="text-white">{contact.sex}</p>
                             </div>
-                        ))
+                        )) : <h1 className="text-white align-middle m-auto text-3xl font-serif">No user has assigned you as their Emergency Contact YET ...</h1>
                     }
 
                 </div>

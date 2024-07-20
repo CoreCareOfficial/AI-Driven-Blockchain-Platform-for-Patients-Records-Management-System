@@ -23,7 +23,7 @@
 .logout {
     gap: 7px;
     border-radius: 25px;
-    box-shadow: 0px 0px 10px rgba(3, 3, 3, 0.1);
+    box-shadow: 0px 0px 5px #0d6efd;
     background-color: #272c34;
     color: #ffffff;
     font-size: 14px;

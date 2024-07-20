@@ -3,6 +3,8 @@ import pool from '../db.js';
 import path from 'path';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
+import moment from 'moment-timezone';
+import { log } from 'console';
 
 const router = express.Router();
 
@@ -311,9 +313,13 @@ router.get('/personalhealthinfo/:patientid', async (req, res) => {
 
 
 // UPDATE a patient's health 
-router.put('/healthinfo/:patientID', async (req, res) => {
-    const { patientID } = req.params;
+router.put('/updatehealthinfo/:patientid', async (req, res) => {
+    const { patientid } = req.params;
     const { blood, bloodsugar, bloodpressure, heartrate, respiratoryrate, allergies } = req.body;
+    console.log('req.body:', req.body);
+    console.log('req.params:', req.params);
+    console.log(patientid);
+    console.log(blood, bloodsugar, bloodpressure, heartrate, respiratoryrate, allergies);
     const currentDate = moment().tz('Asia/Aden').format('YYYY-MM-DDTHH:mm:ss');
 
     console.log('currentDate:', currentDate);
@@ -322,10 +328,10 @@ router.put('/healthinfo/:patientID', async (req, res) => {
     try {
 
 
-
+        console.log('1')
         const updateHealthInfo = await pool.query(
-            `INSERT INTO health_info (blood, bloodsugar, bloodpressure, heartrate, respiratoryrate, patientid)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            `INSERT INTO health_info (blood, bloodsugar, bloodpressure, heartrate, respiratoryrate, patientid, blooddate, bloodsugardate, bloodpressuredate, heartratedate, respiratoryratedate)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
             ON CONFLICT (patientid) DO UPDATE 
             SET blood = EXCLUDED.blood,
                 bloodsugar = EXCLUDED.bloodsugar,
@@ -338,24 +344,32 @@ router.put('/healthinfo/:patientID', async (req, res) => {
                 heartratedate = EXCLUDED.heartratedate,
                 respiratoryratedate = EXCLUDED.respiratoryratedate
             RETURNING *`,
-            [blood, bloodsugar, bloodpressure, heartrate, respiratoryrate, patientID, currentDate, currentDate, currentDate, currentDate, currentDate]
+            [blood, bloodsugar, bloodpressure, heartrate, respiratoryrate, patientid, currentDate, currentDate, currentDate, currentDate, currentDate]
         );
 
+        console.log('2')
         const updateAllergies = await pool.query(
             `INSERT INTO allergies (allergyname, allergiesdate, patientid)
             VALUES ($1, $2, $3)
             ON CONFLICT (patientid) DO UPDATE 
             SET allergyname = EXCLUDED.allergyname, allergiesdate = EXCLUDED.allergiesdate
             RETURNING *`,
-            [allergies, currentDate, patientID]
+            [allergies, currentDate, patientid]
         );
 
+        console.log('3')
+
         if (updateHealthInfo.rows.length === 0 && updateAllergies.rows.length === 0) {
-            return res.status(404).send('Failed to update health information');
+            console.log('5')
+            return res.status(404).json({ message: 'Failed to update health information' });
+
         }
-        res.json("Patient updated successfully");
+        console.log('4')
+        res.status(200).json({ message: "Patient updated successfully" });
     } catch (err) {
-        res.status(500).send(err.message);
+        console.log('6')
+        console.log(err.message);
+        res.status(500).json({ message: err.message });
     }
 });
 

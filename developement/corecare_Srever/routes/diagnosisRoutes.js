@@ -1,7 +1,13 @@
 import express from 'express';
 import pool from '../db.js';
+import multer from 'multer';
+import fs from 'fs';
 
 const router = express.Router();
+
+const storage = multer.memoryStorage();
+
+const upload = multer({ storage: storage });
 
 router.post('/', async (req, res) => {
     const { patientid, doctorid, diagnosis, notes, prescribedMedicine, prescribedLabTests, prescribedXrays, labTestsNotes, radiologyNotes, nextVisitDate, nextVisitReason } = req.body;
@@ -83,6 +89,53 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.post('/uploadresults', upload.array('results'), async (req, res) => {
+    const { patientid, keyuser, userType, notes } = req.body;
+    const files = req.files;
+
+    console.log(req.body);
+    console.log(patientid, keyuser, userType, notes);
+    console.log(files);
+
+    if (!files || files.length === 0) {
+        return res.status(400).json({ message: 'No files uploaded' });
+    }
+
+    try {
+        const recordidQuery = await pool.query('SELECT recordid FROM record WHERE patientid = $1 ORDER BY dateofcreation DESC LIMIT 1', [patientid]);
+        const recordid = recordidQuery.rows[0].recordid;
+
+        const usernameQuery = await pool.query('SELECT username FROM patient WHERE patientid = $1', [patientid]);
+        const username = usernameQuery.rows[0].username;
+        let type = userType === 'Radiology' ? 'Radiology' : userType === 'Laboratory' ? 'Lab Result' : 'Other';
+
+        for (const file of files) {
+            const resultBuffer = file.buffer;
+            const resultPath = `Users/Patient/${username}/Records/${recordid}/${type}/${file.originalname}`;
+
+            console.log('Saving file to:', resultPath);
+
+            // Save the buffer to the desired path
+            const fileBasePath = `Users/Patient/${username}/Records/${recordid}/${type}`;
+            await fs.promises.mkdir(fileBasePath, { recursive: true });
+            await fs.promises.writeFile(resultPath, resultBuffer);
+
+
+            const dateofupload = new Date();
+
+            const resultQuery = await pool.query(
+                'INSERT INTO result (patientid, healthcareproviderid, file, dateofupload, type, recordid, note) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+                [patientid, keyuser, resultPath, dateofupload, type, recordid, notes]
+            );
+            const resultData = resultQuery.rows[0];
+            console.log('Result Data:', resultData);
+        }
+
+        res.status(200).json({ message: 'Results uploaded successfully' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
 
 
 router.get('/', async (req, res) => {

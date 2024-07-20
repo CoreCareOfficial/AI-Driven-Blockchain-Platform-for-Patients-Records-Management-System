@@ -177,7 +177,7 @@ function PatientSidebarHandler(props) {
     }, [userInfoValue.notificationsCount]);
 
     const logoutIcon =
-        <IconContext.Provider value={{ className: "logout", size: "2rem" }}>
+        <IconContext.Provider value={{ className: "", size: "2rem" }}>
             <IoLogOutOutline />
         </IconContext.Provider>
 
@@ -331,6 +331,142 @@ function PatientSidebarHandler(props) {
                         text="Emergency Access"
                         onClick={() => handleButtonClick("Emergency Access")}
                     />
+                    {/*<DropDownButton icon={<RiDashboardHorizontalFill />} text="Dashboard" >
+                        {
+                            props.userType === "Patient" || props.userType === "Doctor" ? (
+                                <>
+                                    <SideBtn
+                                        name="sideBtn"
+                                        id={activeButton === "General Info" ? "active" : ""}
+                                        icon={<GiKeyLock />}
+                                        text="General Info"
+                                        onClick={() => handleButtonClick("General Info")}
+                                    />
+                                    <SideBtn
+                                        name="sideBtn"
+                                        id={activeButton === "Health Info" ? "active" : ""}
+                                        icon={<GiKeyLock />}
+                                        text="Health Info"
+                                        onClick={() => handleButtonClick("Health Info")}
+                                    />
+                                    <SideBtn
+                                        name="sideBtn"
+                                        id={activeButton === "Change Password" ? "active" : ""}
+                                        icon={<GiKeyLock />}
+                                        text="Change Password"
+                                        onClick={() => handleButtonClick("Change Password")}
+                                    />
+                                    <SideBtn
+                                        name="sideBtn"
+                                        id={activeButton === "Social Media Accounts" ? "active" : ""}
+                                        icon={<GiKeyLock />}
+                                        text="Social Media Accounts"
+                                        onClick={() => handleButtonClick("Social Media Accounts")}
+                                    />
+                                    <SideBtn
+                                        name="sideBtn"
+                                        id={activeButton === "Emergency Contacts" ? "active" : ""}
+                                        icon={<GiKeyLock />}
+                                        text="Emergency Contacts"
+                                        onClick={() => handleButtonClick("Emergency Contacts")}
+                                    />
+                                    {
+                                        props.userType === "Doctor" ? (
+                                            <>
+                                                <SideBtn
+                                                    name="sideBtn"
+                                                    id={activeButton === "Practice Info" ? "active" : ""}
+                                                    icon={<GiKeyLock />}
+                                                    text="Practice Info"
+                                                    onClick={() => handleButtonClick("Practice Info")}
+                                                />
+                                                <SideBtn
+                                                    name="sideBtn"
+                                                    id={activeButton === "Profissional Info" ? "active" : ""}
+                                                    icon={<GiKeyLock />}
+                                                    text="Profissional Info"
+                                                    onClick={() => handleButtonClick("Profissional Info")}
+                                                />
+                                                <SideBtn
+                                                    name="sideBtn"
+                                                    id={activeButton === "Educational Info" ? "active" : ""}
+                                                    icon={<GiKeyLock />}
+                                                    text="Educational Info"
+                                                    onClick={() => handleButtonClick("Educational Info")}
+                                                />
+                                                <SideBtn
+                                                    name="sideBtn"
+                                                    id={activeButton === "Work Hours" ? "active" : ""}
+                                                    icon={<GiKeyLock />}
+                                                    text="Work Hours"
+                                                    onClick={() => handleButtonClick("Work Hours")}
+                                                />
+                                            </>
+                                        ) : null
+                                    }
+                                </>
+                            ) : props.userType === "Hospital" || props.userType === "Pharmacy" || props.userType === 'Laboratory' || props.userType === 'Radiology' ? (
+                                <>
+                                    <SideBtn
+                                        name="sideBtn"
+                                        id={activeButton === "General Info" ? "active" : ""}
+                                        icon={<GiKeyLock />}
+                                        text="General Info"
+                                        onClick={() => handleButtonClick("General Info")}
+                                    />
+                                    <SideBtn
+                                        name="sideBtn"
+                                        id={activeButton === "Change Password" ? "active" : ""}
+                                        icon={<GiKeyLock />}
+                                        text="Change Password"
+                                        onClick={() => handleButtonClick("Change Password")}
+                                    />
+                                    <SideBtn
+                                        name="sideBtn"
+                                        id={activeButton === "Social Media Accounts" ? "active" : ""}
+                                        icon={<GiKeyLock />}
+                                        text="Social Media Accounts"
+                                        onClick={() => handleButtonClick("Social Media Accounts")}
+                                    />
+                                    <SideBtn
+                                        name="sideBtn"
+                                        id={activeButton === "Emergency Services" ? "active" : ""}
+                                        icon={<GiKeyLock />}
+                                        text={props.userType === 'Hospital' ? "Emergency Services" : "Services"}
+                                        onClick={() => handleButtonClick("Emergency Services")}
+                                    />
+                                    <SideBtn
+                                        name="sideBtn"
+                                        id={activeButton === "Work Hours" ? "active" : ""}
+                                        icon={<GiKeyLock />}
+                                        text="Work Hours"
+                                        onClick={() => handleButtonClick("Work Hours")}
+                                    />
+                                    {
+                                        props.userType === "Hospital" ? (
+                                            <>
+
+                                                <SideBtn
+                                                    name="sideBtn"
+                                                    id={activeButton === "Departments" ? "active" : ""}
+                                                    icon={<GiKeyLock />}
+                                                    text="Departments"
+                                                    onClick={() => handleButtonClick("Departments")}
+                                                />
+                                                <SideBtn
+                                                    name="sideBtn"
+                                                    id={activeButton === "Work & Visit Hours" ? "active" : ""}
+                                                    icon={<GiKeyLock />}
+                                                    text="Work & Visit Hours"
+                                                    onClick={() => handleButtonClick("Work & Visit Hours")}
+                                                />
+                                            </>
+                                        ) : null
+                                    }
+                                </>
+                            ) : null
+                        }
+                    </DropDownButton>*/}
                     <SideBtn
                         name="sideBtn"
                         id={activeButton === "Settings" ? "active" : ""}

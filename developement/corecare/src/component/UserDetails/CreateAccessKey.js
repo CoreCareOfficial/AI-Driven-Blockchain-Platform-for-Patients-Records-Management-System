@@ -49,7 +49,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     useEffect(() => {
         const filtered = providers.filter(provider => {
             const matchesType = selectedType === 'All' || provider.type === selectedType;
-            const matchesName = provider.name.toLowerCase().startsWith(searchTerm.toLowerCase());
+            const matchesName = provider.name && provider.name.toLowerCase().startsWith(searchTerm.toLowerCase());
             return matchesType && matchesName;
         });
         console.log('filtered:', filtered);

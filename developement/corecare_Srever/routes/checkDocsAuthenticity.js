@@ -56,7 +56,7 @@ router.post('/checkidentity', upload.single('image'), async (req, res) => {
     }
 
     try {
-        const worker = await createWorker('eng+ara');
+        const worker = await createWorker('eng');
         const { data } = await worker.recognize(file.buffer);
         await worker.terminate();
 
