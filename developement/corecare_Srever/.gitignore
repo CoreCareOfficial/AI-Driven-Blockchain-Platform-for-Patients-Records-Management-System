@@ -29,3 +29,5 @@ yarn-error.log*
 /index.js
 /package.json
 /package-lock.json
+eng.traineddata
+ara.traineddata
