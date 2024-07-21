@@ -133,7 +133,7 @@ const Diagnosis = ({ patientid, keyuser, handleLabClick, handleXrayClick, handle
         // Send formData to the backend
         console.log(formData);
         try {
-            const response = await fetch('http://192.168.137.1:5000/diagosis', {
+            const response = await fetch('http://192.168.137.1:5000/diagnosis', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

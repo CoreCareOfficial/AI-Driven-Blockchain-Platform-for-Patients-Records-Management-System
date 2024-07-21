@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
                 const prescriptionQuery = await pool.query('INSERT INTO prescription (doctorid, patientid, medicinename, dosage, notes, prescriptiondate, recordid) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [doctorid, patientid, medname, dosage, notes, new Date(), recordID]);
                 const prescription = prescriptionQuery.rows[0];
                 console.log(prescription);
-                const medication = await pool.query('INSERT INTO medication (patientid, medname) VALUES($1, $2) ', [patientid, medicineName]);
+                const medication = await pool.query('INSERT INTO medication (patientid, medname) VALUES($1, $2) ', [patientid, medname]);
                 status = true;
             }
         }
@@ -85,6 +85,7 @@ router.post('/', async (req, res) => {
 
         res.status(200).json({ message: 'Diagnosis created successfully' });
     } catch (err) {
+        console.log(err.message)
         res.status(500).json({ message: err.message });
     }
 });

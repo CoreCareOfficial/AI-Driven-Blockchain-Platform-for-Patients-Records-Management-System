@@ -22,9 +22,9 @@ function PatientsTable(props) {
 
                     <thead className="records_thead">
                         <tr className="thead_tr">
-                            <th style={{ width: '37%' }}>Patient Name</th>
-                            <th style={{ width: '13%' }}> Access Date</th>
-                            <th style={{ width: '37%' }}>General Diagnosis</th>
+                            <th style={{ width: props.userType === 'Doctor' ? '33%' : '50%' }}>Patient Name</th>
+                            <th style={{ width: props.userType === 'Doctor' && '13%' }}> Access Date</th>
+                            <th style={{ width: props.userType === 'Doctor' && '13%' }}>General Diagnosis</th>
                             <th style={{ width: props.userType === 'Doctor' && '13%', display: props.userType !== 'Doctor' && 'none' }}> {props.userType === 'Doctor' && 'Next Visit Date'}</th>
                         </tr>
                     </thead>
