@@ -172,7 +172,7 @@ router.post('/checklicense', upload.single('image'), async (req, res) => {
 router.post('/summarizerecords', upload.single('file'), async (req, res) => {
     const { patientid } = req.body
     console.log(patientid);
-    const prompt = "Summarize medical record files , extract relevant information such as patient demographics, medical history, diagnoses, treatments, and outcomes. Identify key trends and patterns in the data. Here is the process you will follow to summarize the medical record files: 1. *Review the files.* you will carefully review all of the medical record files that i send you. This may include doctor's notes, hospital records, lab results, and imaging studies. 2. *Extract relevant information.* you will extract the following information from the medical record files:   * Patient demographics: name, date of birth, gender, address, etc.   * Medical history: past illnesses, surgeries, hospitalizations, etc.    * Diagnoses: all of the medical conditions that have been diagnosed for the patient.    * Treatments: all of the treatments that have been prescribed for the patient.    * Outcomes: the results of the treatments. 3. *Identify key trends and patterns.* you will look for any key trends or patterns in the data. For example, you may look for changes in the patient's symptoms over time, or you may look for any relationships between the patient's medical conditions and their treatments.\n4. *Summarize the information.* you will summarize the information that youI have extracted from the medical record files in a clear and concise manner. The summary will include the patient's demographics, medical history, diagnoses, treatments, outcomes, and any key trends or patterns that you have identified.  provide me with a comprehensive and accurate summary of the medical record files."
+    const prompt = "Summarize medical record files , extract relevant information such as patient demographics, medical history, diagnoses, treatments, and outcomes. Identify key trends and patterns in the data. Here is the process you will follow to summarize the medical record files: 1. *Review the files.* you will carefully review all of the medical record files that i send you. This may include doctor's notes, hospital records, lab results, and imaging studies. 2. *Extract relevant information.* you will extract the following information from the medical record files:   * Patient demographics: name, date of birth, gender, address, etc.   * Medical history: past illnesses, surgeries, hospitalizations, etc.    * Diagnoses: all of the medical conditions that have been diagnosed for the patient.    * Treatments: all of the treatments that have been prescribed for the patient.    * Outcomes: the results of the treatments. 3. *Identify key trends and patterns.* you will look for any key trends or patterns in the data. For example, you may look for changes in the patient's symptoms over time, or you may look for any relationships between the patient's medical conditions and their treatments.\n4. *Summarize the information.* you will summarize the information that youI have extracted from the medical record files in a clear and concise manner. The summary will include the patient's demographics, medical history, diagnoses, treatments, outcomes, and any key trends or patterns that you have identified.  provide me with a comprehensive and accurate summary of the medical record files. give me the response in english then in arabic seperate them with <hr>,"
 
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
@@ -382,7 +382,7 @@ router.post('/summarizeonerecord', upload.single('file'), async (req, res) => {
 router.post('/summarizresult', upload.single('file'), async (req, res) => {
     const { patientid, resultid } = req.body
     console.log(patientid, resultid);
-    const prompt = "Summarize medical record files , extract relevant information such as patient demographics, medical history, diagnoses, treatments, and outcomes. Identify key trends and patterns in the data. Here is the process you will follow to summarize the medical record files: 1. *Review the files.* you will carefully review all of the medical record files that i send you. This may include doctor's notes, hospital records, lab results, and imaging studies. 2. *Extract relevant information.* you will extract the following information from the medical record files:   * Patient demographics: name, date of birth, gender, address, etc.   * Medical history: past illnesses, surgeries, hospitalizations, etc.    * Diagnoses: all of the medical conditions that have been diagnosed for the patient.    * Treatments: all of the treatments that have been prescribed for the patient.    * Outcomes: the results of the treatments. 3. *Identify key trends and patterns.* you will look for any key trends or patterns in the data. For example, you may look for changes in the patient's symptoms over time, or you may look for any relationships between the patient's medical conditions and their treatments.\n4. *Summarize the information.* you will summarize the information that youI have extracted from the medical record files in a clear and concise manner. The summary will include the patient's demographics, medical history, diagnoses, treatments, outcomes, and any key trends or patterns that you have identified.  provide me with a comprehensive and accurate summary of the medical record files."
+    const prompt = "Summarize medical record files , extract relevant information such as patient demographics, medical history, diagnoses, treatments, and outcomes. Identify key trends and patterns in the data. Here is the process you will follow to summarize the medical record files: 1. *Review the files.* you will carefully review all of the medical record files that i send you. This may include doctor's notes, hospital records, lab results, and imaging studies. 2. *Extract relevant information.* you will extract the following information from the medical record files:   * Patient demographics: name, date of birth, gender, address, etc.   * Medical history: past illnesses, surgeries, hospitalizations, etc.    * Diagnoses: all of the medical conditions that have been diagnosed for the patient.    * Treatments: all of the treatments that have been prescribed for the patient.    * Outcomes: the results of the treatments. 3. *Identify key trends and patterns.* you will look for any key trends or patterns in the data. For example, you may look for changes in the patient's symptoms over time, or you may look for any relationships between the patient's medical conditions and their treatments.\n4. *Summarize the information.* you will summarize the information that youI have extracted from the medical record files in a clear and concise manner. The summary will include the patient's demographics, medical history, diagnoses, treatments, outcomes, and any key trends or patterns that you have identified.  provide me with a comprehensive and accurate summary of the medical record files. give me the response in english then in arabic seperate them with <hr>,"
 
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
@@ -437,51 +437,6 @@ router.post('/summarizresult', upload.single('file'), async (req, res) => {
     }
 });
 
-router.get('/a/:patientid', async (req, res) => {
-    const { patientid } = req.params;
-    console.log(patientid);
-
-    try {
-        const recordsQuery = await pool.query('SELECT * FROM record WHERE patientid = $1 ORDER BY dateofcreation DESC', [patientid]);
-        if (recordsQuery.rows.length === 0) {
-            return res.status(400).json({ message: 'Records Not found' });
-        }
-
-        const records = recordsQuery.rows;
-
-        const response = await Promise.all(records.map(async (record, index) => {
-            const prescriptionQuery = await pool.query('SELECT * FROM prescription WHERE recordid = $1', [record.recordid]);
-            const prescriptions = prescriptionQuery.rows.map(prescription => ({
-                id: prescription.id,
-                name: prescription.medicinename,
-                dosage: prescription.dosage,
-                notes: prescription.notes,
-            }));
-
-            const resultsQuery = await pool.query('SELECT * FROM result WHERE recordid = $1', [record.recordid]);
-            const results = resultsQuery.rows.map(result => ({
-                id: result.id,
-                filepath: result.file,
-                type: result.type,
-                date: result.dateofupload,
-            }));
-
-            return {
-                id: record.recordid,
-                name: `Record ${index + 1}`,
-                diagnosis: record.diagnosis,
-                notes: record.notes,
-                date: record.dateofcreation,
-                prescriptions: prescriptions,
-                results: results,
-            };
-        }));
-
-        res.status(200).json(response);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
 
 
 

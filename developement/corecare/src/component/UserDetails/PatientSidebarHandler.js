@@ -312,7 +312,7 @@ function PatientSidebarHandler(props) {
 
                     {/* ================================== */}
 
-                    {props.userType === "Patient" || props.userType === "Doctor" ? (
+                    {/*{props.userType === "Patient" || props.userType === "Doctor" ? (
                         <SideBtn
                             name="sideBtn"
                             id={activeButton === "Appointment Schedule" ? "active" : ""}
@@ -320,7 +320,7 @@ function PatientSidebarHandler(props) {
                             text="Appointment Schedule"
                             onClick={() => handleButtonClick("Appointment Schedule")}
                         />
-                    ) : null}
+                    ) : null}*/}
 
                     {/* ================================== */}
 
