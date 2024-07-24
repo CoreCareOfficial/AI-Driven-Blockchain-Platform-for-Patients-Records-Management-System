@@ -263,7 +263,7 @@ router.get('/getsummary/:patientid', async (req, res) => {
     const { patientid } = req.params;
 
     try {
-        const summaryQuery = await pool.query('SELECT * FROM previous_summarizations WHERE patientid = $1', [patientid]);
+        const summaryQuery = await pool.query('SELECT * FROM previous_summarizations WHERE patientid = $1 ORDER BY summary_date DESC', [patientid]);
         if (summaryQuery.rows.length === 0) {
             return res.status(400).json({ message: 'Summary Not found' });
         }
