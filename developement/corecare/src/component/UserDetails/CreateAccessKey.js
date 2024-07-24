@@ -296,7 +296,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
                             </div>
 
                             {/*=============== input div=========== */}
-                            <div style={{ marginTop: '5px', width: 'calc(100% - 115px)', height: '5vh' }}>
+                            <div style={{ marginTop: '5px', width: 'calc(100% - 300px)', height: '5vh' }}>
                                 <AddAccessKeyInput isShow={isShow} name="" value="" type="datetime-local" placeholder="ddddddddd" onChange={(e) => setTimeOther(e)} />
                             </div>
 
