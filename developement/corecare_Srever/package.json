@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon index.mjs",
-    "build": "npm run build"
+    "build": "echo 'No build step required'"
   },
   "author": "",
   "license": "ISC",
