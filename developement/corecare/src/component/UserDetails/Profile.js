@@ -47,7 +47,7 @@ function Profile(props) {
     useEffect(() => {
         if (!hasEffectRun.current) {
             setTimeout(() => {
-                getUserData(`http://192.168.137.1:5000/${userType}?email=${loginInfoValue.login}`);
+                getUserData(`https://corecare-server.onrender.com:5000/${userType}?email=${loginInfoValue.login}`);
                 hasEffectRun.current = true;
             }, 350);
         }

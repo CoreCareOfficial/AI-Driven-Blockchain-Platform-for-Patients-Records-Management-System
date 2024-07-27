@@ -16,7 +16,7 @@ function DoctorBody(props) {
                 return;
             }
             try {
-                const response = await fetch(`http://192.168.137.1:5000/healthinfo/personalhealthinfo/${props.patientid}`, {
+                const response = await fetch(`https://corecare-server.onrender.com:5000/healthinfo/personalhealthinfo/${props.patientid}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'

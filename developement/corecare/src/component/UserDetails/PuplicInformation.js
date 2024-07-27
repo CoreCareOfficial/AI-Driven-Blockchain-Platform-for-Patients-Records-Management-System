@@ -68,7 +68,7 @@ function PuplicInformation(props) {
     useEffect(() => {
         //call the api to get the doctor data when userType is Doctor
         if (props.userType === "Doctor") {
-            fetchData(`http://192.168.137.1:5000/doctors/${props.userId}`, "doctors");
+            fetchData(`https://corecare-server.onrender.com:5000/doctors/${props.userId}`, "doctors");
         }
 
     }, [props.userId, props.userType]);
@@ -76,17 +76,17 @@ function PuplicInformation(props) {
     useEffect(() => {
         if (props.userType === "Doctor") {
             console.log('doctors.doctorid:', doctors.doctorid);
-            fetchData(`http://192.168.137.1:5000/practiceinfo/${doctors.doctorid}`, "practiceinfo");
-            fetchData(`http://192.168.137.1:5000/educationalinfo/${doctors.doctorid}`, "educationalinfo");
+            fetchData(`https://corecare-server.onrender.com:5000/practiceinfo/${doctors.doctorid}`, "practiceinfo");
+            fetchData(`https://corecare-server.onrender.com:5000/educationalinfo/${doctors.doctorid}`, "educationalinfo");
         } else {
-            fetchData(`http://192.168.137.1:5000/services/${facilityInfo.id}`, "emergencyservices");
+            fetchData(`https://corecare-server.onrender.com:5000/services/${facilityInfo.id}`, "emergencyservices");
             if (props.userType === "Hospital") {
                 console.log('facilityInfo.facility_id:', facilityInfo.id);
-                fetchData(`http://192.168.137.1:5000/departments/${facilityInfo.id}`, "departments");
-                fetchData(`http://192.168.137.1:5000/visithours/${loginInfoValue.login}`, "visithours");
+                fetchData(`https://corecare-server.onrender.com:5000/departments/${facilityInfo.id}`, "departments");
+                fetchData(`https://corecare-server.onrender.com:5000/visithours/${loginInfoValue.login}`, "visithours");
             }
         }
-        fetchData(`http://192.168.137.1:5000/workhours/${loginInfoValue.login}`, "workhours");
+        fetchData(`https://corecare-server.onrender.com:5000/workhours/${loginInfoValue.login}`, "workhours");
     }, [doctors?.doctorid, props.userType, facilityInfo?.id, loginInfoValue?.login]);
 
     const { practiceinfo, educationalinfo, workhours, departments, emergencyservices, visithours } = userData;

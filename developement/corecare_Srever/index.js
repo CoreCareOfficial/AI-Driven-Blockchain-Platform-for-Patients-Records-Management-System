@@ -45,7 +45,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: 'http://192.168.137.1:5000',
+            url: 'https://corecare-server.onrender.com:5000',
             description: 'Development server',
         },
     ],

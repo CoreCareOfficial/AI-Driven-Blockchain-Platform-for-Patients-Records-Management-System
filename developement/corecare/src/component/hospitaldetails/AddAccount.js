@@ -54,7 +54,7 @@ function AddAccount(props) {
             email: v
         };
         try {
-            const response = await fetch("http://192.168.137.1:5000/login", {
+            const response = await fetch("https://corecare-server.onrender.com:5000/login", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -120,7 +120,7 @@ function AddAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("http://192.168.137.1:5000/patients/addpatient", {
+            const response = await fetch("https://corecare-server.onrender.com:5000/patients/addpatient", {
                 method: "POST",
                 body: formData
             });
@@ -147,7 +147,7 @@ function AddAccount(props) {
             };
 
             try {
-                const userResponse = await fetch("http://192.168.137.1:5000/login/add", {
+                const userResponse = await fetch("https://corecare-server.onrender.com:5000/login/add", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

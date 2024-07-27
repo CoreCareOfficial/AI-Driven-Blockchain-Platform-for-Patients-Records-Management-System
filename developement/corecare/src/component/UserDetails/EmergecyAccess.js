@@ -35,7 +35,7 @@ function EmergencyAccess(props) {
     useEffect(() => {
         if (!hasEffectRun.current) {
 
-            getEmergencyContactsData(`http://192.168.137.1:5000/emergencycontacts/${loginInfoValue.login}`);
+            getEmergencyContactsData(`https://corecare-server.onrender.com:5000/emergencycontacts/${loginInfoValue.login}`);
             hasEffectRun.current = true;
         }
     }, [props.userType, loginInfoValue.login])

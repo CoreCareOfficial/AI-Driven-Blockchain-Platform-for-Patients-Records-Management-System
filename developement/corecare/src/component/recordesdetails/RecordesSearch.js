@@ -65,7 +65,7 @@ function RecordesSearch({ view, handleViewClick, handleCreateAccessKeyClick }) {
             patientid: newUserInfoValue.patientId
         }
         try {
-            const response = await fetch("http://192.168.137.1:5000/ai/summarizerecords", {
+            const response = await fetch("https://corecare-server.onrender.com:5000/ai/summarizerecords", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -119,7 +119,7 @@ function RecordesSearch({ view, handleViewClick, handleCreateAccessKeyClick }) {
             resultid: dataSummarize.resultid,
         }
         try {
-            const response = await fetch(`http://192.168.137.1:5000/records/savesummary`, {
+            const response = await fetch(`https://corecare-server.onrender.com:5000/records/savesummary`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

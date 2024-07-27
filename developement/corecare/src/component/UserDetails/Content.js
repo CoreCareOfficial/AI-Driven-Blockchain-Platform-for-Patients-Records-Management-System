@@ -21,7 +21,7 @@ function Content(props) {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await fetch(`http://192.168.137.1:5000/accesskey/getnotificationtoast/${userInfoValue.login}`, {
+                const response = await fetch(`https://corecare-server.onrender.com:5000/accesskey/getnotificationtoast/${userInfoValue.login}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'

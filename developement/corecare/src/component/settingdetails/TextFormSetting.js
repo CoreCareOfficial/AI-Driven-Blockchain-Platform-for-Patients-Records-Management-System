@@ -37,7 +37,7 @@ export function UpdateImage(props) {
         formData.append('facilityPhoto', imageFile);
         formData.append('type', props.userType)
         try {
-            const response = await fetch(`http://192.168.137.1:5000/healthcareproviders/updatefacilityphoto/${props.username}`, {
+            const response = await fetch(`https://corecare-server.onrender.com:5000/healthcareproviders/updatefacilityphoto/${props.username}`, {
                 method: "PUT",
                 body: formData
             });
@@ -64,7 +64,7 @@ export function UpdateImage(props) {
         const formData = new FormData();
         formData.append('personalPhoto', imageFile);
         try {
-            const response = await fetch(`http://192.168.137.1:5000/patients/personalphoto/${props.username}`, {
+            const response = await fetch(`https://corecare-server.onrender.com:5000/patients/personalphoto/${props.username}`, {
                 method: "PUT",
                 body: formData
             });
@@ -199,7 +199,7 @@ export function AddEmergency(props) {
             patientid: props.userid
         };
         try {
-            const response = await fetch(`http://192.168.137.1:5000/emergencycontacts`, {
+            const response = await fetch(`https://corecare-server.onrender.com:5000/emergencycontacts`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

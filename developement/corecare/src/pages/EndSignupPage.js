@@ -52,7 +52,7 @@ function EndSignupPage() {
         };
 
         try {
-            const userResponse = await fetch("http://192.168.137.1:5000/login/forget", {
+            const userResponse = await fetch("https://corecare-server.onrender.com:5000/login/forget", {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -115,7 +115,7 @@ function EndSignupPage() {
             password = userInfoValue.password;
             username = userInfoValue.userName;
             try {
-                const response = await fetch("http://192.168.137.1:5000/patients", {
+                const response = await fetch("https://corecare-server.onrender.com:5000/patients", {
                     method: "POST",
                     body: formData
                 });
@@ -135,7 +135,7 @@ function EndSignupPage() {
                         doctorFormData.append('licenseNumber', userInfoValue.licenseNumber);
                         doctorFormData.append('licenseDocument', userInfoValue.licenseDocument);
                         try {
-                            const doctorResponse = await fetch("http://192.168.137.1:5000/doctors", {
+                            const doctorResponse = await fetch("https://corecare-server.onrender.com:5000/doctors", {
                                 method: "POST",
                                 body: doctorFormData
                             });
@@ -193,7 +193,7 @@ function EndSignupPage() {
             password = facilityInfoValue.password;
             username = facilityInfoValue.userName;
             try {
-                const response = await fetch("http://192.168.137.1:5000/healthcareproviders", {
+                const response = await fetch("https://corecare-server.onrender.com:5000/healthcareproviders", {
                     method: "POST",
                     body: formData
                 });
@@ -222,7 +222,7 @@ function EndSignupPage() {
             };
 
             try {
-                const userResponse = await fetch("http://192.168.137.1:5000/login/add", {
+                const userResponse = await fetch("https://corecare-server.onrender.com:5000/login/add", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'
