@@ -54,7 +54,7 @@ function AddPharmacyAccount(props) {
             email: v
         };
         try {
-            const response = await fetch("https://corecare-server.onrender.com:5000/login", {
+            const response = await fetch("https://corecare-server.onrender.com/login", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ function AddPharmacyAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("https://corecare-server.onrender.com:5000/healthcareproviders/addhealthcareprovider", {
+            const response = await fetch("https://corecare-server.onrender.com/healthcareproviders/addhealthcareprovider", {
                 method: "POST",
                 body: formData
             });
@@ -138,7 +138,7 @@ function AddPharmacyAccount(props) {
             };
 
             try {
-                const userResponse = await fetch("https://corecare-server.onrender.com:5000/login/add", {
+                const userResponse = await fetch("https://corecare-server.onrender.com/login/add", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

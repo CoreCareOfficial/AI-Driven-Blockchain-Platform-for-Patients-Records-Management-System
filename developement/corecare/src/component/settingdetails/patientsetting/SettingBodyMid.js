@@ -81,7 +81,7 @@ function SettingBodyMid(props) {
             newPassword: hashedPassword,
         };
         try {
-            const response = await fetch("https://corecare-server.onrender.com:5000/login/change", {
+            const response = await fetch("https://corecare-server.onrender.com/login/change", {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -128,7 +128,7 @@ function SettingBodyMid(props) {
             whatsapp: updateUserInfoValue.whatsapp
         };
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/socialmedia/${loginInfoValue.login}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/socialmedia/${loginInfoValue.login}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -176,7 +176,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/doctors/updateprofissionalinfo/${profissional.doctorid}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/doctors/updateprofissionalinfo/${profissional.doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -223,7 +223,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/doctors/updateeducationalinfo/${profissional.doctorid}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/doctors/updateeducationalinfo/${profissional.doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -277,7 +277,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/healthcareproviders/updatedepartments/${healthcareProviderInfo.id}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/healthcareproviders/updatedepartments/${healthcareProviderInfo.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -322,7 +322,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/healthcareproviders/updateservices/${healthcareProviderInfo.id}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/healthcareproviders/updateservices/${healthcareProviderInfo.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'

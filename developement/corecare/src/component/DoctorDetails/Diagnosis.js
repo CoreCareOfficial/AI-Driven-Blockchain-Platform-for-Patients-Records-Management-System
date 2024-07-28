@@ -133,7 +133,7 @@ const Diagnosis = ({ patientid, keyuser, handleLabClick, handleXrayClick, handle
         // Send formData to the backend
         console.log(formData);
         try {
-            const response = await fetch('https://corecare-server.onrender.com:5000/diagnosis', {
+            const response = await fetch('https://corecare-server.onrender.com/diagnosis', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

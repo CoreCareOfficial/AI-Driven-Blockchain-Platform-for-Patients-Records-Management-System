@@ -38,7 +38,7 @@ function UpdateHealthInfo(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Selected Patient' });
         }
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/healthinfo/updatehealthinfo/${props.patientid}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/healthinfo/updatehealthinfo/${props.patientid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'

@@ -251,7 +251,7 @@ function RecordesTable(props) {
             return <p>Error In Loading Your Info!!</p>
         }
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/records/${loginInfoValue.patientId}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/records/${loginInfoValue.patientId}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'

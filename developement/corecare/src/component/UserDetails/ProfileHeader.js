@@ -10,7 +10,7 @@ function ProfileHeader(props) {
 
     const getUserData = async (userId) => {
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/socialmedia/${userId}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/socialmedia/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

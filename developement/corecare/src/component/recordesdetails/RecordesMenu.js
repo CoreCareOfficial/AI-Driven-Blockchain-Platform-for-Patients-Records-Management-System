@@ -38,7 +38,7 @@ function RecordesMenu(props) {
 
     const fetchFile = async (id, action) => {
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/records/getresult/${id}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/records/getresult/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -87,7 +87,7 @@ function RecordesMenu(props) {
             return;
         }
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/records/get/prescription`, {
+            const response = await fetch(`https://corecare-server.onrender.com/records/get/prescription`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -114,7 +114,7 @@ function RecordesMenu(props) {
             return;
         }
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/records/get/labtest`, {
+            const response = await fetch(`https://corecare-server.onrender.com/records/get/labtest`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -140,7 +140,7 @@ function RecordesMenu(props) {
             return;
         }
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/records/get/radiology`, {
+            const response = await fetch(`https://corecare-server.onrender.com/records/get/radiology`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -162,7 +162,7 @@ function RecordesMenu(props) {
     };
     const fetchSummary = async (action) => {
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/records/get/savedsummary/${selectedFile.id}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/records/get/savedsummary/${selectedFile.id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -191,7 +191,7 @@ function RecordesMenu(props) {
             recordid: selectedFile.id
         }
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/records/get/generalreport`, {
+            const response = await fetch(`https://corecare-server.onrender.com/records/get/generalreport`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -285,7 +285,7 @@ function RecordesMenu(props) {
             recordid: selectedFile.id
         }
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/ai/${props.isRecord ? 'summarizeonerecord' : 'summarizresult'}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/ai/${props.isRecord ? 'summarizeonerecord' : 'summarizresult'}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -335,7 +335,7 @@ function RecordesMenu(props) {
             props.handleMenuClick();
         console.log('data star', data);
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/records/${api}`, {
+            const response = await fetch(`https://corecare-server.onrender.com/records/${api}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

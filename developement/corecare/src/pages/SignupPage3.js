@@ -88,7 +88,7 @@ function SignupPage3() {
         toast.current.show({ severity: 'info', summary: 'Processing', detail: 'Checking your ID card and ID, please wait...', life: 3000 });
 
         try {
-            const response = await fetch("https://corecare-server.onrender.com:5000/ai/checkidentity", {
+            const response = await fetch("https://corecare-server.onrender.com/ai/checkidentity", {
                 method: "POST",
                 body: formData,
             });
@@ -133,7 +133,7 @@ function SignupPage3() {
     //     formData.append('image', userInfoValue.FIdCardPhoto ? userInfoValue.FIdCardPhoto : userInfoValue.passportPhoto);
 
     //     try {
-    //         const response = await fetch("https://corecare-server.onrender.com:5000/checkidentity", {
+    //         const response = await fetch("https://corecare-server.onrender.com/checkidentity", {
     //             method: "POST",
     //             body: formData
     //         });

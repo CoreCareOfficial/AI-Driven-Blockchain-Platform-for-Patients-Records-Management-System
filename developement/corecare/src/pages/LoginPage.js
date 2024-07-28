@@ -30,7 +30,7 @@ function LoginPage() {
         };
 
         try {
-            const userResponse = await fetch("https://corecare-server.onrender.com:5000/login/get", {
+            const userResponse = await fetch("https://corecare-server.onrender.com/login/get", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

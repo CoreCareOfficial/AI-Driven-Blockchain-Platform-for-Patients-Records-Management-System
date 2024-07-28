@@ -71,11 +71,11 @@ function PersonalInformation(props) {
 
     useEffect(() => {
         const userId = userInfo.patientid;
-        fetchData(`https://corecare-server.onrender.com:5000/healthinfo/${userId}`, "healthInfo");
-        fetchData(`https://corecare-server.onrender.com:5000/allergies/${userId}`, "allergies");
-        fetchData(`https://corecare-server.onrender.com:5000/medications/${userId}`, "medications");
-        fetchData(`https://corecare-server.onrender.com:5000/pastconditions/${userId}`, "pastConditions");
-        fetchData(`https://corecare-server.onrender.com:5000/previousdoctors/${userId}`, "previousDoctors");
+        fetchData(`https://corecare-server.onrender.com/healthinfo/${userId}`, "healthInfo");
+        fetchData(`https://corecare-server.onrender.com/allergies/${userId}`, "allergies");
+        fetchData(`https://corecare-server.onrender.com/medications/${userId}`, "medications");
+        fetchData(`https://corecare-server.onrender.com/pastconditions/${userId}`, "pastConditions");
+        fetchData(`https://corecare-server.onrender.com/previousdoctors/${userId}`, "previousDoctors");
     }, [userInfo.patientid]);
 
     const { healthInfo, allergies, medications, pastConditions, previousDoctors, isLoading } = userData;

@@ -77,7 +77,7 @@ function AllRecords(props) {
             resultid: dataSummarize.resultid,
         }
         try {
-            const response = await fetch(`https://corecare-server.onrender.com:5000/records/savesummary`, {
+            const response = await fetch(`https://corecare-server.onrender.com/records/savesummary`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

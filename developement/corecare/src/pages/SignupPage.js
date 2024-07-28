@@ -24,7 +24,7 @@ function SignupPage() {
             email: v
         };
         try {
-            const response = await fetch("https://corecare-server.onrender.com:5000/login", {
+            const response = await fetch("https://corecare-server.onrender.com/login", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
