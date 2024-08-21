@@ -54,7 +54,7 @@ export default function AdvanceDemo(props) {
             return;
         }
         try {
-            const uploadUrl = `https://corecare-server.onrender.com/diagnosis/uploadresults`;
+            const uploadUrl = `http://127.0.0.1:4000/diagnosis/uploadresults`;
             const formData = new FormData();
             formData.append('patientid', data.patientid);
             formData.append('keyuser', data.keyuser);

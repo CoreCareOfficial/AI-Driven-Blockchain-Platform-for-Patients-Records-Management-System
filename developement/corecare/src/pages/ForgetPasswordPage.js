@@ -26,7 +26,7 @@ function ForgetPasswordPage() {
             email: v
         };
         try {
-            const response = await fetch("https://corecare-server.onrender.com/login/checkemail", {
+            const response = await fetch("http://127.0.0.1:4000/login/checkemail", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

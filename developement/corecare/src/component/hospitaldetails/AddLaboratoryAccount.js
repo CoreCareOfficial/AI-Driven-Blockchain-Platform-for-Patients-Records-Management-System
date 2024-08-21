@@ -54,7 +54,7 @@ function AddLaboratoryAccount(props) {
             email: v
         };
         try {
-            const response = await fetch("https://corecare-server.onrender.com/login", {
+            const response = await fetch("http://127.0.0.1:4000/login", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ function AddLaboratoryAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("https://corecare-server.onrender.com/healthcareproviders/addhealthcareprovider", {
+            const response = await fetch("http://127.0.0.1:4000/healthcareproviders/addhealthcareprovider", {
                 method: "POST",
                 body: formData
             });
@@ -137,7 +137,7 @@ function AddLaboratoryAccount(props) {
             };
 
             try {
-                const userResponse = await fetch("https://corecare-server.onrender.com/login/add", {
+                const userResponse = await fetch("http://127.0.0.1:4000/login/add", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

@@ -55,7 +55,7 @@ function VerifyCodePage() {
     const handleSendCode = async () => {
         console.log('email: ' + email);
         try {
-            const response = await fetch("https://corecare-server.onrender.com/verification", {
+            const response = await fetch("http://127.0.0.1:4000/verification", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email })
@@ -78,7 +78,7 @@ function VerifyCodePage() {
     const handleVerifyCode = async () => {
         const verificationCode = code.join('');
         try {
-            const response = await fetch("https://corecare-server.onrender.com/verification/verify-code", {
+            const response = await fetch("http://127.0.0.1:4000/verification/verify-code", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, code: verificationCode })
