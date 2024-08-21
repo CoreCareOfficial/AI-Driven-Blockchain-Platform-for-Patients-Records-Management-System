@@ -66,7 +66,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // Configure CORS
 app.use(cors({
     origin: 'https://corecare.onrender.com',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true
 }));
 
