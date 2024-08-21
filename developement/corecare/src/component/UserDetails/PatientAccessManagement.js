@@ -17,7 +17,7 @@ function PatientAccessManagement(props) {
         const fetchNotifications = async () => {
             console.log("fetching notifications");
             try {
-                const response = await fetch(`https://corecare-server.onrender.com/accesskey/get/${userLoginInfo.login}`, {
+                const response = await fetch(`http://127.0.0.1:4000/accesskey/get/${userLoginInfo.login}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ function PatientAccessManagement(props) {
         const fetchPatients = async () => {
             console.log("fetching patients");
             try {
-                const response = await fetch(`https://corecare-server.onrender.com/previouspatients/${userLoginInfo.login}`, {
+                const response = await fetch(`http://127.0.0.1:4000/previouspatients/${userLoginInfo.login}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'

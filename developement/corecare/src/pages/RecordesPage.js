@@ -52,7 +52,7 @@ function RecordesPage(props) {
                 return;
             }
             try {
-                const response = await fetch(`https://corecare-server.onrender.com/records/${loginInfoValue.patientId}`, {
+                const response = await fetch(`http://127.0.0.1:4000/records/${loginInfoValue.patientId}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ function RecordesPage(props) {
                 return;
             }
             try {
-                const response = await fetch(`https://corecare-server.onrender.com/records/getsummary/${loginInfoValue.patientId}`, {
+                const response = await fetch(`http://127.0.0.1:4000/records/getsummary/${loginInfoValue.patientId}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'

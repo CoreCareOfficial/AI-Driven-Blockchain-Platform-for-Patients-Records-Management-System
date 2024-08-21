@@ -75,7 +75,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server.onrender.com/workhours/${id}`, {
+            const response = await fetch(`http://127.0.0.1:4000/workhours/${id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -120,7 +120,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server.onrender.com/workhours`, {
+            const response = await fetch(`http://127.0.0.1:4000/workhours`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -162,7 +162,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server.onrender.com/visithours/${id}`, {
+            const response = await fetch(`http://127.0.0.1:4000/visithours/${id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -205,7 +205,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server.onrender.com/visithours`, {
+            const response = await fetch(`http://127.0.0.1:4000/visithours`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -266,7 +266,7 @@ function SettingBodyRight(props) {
         const newEmergencyContacts = emergencyContacts.filter((EmergencyContact) => EmergencyContact.id !== id);
         setEmergencyContacts(newEmergencyContacts);
         try {
-            const response = await fetch(`https://corecare-server.onrender.com/emergencycontacts/${id}`, {
+            const response = await fetch(`http://127.0.0.1:4000/emergencycontacts/${id}`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

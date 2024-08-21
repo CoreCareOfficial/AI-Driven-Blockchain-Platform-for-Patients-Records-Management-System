@@ -68,7 +68,7 @@ function PuplicInformation(props) {
     useEffect(() => {
         //call the api to get the doctor data when userType is Doctor
         if (props.userType === "Doctor") {
-            fetchData(`https://corecare-server.onrender.com/doctors/${props.userId}`, "doctors");
+            fetchData(`http://127.0.0.1:4000/doctors/${props.userId}`, "doctors");
         }
 
     }, [props.userId, props.userType]);
@@ -76,17 +76,17 @@ function PuplicInformation(props) {
     useEffect(() => {
         if (props.userType === "Doctor") {
             console.log('doctors.doctorid:', doctors.doctorid);
-            fetchData(`https://corecare-server.onrender.com/practiceinfo/${doctors.doctorid}`, "practiceinfo");
-            fetchData(`https://corecare-server.onrender.com/educationalinfo/${doctors.doctorid}`, "educationalinfo");
+            fetchData(`http://127.0.0.1:4000/practiceinfo/${doctors.doctorid}`, "practiceinfo");
+            fetchData(`http://127.0.0.1:4000/educationalinfo/${doctors.doctorid}`, "educationalinfo");
         } else {
-            fetchData(`https://corecare-server.onrender.com/services/${facilityInfo.id}`, "emergencyservices");
+            fetchData(`http://127.0.0.1:4000/services/${facilityInfo.id}`, "emergencyservices");
             if (props.userType === "Hospital") {
                 console.log('facilityInfo.facility_id:', facilityInfo.id);
-                fetchData(`https://corecare-server.onrender.com/departments/${facilityInfo.id}`, "departments");
-                fetchData(`https://corecare-server.onrender.com/visithours/${loginInfoValue.login}`, "visithours");
+                fetchData(`http://127.0.0.1:4000/departments/${facilityInfo.id}`, "departments");
+                fetchData(`http://127.0.0.1:4000/visithours/${loginInfoValue.login}`, "visithours");
             }
         }
-        fetchData(`https://corecare-server.onrender.com/workhours/${loginInfoValue.login}`, "workhours");
+        fetchData(`http://127.0.0.1:4000/workhours/${loginInfoValue.login}`, "workhours");
     }, [doctors?.doctorid, props.userType, facilityInfo?.id, loginInfoValue?.login]);
 
     const { practiceinfo, educationalinfo, workhours, departments, emergencyservices, visithours } = userData;

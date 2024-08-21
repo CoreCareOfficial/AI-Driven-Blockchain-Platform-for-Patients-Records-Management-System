@@ -23,7 +23,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     useEffect(() => {
         const fetchProviders = async () => {
             try {
-                const response = await fetch('https://corecare-server.onrender.com/accesskey/getproviders', {
+                const response = await fetch('http://127.0.0.1:4000/accesskey/getproviders', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
             specificDateTime: timeOther,
         }
         try {
-            const response = await fetch('https://corecare-server.onrender.com/accesskey/create', {
+            const response = await fetch('http://127.0.0.1:4000/accesskey/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
