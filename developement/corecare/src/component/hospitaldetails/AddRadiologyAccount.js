@@ -54,7 +54,7 @@ function AddRadiologyAccount(props) {
             email: v
         };
         try {
-            const response = await fetch("http://127.0.0.1:4000/login", {
+            const response = await fetch("https://corecare-server-qtw7.onrender.com/login", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ function AddRadiologyAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("http://127.0.0.1:4000/healthcareproviders/addhealthcareprovider", {
+            const response = await fetch("https://corecare-server-qtw7.onrender.com/healthcareproviders/addhealthcareprovider", {
                 method: "POST",
                 body: formData
             });
@@ -137,7 +137,7 @@ function AddRadiologyAccount(props) {
             };
 
             try {
-                const userResponse = await fetch("http://127.0.0.1:4000/login/add", {
+                const userResponse = await fetch("https://corecare-server-qtw7.onrender.com/login/add", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

@@ -80,9 +80,9 @@ function PatientSettingPage(props) {
 
     useEffect(() => {
         if (props.userType === 'Patient' || props.userType === 'Doctor') {
-            fetchData(`http://127.0.0.1:4000/patients/getpatientinfo/${loginInfoValue.login}`, "Info");
+            fetchData(`https://corecare-server-qtw7.onrender.com/patients/getpatientinfo/${loginInfoValue.login}`, "Info");
         } else {
-            fetchData(`http://127.0.0.1:4000/healthcareproviders/gethealtcareinfo/${loginInfoValue.login}`, "facilityInfo");
+            fetchData(`https://corecare-server-qtw7.onrender.com/healthcareproviders/gethealtcareinfo/${loginInfoValue.login}`, "facilityInfo");
         }
     }, [loginInfoValue.login, props.userType]);
 
@@ -104,7 +104,7 @@ function PatientSettingPage(props) {
         if (allInfo.patientInfo) {
             console.log('allInfo.patientInfo.patientid', allInfo.patientInfo.patientid);
             if (props.userType === 'Doctor') {
-                fetchData(`http://127.0.0.1:4000/doctors/getdoctorinfo/${allInfo.patientInfo.patientid}`, "doctorInfo");
+                fetchData(`https://corecare-server-qtw7.onrender.com/doctors/getdoctorinfo/${allInfo.patientInfo.patientid}`, "doctorInfo");
             }
         }
     }, [props.userType, allInfo.patientInfo]);

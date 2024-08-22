@@ -74,7 +74,7 @@ function AddDoctorAccount(props) {
             email: v
         };
         try {
-            const response = await fetch("http://127.0.0.1:4000/login", {
+            const response = await fetch("https://corecare-server-qtw7.onrender.com/login", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -139,7 +139,7 @@ function AddDoctorAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("http://127.0.0.1:4000/patients/addpatient", {
+            const response = await fetch("https://corecare-server-qtw7.onrender.com/patients/addpatient", {
                 method: "POST",
                 body: formData
             });
@@ -158,7 +158,7 @@ function AddDoctorAccount(props) {
                 doctorFormData.append('licenseNumber', userInfoValue.licenseNumber);
                 doctorFormData.append('licenseDocument', userInfoValue.licenseDocument);
                 try {
-                    const doctorResponse = await fetch("http://127.0.0.1:4000/doctors", {
+                    const doctorResponse = await fetch("https://corecare-server-qtw7.onrender.com/doctors", {
                         method: "POST",
                         body: doctorFormData
                     });
@@ -194,7 +194,7 @@ function AddDoctorAccount(props) {
             };
 
             try {
-                const userResponse = await fetch("http://127.0.0.1:4000/login/add", {
+                const userResponse = await fetch("https://corecare-server-qtw7.onrender.com/login/add", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

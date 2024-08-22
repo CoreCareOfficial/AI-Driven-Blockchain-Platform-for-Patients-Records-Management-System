@@ -44,7 +44,7 @@ function HealthcareFacilitySignupPage2() {
         toast.current.show({ severity: 'info', summary: 'Processing', detail: 'Checking your license Document and license Number, please wait...', life: 5000 });
 
         try {
-            const response = await fetch("http://127.0.0.1:4000/ai/checklicense", {
+            const response = await fetch("https://corecare-server-qtw7.onrender.com/ai/checklicense", {
                 method: "POST",
                 body: formData,
             });

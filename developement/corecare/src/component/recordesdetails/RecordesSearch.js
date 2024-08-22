@@ -65,7 +65,7 @@ function RecordesSearch({ view, handleViewClick, handleCreateAccessKeyClick }) {
             patientid: newUserInfoValue.patientId
         }
         try {
-            const response = await fetch("http://127.0.0.1:4000/ai/summarizerecords", {
+            const response = await fetch("https://corecare-server-qtw7.onrender.com/ai/summarizerecords", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -119,7 +119,7 @@ function RecordesSearch({ view, handleViewClick, handleCreateAccessKeyClick }) {
             resultid: dataSummarize.resultid,
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/savesummary`, {
+            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/savesummary`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

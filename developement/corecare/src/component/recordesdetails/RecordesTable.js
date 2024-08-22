@@ -251,7 +251,7 @@ function RecordesTable(props) {
             return <p>Error In Loading Your Info!!</p>
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/${loginInfoValue.patientId}`, {
+            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/${loginInfoValue.patientId}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
