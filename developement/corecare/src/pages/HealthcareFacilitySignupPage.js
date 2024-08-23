@@ -8,6 +8,9 @@ import { HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 
 function HealthcareFacilitySignupPage() {
@@ -22,7 +25,7 @@ function HealthcareFacilitySignupPage() {
             email: v
         };
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/login", {
+            const response = await fetch(`${SERVER_URL}/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

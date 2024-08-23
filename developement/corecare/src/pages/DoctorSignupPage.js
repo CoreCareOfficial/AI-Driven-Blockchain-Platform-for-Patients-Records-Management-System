@@ -9,6 +9,9 @@ import Upload from "../component/loginDetails/Upload";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
 import { useRef, useState } from "react";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 const useOptimistic = (initialValue, callback) => {
     const [value, setValue] = useState(initialValue);
@@ -64,7 +67,7 @@ function DoctorSignupPage() {
         toast.current.show({ severity: 'info', summary: 'Processing', detail: 'Checking your license Document and license Number, please wait...', life: 5000 });
 
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/ai/checklicense", {
+            const response = await fetch(`${SERVER_URL}/ai/checklicense`, {
                 method: "POST",
                 body: formData,
             });

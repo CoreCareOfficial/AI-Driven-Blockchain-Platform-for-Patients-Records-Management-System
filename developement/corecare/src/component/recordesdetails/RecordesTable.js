@@ -12,6 +12,9 @@ import { InputText } from 'primereact/inputtext';
 import { Toast } from 'primereact/toast';
 import { loginInfo } from '../../Recoil/Atom';
 import { useRecoilValue } from 'recoil';
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 // ========================================
 
 function RecordesTable(props) {
@@ -251,7 +254,7 @@ function RecordesTable(props) {
             return <p>Error In Loading Your Info!!</p>
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/${loginInfoValue.patientId}`, {
+            const response = await fetch(`${SERVER_URL}/records/${loginInfoValue.patientId}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'

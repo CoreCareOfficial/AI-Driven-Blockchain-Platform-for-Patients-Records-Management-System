@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
+
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import HeaderContainer from "./HaederContainer";
 import NewNotificationContainer from "./NewNotificationContainer";
@@ -17,7 +21,7 @@ function PatientAccessManagement(props) {
         const fetchNotifications = async () => {
             console.log("fetching notifications");
             try {
-                const response = await fetch(`https://corecare-server-qtw7.onrender.com/accesskey/get/${userLoginInfo.login}`, {
+                const response = await fetch(`${SERVER_URL}/accesskey/get/${userLoginInfo.login}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
@@ -42,7 +46,7 @@ function PatientAccessManagement(props) {
         const fetchPatients = async () => {
             console.log("fetching patients");
             try {
-                const response = await fetch(`https://corecare-server-qtw7.onrender.com/previouspatients/${userLoginInfo.login}`, {
+                const response = await fetch(`${SERVER_URL}/previouspatients/${userLoginInfo.login}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'

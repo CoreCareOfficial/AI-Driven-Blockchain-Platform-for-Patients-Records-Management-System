@@ -3,7 +3,9 @@ import { Container } from "react-bootstrap";
 import { AddAccountForm, AddAccountInput3 } from "../settingdetails/TextFormSetting";
 import AdvanceDemo from "../../utiles/Upload";
 import { Toast } from "primereact/toast";
-
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 function UpdateHealthInfo(props) {
 
@@ -38,7 +40,7 @@ function UpdateHealthInfo(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Selected Patient' });
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/healthinfo/updatehealthinfo/${props.patientid}`, {
+            const response = await fetch(`${SERVER_URL}/healthinfo/updatehealthinfo/${props.patientid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'

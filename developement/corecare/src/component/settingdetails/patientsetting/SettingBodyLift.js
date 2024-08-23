@@ -8,6 +8,10 @@ import { updateUserInfo } from "../../../Recoil/UpdateData";
 import { Toast } from "primereact/toast";
 import { loginInfo } from "../../../Recoil/Atom";
 import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const SERVER_URL = process.env.SERVER_URL;
 
 function SettingBodyLift(props) {
     const toast = useRef(null);
@@ -157,7 +161,7 @@ function SettingBodyLift(props) {
             thirdname: thirdName,
         };
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/patients/general/${userInfo.patientid}`, {
+            const response = await fetch(`${SERVER_URL}/patients/general/${userInfo.patientid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -199,7 +203,7 @@ function SettingBodyLift(props) {
             name: updateUserInfoValue.name,
         };
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/healthcareproviders/updatehealthcareprovider/${loginInfoValue.login}`, {
+            const response = await fetch(`${SERVER_URL}/healthcareproviders/updatehealthcareprovider/${loginInfoValue.login}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -240,7 +244,7 @@ function SettingBodyLift(props) {
             allergies: updateUserInfoValue.allergies
         };
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/patients/healthinfo/${userInfo.patientid}`, {
+            const response = await fetch(`${SERVER_URL}/patients/healthinfo/${userInfo.patientid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -285,7 +289,7 @@ function SettingBodyLift(props) {
             return;
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/doctors/updatepracticeinfo/${doctorid}`, {
+            const response = await fetch(`${SERVER_URL}/doctors/updatepracticeinfo/${doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'

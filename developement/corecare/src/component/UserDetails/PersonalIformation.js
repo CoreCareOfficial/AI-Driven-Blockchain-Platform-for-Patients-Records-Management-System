@@ -19,6 +19,10 @@ import pressure from "../../assets/pressure.png";
 import respiratory from "../../assets/respiratory.png";
 import heart from "../../assets/heart.png";
 import allergiesImg from "../../assets/allergies.png";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const SERVER_URL = process.env.SERVER_URL;
 
 function PersonalInformation(props) {
     const userInfo = props.userInfo;
@@ -71,11 +75,11 @@ function PersonalInformation(props) {
 
     useEffect(() => {
         const userId = userInfo.patientid;
-        fetchData(`https://corecare-server-qtw7.onrender.com/healthinfo/${userId}`, "healthInfo");
-        fetchData(`https://corecare-server-qtw7.onrender.com/allergies/${userId}`, "allergies");
-        fetchData(`https://corecare-server-qtw7.onrender.com/medications/${userId}`, "medications");
-        fetchData(`https://corecare-server-qtw7.onrender.com/pastconditions/${userId}`, "pastConditions");
-        fetchData(`https://corecare-server-qtw7.onrender.com/previousdoctors/${userId}`, "previousDoctors");
+        fetchData(`${SERVER_URL}/healthinfo/${userId}`, "healthInfo");
+        fetchData(`${SERVER_URL}/allergies/${userId}`, "allergies");
+        fetchData(`${SERVER_URL}/medications/${userId}`, "medications");
+        fetchData(`${SERVER_URL}/pastconditions/${userId}`, "pastConditions");
+        fetchData(`${SERVER_URL}/previousdoctors/${userId}`, "previousDoctors");
     }, [userInfo.patientid]);
 
     const { healthInfo, allergies, medications, pastConditions, previousDoctors, isLoading } = userData;

@@ -12,6 +12,9 @@ import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../../Recoil/Atom";
 import { updateUserInfo } from "../../../Recoil/UpdateData";
 import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 function SettingBodyRight(props) {
     const [isConfirm, setIsConfirm] = useState(false);
@@ -75,7 +78,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/workhours/${id}`, {
+            const response = await fetch(`${SERVER_URL}/workhours/${id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -120,7 +123,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/workhours`, {
+            const response = await fetch(`${SERVER_URL}/workhours`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -162,7 +165,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/visithours/${id}`, {
+            const response = await fetch(`${SERVER_URL}/visithours/${id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -205,7 +208,7 @@ function SettingBodyRight(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/visithours`, {
+            const response = await fetch(`${SERVER_URL}/visithours`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -266,7 +269,7 @@ function SettingBodyRight(props) {
         const newEmergencyContacts = emergencyContacts.filter((EmergencyContact) => EmergencyContact.id !== id);
         setEmergencyContacts(newEmergencyContacts);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/emergencycontacts/${id}`, {
+            const response = await fetch(`${SERVER_URL}/emergencycontacts/${id}`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

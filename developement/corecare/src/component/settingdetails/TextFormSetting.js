@@ -13,7 +13,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddCountry from "../hospitaldetails/AddCountry";
 import { updateUserInfo } from "../../Recoil/UpdateData";
 import { AiOutlineSearch } from "react-icons/ai";
-
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export function UpdateImage(props) {
     const fileRef = useRef(null);
@@ -37,7 +39,7 @@ export function UpdateImage(props) {
         formData.append('facilityPhoto', imageFile);
         formData.append('type', props.userType)
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/healthcareproviders/updatefacilityphoto/${props.username}`, {
+            const response = await fetch(`${SERVER_URL}/healthcareproviders/updatefacilityphoto/${props.username}`, {
                 method: "PUT",
                 body: formData
             });
@@ -64,7 +66,7 @@ export function UpdateImage(props) {
         const formData = new FormData();
         formData.append('personalPhoto', imageFile);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/patients/personalphoto/${props.username}`, {
+            const response = await fetch(`${SERVER_URL}/patients/personalphoto/${props.username}`, {
                 method: "PUT",
                 body: formData
             });
@@ -199,7 +201,7 @@ export function AddEmergency(props) {
             patientid: props.userid
         };
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/emergencycontacts`, {
+            const response = await fetch(`${SERVER_URL}/emergencycontacts`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

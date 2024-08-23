@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from "react";
 import Flex_Container from '../bootcomponent/flex_Container';
 import Form from 'react-bootstrap/Form';
@@ -12,6 +13,9 @@ import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 import ConfirmedDialog from "../../utiles/ConfirmedDialog";
 import { Toast } from "primereact/toast";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 const useOptimistic = (initialValue, callback) => {
     const [value, setValue] = useState(initialValue);
@@ -65,7 +69,7 @@ function RecordesSearch({ view, handleViewClick, handleCreateAccessKeyClick }) {
             patientid: newUserInfoValue.patientId
         }
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/ai/summarizerecords", {
+            const response = await fetch(`${SERVER_URL}/ai/summarizerecords`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -119,7 +123,7 @@ function RecordesSearch({ view, handleViewClick, handleCreateAccessKeyClick }) {
             resultid: dataSummarize.resultid,
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/savesummary`, {
+            const response = await fetch(`${SERVER_URL}/records/savesummary`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

@@ -16,6 +16,9 @@ import ProfileBodyRight from "./ProfileBodyRight";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 
 function PuplicInformation(props) {
@@ -68,7 +71,7 @@ function PuplicInformation(props) {
     useEffect(() => {
         //call the api to get the doctor data when userType is Doctor
         if (props.userType === "Doctor") {
-            fetchData(`https://corecare-server-qtw7.onrender.com/doctors/${props.userId}`, "doctors");
+            fetchData(`${SERVER_URL}/doctors/${props.userId}`, "doctors");
         }
 
     }, [props.userId, props.userType]);
@@ -76,17 +79,17 @@ function PuplicInformation(props) {
     useEffect(() => {
         if (props.userType === "Doctor") {
             console.log('doctors.doctorid:', doctors.doctorid);
-            fetchData(`https://corecare-server-qtw7.onrender.com/practiceinfo/${doctors.doctorid}`, "practiceinfo");
-            fetchData(`https://corecare-server-qtw7.onrender.com/educationalinfo/${doctors.doctorid}`, "educationalinfo");
+            fetchData(`${SERVER_URL}/practiceinfo/${doctors.doctorid}`, "practiceinfo");
+            fetchData(`${SERVER_URL}/educationalinfo/${doctors.doctorid}`, "educationalinfo");
         } else {
-            fetchData(`https://corecare-server-qtw7.onrender.com/services/${facilityInfo.id}`, "emergencyservices");
+            fetchData(`${SERVER_URL}/services/${facilityInfo.id}`, "emergencyservices");
             if (props.userType === "Hospital") {
                 console.log('facilityInfo.facility_id:', facilityInfo.id);
-                fetchData(`https://corecare-server-qtw7.onrender.com/departments/${facilityInfo.id}`, "departments");
-                fetchData(`https://corecare-server-qtw7.onrender.com/visithours/${loginInfoValue.login}`, "visithours");
+                fetchData(`${SERVER_URL}/departments/${facilityInfo.id}`, "departments");
+                fetchData(`${SERVER_URL}/visithours/${loginInfoValue.login}`, "visithours");
             }
         }
-        fetchData(`https://corecare-server-qtw7.onrender.com/workhours/${loginInfoValue.login}`, "workhours");
+        fetchData(`${SERVER_URL}/workhours/${loginInfoValue.login}`, "workhours");
     }, [doctors?.doctorid, props.userType, facilityInfo?.id, loginInfoValue?.login]);
 
     const { practiceinfo, educationalinfo, workhours, departments, emergencyservices, visithours } = userData;

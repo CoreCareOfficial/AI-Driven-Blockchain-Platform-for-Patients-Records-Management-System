@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
+
 import React, { useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -30,7 +34,7 @@ function LoginPage() {
         };
 
         try {
-            const userResponse = await fetch("https://corecare-server-qtw7.onrender.com/login/get", {
+            const userResponse = await fetch(`${SERVER_URL}/login/get`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

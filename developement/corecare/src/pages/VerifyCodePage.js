@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
+
 import { useRecoilValue } from "recoil";
 import CardLogin from "../component/bootcomponent/CardLogin";
 import FormLogin from "../component/loginDetails/FormLogin";
@@ -55,7 +59,7 @@ function VerifyCodePage() {
     const handleSendCode = async () => {
         console.log('email: ' + email);
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/verification", {
+            const response = await fetch(`${SERVER_URL}/verification`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email })
@@ -78,7 +82,7 @@ function VerifyCodePage() {
     const handleVerifyCode = async () => {
         const verificationCode = code.join('');
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/verification/verify-code", {
+            const response = await fetch(`${SERVER_URL}/verification/verify-code`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, code: verificationCode })

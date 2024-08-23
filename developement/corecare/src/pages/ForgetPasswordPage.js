@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
+
 import { useSetRecoilState } from "recoil";
 import CardLogin from "../component/bootcomponent/CardLogin";
 import FormLogin from "../component/loginDetails/FormLogin";
@@ -26,7 +30,7 @@ function ForgetPasswordPage() {
             email: v
         };
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/login/checkemail", {
+            const response = await fetch(`${SERVER_URL}/login/checkemail`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

@@ -11,6 +11,9 @@ import NextVisit from './NextVisit';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { userHealthInfo } from '../../Recoil/Atom';
 import { Toast } from 'primereact/toast';
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 const Diagnosis = ({ patientid, keyuser, handleLabClick, handleXrayClick, handlePrescriptionClick }) => {
     const [healthInfo, setHealthInfo] = useRecoilState(userHealthInfo);
@@ -133,7 +136,7 @@ const Diagnosis = ({ patientid, keyuser, handleLabClick, handleXrayClick, handle
         // Send formData to the backend
         console.log(formData);
         try {
-            const response = await fetch('https://corecare-server-qtw7.onrender.com/diagnosis', {
+            const response = await fetch(`${SERVER_URL}/diagnosis`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

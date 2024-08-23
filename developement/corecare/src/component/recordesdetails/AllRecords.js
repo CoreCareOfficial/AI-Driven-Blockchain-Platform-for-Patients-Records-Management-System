@@ -10,6 +10,9 @@ import { Toast } from 'primereact/toast';
 import ConfirmedDialog from '../../utiles/ConfirmedDialog';
 import { useRecoilValue } from 'recoil';
 import { loginInfo } from '../../Recoil/Atom';
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function AllRecords(props) {
     const allRecords = props.records || [];
@@ -77,7 +80,7 @@ function AllRecords(props) {
             resultid: dataSummarize.resultid,
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/savesummary`, {
+            const response = await fetch(`${SERVER_URL}/records/savesummary`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

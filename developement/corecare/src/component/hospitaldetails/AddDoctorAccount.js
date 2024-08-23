@@ -5,6 +5,9 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import ImageSignup from "../loginDetails/ImageSignup";
 import { userInfo } from "../../Recoil/Atom";
 import { Toast } from "primereact/toast";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 function AddDoctorAccount(props) {
     const medicalSpecializations = [
@@ -74,7 +77,7 @@ function AddDoctorAccount(props) {
             email: v
         };
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/login", {
+            const response = await fetch(`${SERVER_URL}/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -139,7 +142,7 @@ function AddDoctorAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/patients/addpatient", {
+            const response = await fetch(`${SERVER_URL}/patients/addpatient`, {
                 method: "POST",
                 body: formData
             });
@@ -158,7 +161,7 @@ function AddDoctorAccount(props) {
                 doctorFormData.append('licenseNumber', userInfoValue.licenseNumber);
                 doctorFormData.append('licenseDocument', userInfoValue.licenseDocument);
                 try {
-                    const doctorResponse = await fetch("https://corecare-server-qtw7.onrender.com/doctors", {
+                    const doctorResponse = await fetch(`${SERVER_URL}/doctors`, {
                         method: "POST",
                         body: doctorFormData
                     });
@@ -194,7 +197,7 @@ function AddDoctorAccount(props) {
             };
 
             try {
-                const userResponse = await fetch("https://corecare-server-qtw7.onrender.com/login/add", {
+                const userResponse = await fetch(`${SERVER_URL}/login/add`, {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

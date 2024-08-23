@@ -8,6 +8,9 @@ import EmergencyContact from "../component/settingdetails/patientsetting/Emergen
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../Recoil/Atom";
 import { Toast } from "primereact/toast";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 function PatientSettingPage(props) {
     const [isOpen, setIsOpen] = useState(false);
@@ -80,9 +83,9 @@ function PatientSettingPage(props) {
 
     useEffect(() => {
         if (props.userType === 'Patient' || props.userType === 'Doctor') {
-            fetchData(`https://corecare-server-qtw7.onrender.com/patients/getpatientinfo/${loginInfoValue.login}`, "Info");
+            fetchData(`${SERVER_URL}/patients/getpatientinfo/${loginInfoValue.login}`, "Info");
         } else {
-            fetchData(`https://corecare-server-qtw7.onrender.com/healthcareproviders/gethealtcareinfo/${loginInfoValue.login}`, "facilityInfo");
+            fetchData(`${SERVER_URL}/healthcareproviders/gethealtcareinfo/${loginInfoValue.login}`, "facilityInfo");
         }
     }, [loginInfoValue.login, props.userType]);
 
@@ -104,7 +107,7 @@ function PatientSettingPage(props) {
         if (allInfo.patientInfo) {
             console.log('allInfo.patientInfo.patientid', allInfo.patientInfo.patientid);
             if (props.userType === 'Doctor') {
-                fetchData(`https://corecare-server-qtw7.onrender.com/doctors/getdoctorinfo/${allInfo.patientInfo.patientid}`, "doctorInfo");
+                fetchData(`${SERVER_URL}/doctors/getdoctorinfo/${allInfo.patientInfo.patientid}`, "doctorInfo");
             }
         }
     }, [props.userType, allInfo.patientInfo]);

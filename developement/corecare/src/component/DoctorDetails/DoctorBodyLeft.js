@@ -5,6 +5,9 @@ import { MdSummarize } from "react-icons/md";
 import { useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import ConfirmedDialog from "../../utiles/ConfirmedDialog";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 const useOptimistic = (initialValue, callback) => {
     const [value, setValue] = useState(initialValue);
@@ -56,7 +59,7 @@ function DoctorBodyLeft(props) {
             patientid: newUserInfoValue.patientid
         }
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/ai/summarizerecords", {
+            const response = await fetch(`${SERVER_URL}/ai/summarizerecords`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -109,7 +112,7 @@ function DoctorBodyLeft(props) {
             resultid: dataSummarize.resultid,
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/savesummary`, {
+            const response = await fetch(`${SERVER_URL}/records/savesummary`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

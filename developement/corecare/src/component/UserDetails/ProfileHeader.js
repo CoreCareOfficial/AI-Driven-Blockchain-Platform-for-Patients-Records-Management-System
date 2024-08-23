@@ -3,6 +3,10 @@ import InfoContainer from "./InfoContainer"
 import ProfileHeaderIcon from "./ProfileHeaderIcon"
 import "../../css/UserPageStyle/profile.css"
 import { useEffect, useState } from "react";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const SERVER_URL = process.env.SERVER_URL;
 
 function ProfileHeader(props) {
     const [userSocialmedia, setUserSocialmedia] = useState([]);
@@ -10,7 +14,7 @@ function ProfileHeader(props) {
 
     const getUserData = async (userId) => {
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/socialmedia/${userId}`, {
+            const response = await fetch(`${SERVER_URL}/socialmedia/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

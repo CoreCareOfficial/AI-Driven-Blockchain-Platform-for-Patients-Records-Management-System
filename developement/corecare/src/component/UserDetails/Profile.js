@@ -6,7 +6,10 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 import { useEffect, useRef, useState } from "react";
 import ProfileSkeleton from "../skeletons/ProfileSkeleton";
+import dotenv from 'dotenv';
+dotenv.config();
 
+const SERVER_URL = process.env.SERVER_URL;
 
 function Profile(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
@@ -47,7 +50,7 @@ function Profile(props) {
     useEffect(() => {
         if (!hasEffectRun.current) {
             setTimeout(() => {
-                getUserData(`https://corecare-server-qtw7.onrender.com/${userType}?email=${loginInfoValue.login}`);
+                getUserData(`${SERVER_URL}/${userType}?email=${loginInfoValue.login}`);
                 hasEffectRun.current = true;
             }, 350);
         }

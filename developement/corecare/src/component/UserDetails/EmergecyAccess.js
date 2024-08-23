@@ -1,12 +1,13 @@
-
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 import { useEffect, useRef, useState } from "react";
 import defaultPic from '../../assets/user_signup.png'
 import { GiKeyLock } from "react-icons/gi";
 import HeaderContainer from "./HaederContainer";
+import dotenv from 'dotenv';
+dotenv.config();
 
-
+const SERVER_URL = process.env.SERVER_URL;
 
 function EmergencyAccess(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
@@ -35,7 +36,7 @@ function EmergencyAccess(props) {
     useEffect(() => {
         if (!hasEffectRun.current) {
 
-            getEmergencyContactsData(`https://corecare-server-qtw7.onrender.com/emergencycontacts/${loginInfoValue.login}`);
+            getEmergencyContactsData(`${SERVER_URL}/emergencycontacts/${loginInfoValue.login}`);
             hasEffectRun.current = true;
         }
     }, [props.userType, loginInfoValue.login])

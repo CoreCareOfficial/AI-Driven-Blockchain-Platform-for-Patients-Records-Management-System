@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 import '../fonts/caladea.css';
 import TitlePage from '../component/loginDetails/TitlePage';
@@ -52,7 +55,7 @@ function EndSignupPage() {
         };
 
         try {
-            const userResponse = await fetch("https://corecare-server-qtw7.onrender.com/login/forget", {
+            const userResponse = await fetch(`${SERVER_URL}/login/forget`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -115,7 +118,7 @@ function EndSignupPage() {
             password = userInfoValue.password;
             username = userInfoValue.userName;
             try {
-                const response = await fetch("https://corecare-server-qtw7.onrender.com/patients", {
+                const response = await fetch(`${SERVER_URL}/patients`, {
                     method: "POST",
                     body: formData
                 });
@@ -135,7 +138,7 @@ function EndSignupPage() {
                         doctorFormData.append('licenseNumber', userInfoValue.licenseNumber);
                         doctorFormData.append('licenseDocument', userInfoValue.licenseDocument);
                         try {
-                            const doctorResponse = await fetch("https://corecare-server-qtw7.onrender.com/doctors", {
+                            const doctorResponse = await fetch(`${SERVER_URL}/doctors`, {
                                 method: "POST",
                                 body: doctorFormData
                             });
@@ -193,7 +196,7 @@ function EndSignupPage() {
             password = facilityInfoValue.password;
             username = facilityInfoValue.userName;
             try {
-                const response = await fetch("https://corecare-server-qtw7.onrender.com/healthcareproviders", {
+                const response = await fetch(`${SERVER_URL}/healthcareproviders`, {
                     method: "POST",
                     body: formData
                 });
@@ -222,7 +225,7 @@ function EndSignupPage() {
             };
 
             try {
-                const userResponse = await fetch("https://corecare-server-qtw7.onrender.com/login/add", {
+                const userResponse = await fetch(`${SERVER_URL}/login/add`, {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

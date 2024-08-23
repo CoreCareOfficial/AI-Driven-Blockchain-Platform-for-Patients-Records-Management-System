@@ -7,6 +7,10 @@ import defaultPic from '../../assets/user_signup.png'
 import { Toast } from "primereact/toast";
 import { loginInfo } from "../../Recoil/Atom";
 import { useRecoilValue } from "recoil";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const SERVER_URL = process.env.SERVER_URL;
 
 function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     const toast = useRef(null);
@@ -23,7 +27,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     useEffect(() => {
         const fetchProviders = async () => {
             try {
-                const response = await fetch('https://corecare-server-qtw7.onrender.com/accesskey/getproviders', {
+                const response = await fetch(`${SERVER_URL}/accesskey/getproviders`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -146,7 +150,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
             specificDateTime: timeOther,
         }
         try {
-            const response = await fetch('https://corecare-server-qtw7.onrender.com/accesskey/create', {
+            const response = await fetch(`${SERVER_URL}/accesskey/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

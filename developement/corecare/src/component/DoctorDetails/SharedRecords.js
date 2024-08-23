@@ -7,6 +7,9 @@ import RecordesMenu from '../recordesdetails/RecordesMenu';
 import ConfirmedDialog from '../../utiles/ConfirmedDialog';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { Toast } from 'primereact/toast';
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 // import { loginInfo } from '../../Recoil/Atom';
 // import { useRecoilValue } from 'recoil';
 
@@ -85,7 +88,7 @@ function SharedRecords(props) {
             resultid: dataSummarize.resultid,
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/savesummary`, {
+            const response = await fetch(`${SERVER_URL}/records/savesummary`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

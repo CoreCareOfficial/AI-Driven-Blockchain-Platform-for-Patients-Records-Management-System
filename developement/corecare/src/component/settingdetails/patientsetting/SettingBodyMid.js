@@ -13,6 +13,9 @@ import { loginInfo } from "../../../Recoil/Atom";
 import { Toast } from "primereact/toast";
 import bcrypt from 'bcryptjs';
 import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 
 function SettingBodyMid(props) {
@@ -81,7 +84,7 @@ function SettingBodyMid(props) {
             newPassword: hashedPassword,
         };
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/login/change", {
+            const response = await fetch(`${SERVER_URL}/login/change`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -128,7 +131,7 @@ function SettingBodyMid(props) {
             whatsapp: updateUserInfoValue.whatsapp
         };
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/socialmedia/${loginInfoValue.login}`, {
+            const response = await fetch(`${SERVER_URL}/socialmedia/${loginInfoValue.login}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -176,7 +179,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/doctors/updateprofissionalinfo/${profissional.doctorid}`, {
+            const response = await fetch(`${SERVER_URL}/doctors/updateprofissionalinfo/${profissional.doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -223,7 +226,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/doctors/updateeducationalinfo/${profissional.doctorid}`, {
+            const response = await fetch(`${SERVER_URL}/doctors/updateeducationalinfo/${profissional.doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -277,7 +280,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/healthcareproviders/updatedepartments/${healthcareProviderInfo.id}`, {
+            const response = await fetch(`${SERVER_URL}/healthcareproviders/updatedepartments/${healthcareProviderInfo.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -322,7 +325,7 @@ function SettingBodyMid(props) {
         };
         console.log('data:', data);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/healthcareproviders/updateservices/${healthcareProviderInfo.id}`, {
+            const response = await fetch(`${SERVER_URL}/healthcareproviders/updateservices/${healthcareProviderInfo.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'

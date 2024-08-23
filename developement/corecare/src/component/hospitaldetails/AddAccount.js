@@ -5,6 +5,9 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import ImageSignup from "../loginDetails/ImageSignup";
 import { userInfo } from "../../Recoil/Atom";
 import { Toast } from "primereact/toast";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 function AddAccount(props) {
 
@@ -54,7 +57,7 @@ function AddAccount(props) {
             email: v
         };
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/login", {
+            const response = await fetch(`${SERVER_URL}/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -120,7 +123,7 @@ function AddAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/patients/addpatient", {
+            const response = await fetch(`${SERVER_URL}/patients/addpatient`, {
                 method: "POST",
                 body: formData
             });
@@ -147,7 +150,7 @@ function AddAccount(props) {
             };
 
             try {
-                const userResponse = await fetch("https://corecare-server-qtw7.onrender.com/login/add", {
+                const userResponse = await fetch(`${SERVER_URL}/login/add`, {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

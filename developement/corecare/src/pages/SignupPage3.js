@@ -10,6 +10,9 @@ import { userInfo } from "../Recoil/Atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigate } from 'react-router-dom';
 import { Toast } from 'primereact/toast';
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 
 const useOptimistic = (initialValue, callback) => {
@@ -88,7 +91,7 @@ function SignupPage3() {
         toast.current.show({ severity: 'info', summary: 'Processing', detail: 'Checking your ID card and ID, please wait...', life: 3000 });
 
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/ai/checkidentity", {
+            const response = await fetch(`${SERVER_URL}/ai/checkidentity`, {
                 method: "POST",
                 body: formData,
             });
@@ -133,7 +136,7 @@ function SignupPage3() {
     //     formData.append('image', userInfoValue.FIdCardPhoto ? userInfoValue.FIdCardPhoto : userInfoValue.passportPhoto);
 
     //     try {
-    //         const response = await fetch("https://corecare-server-qtw7.onrender.com/checkidentity", {
+    //         const response = await fetch(`${SERVER_URL}/checkidentity`, {
     //             method: "POST",
     //             body: formData
     //         });

@@ -12,7 +12,10 @@ import EmergencyAccess from "./EmergecyAccess";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 import { useEffect } from "react";
+import dotenv from 'dotenv';
+dotenv.config();
 
+const SERVER_URL = process.env.SERVER_URL;
 
 function Content(props) {
     const setUserInfo = useSetRecoilState(loginInfo);
@@ -21,7 +24,7 @@ function Content(props) {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await fetch(`https://corecare-server-qtw7.onrender.com/accesskey/getnotificationtoast/${userInfoValue.login}`, {
+                const response = await fetch(`${SERVER_URL}/accesskey/getnotificationtoast/${userInfoValue.login}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'

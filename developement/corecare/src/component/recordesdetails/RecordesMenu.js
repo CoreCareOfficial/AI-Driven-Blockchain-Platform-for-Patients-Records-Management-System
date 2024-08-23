@@ -10,6 +10,9 @@ import { IoClose } from "react-icons/io5";
 import queryString from 'query-string';
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 
 const useOptimistic = (initialValue, callback) => {
@@ -38,7 +41,7 @@ function RecordesMenu(props) {
 
     const fetchFile = async (id, action) => {
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/getresult/${id}`, {
+            const response = await fetch(`${SERVER_URL}/records/getresult/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -87,7 +90,7 @@ function RecordesMenu(props) {
             return;
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/get/prescription`, {
+            const response = await fetch(`${SERVER_URL}/records/get/prescription`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -114,7 +117,7 @@ function RecordesMenu(props) {
             return;
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/get/labtest`, {
+            const response = await fetch(`${SERVER_URL}/records/get/labtest`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -140,7 +143,7 @@ function RecordesMenu(props) {
             return;
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/get/radiology`, {
+            const response = await fetch(`${SERVER_URL}/records/get/radiology`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -162,7 +165,7 @@ function RecordesMenu(props) {
     };
     const fetchSummary = async (action) => {
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/get/savedsummary/${selectedFile.id}`, {
+            const response = await fetch(`${SERVER_URL}/records/get/savedsummary/${selectedFile.id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -191,7 +194,7 @@ function RecordesMenu(props) {
             recordid: selectedFile.id
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/get/generalreport`, {
+            const response = await fetch(`${SERVER_URL}/records/get/generalreport`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -285,7 +288,7 @@ function RecordesMenu(props) {
             recordid: selectedFile.id
         }
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/ai/${props.isRecord ? 'summarizeonerecord' : 'summarizresult'}`, {
+            const response = await fetch(`${SERVER_URL}/ai/${props.isRecord ? 'summarizeonerecord' : 'summarizresult'}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -335,7 +338,7 @@ function RecordesMenu(props) {
             props.handleMenuClick();
         console.log('data star', data);
         try {
-            const response = await fetch(`https://corecare-server-qtw7.onrender.com/records/${api}`, {
+            const response = await fetch(`${SERVER_URL}/records/${api}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

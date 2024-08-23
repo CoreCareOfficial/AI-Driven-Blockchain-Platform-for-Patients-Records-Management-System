@@ -35,6 +35,8 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const corsOrigins = process.env.CORS_ORIGINS.split(',');
+const SERVER_URL = process.env.SERVER_URL;
 // Swagger definition
 const swaggerDefinition = {
     openapi: '3.0.0',
@@ -45,7 +47,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: 'https://corecare-server-qtw7.onrender.com',
+            url: SERVER_URL,
             description: 'Development server',
         },
     ],
@@ -64,13 +66,11 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Configure CORS
-app.use(cors(
-    {
-        origin: 'https://core-care.vercel.app',
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-        credentials: true
-    }
-));
+app.use(cors({
+    origin: corsOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true
+}));
 
 app.use('/api', apiDocumentation);
 app.use('/login', loginRoutes);

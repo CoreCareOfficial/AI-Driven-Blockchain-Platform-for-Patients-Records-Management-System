@@ -10,6 +10,9 @@ import { userInfo } from '../Recoil/Atom';
 import { useSetRecoilState } from 'recoil';
 import '../component/bootcomponent/message.css';
 import { Toast } from 'primereact/toast';
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 
 function SignupPage() {
     const toast = useRef(null);
@@ -24,7 +27,7 @@ function SignupPage() {
             email: v
         };
         try {
-            const response = await fetch("https://corecare-server-qtw7.onrender.com/login", {
+            const response = await fetch(`${SERVER_URL}/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

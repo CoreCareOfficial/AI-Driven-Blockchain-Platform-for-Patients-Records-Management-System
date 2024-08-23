@@ -2,6 +2,9 @@ import DoctorBodyLeft from "./DoctorBodyLeft";
 import DoctorBodyRight from "./DoctorBodyRight";
 import { useEffect, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
+import dotenv from 'dotenv';
+dotenv.config();
+const SERVER_URL = process.env.SERVER_URL;
 import defaultPic from '../../assets/user_signup.png'
 
 function DoctorBody(props) {
@@ -16,7 +19,7 @@ function DoctorBody(props) {
                 return;
             }
             try {
-                const response = await fetch(`https://corecare-server-qtw7.onrender.com/healthinfo/personalhealthinfo/${props.patientid}`, {
+                const response = await fetch(`${SERVER_URL}/healthinfo/personalhealthinfo/${props.patientid}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'

@@ -1,6 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { FileUpload } from 'primereact/fileupload';
 import { Toast } from 'primereact/toast';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const SERVER_URL = process.env.SERVER_URL;
 
 export default function AdvanceDemo(props) {
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -54,7 +58,7 @@ export default function AdvanceDemo(props) {
             return;
         }
         try {
-            const uploadUrl = `https://corecare-server-qtw7.onrender.com/diagnosis/uploadresults`;
+            const uploadUrl = `${SERVER_URL}/diagnosis/uploadresults`;
             const formData = new FormData();
             formData.append('patientid', data.patientid);
             formData.append('keyuser', data.keyuser);
