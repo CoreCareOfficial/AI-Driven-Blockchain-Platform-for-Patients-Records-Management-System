@@ -120,9 +120,6 @@ function Radiology(props) {
     };
 
     useEffect(() => {
-        console.log('==========================================================');
-        console.log(`all radiology : ${userHealthInfoRadiology.radiology.selectedList}`);
-        console.log('==========================================================');
     }, [userHealthInfoRadiology]);
 
     return (

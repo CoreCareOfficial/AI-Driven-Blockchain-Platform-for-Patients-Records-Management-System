@@ -99,5 +99,5 @@ app.use('/ai', checkDocsAuthenticity);
 app.use('/verification', verification);
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    
 });

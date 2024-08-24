@@ -1,8 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
 
 import '../fonts/caladea.css';
 import TitlePage from '../component/loginDetails/TitlePage';
@@ -13,6 +10,9 @@ import { Toast } from 'primereact/toast';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from '../Recoil/Atom';
 import { useEffect, useRef, useState } from 'react';
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function EndSignupPage() {
 
@@ -48,7 +48,6 @@ function EndSignupPage() {
     const successfulChangePassword = async () => {
         const email = userloginInfo.login;
         const newPassword = userloginInfo.password;
-        console.log('new password of forget: ' + newPassword);
         const loginData = {
             email: email,
             newPassword: newPassword,
@@ -63,11 +62,9 @@ function EndSignupPage() {
                 body: JSON.stringify(loginData)
             });
             if (userResponse.ok) {
-                console.log("Password Updated Successfully");
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Password Updated Successfully' });
                 setState((prevState) => ({ ...prevState, successful: true }));
             } else {
-                console.log("Password has NOT Updated");
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Password has NOT Updated' });
                 setState((prevState) => ({ ...prevState, errorMessage: "Password has NOT Updated", successful: false }));
             }
@@ -84,10 +81,7 @@ function EndSignupPage() {
         let password = '';
         let username = '';
         let successfulAddUser = false;
-        console.log("type1: " + type);
         if (type === "Patient" || type === "Doctor") {
-            console.log("type2: " + type);
-            console.log("hashedPassword 4 atom= " + userInfoValue.password);
             const formData = new FormData();
             formData.append('username', userInfoValue.userName);
             formData.append('firstName', userInfoValue.firstName);
@@ -123,12 +117,8 @@ function EndSignupPage() {
                     body: formData
                 });
                 if (response.ok) {
-                    console.log("res = " + response);
-                    console.log('Added Patient Successful');
                     if (type === "Doctor") {
-                        console.log("type4: " + type);
                         const patientId = await response.json();
-                        console.log('patientId : ' + patientId);
                         const doctorFormData = new FormData();
                         doctorFormData.append('username', userInfoValue.userName);
                         doctorFormData.append('patientID', patientId);
@@ -143,8 +133,6 @@ function EndSignupPage() {
                                 body: doctorFormData
                             });
                             if (doctorResponse.ok) {
-                                console.log("res = " + doctorResponse);
-                                console.log('Added Doctor Successful');
                                 successfulAddUser = true;
                             } else {
                                 successfulAddUser = false;
@@ -158,8 +146,6 @@ function EndSignupPage() {
                         }
                     } else {
                         successfulAddUser = true;
-                        console.log('else Patient Successful');
-                        console.log(successfulAddUser);
                     }
                 } else {
                     successfulAddUser = false;
@@ -201,8 +187,6 @@ function EndSignupPage() {
                     body: formData
                 });
                 if (response.ok) {
-                    console.log("res = " + response);
-                    console.log(`Added ${type} Successful`);
                     successfulAddUser = true;
                 } else {
                     successfulAddUser = false;
@@ -216,7 +200,6 @@ function EndSignupPage() {
             }
         }
         if (successfulAddUser && email && password && username) {
-            console.log("type3: " + type);
             const loginData = {
                 email: email,
                 password: password,
@@ -233,7 +216,6 @@ function EndSignupPage() {
                     body: JSON.stringify(loginData)
                 });
                 if (userResponse.ok) {
-                    console.log("User Added Successful");
                     toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
                     setState((prevState) => ({ ...prevState, successful: true }));
                 } else {

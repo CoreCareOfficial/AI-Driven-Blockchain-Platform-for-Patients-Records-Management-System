@@ -19,14 +19,13 @@ import pressure from "../../assets/pressure.png";
 import respiratory from "../../assets/respiratory.png";
 import heart from "../../assets/heart.png";
 import allergiesImg from "../../assets/allergies.png";
-import dotenv from 'dotenv';
-dotenv.config();
 
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function PersonalInformation(props) {
     const userInfo = props.userInfo;
-    console.log(userInfo);
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -62,7 +61,6 @@ function PersonalInformation(props) {
                 ...prevState,
                 [setStateKey]: jsonData,
             }));
-            console.log(`Success loading ${setStateKey}:`, jsonData);
         } catch (err) {
             console.error("Error:", err);
         } finally {

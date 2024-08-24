@@ -10,8 +10,8 @@ import { Toast } from 'primereact/toast';
 import ConfirmedDialog from '../../utiles/ConfirmedDialog';
 import { useRecoilValue } from 'recoil';
 import { loginInfo } from '../../Recoil/Atom';
-import dotenv from 'dotenv';
-dotenv.config();
+
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function AllRecords(props) {
@@ -54,7 +54,6 @@ function AllRecords(props) {
     }, [props.tableTitle, reports, labTests, radiologies, prescriptons, allRecords]); // Include dependencies here
 
     const handleMenuClick = (e, data) => {
-        console.log('data', data);
         const rect = e.target.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         setMenuPosition({ top: rect.top + scrollTop, left: rect.left });
@@ -95,7 +94,6 @@ function AllRecords(props) {
         } catch (error) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Summary Saved' });
         }
-        console.log('Save Summarize');
         setIsOpenSummarize(!isOpenSummarize);
     }
 
@@ -109,7 +107,6 @@ function AllRecords(props) {
     };
     const [starred, setStarred] = useState({});
     const handleStarred = (id, state) => {
-        console.log('id', id);
         setStarred((prevState) => ({
             ...prevState,
             [id]: state,
@@ -133,7 +130,6 @@ function AllRecords(props) {
     };
 
     const handleMenuVerticalClick = (e, data) => {
-        console.log('e.id', e.target.id);
         const rect = e.target.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         // const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
@@ -220,7 +216,7 @@ function AllRecords(props) {
                                                     <td>{typeFile}</td>
                                                     <td>{child.data["Name Of Health Provider"]}</td>
                                                     <td>{formatDate(child.data["date"])}</td>
-                                                    {console.log('child.data', child.data)}
+
                                                     <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={child.key} onClick={(e) => handleMenuClick(e, child.data)} /></span></td>
                                                     <td></td>
                                                 </tr>
@@ -248,7 +244,7 @@ function AllRecords(props) {
                                     <td>{typeFile}</td>
                                     <td>{record.data["Name Of Health Provider"]}</td>
                                     <td>{formatDate(record.data["date"])}</td>
-                                    {console.log('child.data', record.data)}
+
                                     <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={record.key} onClick={(e) => handleMenuClick(e, record.data)} /></span></td>
                                     <td></td>
                                 </tr>

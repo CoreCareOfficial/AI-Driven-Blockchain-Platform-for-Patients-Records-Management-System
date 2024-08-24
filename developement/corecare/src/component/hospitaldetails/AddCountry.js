@@ -30,7 +30,6 @@ function AddCountry(props) {
 
     const changeHandler = (e) => {
         setValue(e.target.value);
-        console.log(e.target.value);
         setUserInfo((prevUserInfo) => ({
             ...prevUserInfo,
             [props.name]: e.target.value

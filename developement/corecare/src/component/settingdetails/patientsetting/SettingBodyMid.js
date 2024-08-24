@@ -13,9 +13,9 @@ import { loginInfo } from "../../../Recoil/Atom";
 import { Toast } from "primereact/toast";
 import bcrypt from 'bcryptjs';
 import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 
 function SettingBodyMid(props) {
@@ -76,8 +76,6 @@ function SettingBodyMid(props) {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(updateUserInfoValue.newPassword, salt);
-        console.log("hashedPassword= " + hashedPassword);
-
         const data = {
             emailorusername: loginInfoValue.login,
             password: updateUserInfoValue.password,
@@ -91,9 +89,7 @@ function SettingBodyMid(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Password Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated Password' });
                 resetUserInfo();
@@ -138,9 +134,7 @@ function SettingBodyMid(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Socailmedia accounts updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Socailmedia accounts updated successfully' });
                 resetUserInfo();
@@ -177,7 +171,6 @@ function SettingBodyMid(props) {
             locationofwork: updateUserInfoValue.locationOfWork,
             clinicnumber: updateUserInfoValue.clinicNumber,
         };
-        console.log('data:', data);
         try {
             const response = await fetch(`${SERVER_URL}/doctors/updateprofissionalinfo/${profissional.doctorid}`, {
                 method: "PUT",
@@ -186,9 +179,7 @@ function SettingBodyMid(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Proffesional Info Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Proffesional Info Updated Successfully' });
                 resetUserInfo();
@@ -224,7 +215,6 @@ function SettingBodyMid(props) {
             residencies: updateUserInfoValue.residencies,
             fellowships: updateUserInfoValue.fellowships,
         };
-        console.log('data:', data);
         try {
             const response = await fetch(`${SERVER_URL}/doctors/updateeducationalinfo/${profissional.doctorid}`, {
                 method: "PUT",
@@ -233,9 +223,7 @@ function SettingBodyMid(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Updated Educational Info Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Updated Educational Info Successfully' });
                 resetUserInfo();
@@ -278,7 +266,6 @@ function SettingBodyMid(props) {
             departments: updateUserInfoValue.departments,
             newDepartment: updateUserInfoValue.newDepartment
         };
-        console.log('data:', data);
         try {
             const response = await fetch(`${SERVER_URL}/healthcareproviders/updatedepartments/${healthcareProviderInfo.id}`, {
                 method: "PUT",
@@ -287,9 +274,7 @@ function SettingBodyMid(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Departments Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Departments Updated Successfully' });
                 resetUserInfo();
@@ -323,7 +308,6 @@ function SettingBodyMid(props) {
             services: updateUserInfoValue.services,
             newService: updateUserInfoValue.newService
         };
-        console.log('data:', data);
         try {
             const response = await fetch(`${SERVER_URL}/healthcareproviders/updateservices/${healthcareProviderInfo.id}`, {
                 method: "PUT",
@@ -332,9 +316,7 @@ function SettingBodyMid(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Services Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Services Updated Successfully' });
                 resetUserInfo();

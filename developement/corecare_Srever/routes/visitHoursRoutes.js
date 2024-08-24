@@ -72,7 +72,6 @@ router.get('/:emailorusername', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-    console.log(req.body);
     try {
 
         const { email, hospitalName, visitDays, DayvisitHours, NightvisitHours } = req.body;

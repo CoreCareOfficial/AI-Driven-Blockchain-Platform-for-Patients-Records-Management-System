@@ -12,9 +12,9 @@ import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../../Recoil/Atom";
 import { updateUserInfo } from "../../../Recoil/UpdateData";
 import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function SettingBodyRight(props) {
     const [isConfirm, setIsConfirm] = useState(false);
@@ -67,7 +67,7 @@ function SettingBodyRight(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please fill all fields Correctly' });
             return;
         }
-        console.log('updateUserInfoValue:', updateUserInfoValue.NightworkHoursFrom)
+
         const DayworkHours = `${updateUserInfoValue.DayworkHoursFrom} - ${updateUserInfoValue.DayworkHoursTo}`;
         const NightworkHours = `${updateUserInfoValue.NightworkHoursFrom} - ${updateUserInfoValue.NightworkHoursTo}`;
         const data = {
@@ -76,7 +76,6 @@ function SettingBodyRight(props) {
             DayworkHours,
             NightworkHours,
         };
-        console.log('data:', data);
         try {
             const response = await fetch(`${SERVER_URL}/workhours/${id}`, {
                 method: "PUT",
@@ -85,9 +84,7 @@ function SettingBodyRight(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Work Day and Work Hours updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Work Day and Work Hours updated successfully' });
             } else {
@@ -111,7 +108,7 @@ function SettingBodyRight(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please fill all fields Correctly' });
             return;
         }
-        console.log('updateUserInfoValue:', updateUserInfoValue.NightworkHoursFrom)
+
         const DayworkHours = `${updateUserInfoValue.DayworkHoursFrom} - ${updateUserInfoValue.DayworkHoursTo}`;
         const NightworkHours = `${updateUserInfoValue.NightworkHoursFrom} - ${updateUserInfoValue.NightworkHoursTo}`;
         const data = {
@@ -121,7 +118,6 @@ function SettingBodyRight(props) {
             DayworkHours,
             NightworkHours,
         };
-        console.log('data:', data);
         try {
             const response = await fetch(`${SERVER_URL}/workhours`, {
                 method: "POST",
@@ -130,9 +126,7 @@ function SettingBodyRight(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Work Day and Work Hours added successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Work Day and Work Hours added successfully' });
             } else {
@@ -154,7 +148,7 @@ function SettingBodyRight(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please fill all fields Correctly' });
             return;
         }
-        console.log('updateUserInfoValue:', updateUserInfoValue.NightworkHoursFrom)
+
         const DayworkHours = `${updateUserInfoValue.DayvisitHoursFrom} - ${updateUserInfoValue.DayvisitHoursTo}`;
         const NightworkHours = `${updateUserInfoValue.NightvisitHoursFrom} - ${updateUserInfoValue.NightvisitHoursTo}`;
         const data = {
@@ -163,7 +157,6 @@ function SettingBodyRight(props) {
             DayvisitHours: DayworkHours,
             NightvisitHours: NightworkHours,
         };
-        console.log('data:', data);
         try {
             const response = await fetch(`${SERVER_URL}/visithours/${id}`, {
                 method: "PUT",
@@ -172,9 +165,7 @@ function SettingBodyRight(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Visit Day and Visit Hours updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Visit Day and Visit Hours updated successfully' });
             } else {
@@ -196,7 +187,7 @@ function SettingBodyRight(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please fill all fields Correctly' });
             return;
         }
-        console.log('updateUserInfoValue:', updateUserInfoValue.NightworkHoursFrom)
+
         const DayvisitHours = `${updateUserInfoValue.DayvisitHoursFrom} - ${updateUserInfoValue.DayvisitHoursTo}`;
         const NightvisitHours = `${updateUserInfoValue.NightvisitHoursFrom} - ${updateUserInfoValue.NightvisitHoursTo}`;
         const data = {
@@ -206,7 +197,6 @@ function SettingBodyRight(props) {
             DayvisitHours,
             NightvisitHours,
         };
-        console.log('data:', data);
         try {
             const response = await fetch(`${SERVER_URL}/visithours`, {
                 method: "POST",
@@ -215,9 +205,7 @@ function SettingBodyRight(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Visit Day and Visit Hours added successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Visit Day and Visit Hours added successfully' });
             } else {
@@ -275,9 +263,7 @@ function SettingBodyRight(props) {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Emergency Contact Deleted Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Emergency Contact Deleted Successfully' });
             } else {

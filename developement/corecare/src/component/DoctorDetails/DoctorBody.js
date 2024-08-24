@@ -1,11 +1,11 @@
+
 import DoctorBodyLeft from "./DoctorBodyLeft";
 import DoctorBodyRight from "./DoctorBodyRight";
 import { useEffect, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
 import defaultPic from '../../assets/user_signup.png'
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function DoctorBody(props) {
     const toast = useRef(null);
@@ -30,7 +30,6 @@ function DoctorBody(props) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const jsonData = await response.json();
-                console.log(jsonData);
                 setInfo(jsonData);
             }
             catch (error) {

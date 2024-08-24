@@ -36,14 +36,11 @@ function SignupPage4() {
         HealthcareFacilityInfoValue.phoneNumber.slice(-3) +
         HealthcareFacilityInfoValue.licenseNumber.slice(-2);
 
-    console.log('username = ' + un);
-
     const navigate = useNavigate();
 
     const handleConfirmed = async (e) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(userGeneralData.password, salt);
-        console.log("hashedPassword= " + hashedPassword);
         if (userGeneralData.password.length >= 6) {
             if (userGeneralData.password === userGeneralData.confirmedPassword && !userGeneralData.isForgetton) {
                 setUserInfo((prevUserInfo) => ({

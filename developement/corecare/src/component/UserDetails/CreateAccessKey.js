@@ -7,10 +7,10 @@ import defaultPic from '../../assets/user_signup.png'
 import { Toast } from "primereact/toast";
 import { loginInfo } from "../../Recoil/Atom";
 import { useRecoilValue } from "recoil";
-import dotenv from 'dotenv';
-dotenv.config();
 
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     const toast = useRef(null);
@@ -39,7 +39,6 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
                 const jsonData = await response.json();
                 setProviders(jsonData);
                 setFilteredProviders(jsonData);
-                console.log('Success:', jsonData);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -56,7 +55,6 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
             const matchesName = provider.name && provider.name.toLowerCase().startsWith(searchTerm.toLowerCase());
             return matchesType && matchesName;
         });
-        console.log('filtered:', filtered);
         setFilteredProviders(filtered);
     }, [searchTerm, selectedType, providers]);
 
@@ -126,10 +124,6 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     };
 
     const handleSubmit = async () => {
-        console.log('priod', period);
-        console.log('timeother', timeOther);
-        console.log('keyuser', keyuser);
-
         if (keyuser === '') {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please select the Provider' });
             return;

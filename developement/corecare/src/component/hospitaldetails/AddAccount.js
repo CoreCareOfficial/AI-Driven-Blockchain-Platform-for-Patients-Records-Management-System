@@ -5,9 +5,9 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import ImageSignup from "../loginDetails/ImageSignup";
 import { userInfo } from "../../Recoil/Atom";
 import { Toast } from "primereact/toast";
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function AddAccount(props) {
 
@@ -64,12 +64,8 @@ function AddAccount(props) {
                 },
                 body: JSON.stringify(checkEmail)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Email doesn't Exist") {
-                console.log(jsonData.message);
-
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
                 setUserInfo((prevUserInfo) => ({
@@ -86,12 +82,10 @@ function AddAccount(props) {
 
     const userInfoValue = useRecoilValue(userInfo);
     const handleOnSubmit = async () => {
-        console.log(userInfoValue);
         const username = userInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
             userInfoValue.firstName.toLocaleLowerCase().slice(-2) +
             userInfoValue.lastName.toLocaleLowerCase()[0] +
             userInfoValue.phoneNumber.slice(-3);
-        console.log('username = ' + username);
         let email = '';
         let password = '';
         let successfulAddUser = false;
@@ -128,10 +122,8 @@ function AddAccount(props) {
                 body: formData
             });
             if (response.ok) {
-                console.log("res = " + response);
                 const { patientID, hashedPassword } = await response.json();
                 password = hashedPassword;
-                console.log('Added Patient Successful');
                 // toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
                 successfulAddUser = true;
             }
@@ -141,7 +133,6 @@ function AddAccount(props) {
             successfulAddUser = false;
         }
         if (successfulAddUser && email && password && username) {
-            console.log("save in login");
             const loginData = {
                 email: email,
                 password: password,
@@ -158,7 +149,6 @@ function AddAccount(props) {
                     body: JSON.stringify(loginData)
                 });
                 if (userResponse.ok) {
-                    console.log("User Added Successful");
                     toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
                 } else {
                     toast.current.show({ severity: 'error', summary: 'Error', detail: 'User could not be added' });

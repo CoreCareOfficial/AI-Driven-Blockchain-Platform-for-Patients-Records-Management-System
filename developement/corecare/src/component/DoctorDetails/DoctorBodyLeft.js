@@ -1,3 +1,4 @@
+
 import { Button } from "primereact/button";
 import ImageNameContainer from "../UserDetails/ImageNameContainer";
 import PatientHealtInfo from "./PatientHealtInfo";
@@ -5,9 +6,8 @@ import { MdSummarize } from "react-icons/md";
 import { useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import ConfirmedDialog from "../../utiles/ConfirmedDialog";
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const useOptimistic = (initialValue, callback) => {
     const [value, setValue] = useState(initialValue);
@@ -69,7 +69,6 @@ function DoctorBodyLeft(props) {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 handleSummarize(data);
                 // navigate('/signup/password-step');
                 // Optionally show a success toast
@@ -91,7 +90,6 @@ function DoctorBodyLeft(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Sorry Error Occured, Session expired please login in again' });
             return;
         }
-        console.log(props.patientid);
         try {
             await setUserInfoOptimistic(props);
         } catch (error) {
@@ -127,7 +125,6 @@ function DoctorBodyLeft(props) {
         } catch (error) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Summary Saved' });
         }
-        console.log('Save Summarize');
         setIsOpenSummarize(!isOpenSummarize);
     }
 

@@ -8,9 +8,9 @@ import { HealthcareFacilityInfo, userInfo } from "../Recoil/Atom";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 
 function HealthcareFacilitySignupPage() {
@@ -32,12 +32,8 @@ function HealthcareFacilitySignupPage() {
                 },
                 body: JSON.stringify(checkEmail)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Email doesn't Exist") {
-                console.log(jsonData.message);
-
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
                 // alert(jsonData.message);

@@ -57,8 +57,6 @@ function Gender(props) {
             ...prevUserInfo,
             [props.name]: event.target.value
         }));
-        console.log(props.name);
-        console.log(event.target.value);
         if (event.target.id === '1') {
             setIsChecked2(false); // Toggle checked state
             setIsChecked(true); // Toggle checked state

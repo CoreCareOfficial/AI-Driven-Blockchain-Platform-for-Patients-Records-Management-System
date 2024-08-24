@@ -9,7 +9,6 @@ import { Messages } from 'primereact/messages';
 export default function Message(props) {
     const msgs = useRef(null);
     const stateList = ['success', 'info', 'warn', 'error'];
-    console.log('for message componet');
     useMountEffect(() => {
         if (msgs.current) {
             msgs.current.clear();

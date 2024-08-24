@@ -10,9 +10,9 @@ import { userInfo } from '../Recoil/Atom';
 import { useSetRecoilState } from 'recoil';
 import '../component/bootcomponent/message.css';
 import { Toast } from 'primereact/toast';
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function SignupPage() {
     const toast = useRef(null);
@@ -34,12 +34,8 @@ function SignupPage() {
                 },
                 body: JSON.stringify(checkEmail)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Email doesn't Exist") {
-                console.log(jsonData.message);
-
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
                 setUserInfo((prevUserInfo) => ({

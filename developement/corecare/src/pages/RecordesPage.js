@@ -1,6 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
 
 import React, { useEffect, useRef, useState } from 'react';
 import ProfileHeaderIcon from '../component/UserDetails/ProfileHeaderIcon';
@@ -16,6 +13,9 @@ import { loginInfo } from '../Recoil/Atom';
 import { Toast } from 'primereact/toast';
 import { LuFolderPlus } from 'react-icons/lu';
 import RecordesGride from '../component/recordesdetails/RecordesGride';
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 
 function RecordesPage(props) {
@@ -46,7 +46,6 @@ function RecordesPage(props) {
 
     const refreshComponent = () => {
         setCount(prevCount => prevCount + 1); // Change state to trigger re-render
-        console.log("Refreshed");
     };
 
     useEffect(() => {

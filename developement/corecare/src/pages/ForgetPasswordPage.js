@@ -1,7 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
-
 import { useSetRecoilState } from "recoil";
 import CardLogin from "../component/bootcomponent/CardLogin";
 import FormLogin from "../component/loginDetails/FormLogin";
@@ -12,6 +8,10 @@ import { GeneralData, loginInfo } from "../Recoil/Atom";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import { Toast } from "primereact/toast";
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 
 
 function ForgetPasswordPage() {
@@ -39,7 +39,6 @@ function ForgetPasswordPage() {
             });
 
             const data = await response.json();
-            console.log(data);
             if (data.message === "Account doesn't Exists") {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Invalid Email' });
             }

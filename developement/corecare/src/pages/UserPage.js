@@ -9,7 +9,6 @@ function UserPage() {
 
     const location = useLocation();
     const { userType } = location.state || {};
-    console.log(userType);
     const [active, setActive] = useState("Profile")
     const [selectedPatientId, setSelectedPatientId] = useState(null);
 
@@ -19,10 +18,8 @@ function UserPage() {
 
     const [createAccessKey, setCreateAccessKey] = useState(false);
     const handleCreateAccessKeyClick = ((patientId) => {
-        console.log("createAccessKey", createAccessKey);
         setSelectedPatientId(patientId);
         setCreateAccessKey(!createAccessKey);
-        console.log("createAccessKey", createAccessKey);
     });
     return (
         <>

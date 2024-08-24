@@ -12,7 +12,6 @@ const __dirname = path.dirname(__filename);
 // Helper function to read file content
 const readFileContent = async (filePath) => {
     if (!filePath) {
-        console.log(`Skipping file read for null or undefined path`);
         return null;
     }
     try {

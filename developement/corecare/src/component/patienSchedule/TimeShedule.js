@@ -26,11 +26,6 @@ const TimeShedule = ({ selectedSchedule }) => {
     { time: '11:30 AM' },
     { time: '11:45 AM' },
     { time: '1:00 PM' }];
-    console.log(selecttime);
-
-
-
-
     return (
 
         <>

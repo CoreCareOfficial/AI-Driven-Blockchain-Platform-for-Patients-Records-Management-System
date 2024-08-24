@@ -76,10 +76,8 @@ export function TextInputField(props) {
             ...prevUserInfo,
             [props.name]: event.target.value
         }));
-        console.log(event.target.value);
         if (props.isLogin) {
             sessionStorage.setItem('email', event.target.value);
-            console.log('email:', sessionStorage.getItem('email'));
         }
     };
     const handleBlur = (event) => {
@@ -161,7 +159,7 @@ export function SelectInputField(props) {
             ...prevUserInfo,
             [props.name]: event.target.value
         }));
-        console.log(event.target.value)
+
     };
     const options = props.optionsList.map((option, index) => {
         return (

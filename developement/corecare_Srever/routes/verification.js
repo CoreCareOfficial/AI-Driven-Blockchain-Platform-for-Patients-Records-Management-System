@@ -57,7 +57,6 @@ const initializeTransporter = async () => {
     try {
         transporter = await createTransporter();
         transporterReady = true;
-        console.log('Transporter initialized successfully');
     } catch (error) {
         console.error('Failed to initialize transporter:', error);
     }
@@ -71,8 +70,6 @@ let verificationCodes = {}; // In-memory store for simplicity
 router.post('/', async (req, res) => {
     const { email } = req.body;
     const code = Math.floor(1000 + Math.random() * 9000).toString(); // Generate a 4-digit code
-    console.log(code);
-
     // Store the code with the email as key
     verificationCodes[email] = code;
 
@@ -119,7 +116,6 @@ This is an automated message, please do not reply.
     };
 
     if (!transporterReady) {
-        console.log("Transporter not ready, waiting...");
         await new Promise((resolve, reject) => {
             const checkTransporter = setInterval(() => {
                 if (transporterReady) {

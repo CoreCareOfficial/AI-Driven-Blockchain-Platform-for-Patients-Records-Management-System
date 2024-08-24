@@ -71,7 +71,6 @@ router.get('/:emailorusername', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    console.log(req.body);
     try {
         const { email, hospitalName, workDays, DayworkHours, NightworkHours } = req.body;
         // Insert into WORK_DAYS table
@@ -112,8 +111,6 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-    console.log(req.body);
-    console.log(req.params);
     try {
         const { id } = req.params;
         const { hospitalName, workDays, DayworkHours, NightworkHours } = req.body;

@@ -12,10 +12,10 @@ import EmergencyAccess from "./EmergecyAccess";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 import { useEffect } from "react";
-import dotenv from 'dotenv';
-dotenv.config();
 
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function Content(props) {
     const setUserInfo = useSetRecoilState(loginInfo);
@@ -34,7 +34,6 @@ function Content(props) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const jsonData = await response.json();
-                console.log(jsonData);
                 setUserInfo((prevUserInfo) => ({
                     ...prevUserInfo,
                     notificationsCount: jsonData

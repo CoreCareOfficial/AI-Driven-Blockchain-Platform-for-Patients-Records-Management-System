@@ -3,10 +3,10 @@ import InfoContainer from "./InfoContainer"
 import ProfileHeaderIcon from "./ProfileHeaderIcon"
 import "../../css/UserPageStyle/profile.css"
 import { useEffect, useState } from "react";
-import dotenv from 'dotenv';
-dotenv.config();
 
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function ProfileHeader(props) {
     const [userSocialmedia, setUserSocialmedia] = useState([]);
@@ -27,7 +27,6 @@ function ProfileHeader(props) {
 
             const jsonData = await response.json();
             setUserSocialmedia(jsonData);
-            console.log("Success:", jsonData);
         } catch (err) {
             console.error("Error:", err);
         } finally {
@@ -35,15 +34,11 @@ function ProfileHeader(props) {
         }
     };
     useEffect(() => {
-        console.log('use effect 1');
         getUserData(props.userId);
-        console.log('use effect 2');
     }, [props.userId]);
 
     if (!isLoading && userSocialmedia.length > 0) {
-        console.log(userSocialmedia);
     }
-    // console.log("user socialmedia: " + userSocialmedia[0].link);
     return (
         <div className="profile-header">
             <ProfileHeaderIcon image={props.image} />

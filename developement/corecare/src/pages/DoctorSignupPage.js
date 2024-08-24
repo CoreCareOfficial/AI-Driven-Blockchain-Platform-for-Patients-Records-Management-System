@@ -9,9 +9,9 @@ import Upload from "../component/loginDetails/Upload";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
 import { useRef, useState } from "react";
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const useOptimistic = (initialValue, callback) => {
     const [value, setValue] = useState(initialValue);
@@ -74,7 +74,6 @@ function DoctorSignupPage() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 navigate('/signup/password-step');
                 // Optionally show a success toast
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'License Number check successful' });

@@ -8,10 +8,10 @@ import { updateUserInfo } from "../../../Recoil/UpdateData";
 import { Toast } from "primereact/toast";
 import { loginInfo } from "../../../Recoil/Atom";
 import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
-import dotenv from 'dotenv';
-dotenv.config();
 
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function SettingBodyLift(props) {
     const toast = useRef(null);
@@ -55,17 +55,11 @@ function SettingBodyLift(props) {
         doctorid = ''
     } = props;
 
-    console.log('userInfo', userInfo);
-    console.log('healthInfo', healthInfo);
-    console.log('allergies', allergies);
-    console.log('healthcareProviderInfo', healthcareProviderInfo);
-
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-        console.log('date', `${day}-${month}-${year}`);
         return `${year}-${month}-${day}`;
     };
 
@@ -168,9 +162,7 @@ function SettingBodyLift(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData);
             if (jsonData === "Patient updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
                 setIsConfirm(false);
@@ -183,7 +175,6 @@ function SettingBodyLift(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating general info' });
             setIsConfirm(false);
         }
-        console.log("new info of patient:", updateUserInfoValue);
     }
     const toggleEditGeneral = async () => {
         setIsConfirm(!isConfirm);
@@ -210,9 +201,7 @@ function SettingBodyLift(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData);
             if (jsonData === "Healthcare Provider Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
                 setIsConfirm(false);
@@ -225,7 +214,6 @@ function SettingBodyLift(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating general info' });
             setIsConfirm(false);
         }
-        console.log("new info of patient:", updateUserInfoValue);
     }
     const toggleEditGeneralFacility = async () => {
         setIsConfirm(!isConfirm);
@@ -251,9 +239,7 @@ function SettingBodyLift(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData);
             if (jsonData === "Patient updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
                 setIsConfirm(false);
@@ -283,7 +269,6 @@ function SettingBodyLift(props) {
             practicehours: updateUserInfoValue.practicehours,
             languagesspoken: updateUserInfoValue.languagesspoken
         };
-        console.log(doctorid);
         if (doctorid === '') {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Doctor not found' });
             return;
@@ -296,9 +281,7 @@ function SettingBodyLift(props) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData);
             if (jsonData === "Updated Practice Info Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
                 setIsConfirm(false);

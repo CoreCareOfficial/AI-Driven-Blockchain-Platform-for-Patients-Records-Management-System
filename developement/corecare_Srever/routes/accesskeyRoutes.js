@@ -12,7 +12,6 @@ const __dirname = path.dirname(__filename);
 // Helper function to read file content
 const readFileContent = async (filePath) => {
     if (!filePath) {
-        console.log(`Skipping file read for null or undefined path`);
         return null;
     }
     try {
@@ -38,11 +37,7 @@ const generateAccessKey = () => {
 // To create a new access key
 router.post('/create', async (req, res) => {
     const { patientid, keyuser, period, specificDateTime } = req.body;
-    console.log(patientid, keyuser, period, specificDateTime);
-
     const accessKey = generateAccessKey();
-    console.log(accessKey);
-
     try {
         let accessKeyQuery;
         if (specificDateTime) {

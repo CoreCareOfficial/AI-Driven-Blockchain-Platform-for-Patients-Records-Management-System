@@ -1,7 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
-
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import HeaderContainer from "./HaederContainer";
 import NewNotificationContainer from "./NewNotificationContainer";
@@ -9,6 +5,10 @@ import PatientsTable from "./PatientsTable";
 import { loginInfo } from "../../Recoil/Atom";
 import { useEffect, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 
 function PatientAccessManagement(props) {
     const userLoginInfo = useRecoilValue(loginInfo);
@@ -19,7 +19,6 @@ function PatientAccessManagement(props) {
 
     useEffect(() => {
         const fetchNotifications = async () => {
-            console.log("fetching notifications");
             try {
                 const response = await fetch(`${SERVER_URL}/accesskey/get/${userLoginInfo.login}`, {
                     method: "GET",
@@ -31,7 +30,6 @@ function PatientAccessManagement(props) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const jsonData = await response.json();
-                console.log(jsonData);
                 setNotifications(jsonData.notifications);
                 setUserInfo((prevUserInfo) => ({
                     ...prevUserInfo,
@@ -44,7 +42,6 @@ function PatientAccessManagement(props) {
         };
 
         const fetchPatients = async () => {
-            console.log("fetching patients");
             try {
                 const response = await fetch(`${SERVER_URL}/previouspatients/${userLoginInfo.login}`, {
                     method: "GET",
@@ -57,7 +54,6 @@ function PatientAccessManagement(props) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const jsonData = await response.json();
-                console.log(jsonData);
                 setPatients(jsonData.previousPatients);
             }
             catch (error) {

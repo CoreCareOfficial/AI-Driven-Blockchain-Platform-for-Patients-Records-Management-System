@@ -12,9 +12,9 @@ import { InputText } from 'primereact/inputtext';
 import { Toast } from 'primereact/toast';
 import { loginInfo } from '../../Recoil/Atom';
 import { useRecoilValue } from 'recoil';
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 // ========================================
 
 function RecordesTable(props) {
@@ -31,7 +31,6 @@ function RecordesTable(props) {
         const newTop = (Number(e.target.id) * 50) + 220;
         setItemTop(newTop);
         setIsOpen(!isOpen);
-        console.log(isOpen);
     });
     // =================================
     const menu = <span style={{ cursor: 'pointer', fontSize: '1.5em' }} onClick={handleMenuClick}
@@ -196,19 +195,14 @@ function RecordesTable(props) {
 
 
     const getItemsList = (type, nodes) => {
-        console.log(type);
         let itemsList = [];
         nodes.forEach(node => {
             node.children.forEach(child => {
-                // console.log(child.data.type);
-                if (child.data.type === type) {
-                    itemsList.push(child.data);
-                    // console.log(child.data.type);
-                }
+                //                 if (child.data.type === type) {
+                itemsList.push(child.data);
+                //                 }
             });
         });
-        console.log("hhhh" + itemsList.length);
-        console.log("hhhh" + itemsList);
         return itemsList;
     };
 
@@ -218,12 +212,10 @@ function RecordesTable(props) {
 
     const handleRecordsResult = () => {
         let count = 0;
-        console.log(props.tableTitle)
         if (props.tableTitle !== "All Records") {
             Object.keys(nodes).forEach((record) => {
                 if (props.tableTitle === props.AllRecord[record]["type"]) {
                     count = count + 1;
-                    console.log(nodes.children.data["type"]);
                 }
             });
             return count;
@@ -266,10 +258,7 @@ function RecordesTable(props) {
             }
             const jsonData = await response.json();
             toast.current.show({ severity: 'success', summary: 'Success', detail: 'Download Records Successfully' });
-            console.log("jsonData = " + jsonData);
-            console.log(jsonData);
             setRecords(jsonData);
-            console.log("res = " + response);
         } catch (error) {
             console.error(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error jsonData' });

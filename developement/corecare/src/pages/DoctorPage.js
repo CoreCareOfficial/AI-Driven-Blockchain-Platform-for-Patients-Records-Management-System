@@ -7,9 +7,6 @@ import { useLocation } from 'react-router-dom';
 function DoctorPage() {
     const location = useLocation();
     const { patientid, keyuser, userType } = location.state || {};
-    console.log('keyuser', keyuser);
-    console.log('patientid', patientid);
-    console.log('userType', userType);
     return (
 
         <div className="doctor bg-[#181a1f] flex flex-col text-white overflow-hidden">

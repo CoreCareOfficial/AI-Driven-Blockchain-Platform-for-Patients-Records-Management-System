@@ -16,15 +16,14 @@ import ProfileBodyRight from "./ProfileBodyRight";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 
 function PuplicInformation(props) {
     const facilityInfo = props.facilityInfo;
     const loginInfoValue = useRecoilValue(loginInfo);
-    console.log('facilityInfo:', facilityInfo);
     const [doctors, setDoctors] = useState({});
     const [userData, setUserData] = useState({
         practiceinfo: [],
@@ -57,7 +56,6 @@ function PuplicInformation(props) {
                     [setStateKey]: jsonData,
                 }));
             }
-            console.log(`Success loading ${setStateKey}:`, jsonData);
         } catch (err) {
             console.error("Error:", err);
         } finally {
@@ -78,13 +76,11 @@ function PuplicInformation(props) {
 
     useEffect(() => {
         if (props.userType === "Doctor") {
-            console.log('doctors.doctorid:', doctors.doctorid);
             fetchData(`${SERVER_URL}/practiceinfo/${doctors.doctorid}`, "practiceinfo");
             fetchData(`${SERVER_URL}/educationalinfo/${doctors.doctorid}`, "educationalinfo");
         } else {
             fetchData(`${SERVER_URL}/services/${facilityInfo.id}`, "emergencyservices");
             if (props.userType === "Hospital") {
-                console.log('facilityInfo.facility_id:', facilityInfo.id);
                 fetchData(`${SERVER_URL}/departments/${facilityInfo.id}`, "departments");
                 fetchData(`${SERVER_URL}/visithours/${loginInfoValue.login}`, "visithours");
             }
@@ -93,14 +89,6 @@ function PuplicInformation(props) {
     }, [doctors?.doctorid, props.userType, facilityInfo?.id, loginInfoValue?.login]);
 
     const { practiceinfo, educationalinfo, workhours, departments, emergencyservices, visithours } = userData;
-
-    console.log('doctors:', doctors);
-    console.log('practiceinfo:', practiceinfo);
-    console.log('educationalinfo:', educationalinfo);
-    console.log('workhours:', workhours);
-    console.log('departments:', departments);
-    console.log('emergencyservices:', emergencyservices);
-    console.log('visithours:', visithours);
 
     return (
         <>

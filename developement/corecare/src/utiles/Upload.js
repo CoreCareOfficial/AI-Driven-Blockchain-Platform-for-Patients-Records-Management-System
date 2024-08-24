@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { FileUpload } from 'primereact/fileupload';
 import { Toast } from 'primereact/toast';
-import dotenv from 'dotenv';
-dotenv.config();
 
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function AdvanceDemo(props) {
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -69,7 +69,6 @@ export default function AdvanceDemo(props) {
                 formData.append('results', file);
             });
 
-            console.log('formData', formData);
             const xhr = new XMLHttpRequest();
             xhr.upload.addEventListener('progress', (event) => {
                 if (event.lengthComputable) {

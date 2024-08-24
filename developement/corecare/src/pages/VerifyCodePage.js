@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
 
 import { useRecoilValue } from "recoil";
 import CardLogin from "../component/bootcomponent/CardLogin";
@@ -11,6 +9,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from "../Recoil/Atom";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function VerifyCodePage() {
 
@@ -57,7 +57,6 @@ function VerifyCodePage() {
     };
 
     const handleSendCode = async () => {
-        console.log('email: ' + email);
         try {
             const response = await fetch(`${SERVER_URL}/verification`, {
                 method: 'POST',
@@ -88,7 +87,6 @@ function VerifyCodePage() {
                 body: JSON.stringify({ email, code: verificationCode })
             });
             if (response.ok) {
-                console.log('go to next page');
                 navigate(nextPage);
             } else {
                 const errorData = await response.text();

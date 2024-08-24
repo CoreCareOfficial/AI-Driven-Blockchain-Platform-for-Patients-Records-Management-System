@@ -3,9 +3,9 @@ import { Container } from "react-bootstrap";
 import { AddAccountForm, AddAccountInput3 } from "../settingdetails/TextFormSetting";
 import AdvanceDemo from "../../utiles/Upload";
 import { Toast } from "primereact/toast";
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function UpdateHealthInfo(props) {
 
@@ -35,7 +35,6 @@ function UpdateHealthInfo(props) {
     // };
 
     const handleonSubmit = async () => {
-        console.log('healthInfo', healthInfo);
         if (!props.patientid) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Selected Patient' });
         }
@@ -48,16 +47,13 @@ function UpdateHealthInfo(props) {
                 body: JSON.stringify(healthInfo)
             });
             if (!response.ok) {
-                console.log('An error occurred during the upload.(re)');
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Updating Health Info' });
                 throw new Error('An error occurred during the upload.');
             }
             const jsonData = response.json();
-            console.log(jsonData.message)
             toast.current.show({ severity: 'success', summary: 'Success', detail: 'Health Info Updated Successfully' });
             resetHealthInfo();
         } catch (error) {
-            console.log(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Updating Health Info' });
         }
     }

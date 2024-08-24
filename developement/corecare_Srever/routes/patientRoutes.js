@@ -65,7 +65,6 @@ const initializeTransporter = async () => {
     try {
         transporter = await createTransporter();
         transporterReady = true;
-        console.log('Transporter initialized successfully');
     } catch (error) {
         console.error('Failed to initialize transporter:', error);
     }
@@ -113,7 +112,6 @@ const __dirname = path.dirname(__filename);
 // Helper function to read file content
 const readFileContent = async (filePath) => {
     if (!filePath) {
-        console.log(`Skipping file read for null or undefined path`);
         return null;
     }
     try {
@@ -196,7 +194,6 @@ router.post('/addpatient', upload.fields([
 
 
     if (!transporterReady) {
-        console.log("Transporter not ready, waiting...");
         await new Promise((resolve, reject) => {
             const checkTransporter = setInterval(() => {
                 if (transporterReady) {
@@ -244,10 +241,6 @@ router.post('/addpatient', upload.fields([
         const generatedPassword = Math.floor(1000 + Math.random() * 900000).toString(); // Generate a 6-digit code
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(generatedPassword, salt);
-        console.log(generatedPassword);
-        console.log(hashedPassword);
-
-
         const newPatient = await pool.query(
             `INSERT INTO PATIENT (patientID, firstName, secondName, thirdName, lastName, email, password, dateOfBirth, country, sex, phoneNumber, status, address, job, personalPhoto, idType, nationalID, passportNo, FIDCardPhoto, BIDCardPhoto, passportType, passportCountryCode, passportDocument, PublicWalletAddress, username, bloodtype) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26) 
@@ -369,10 +362,6 @@ router.put('/general/:patientID', async (req, res) => {
     const { patientID } = req.params;
     let { firstname, secondname, thirdname, lastname, phonenumber, address, country, job, sex, dateofbirth, status } = req.body;
 
-    console.log('req.body:', req.body);
-
-
-    console.log('Received request to update patient:', patientID);
     try {
         const oldPatientQuery = await pool.query('SELECT firstname, secondname, thirdname, lastname, phonenumber, address, country, job, sex, dateofbirth, status FROM PATIENT WHERE patientID = $1', [patientID]);
 
@@ -381,8 +370,6 @@ router.put('/general/:patientID', async (req, res) => {
         }
 
         const oldPatient = oldPatientQuery.rows[0];
-        console.log("Existing patient data: ", oldPatient);
-
         // Assign old values if new values are undefined
         firstname = firstname !== '' ? firstname : oldPatient.firstname;
         lastname = lastname !== '' ? lastname : oldPatient.lastname;
@@ -390,8 +377,6 @@ router.put('/general/:patientID', async (req, res) => {
         address = address !== '' ? address : oldPatient.address;
         country = country !== '' ? country : oldPatient.country;
         dateofbirth = dateofbirth !== '' ? dateofbirth : oldPatient.dateofbirth;
-
-        console.log('Updated values:', firstname, secondname, thirdname, lastname, phonenumber, address, country, job, sex, dateofbirth, status);
 
         const updatePatient = await pool.query(
             `UPDATE PATIENT SET 
@@ -464,9 +449,6 @@ router.put('/healthinfo/:patientID', async (req, res) => {
     const { patientID } = req.params;
     const { bloodtype, weight, height, allergies } = req.body;
     const currentDate = moment().tz('Asia/Aden').format('YYYY-MM-DDTHH:mm:ss');
-
-    console.log('currentDate:', currentDate);
-
 
     try {
 

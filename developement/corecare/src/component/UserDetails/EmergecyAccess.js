@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import defaultPic from '../../assets/user_signup.png'
 import { GiKeyLock } from "react-icons/gi";
 import HeaderContainer from "./HaederContainer";
-import dotenv from 'dotenv';
-dotenv.config();
 
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function EmergencyAccess(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
@@ -23,10 +23,9 @@ function EmergencyAccess(props) {
                 },
             });
             const jsonData = await response.json();
-            console.log(jsonData)
+
             setEmergencyContacts(jsonData);
             // setUserInfo(jsonData);
-            console.log("success");
         } catch (err) {
             // setError(err.message);
             console.error("Error:", err);

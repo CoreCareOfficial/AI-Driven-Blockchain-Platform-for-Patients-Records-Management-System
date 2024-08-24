@@ -8,9 +8,9 @@ import EmergencyContact from "../component/settingdetails/patientsetting/Emergen
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../Recoil/Atom";
 import { Toast } from "primereact/toast";
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function PatientSettingPage(props) {
     const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +49,6 @@ function PatientSettingPage(props) {
 
     const handleAddContact = () => {
         setIsOpen(!isOpen);
-        console.log(isOpen);
     };
     const handleAddContactSuccessful = (isAdded, message) => {
         // setIsAdded();
@@ -75,7 +74,6 @@ function PatientSettingPage(props) {
                 ...prevState,
                 [setStateKey]: jsonData,
             }));
-            console.log(`Success loading ${setStateKey}:`, jsonData);
         } catch (err) {
             console.error("Error:", err);
         }
@@ -105,7 +103,6 @@ function PatientSettingPage(props) {
 
     useEffect(() => {
         if (allInfo.patientInfo) {
-            console.log('allInfo.patientInfo.patientid', allInfo.patientInfo.patientid);
             if (props.userType === 'Doctor') {
                 fetchData(`${SERVER_URL}/doctors/getdoctorinfo/${allInfo.patientInfo.patientid}`, "doctorInfo");
             }

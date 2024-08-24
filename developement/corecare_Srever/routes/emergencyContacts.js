@@ -13,7 +13,6 @@ const __dirname = path.dirname(__filename);
 // Helper function to read file content
 const readFileContent = async (filePath) => {
     if (!filePath) {
-        console.log(`Skipping file read for null or undefined path`);
         return null;
     }
     try {
@@ -28,7 +27,6 @@ const readFileContent = async (filePath) => {
 
 router.post('/', async (req, res) => {
     const { emailorusername, patientid } = req.body;
-    console.log(emailorusername, patientid);
     try {
         const chosenuserid = await pool.query('SELECT patientid from Patient where email = $1 or username = $1', [emailorusername]);
         if (chosenuserid.rows.length === 0) {
@@ -48,7 +46,6 @@ router.post('/', async (req, res) => {
 // Delete Emergency Contact
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
-    console.log(id);
     try {
         const deleteEmergencyContact = await pool.query('DELETE FROM emergency_contacts WHERE id = $1', [id]);
         if (deleteEmergencyContact.rowCount === 0) {
@@ -62,8 +59,6 @@ router.delete('/:id', async (req, res) => {
 
 router.get('/:emailorusername', async (req, res) => {
     const { emailorusername } = req.params;
-    console.log(req.params, emailorusername);
-
     try {
         let chosenuserid = '';
         const usertype = await pool.query('SELECT type FROM login WHERE email = $1 OR username = $1', [emailorusername]);
@@ -75,8 +70,6 @@ router.get('/:emailorusername', async (req, res) => {
             const chosenuseridQuery = await pool.query('SELECT id FROM healthcare_provider WHERE email = $1 OR username = $1', [emailorusername]);
             chosenuserid = chosenuseridQuery.rows[0].id;
         }
-
-        console.log(chosenuserid);
 
         const chosenUserQuery = await pool.query('SELECT * FROM emergency_contacts WHERE chosenuserid = $1', [chosenuserid]);
         if (chosenUserQuery.rows.length === 0) {
@@ -96,7 +89,6 @@ router.get('/:emailorusername', async (req, res) => {
             });
         }
 
-        console.log(emergencyContacts);
         res.status(200).json(emergencyContacts);
     } catch (err) {
         res.status(500).json({ message: err.message });

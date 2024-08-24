@@ -39,7 +39,6 @@ const upload = multer({ storage: storage });
 // Helper function to read file content
 const readFileContent = async (filePath) => {
     if (!filePath) {
-        console.log(`Skipping file read for null or undefined path`);
         return null;
     }
     try {
@@ -234,7 +233,6 @@ router.put('/updatepracticeinfo/:doctorID', async (req, res) => {
     const { doctorID } = req.params;
     const { practicelocation, affiliations, practicehours, languagesspoken } = req.body;
 
-    console.log(req.body);
     try {
 
         const getPracticeInfo = await pool.query(`SELECT practicelocation, affiliations, practicehours, languagesspoken from PRACTICE_INFO WHERE doctorID = $1`, [doctorID]);

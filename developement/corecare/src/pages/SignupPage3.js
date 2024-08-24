@@ -10,9 +10,9 @@ import { userInfo } from "../Recoil/Atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigate } from 'react-router-dom';
 import { Toast } from 'primereact/toast';
-import dotenv from 'dotenv';
-dotenv.config();
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 
 const useOptimistic = (initialValue, callback) => {
@@ -98,7 +98,6 @@ function SignupPage3() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 navigate(nextPage);
                 // Optionally show a success toast
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'ID check successful' });
@@ -142,8 +141,7 @@ function SignupPage3() {
     //         });
     //         if (response.ok) {
     //             const data = await response.json();
-    //             console.log(data);
-    //             navigate(nextPage);
+    //                 //             navigate(nextPage);
     //         } else {
     //             const errorData = await response.json(); // Parse the error response if any
     //             toast.current.show({ severity: 'error', summary: 'Error', detail: errorData.message || 'Invalid Data' });

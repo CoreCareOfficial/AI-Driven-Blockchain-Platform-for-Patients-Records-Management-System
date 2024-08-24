@@ -6,10 +6,10 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 import { useEffect, useRef, useState } from "react";
 import ProfileSkeleton from "../skeletons/ProfileSkeleton";
-import dotenv from 'dotenv';
-dotenv.config();
 
-const SERVER_URL = process.env.SERVER_URL;
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function Profile(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
@@ -25,11 +25,7 @@ function Profile(props) {
         userType = 'Patients'
     }
 
-    console.log(userType);
-
     const getUserData = async (fetchText, param) => {
-        console.log('param;', param);
-        console.log('fetchText:;', fetchText);
         try {
             const response = await fetch(fetchText, {
                 method: "GET",
@@ -40,7 +36,6 @@ function Profile(props) {
             });
             const jsonData = await response.json();
             setUserInfo(jsonData);
-            console.log("success");
         } catch (err) {
             setError(err.message);
             console.error("Error:", err);
@@ -73,9 +68,6 @@ function Profile(props) {
         }
     }, [props.userType, userInfo, setLoginInfo]);
 
-    console.log('userInfo:', userInfo);
-    console.log(userInfo);
-
     if (error) {
         return <div style={{ color: 'red' }}>Error: {error}</div>;
     }
@@ -83,7 +75,6 @@ function Profile(props) {
     if (!userInfo) {
         return <ProfileSkeleton />;
     } else {
-        console.log("userInfo", userInfo);
     }
 
     return (

@@ -12,7 +12,6 @@ const __dirname = path.dirname(__filename);
 // Helper function to read file content
 const readFileContent = async (filePath) => {
     if (!filePath) {
-        console.log(`Skipping file read for null or undefined path`);
         return null;
     }
     try {
@@ -27,8 +26,6 @@ const readFileContent = async (filePath) => {
 
 router.get('/:patientid', async (req, res) => {
     const { patientid } = req.params;
-    console.log(patientid);
-
     try {
         const recordsQuery = await pool.query('SELECT * FROM record WHERE patientid = $1 ORDER BY dateofcreation DESC', [patientid]);
         if (recordsQuery.rows.length === 0) {
@@ -312,8 +309,6 @@ router.get('/getresult/:resultid', async (req, res) => {
 // to get medicines in prescription
 router.post('/get/prescription', async (req, res) => {
     const prescribedMedicine = req.body;
-    console.log(req.body);
-    console.log(prescribedMedicine);
     try {
         const prescriptions = [];
 
@@ -339,7 +334,6 @@ router.post('/get/prescription', async (req, res) => {
 // to get prescribed labtest
 router.post('/get/labtest', async (req, res) => {
     const prescribedLabTests = req.body;
-    console.log(req.body, prescribedLabTests);
     try {
         const testsList = [];
 
@@ -370,12 +364,11 @@ router.post('/get/labtest', async (req, res) => {
 // to get prescribed medical radiology
 router.post('/get/radiology', async (req, res) => {
     const prescribedRadiologies = req.body;
-    console.log(req.body, prescribedRadiologies);
     try {
         const testsList = [];
 
         for (let i = 0; i < prescribedRadiologies.length; i++) {
-            console.log(1)
+
             const radiologyQuery = await pool.query('SELECT * FROM radiologies WHERE id = $1', [prescribedRadiologies[i]]);
             if (radiologyQuery.rows.length === 0) {
                 return res.status(400).json({ message: 'Lab Test Not found' });
@@ -403,7 +396,6 @@ router.post('/get/radiology', async (req, res) => {
 // to get general report
 router.post('/get/generalreport', async (req, res) => {
     const { patientid, recordid } = req.body;
-    console.log(patientid, recordid);
     try {
         const generalDiagnosisQuery = await pool.query('SELECT * FROM record WHERE patientid = $1 and recordid = $2', [patientid, recordid]);
         if (generalDiagnosisQuery.rows.length === 0) {
@@ -436,8 +428,6 @@ router.post('/get/generalreport', async (req, res) => {
 // Save previous summaries
 router.post('/savesummary', async (req, res) => {
     const { patientid, summary, recordid, resultid } = req.body;
-    console.log(patientid, summary, recordid, resultid);
-
     try {
         if (recordid === undefined && resultid === undefined) {
             const saveRecordsSummary = await pool.query("INSERT INTO previous_summarizations (patientid, sammary, recordid, summary_date, resultid) VALUES ($1, $2, $3, $4, $5) RETURNING *", [patientid, summary, 'all', new Date(), 0]);
@@ -473,8 +463,6 @@ router.post('/savesummary', async (req, res) => {
 // Get saved summary
 router.get('/get/savedsummary/:id', async (req, res) => {
     const { id } = req.params;
-    console.log(id);
-
     try {
         const savedSummaryQuery = await pool.query('SELECT * FROM previous_summarizations WHERE id = $1', [id]);
         if (savedSummaryQuery.rows.length === 0) {
@@ -494,7 +482,6 @@ router.get('/get/savedsummary/:id', async (req, res) => {
 // Update record star
 router.put('/updaterecordstar', async (req, res) => {
     const { recordid, star } = req.body;
-    console.log(recordid, star, req.body);
     try {
         const updateRecordStar = await pool.query('UPDATE record SET star = $1 WHERE recordid = $2 RETURNING *', [star, recordid]);
         if (updateRecordStar.rows.length === 0) {
@@ -509,7 +496,6 @@ router.put('/updaterecordstar', async (req, res) => {
 // update prescription start
 router.put('/updateprescriptionstar', async (req, res) => {
     const { prescribedMedicine, star } = req.body;
-    console.log(prescribedMedicine, star);
     try {
         for (let i = 0; i < prescribedMedicine.length; i++) {
             const updatePrescriptionStar = await pool.query('UPDATE prescription SET star = $1 WHERE id = $2 RETURNING *', [star, prescribedMedicine[i]]);
@@ -530,7 +516,6 @@ router.put('/updateprescriptionstar', async (req, res) => {
 // update result star
 router.put('/updateresultstar', async (req, res) => {
     const { resultid, star } = req.body;
-    console.log(resultid, star);
     try {
         const updateResultStar = await pool.query('UPDATE result SET star = $1 WHERE id = $2 RETURNING *', [star, resultid]);
         if (updateResultStar.rows.length === 0) {
@@ -546,7 +531,6 @@ router.put('/updateresultstar', async (req, res) => {
 
 router.put('/updatelabteststar', async (req, res) => {
     const { mainid, star } = req.body;
-    console.log(mainid, star);
     try {
 
         const updateLabTestStar = await pool.query('UPDATE lab_test SET star = $1 WHERE id = $2 RETURNING *', [star, mainid]);
@@ -563,7 +547,6 @@ router.put('/updatelabteststar', async (req, res) => {
 
 router.put('/updateradiologystar', async (req, res) => {
     const { mainid, star } = req.body;
-    console.log(mainid, star);
     try {
 
         const updateRadiologyStar = await pool.query('UPDATE radiology SET star = $1 WHERE id = $2 RETURNING *', [star, mainid]);
