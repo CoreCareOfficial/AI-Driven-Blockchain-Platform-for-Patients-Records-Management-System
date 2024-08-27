@@ -13,8 +13,6 @@ function CountrySelector(props) {
     const setUserInfo = useSetRecoilState(props.isFacility ? HealthcareFacilityInfo : userInfo);
     const userInfoValue = useRecoilValue(props.isFacility ? HealthcareFacilityInfo : userInfo);
     const [value, setValue] = useState(userInfoValue[props.name]);
-    console.log('country : ' + userInfoValue[props.name]);
-
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -33,7 +31,6 @@ function CountrySelector(props) {
 
     const changeHandler = (value) => {
         setValue(value);
-        console.log(value.label);
         if (props.name) {
             setUserInfo((prevUserInfo) => ({
                 ...prevUserInfo,

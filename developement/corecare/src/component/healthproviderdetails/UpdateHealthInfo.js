@@ -5,6 +5,8 @@ import AdvanceDemo from "../../utiles/Upload";
 import { Toast } from "primereact/toast";
 
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function UpdateHealthInfo(props) {
 
     const initialHealthInfo = {
@@ -33,12 +35,11 @@ function UpdateHealthInfo(props) {
     // };
 
     const handleonSubmit = async () => {
-        console.log('healthInfo', healthInfo);
         if (!props.patientid) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Selected Patient' });
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/healthinfo/updatehealthinfo/${props.patientid}`, {
+            const response = await fetch(`${SERVER_URL}/healthinfo/updatehealthinfo/${props.patientid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -46,16 +47,13 @@ function UpdateHealthInfo(props) {
                 body: JSON.stringify(healthInfo)
             });
             if (!response.ok) {
-                console.log('An error occurred during the upload.(re)');
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Updating Health Info' });
                 throw new Error('An error occurred during the upload.');
             }
             const jsonData = response.json();
-            console.log(jsonData.message)
             toast.current.show({ severity: 'success', summary: 'Success', detail: 'Health Info Updated Successfully' });
             resetHealthInfo();
         } catch (error) {
-            console.log(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Updating Health Info' });
         }
     }

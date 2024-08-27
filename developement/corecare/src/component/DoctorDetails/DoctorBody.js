@@ -1,8 +1,11 @@
+
 import DoctorBodyLeft from "./DoctorBodyLeft";
 import DoctorBodyRight from "./DoctorBodyRight";
 import { useEffect, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import defaultPic from '../../assets/user_signup.png'
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function DoctorBody(props) {
     const toast = useRef(null);
@@ -16,7 +19,7 @@ function DoctorBody(props) {
                 return;
             }
             try {
-                const response = await fetch(`http://127.0.0.1:4000/healthinfo/personalhealthinfo/${props.patientid}`, {
+                const response = await fetch(`${SERVER_URL}/healthinfo/personalhealthinfo/${props.patientid}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
@@ -27,7 +30,6 @@ function DoctorBody(props) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const jsonData = await response.json();
-                console.log(jsonData);
                 setInfo(jsonData);
             }
             catch (error) {

@@ -2,6 +2,10 @@ import React, { useRef, useState } from 'react';
 import { FileUpload } from 'primereact/fileupload';
 import { Toast } from 'primereact/toast';
 
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 export default function AdvanceDemo(props) {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
@@ -54,7 +58,7 @@ export default function AdvanceDemo(props) {
             return;
         }
         try {
-            const uploadUrl = `http://127.0.0.1:4000/diagnosis/uploadresults`;
+            const uploadUrl = `${SERVER_URL}/diagnosis/uploadresults`;
             const formData = new FormData();
             formData.append('patientid', data.patientid);
             formData.append('keyuser', data.keyuser);
@@ -65,7 +69,6 @@ export default function AdvanceDemo(props) {
                 formData.append('results', file);
             });
 
-            console.log('formData', formData);
             const xhr = new XMLHttpRequest();
             xhr.upload.addEventListener('progress', (event) => {
                 if (event.lengthComputable) {

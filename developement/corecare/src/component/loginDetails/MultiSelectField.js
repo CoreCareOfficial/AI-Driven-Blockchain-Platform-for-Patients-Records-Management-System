@@ -49,7 +49,7 @@ function MultiSelectField(props) {
             ...prevUserInfo,
             academicDegree: event.target.value
         }));
-        console.log(event.target.value)
+
     };
 
     return (

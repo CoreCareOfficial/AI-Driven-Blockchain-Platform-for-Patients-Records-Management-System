@@ -12,6 +12,9 @@ import { useNavigate } from 'react-router-dom';
 import { Toast } from 'primereact/toast';
 
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
 const useOptimistic = (initialValue, callback) => {
     const [value, setValue] = useState(initialValue);
 
@@ -88,14 +91,13 @@ function SignupPage3() {
         toast.current.show({ severity: 'info', summary: 'Processing', detail: 'Checking your ID card and ID, please wait...', life: 3000 });
 
         try {
-            const response = await fetch("http://127.0.0.1:4000/ai/checkidentity", {
+            const response = await fetch(`${SERVER_URL}/ai/checkidentity`, {
                 method: "POST",
                 body: formData,
             });
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 navigate(nextPage);
                 // Optionally show a success toast
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'ID check successful' });
@@ -133,14 +135,13 @@ function SignupPage3() {
     //     formData.append('image', userInfoValue.FIdCardPhoto ? userInfoValue.FIdCardPhoto : userInfoValue.passportPhoto);
 
     //     try {
-    //         const response = await fetch("http://127.0.0.1:4000/checkidentity", {
+    //         const response = await fetch(`${SERVER_URL}/checkidentity`, {
     //             method: "POST",
     //             body: formData
     //         });
     //         if (response.ok) {
     //             const data = await response.json();
-    //             console.log(data);
-    //             navigate(nextPage);
+    //                 //             navigate(nextPage);
     //         } else {
     //             const errorData = await response.json(); // Parse the error response if any
     //             toast.current.show({ severity: 'error', summary: 'Error', detail: errorData.message || 'Invalid Data' });

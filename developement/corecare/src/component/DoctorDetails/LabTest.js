@@ -142,9 +142,6 @@ function LabTest(props) {
     };
 
     useEffect(() => {
-        console.log('==========================================================');
-        console.log(`all radiology : ${userHealthInfoLab.labTests.selectedList}`);
-        console.log('==========================================================');
     }, [userHealthInfoLab]);
 
     return (

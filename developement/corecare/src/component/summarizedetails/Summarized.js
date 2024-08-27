@@ -9,7 +9,6 @@ function Summarized(props) {
     const [info, setInfo] = useState(null);
     useEffect(() => {
         setInfo(props.info);
-        console.log("ddd", props.info);
     }, [props.info])
 
     function calculateAge(dateOfBirth) {

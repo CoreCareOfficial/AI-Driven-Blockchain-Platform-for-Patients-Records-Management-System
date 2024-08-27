@@ -32,10 +32,8 @@ function ReportPage() {
             if (type === 'prescription') {
                 setPrescriptionsInfo(parsedInfo);
             } else if (type === 'lab') {
-                console.log('lab', parsedInfo);
             }
         } else {
-            console.log('no data');
         }
     }, [location.search]);
 

@@ -13,7 +13,7 @@ const PrescribedItem = ({ icon, title, items = [], handleClick, handleRemove, to
                     <div key={index} className="flex flex-row justify-start">
                         <div className="bg-white text-black py-1 px-2 rounded-sm w-fit m-2">{index + 1}</div>
                         <div className="text-center self-center">{item[toshow]} ({item[mainKey]})</div>
-                        {console.log(index)}
+
                         <CiCircleMinus
                             style={{ fontSize: '1.6em', color: 'red', cursor: 'pointer', alignSelf: 'center', marginLeft: 'auto' }}
                             onClick={() => handleRemove(index)}

@@ -12,6 +12,9 @@ import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
 const useOptimistic = (initialValue, callback) => {
     const [value, setValue] = useState(initialValue);
 
@@ -38,7 +41,7 @@ function RecordesMenu(props) {
 
     const fetchFile = async (id, action) => {
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/getresult/${id}`, {
+            const response = await fetch(`${SERVER_URL}/records/getresult/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -48,8 +51,6 @@ function RecordesMenu(props) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const jsonData = await response.json();
-            console.log(`Success loading:`, jsonData);
-
             if (jsonData.filetype === 'pdf') {
                 const byteCharacters = atob(jsonData.data);
                 const byteNumbers = new Array(byteCharacters.length);
@@ -63,7 +64,6 @@ function RecordesMenu(props) {
                 action === 'open'
                     ? window.open(`/read-pdf?${query}`, '_blank')
                     : window.open(`/print-pdf?${query}`, '_blank');
-                console.log('action', action);
             } else if (jsonData.filetype === 'dicom') {
                 const byteArray = new Uint8Array(atob(jsonData.data).split("").map(char => char.charCodeAt(0)));
                 const blob = new Blob([byteArray], { type: 'application/dicom' });
@@ -87,7 +87,7 @@ function RecordesMenu(props) {
             return;
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/get/prescription`, {
+            const response = await fetch(`${SERVER_URL}/records/get/prescription`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -99,7 +99,6 @@ function RecordesMenu(props) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const jsonData = await response.json();
-            console.log(`Success loading:`, jsonData);
             const query = queryString.stringify({ info: JSON.stringify(jsonData), type: 'prescription', action: action });
             window.open(`/open-report?${query}`, '_blank');
         } catch (err) {
@@ -114,7 +113,7 @@ function RecordesMenu(props) {
             return;
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/get/labtest`, {
+            const response = await fetch(`${SERVER_URL}/records/get/labtest`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -126,7 +125,6 @@ function RecordesMenu(props) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const jsonData = await response.json();
-            console.log(`Success loading:`, jsonData);
             const query = queryString.stringify({ info: JSON.stringify(jsonData), type: 'lab', action: action });
             window.open(`/open-report?${query}`, '_blank');
         } catch (err) {
@@ -140,7 +138,7 @@ function RecordesMenu(props) {
             return;
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/get/radiology`, {
+            const response = await fetch(`${SERVER_URL}/records/get/radiology`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -152,7 +150,6 @@ function RecordesMenu(props) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const jsonData = await response.json();
-            console.log(`Success loading:`, jsonData);
             const query = queryString.stringify({ info: JSON.stringify(jsonData), type: 'rad', action: action });
             window.open(`/open-report?${query}`, '_blank');
         } catch (err) {
@@ -162,7 +159,7 @@ function RecordesMenu(props) {
     };
     const fetchSummary = async (action) => {
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/get/savedsummary/${selectedFile.id}`, {
+            const response = await fetch(`${SERVER_URL}/records/get/savedsummary/${selectedFile.id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -173,7 +170,6 @@ function RecordesMenu(props) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const jsonData = await response.json();
-            console.log(`Success loading:`, jsonData);
             const query = queryString.stringify({ info: JSON.stringify(jsonData), type: 'summarized', action: action });
             window.open(`/open-report?${query}`, '_blank');
         } catch (err) {
@@ -191,7 +187,7 @@ function RecordesMenu(props) {
             recordid: selectedFile.id
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/get/generalreport`, {
+            const response = await fetch(`${SERVER_URL}/records/get/generalreport`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -203,7 +199,6 @@ function RecordesMenu(props) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const jsonData = await response.json();
-            console.log(`Success loading:`, jsonData);
             const query = queryString.stringify({ info: JSON.stringify(jsonData), type: 'general', action: action });
             window.open(`/open-report?${query}`, '_blank');
         } catch (err) {
@@ -273,8 +268,6 @@ function RecordesMenu(props) {
 
 
     const [userInfoOptimistic, setUserInfoOptimistic] = useOptimistic(props.patientId ? props : loginInfo, async (newUserInfoValue) => {
-        console.log(newUserInfoValue.patientId);
-        console.log(selectedFile.id);
         props.toast({ severity: 'info', summary: 'Processing', detail: 'Summarizing Medical Record, please wait...', life: 5000 });
 
         const data = !props.isRecord ? {
@@ -285,7 +278,7 @@ function RecordesMenu(props) {
             recordid: selectedFile.id
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/ai/${props.isRecord ? 'summarizeonerecord' : 'summarizresult'}`, {
+            const response = await fetch(`${SERVER_URL}/ai/${props.isRecord ? 'summarizeonerecord' : 'summarizresult'}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -295,7 +288,6 @@ function RecordesMenu(props) {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 if (props.handleSummarize)
                     props.handleSummarize(data);
                 // navigate('/signup/password-step');
@@ -320,7 +312,6 @@ function RecordesMenu(props) {
             props.toast({ severity: 'error', summary: 'Error', detail: 'Sorry Error Occured,Session expired please login in again' });
             return;
         }
-        console.log(patientId);
         try {
             await setUserInfoOptimistic(props.patientId ? props : userInfoValue);
         } catch (error) {
@@ -333,9 +324,8 @@ function RecordesMenu(props) {
     const fetchStar = async (data, api) => {
         if (props.handleMenuClick)
             props.handleMenuClick();
-        console.log('data star', data);
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/${api}`, {
+            const response = await fetch(`${SERVER_URL}/records/${api}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

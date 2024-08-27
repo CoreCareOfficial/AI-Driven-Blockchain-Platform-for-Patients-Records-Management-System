@@ -10,6 +10,10 @@ import { useRef } from "react";
 import { Toast } from "primereact/toast";
 
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
+
 function ForgetPasswordPage() {
     const toast = useRef(null);
     const setUserInfo = useSetRecoilState(GeneralData);
@@ -26,7 +30,7 @@ function ForgetPasswordPage() {
             email: v
         };
         try {
-            const response = await fetch("http://127.0.0.1:4000/login/checkemail", {
+            const response = await fetch(`${SERVER_URL}/login/checkemail`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -35,7 +39,6 @@ function ForgetPasswordPage() {
             });
 
             const data = await response.json();
-            console.log(data);
             if (data.message === "Account doesn't Exists") {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Invalid Email' });
             }

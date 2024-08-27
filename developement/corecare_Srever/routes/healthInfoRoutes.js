@@ -14,7 +14,6 @@ const __dirname = path.dirname(__filename);
 // Helper function to read file content
 const readFileContent = async (filePath) => {
     if (!filePath) {
-        console.log(`Skipping file read for null or undefined path`);
         return null;
     }
     try {
@@ -316,19 +315,12 @@ router.get('/personalhealthinfo/:patientid', async (req, res) => {
 router.put('/updatehealthinfo/:patientid', async (req, res) => {
     const { patientid } = req.params;
     const { blood, bloodsugar, bloodpressure, heartrate, respiratoryrate, allergies } = req.body;
-    console.log('req.body:', req.body);
-    console.log('req.params:', req.params);
-    console.log(patientid);
-    console.log(blood, bloodsugar, bloodpressure, heartrate, respiratoryrate, allergies);
     const currentDate = moment().tz('Asia/Aden').format('YYYY-MM-DDTHH:mm:ss');
-
-    console.log('currentDate:', currentDate);
-
 
     try {
 
 
-        console.log('1')
+
         const updateHealthInfo = await pool.query(
             `INSERT INTO health_info (blood, bloodsugar, bloodpressure, heartrate, respiratoryrate, patientid, blooddate, bloodsugardate, bloodpressuredate, heartratedate, respiratoryratedate)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
@@ -347,7 +339,7 @@ router.put('/updatehealthinfo/:patientid', async (req, res) => {
             [blood, bloodsugar, bloodpressure, heartrate, respiratoryrate, patientid, currentDate, currentDate, currentDate, currentDate, currentDate]
         );
 
-        console.log('2')
+
         const updateAllergies = await pool.query(
             `INSERT INTO allergies (allergyname, allergiesdate, patientid)
             VALUES ($1, $2, $3)
@@ -357,18 +349,16 @@ router.put('/updatehealthinfo/:patientid', async (req, res) => {
             [allergies, currentDate, patientid]
         );
 
-        console.log('3')
+
 
         if (updateHealthInfo.rows.length === 0 && updateAllergies.rows.length === 0) {
-            console.log('5')
+
             return res.status(404).json({ message: 'Failed to update health information' });
 
         }
-        console.log('4')
+
         res.status(200).json({ message: "Patient updated successfully" });
     } catch (err) {
-        console.log('6')
-        console.log(err.message);
         res.status(500).json({ message: err.message });
     }
 });

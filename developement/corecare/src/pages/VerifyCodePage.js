@@ -1,3 +1,5 @@
+
+
 import { useRecoilValue } from "recoil";
 import CardLogin from "../component/bootcomponent/CardLogin";
 import FormLogin from "../component/loginDetails/FormLogin";
@@ -7,6 +9,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from "../Recoil/Atom";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function VerifyCodePage() {
 
@@ -53,9 +57,8 @@ function VerifyCodePage() {
     };
 
     const handleSendCode = async () => {
-        console.log('email: ' + email);
         try {
-            const response = await fetch("http://127.0.0.1:4000/verification", {
+            const response = await fetch(`${SERVER_URL}/verification`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email })
@@ -78,13 +81,12 @@ function VerifyCodePage() {
     const handleVerifyCode = async () => {
         const verificationCode = code.join('');
         try {
-            const response = await fetch("http://127.0.0.1:4000/verification/verify-code", {
+            const response = await fetch(`${SERVER_URL}/verification/verify-code`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, code: verificationCode })
             });
             if (response.ok) {
-                console.log('go to next page');
                 navigate(nextPage);
             } else {
                 const errorData = await response.text();

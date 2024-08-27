@@ -11,6 +11,9 @@ import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { GeneralData, HealthcareFacilityInfo, loginInfo, userInfo } from '../Recoil/Atom';
 import { useEffect, useRef, useState } from 'react';
 
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function EndSignupPage() {
 
     const hasEffectRun = useRef(false);
@@ -45,14 +48,13 @@ function EndSignupPage() {
     const successfulChangePassword = async () => {
         const email = userloginInfo.login;
         const newPassword = userloginInfo.password;
-        console.log('new password of forget: ' + newPassword);
         const loginData = {
             email: email,
             newPassword: newPassword,
         };
 
         try {
-            const userResponse = await fetch("http://127.0.0.1:4000/login/forget", {
+            const userResponse = await fetch(`${SERVER_URL}/login/forget`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -60,11 +62,9 @@ function EndSignupPage() {
                 body: JSON.stringify(loginData)
             });
             if (userResponse.ok) {
-                console.log("Password Updated Successfully");
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Password Updated Successfully' });
                 setState((prevState) => ({ ...prevState, successful: true }));
             } else {
-                console.log("Password has NOT Updated");
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Password has NOT Updated' });
                 setState((prevState) => ({ ...prevState, errorMessage: "Password has NOT Updated", successful: false }));
             }
@@ -81,10 +81,7 @@ function EndSignupPage() {
         let password = '';
         let username = '';
         let successfulAddUser = false;
-        console.log("type1: " + type);
         if (type === "Patient" || type === "Doctor") {
-            console.log("type2: " + type);
-            console.log("hashedPassword 4 atom= " + userInfoValue.password);
             const formData = new FormData();
             formData.append('username', userInfoValue.userName);
             formData.append('firstName', userInfoValue.firstName);
@@ -115,17 +112,13 @@ function EndSignupPage() {
             password = userInfoValue.password;
             username = userInfoValue.userName;
             try {
-                const response = await fetch("http://127.0.0.1:4000/patients", {
+                const response = await fetch(`${SERVER_URL}/patients`, {
                     method: "POST",
                     body: formData
                 });
                 if (response.ok) {
-                    console.log("res = " + response);
-                    console.log('Added Patient Successful');
                     if (type === "Doctor") {
-                        console.log("type4: " + type);
                         const patientId = await response.json();
-                        console.log('patientId : ' + patientId);
                         const doctorFormData = new FormData();
                         doctorFormData.append('username', userInfoValue.userName);
                         doctorFormData.append('patientID', patientId);
@@ -135,13 +128,11 @@ function EndSignupPage() {
                         doctorFormData.append('licenseNumber', userInfoValue.licenseNumber);
                         doctorFormData.append('licenseDocument', userInfoValue.licenseDocument);
                         try {
-                            const doctorResponse = await fetch("http://127.0.0.1:4000/doctors", {
+                            const doctorResponse = await fetch(`${SERVER_URL}/doctors`, {
                                 method: "POST",
                                 body: doctorFormData
                             });
                             if (doctorResponse.ok) {
-                                console.log("res = " + doctorResponse);
-                                console.log('Added Doctor Successful');
                                 successfulAddUser = true;
                             } else {
                                 successfulAddUser = false;
@@ -155,8 +146,6 @@ function EndSignupPage() {
                         }
                     } else {
                         successfulAddUser = true;
-                        console.log('else Patient Successful');
-                        console.log(successfulAddUser);
                     }
                 } else {
                     successfulAddUser = false;
@@ -193,13 +182,11 @@ function EndSignupPage() {
             password = facilityInfoValue.password;
             username = facilityInfoValue.userName;
             try {
-                const response = await fetch("http://127.0.0.1:4000/healthcareproviders", {
+                const response = await fetch(`${SERVER_URL}/healthcareproviders`, {
                     method: "POST",
                     body: formData
                 });
                 if (response.ok) {
-                    console.log("res = " + response);
-                    console.log(`Added ${type} Successful`);
                     successfulAddUser = true;
                 } else {
                     successfulAddUser = false;
@@ -213,7 +200,6 @@ function EndSignupPage() {
             }
         }
         if (successfulAddUser && email && password && username) {
-            console.log("type3: " + type);
             const loginData = {
                 email: email,
                 password: password,
@@ -222,7 +208,7 @@ function EndSignupPage() {
             };
 
             try {
-                const userResponse = await fetch("http://127.0.0.1:4000/login/add", {
+                const userResponse = await fetch(`${SERVER_URL}/login/add`, {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'
@@ -230,7 +216,6 @@ function EndSignupPage() {
                     body: JSON.stringify(loginData)
                 });
                 if (userResponse.ok) {
-                    console.log("User Added Successful");
                     toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
                     setState((prevState) => ({ ...prevState, successful: true }));
                 } else {

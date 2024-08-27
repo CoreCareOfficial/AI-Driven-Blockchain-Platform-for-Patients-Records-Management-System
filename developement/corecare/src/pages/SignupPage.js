@@ -11,6 +11,9 @@ import { useSetRecoilState } from 'recoil';
 import '../component/bootcomponent/message.css';
 import { Toast } from 'primereact/toast';
 
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function SignupPage() {
     const toast = useRef(null);
     const [emailValue, setEmailValue] = useState('');
@@ -24,19 +27,15 @@ function SignupPage() {
             email: v
         };
         try {
-            const response = await fetch("http://127.0.0.1:4000/login", {
+            const response = await fetch(`${SERVER_URL}/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(checkEmail)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Email doesn't Exist") {
-                console.log(jsonData.message);
-
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
                 setUserInfo((prevUserInfo) => ({

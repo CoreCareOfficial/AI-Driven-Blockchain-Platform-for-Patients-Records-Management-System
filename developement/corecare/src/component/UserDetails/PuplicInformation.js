@@ -18,10 +18,12 @@ import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
 function PuplicInformation(props) {
     const facilityInfo = props.facilityInfo;
     const loginInfoValue = useRecoilValue(loginInfo);
-    console.log('facilityInfo:', facilityInfo);
     const [doctors, setDoctors] = useState({});
     const [userData, setUserData] = useState({
         practiceinfo: [],
@@ -54,7 +56,6 @@ function PuplicInformation(props) {
                     [setStateKey]: jsonData,
                 }));
             }
-            console.log(`Success loading ${setStateKey}:`, jsonData);
         } catch (err) {
             console.error("Error:", err);
         } finally {
@@ -68,36 +69,26 @@ function PuplicInformation(props) {
     useEffect(() => {
         //call the api to get the doctor data when userType is Doctor
         if (props.userType === "Doctor") {
-            fetchData(`http://127.0.0.1:4000/doctors/${props.userId}`, "doctors");
+            fetchData(`${SERVER_URL}/doctors/${props.userId}`, "doctors");
         }
 
     }, [props.userId, props.userType]);
 
     useEffect(() => {
         if (props.userType === "Doctor") {
-            console.log('doctors.doctorid:', doctors.doctorid);
-            fetchData(`http://127.0.0.1:4000/practiceinfo/${doctors.doctorid}`, "practiceinfo");
-            fetchData(`http://127.0.0.1:4000/educationalinfo/${doctors.doctorid}`, "educationalinfo");
+            fetchData(`${SERVER_URL}/practiceinfo/${doctors.doctorid}`, "practiceinfo");
+            fetchData(`${SERVER_URL}/educationalinfo/${doctors.doctorid}`, "educationalinfo");
         } else {
-            fetchData(`http://127.0.0.1:4000/services/${facilityInfo.id}`, "emergencyservices");
+            fetchData(`${SERVER_URL}/services/${facilityInfo.id}`, "emergencyservices");
             if (props.userType === "Hospital") {
-                console.log('facilityInfo.facility_id:', facilityInfo.id);
-                fetchData(`http://127.0.0.1:4000/departments/${facilityInfo.id}`, "departments");
-                fetchData(`http://127.0.0.1:4000/visithours/${loginInfoValue.login}`, "visithours");
+                fetchData(`${SERVER_URL}/departments/${facilityInfo.id}`, "departments");
+                fetchData(`${SERVER_URL}/visithours/${loginInfoValue.login}`, "visithours");
             }
         }
-        fetchData(`http://127.0.0.1:4000/workhours/${loginInfoValue.login}`, "workhours");
+        fetchData(`${SERVER_URL}/workhours/${loginInfoValue.login}`, "workhours");
     }, [doctors?.doctorid, props.userType, facilityInfo?.id, loginInfoValue?.login]);
 
     const { practiceinfo, educationalinfo, workhours, departments, emergencyservices, visithours } = userData;
-
-    console.log('doctors:', doctors);
-    console.log('practiceinfo:', practiceinfo);
-    console.log('educationalinfo:', educationalinfo);
-    console.log('workhours:', workhours);
-    console.log('departments:', departments);
-    console.log('emergencyservices:', emergencyservices);
-    console.log('visithours:', visithours);
 
     return (
         <>

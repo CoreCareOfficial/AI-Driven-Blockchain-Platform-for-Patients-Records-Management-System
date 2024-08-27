@@ -1,3 +1,4 @@
+
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import '../../css/DoctorPageStyle/diagonsis.css';
@@ -11,6 +12,8 @@ import NextVisit from './NextVisit';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { userHealthInfo } from '../../Recoil/Atom';
 import { Toast } from 'primereact/toast';
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const Diagnosis = ({ patientid, keyuser, handleLabClick, handleXrayClick, handlePrescriptionClick }) => {
     const [healthInfo, setHealthInfo] = useRecoilState(userHealthInfo);
@@ -131,9 +134,8 @@ const Diagnosis = ({ patientid, keyuser, handleLabClick, handleXrayClick, handle
             nextVisitReason: reasonOfNextVisit
         };
         // Send formData to the backend
-        console.log(formData);
         try {
-            const response = await fetch('http://127.0.0.1:4000/diagnosis', {
+            const response = await fetch(`${SERVER_URL}/diagnosis`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdMoreHoriz } from "react-icons/md";
 import { IoStarSharp } from "react-icons/io5";
@@ -7,6 +8,8 @@ import RecordesMenu from '../recordesdetails/RecordesMenu';
 import ConfirmedDialog from '../../utiles/ConfirmedDialog';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { Toast } from 'primereact/toast';
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 // import { loginInfo } from '../../Recoil/Atom';
 // import { useRecoilValue } from 'recoil';
 
@@ -50,7 +53,6 @@ function SharedRecords(props) {
                 break;
             case "prescribed lab test":
                 setRecordsList(prescribedlabtest);
-                console.log('prescribedlabtest', prescribedlabtest);
                 break;
             default:
                 setRecordsList(allRecords);
@@ -59,7 +61,6 @@ function SharedRecords(props) {
     }, [props.tableTitle, reports, labTests, radiologies, prescriptons, allRecords, prescribedlabtest, prescribedradiologytes, GeneralReport]); // Include dependencies here
 
     const handleMenuClick = (e, data) => {
-        console.log('data', data);
         const rect = e.target.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         setMenuPosition({ top: rect.top + scrollTop, left: rect.left });
@@ -85,7 +86,7 @@ function SharedRecords(props) {
             resultid: dataSummarize.resultid,
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/savesummary`, {
+            const response = await fetch(`${SERVER_URL}/records/savesummary`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -100,7 +101,6 @@ function SharedRecords(props) {
         } catch (error) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Summary Saved' });
         }
-        console.log('Save Summarize');
         setIsOpenSummarize(!isOpenSummarize);
     }
 
@@ -114,7 +114,6 @@ function SharedRecords(props) {
     };
     const [starred, setStarred] = useState({});
     const handleStarred = (id, state) => {
-        console.log('id', id);
         setStarred((prevState) => ({
             ...prevState,
             [id]: state,
@@ -138,7 +137,6 @@ function SharedRecords(props) {
     };
 
     const handleMenuVerticalClick = (e, data) => {
-        console.log('e.id', e.target.id);
         const rect = e.target.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         // const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
@@ -225,7 +223,7 @@ function SharedRecords(props) {
                                                     <td>{typeFile}</td>
                                                     <td>{child.data["Name Of Health Provider"]}</td>
                                                     <td>{formatDate(child.data["date"])}</td>
-                                                    {console.log('child.data', child.data)}
+
                                                     <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={child.key} onClick={(e) => handleMenuClick(e, child.data)} /></span></td>
                                                     <td></td>
                                                 </tr>
@@ -253,7 +251,7 @@ function SharedRecords(props) {
                                     <td>{typeFile}</td>
                                     <td>{record.data["Name Of Health Provider"]}</td>
                                     <td>{formatDate(record.data["date"])}</td>
-                                    {console.log('child.data', record.data)}
+
                                     <td><span style={{ cursor: 'pointer' }}><MdMoreHoriz id={record.key} onClick={(e) => handleMenuClick(e, record.data)} /></span></td>
                                     <td></td>
                                 </tr>

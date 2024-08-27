@@ -43,7 +43,6 @@ router.post('/checkidentity', upload.single('image'), async (req, res) => {
     const prompt = "if the text i provided is either extracted from an id card or a passport photo .. if it is from a passport extract passport number only without any other charachters before it or after it and return it in one line withoutany addiotional info, if it is from an id card extract id number only without any other charachters before it or after it and return it in one line withoutany addiotional info, and if it is neither return only empty string withoutany addiotional info";
     const file = req.file;
     const id = req.body.id;
-    console.log(id);
     // const filePath = 'c:/Users/osama/Documents/v.jpg';
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
@@ -61,8 +60,6 @@ router.post('/checkidentity', upload.single('image'), async (req, res) => {
         await worker.terminate();
 
         const fileContent = data.text;
-        console.log(fileContent);
-
         // Enhanced prompt creation
         const combinedPrompt = `Prompt: ${prompt}\nFile Content: ${fileContent}`;
 
@@ -88,7 +85,6 @@ router.post('/checkidentity', upload.single('image'), async (req, res) => {
         });
         const response = await result.response;
         const text = response.text().trim();
-        console.log(text);
         if (id === text) {
             res.status(200).json({ message: "matched" })
         }
@@ -108,7 +104,6 @@ router.post('/checklicense', upload.single('image'), async (req, res) => {
     const prompt = "if the text i provided is either extracted from doctor license , hospital license, pharmacy license, laboratory license or Radiology center license    .. extract license number only (it may contain charachters and special charachters) and return it in one line withoutany addiotional info, and if it is neither return only empty string withoutany addiotional info";
     const file = req.file;
     const id = req.body.id;
-    console.log(id);
     // const filePath = 'c:/Users/osama/Documents/v.jpg';
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
@@ -126,8 +121,6 @@ router.post('/checklicense', upload.single('image'), async (req, res) => {
         await worker.terminate();
 
         const fileContent = data.text;
-        console.log(fileContent);
-
         // Enhanced prompt creation
         const combinedPrompt = `Prompt: ${prompt}\nFile Content: ${fileContent}`;
 
@@ -153,7 +146,6 @@ router.post('/checklicense', upload.single('image'), async (req, res) => {
         });
         const response = await result.response;
         const text = response.text().trim();
-        console.log(text);
         if (id === text) {
             res.status(200).json({ message: "matched" })
         }
@@ -171,7 +163,6 @@ router.post('/checklicense', upload.single('image'), async (req, res) => {
 // Summarize medical record files
 router.post('/summarizerecords', upload.single('file'), async (req, res) => {
     const { patientid } = req.body
-    console.log(patientid);
     const prompt = "Summarize medical record files , extract relevant information such as patient demographics, medical history, diagnoses, treatments, and outcomes. Identify key trends and patterns in the data. Here is the process you will follow to summarize the medical record files: 1. *Review the files.* you will carefully review all of the medical record files that i send you. This may include doctor's notes, hospital records, lab results, and imaging studies. 2. *Extract relevant information.* you will extract the following information from the medical record files:   * Patient demographics: name, date of birth, gender, address, etc.   * Medical history: past illnesses, surgeries, hospitalizations, etc.    * Diagnoses: all of the medical conditions that have been diagnosed for the patient.    * Treatments: all of the treatments that have been prescribed for the patient.    * Outcomes: the results of the treatments. 3. *Identify key trends and patterns.* you will look for any key trends or patterns in the data. For example, you may look for changes in the patient's symptoms over time, or you may look for any relationships between the patient's medical conditions and their treatments.\n4. *Summarize the information.* you will summarize the information that youI have extracted from the medical record files in a clear and concise manner. The summary will include the patient's demographics, medical history, diagnoses, treatments, outcomes, and any key trends or patterns that you have identified.  provide me with a comprehensive and accurate summary of the medical record files. give me the response in english then in arabic seperate them with <hr>,"
 
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
@@ -265,8 +256,6 @@ router.post('/summarizerecords', upload.single('file'), async (req, res) => {
         const text = await sumresponse.text();
 
         res.json({ summary: text });
-        console.log(text);
-        // console.log(text);
     } catch (error) {
         console.error('Error generating content:', error);
         res.status(500).send('Internal Server Error');
@@ -276,7 +265,6 @@ router.post('/summarizerecords', upload.single('file'), async (req, res) => {
 // Summarize one medical record file
 router.post('/summarizeonerecord', upload.single('file'), async (req, res) => {
     const { patientid, recordid } = req.body
-    console.log(patientid, recordid);
     const prompt = "Summarize medical record files , extract relevant information such as patient demographics, medical history, diagnoses, treatments, and outcomes. Identify key trends and patterns in the data. Here is the process you will follow to summarize the medical record files: 1. *Review the files.* you will carefully review all of the medical record files that i send you. This may include doctor's notes, hospital records, lab results, and imaging studies. 2. *Extract relevant information.* you will extract the following information from the medical record files:   * Patient demographics: name, date of birth, gender, address, etc.   * Medical history: past illnesses, surgeries, hospitalizations, etc.    * Diagnoses: all of the medical conditions that have been diagnosed for the patient.    * Treatments: all of the treatments that have been prescribed for the patient.    * Outcomes: the results of the treatments. 3. *Identify key trends and patterns.* you will look for any key trends or patterns in the data. For example, you may look for changes in the patient's symptoms over time, or you may look for any relationships between the patient's medical conditions and their treatments.\n4. *Summarize the information.* you will summarize the information that youI have extracted from the medical record files in a clear and concise manner. The summary will include the patient's demographics, medical history, diagnoses, treatments, outcomes, and any key trends or patterns that you have identified.  provide me with a comprehensive and accurate summary of the medical record files. give me the response in english then in arabic seperate them with <hr>,"
 
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
@@ -370,8 +358,6 @@ router.post('/summarizeonerecord', upload.single('file'), async (req, res) => {
         const text = await sumresponse.text();
 
         res.json({ summary: text, recordid: recordid });
-        console.log(text);
-        // console.log(text);
     } catch (error) {
         console.error('Error generating content:', error);
         res.status(500).send('Internal Server Error');
@@ -381,7 +367,6 @@ router.post('/summarizeonerecord', upload.single('file'), async (req, res) => {
 // Summarize one medical result file
 router.post('/summarizresult', upload.single('file'), async (req, res) => {
     const { patientid, resultid } = req.body
-    console.log(patientid, resultid);
     const prompt = "Summarize medical record files , extract relevant information such as patient demographics, medical history, diagnoses, treatments, and outcomes. Identify key trends and patterns in the data. Here is the process you will follow to summarize the medical record files: 1. *Review the files.* you will carefully review all of the medical record files that i send you. This may include doctor's notes, hospital records, lab results, and imaging studies. 2. *Extract relevant information.* you will extract the following information from the medical record files:   * Patient demographics: name, date of birth, gender, address, etc.   * Medical history: past illnesses, surgeries, hospitalizations, etc.    * Diagnoses: all of the medical conditions that have been diagnosed for the patient.    * Treatments: all of the treatments that have been prescribed for the patient.    * Outcomes: the results of the treatments. 3. *Identify key trends and patterns.* you will look for any key trends or patterns in the data. For example, you may look for changes in the patient's symptoms over time, or you may look for any relationships between the patient's medical conditions and their treatments.\n4. *Summarize the information.* you will summarize the information that youI have extracted from the medical record files in a clear and concise manner. The summary will include the patient's demographics, medical history, diagnoses, treatments, outcomes, and any key trends or patterns that you have identified.  provide me with a comprehensive and accurate summary of the medical record files. give me the response in english then in arabic seperate them with <hr>,"
 
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
@@ -430,7 +415,6 @@ router.post('/summarizresult', upload.single('file'), async (req, res) => {
         const text = await sumresponse.text();
 
         res.json({ summary: text, recordid: results.recordid, resultid: resultid });
-        console.log(text);
     } catch (error) {
         console.error('Error generating content:', error);
         res.status(500).send('Internal Server Error');

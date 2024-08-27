@@ -5,6 +5,10 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { HealthcareFacilityInfo } from "../../Recoil/Atom";
 import { Toast } from "primereact/toast";
 
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function AddPharmacyAccount(props) {
 
     const h_1 = {
@@ -54,19 +58,15 @@ function AddPharmacyAccount(props) {
             email: v
         };
         try {
-            const response = await fetch("http://127.0.0.1:4000/login", {
+            const response = await fetch(`${SERVER_URL}/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(checkEmail)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Email doesn't Exist") {
-                console.log(jsonData.message);
-
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
                 setUserInfo((prevUserInfo) => ({
@@ -82,12 +82,10 @@ function AddPharmacyAccount(props) {
     };
 
     const handleOnSubmit = async () => {
-        console.log(userInfoValue);
         const username = userInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
             userInfoValue.name.toLocaleLowerCase().slice(-2) +
             userInfoValue.phoneNumber.slice(-3) +
             userInfoValue.licenseNumber.slice(-2);
-        console.log('username = ' + username);
         let email = '';
         let password = '';
         let successfulAddUser = false;
@@ -108,13 +106,11 @@ function AddPharmacyAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("http://127.0.0.1:4000/healthcareproviders/addhealthcareprovider", {
+            const response = await fetch(`${SERVER_URL}/healthcareproviders/addhealthcareprovider`, {
                 method: "POST",
                 body: formData
             });
             if (response.ok) {
-                console.log("res = " + response);
-
                 const { hashedPassword } = await response.json();
                 password = hashedPassword;
                 // toast.current.show({ severity: 'success', summary: 'Success', detail: 'Pharmacy Added Successfully' });
@@ -129,7 +125,6 @@ function AddPharmacyAccount(props) {
             successfulAddUser = false;
         }
         if (successfulAddUser && email && password && username) {
-            console.log("save in login");
             const loginData = {
                 email: email,
                 password: password,
@@ -138,7 +133,7 @@ function AddPharmacyAccount(props) {
             };
 
             try {
-                const userResponse = await fetch("http://127.0.0.1:4000/login/add", {
+                const userResponse = await fetch(`${SERVER_URL}/login/add`, {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'
@@ -146,7 +141,6 @@ function AddPharmacyAccount(props) {
                     body: JSON.stringify(loginData)
                 });
                 if (userResponse.ok) {
-                    console.log("User Added Successful");
                     toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
                 } else {
                     toast.current.show({ severity: 'error', summary: 'Error', detail: 'User could not be added' });

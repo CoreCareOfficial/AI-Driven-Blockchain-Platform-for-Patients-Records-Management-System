@@ -9,6 +9,10 @@ import { Toast } from "primereact/toast";
 import { loginInfo } from "../../../Recoil/Atom";
 import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
 
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function SettingBodyLift(props) {
     const toast = useRef(null);
     const setUpdateValue = useSetRecoilState(updateUserInfo);
@@ -51,17 +55,11 @@ function SettingBodyLift(props) {
         doctorid = ''
     } = props;
 
-    console.log('userInfo', userInfo);
-    console.log('healthInfo', healthInfo);
-    console.log('allergies', allergies);
-    console.log('healthcareProviderInfo', healthcareProviderInfo);
-
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-        console.log('date', `${day}-${month}-${year}`);
         return `${year}-${month}-${day}`;
     };
 
@@ -157,16 +155,14 @@ function SettingBodyLift(props) {
             thirdname: thirdName,
         };
         try {
-            const response = await fetch(`http://127.0.0.1:4000/patients/general/${userInfo.patientid}`, {
+            const response = await fetch(`${SERVER_URL}/patients/general/${userInfo.patientid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData);
             if (jsonData === "Patient updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
                 setIsConfirm(false);
@@ -179,7 +175,6 @@ function SettingBodyLift(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating general info' });
             setIsConfirm(false);
         }
-        console.log("new info of patient:", updateUserInfoValue);
     }
     const toggleEditGeneral = async () => {
         setIsConfirm(!isConfirm);
@@ -199,16 +194,14 @@ function SettingBodyLift(props) {
             name: updateUserInfoValue.name,
         };
         try {
-            const response = await fetch(`http://127.0.0.1:4000/healthcareproviders/updatehealthcareprovider/${loginInfoValue.login}`, {
+            const response = await fetch(`${SERVER_URL}/healthcareproviders/updatehealthcareprovider/${loginInfoValue.login}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData);
             if (jsonData === "Healthcare Provider Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
                 setIsConfirm(false);
@@ -221,7 +214,6 @@ function SettingBodyLift(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error updating general info' });
             setIsConfirm(false);
         }
-        console.log("new info of patient:", updateUserInfoValue);
     }
     const toggleEditGeneralFacility = async () => {
         setIsConfirm(!isConfirm);
@@ -240,16 +232,14 @@ function SettingBodyLift(props) {
             allergies: updateUserInfoValue.allergies
         };
         try {
-            const response = await fetch(`http://127.0.0.1:4000/patients/healthinfo/${userInfo.patientid}`, {
+            const response = await fetch(`${SERVER_URL}/patients/healthinfo/${userInfo.patientid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData);
             if (jsonData === "Patient updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
                 setIsConfirm(false);
@@ -279,22 +269,19 @@ function SettingBodyLift(props) {
             practicehours: updateUserInfoValue.practicehours,
             languagesspoken: updateUserInfoValue.languagesspoken
         };
-        console.log(doctorid);
         if (doctorid === '') {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Doctor not found' });
             return;
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/doctors/updatepracticeinfo/${doctorid}`, {
+            const response = await fetch(`${SERVER_URL}/doctors/updatepracticeinfo/${doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData);
             if (jsonData === "Updated Practice Info Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
                 setIsConfirm(false);

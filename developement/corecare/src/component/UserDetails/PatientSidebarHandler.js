@@ -27,6 +27,10 @@ import { loginInfo } from '../../Recoil/Atom';
 import { Toast } from 'primereact/toast';
 import ConfirmedDialog from '../../utiles/ConfirmedDialog';
 
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 const useOptimistic = (initialValue, callback) => {
     const [value, setValue] = useState(initialValue);
 
@@ -86,7 +90,7 @@ function PatientSidebarHandler(props) {
             resultid: dataSummarize.resultid,
         }
         try {
-            const response = await fetch(`http://127.0.0.1:4000/records/savesummary`, {
+            const response = await fetch(`${SERVER_URL}/records/savesummary`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -101,7 +105,6 @@ function PatientSidebarHandler(props) {
         } catch (error) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error In Summary Saved' });
         }
-        console.log('Save Summarize');
         setIsOpenSummarize(!isOpenSummarize);
     }
 
@@ -124,14 +127,13 @@ function PatientSidebarHandler(props) {
     };
 
     const [userInfoOptimistic, setUserInfoOptimistic] = useOptimistic(loginInfo, async (newUserInfoValue) => {
-        console.log(newUserInfoValue.patientId);
         toast.current.show({ severity: 'info', summary: 'Processing', detail: 'Summarizing Medical Records, please wait...', life: 5000 });
 
         const data = {
             patientid: newUserInfoValue.patientId
         }
         try {
-            const response = await fetch("http://127.0.0.1:4000/ai/summarizerecords", {
+            const response = await fetch(`${SERVER_URL}/ai/summarizerecords`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -141,7 +143,6 @@ function PatientSidebarHandler(props) {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 handleSummarize(data);
                 // navigate('/signup/password-step');
                 // Optionally show a success toast
@@ -162,7 +163,6 @@ function PatientSidebarHandler(props) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Sorry Error Occured, Session expired please login in again' });
             return;
         }
-        console.log(userInfoValue.patientId);
         try {
             await setUserInfoOptimistic(userInfoValue);
         } catch (error) {

@@ -12,6 +12,10 @@ import SignOrLogin from '../component/loginDetails/SignOrLogin';
 import { loginInfo } from '../Recoil/Atom';
 import '../component/bootcomponent/message.css';
 
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
 function LoginPage() {
     const loginInfoValue = useRecoilValue(loginInfo);
     const toast = useRef(null);
@@ -20,17 +24,15 @@ function LoginPage() {
 
     const handleBlur = (pass) => {
         setP(pass);
-        console.log('p= ' + p);
     }
     const handleUsername = async () => {
-        console.log(`emailorusername: ${loginInfoValue.login}`);
         const loginData = {
             email: loginInfoValue.login,
             password: p,
         };
 
         try {
-            const userResponse = await fetch("http://127.0.0.1:4000/login/get", {
+            const userResponse = await fetch(`${SERVER_URL}/login/get`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,18 +41,14 @@ function LoginPage() {
             });
             const jsonData = await userResponse.json();
             if (userResponse.ok) {
-                console.log(jsonData.message);
-                console.log("successful signin");
                 // toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successful' });
                 navigate('/userprofile', { state: { userType: jsonData.userType === "Radiology Center" ? 'Radiology' : jsonData.userType } });
             } else {
                 sessionStorage.clear();
-                console.log("failed signin");
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Invalid Password or Email' });
             }
         } catch (error) {
             sessionStorage.clear();
-            console.log(error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Invalid Password or Email' });
         }
     };

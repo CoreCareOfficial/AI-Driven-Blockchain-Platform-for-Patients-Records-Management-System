@@ -1,4 +1,3 @@
-
 import { useRecoilValue } from "recoil";
 import { loginInfo } from "../../Recoil/Atom";
 import { useEffect, useRef, useState } from "react";
@@ -7,6 +6,8 @@ import { GiKeyLock } from "react-icons/gi";
 import HeaderContainer from "./HaederContainer";
 
 
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function EmergencyAccess(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
@@ -22,10 +23,9 @@ function EmergencyAccess(props) {
                 },
             });
             const jsonData = await response.json();
-            console.log(jsonData)
+
             setEmergencyContacts(jsonData);
             // setUserInfo(jsonData);
-            console.log("success");
         } catch (err) {
             // setError(err.message);
             console.error("Error:", err);
@@ -35,7 +35,7 @@ function EmergencyAccess(props) {
     useEffect(() => {
         if (!hasEffectRun.current) {
 
-            getEmergencyContactsData(`http://127.0.0.1:4000/emergencycontacts/${loginInfoValue.login}`);
+            getEmergencyContactsData(`${SERVER_URL}/emergencycontacts/${loginInfoValue.login}`);
             hasEffectRun.current = true;
         }
     }, [props.userType, loginInfoValue.login])

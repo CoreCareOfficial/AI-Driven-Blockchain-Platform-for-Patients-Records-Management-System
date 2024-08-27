@@ -9,7 +9,6 @@ function Prescription({ handleDiagnosisClick }) {
     const [cards, setCards] = useState([{ id: 1, medname: '', dosage: '', notes: '' }]);
 
     const handleInputChange = (index, field, value) => {
-        console.log(`Updating card ${index} field ${field} with value ${value}`);
         const updatedCards = [...cards];
         updatedCards[index][field] = value;
         setCards(updatedCards);
@@ -17,17 +16,14 @@ function Prescription({ handleDiagnosisClick }) {
 
     const addCard = () => {
         const lastCard = cards[cards.length - 1];
-        console.log("Last card values:", lastCard);
         if (lastCard.medname && lastCard.dosage) {
             setCards([...cards, { id: cards.length + 1, medname: '', dosage: '', notes: '' }]);
-            console.log("Card added:", cards);
         } else {
             alert('Please fill all fields before adding a new card.');
         }
     };
 
     const removeCard = (index) => {
-        console.log(`Removing card ${index}`);
         setCards(cards.filter((_, i) => i !== index));
     };
 

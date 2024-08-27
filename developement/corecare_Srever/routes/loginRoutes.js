@@ -38,8 +38,6 @@ router.post('/add', async (req, res) => {
 // Login
 router.post('/get', async (req, res) => {
     const { email, password } = req.body;
-    console.log(email);
-    console.log(password);
     try {
         const checkLogin = await pool.query('SELECT type, password, username, email FROM LOGIN WHERE email = $1 or username = $1', [email]);
         if (checkLogin.rowCount === 0) {

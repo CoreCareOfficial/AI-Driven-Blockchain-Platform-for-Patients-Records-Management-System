@@ -8,6 +8,9 @@ import { useEffect, useRef, useState } from "react";
 import ProfileSkeleton from "../skeletons/ProfileSkeleton";
 
 
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function Profile(props) {
     const loginInfoValue = useRecoilValue(loginInfo);
     const setLoginInfo = useSetRecoilState(loginInfo);
@@ -22,11 +25,7 @@ function Profile(props) {
         userType = 'Patients'
     }
 
-    console.log(userType);
-
     const getUserData = async (fetchText, param) => {
-        console.log('param;', param);
-        console.log('fetchText:;', fetchText);
         try {
             const response = await fetch(fetchText, {
                 method: "GET",
@@ -37,7 +36,6 @@ function Profile(props) {
             });
             const jsonData = await response.json();
             setUserInfo(jsonData);
-            console.log("success");
         } catch (err) {
             setError(err.message);
             console.error("Error:", err);
@@ -47,7 +45,7 @@ function Profile(props) {
     useEffect(() => {
         if (!hasEffectRun.current) {
             setTimeout(() => {
-                getUserData(`http://127.0.0.1:4000/${userType}?email=${loginInfoValue.login}`);
+                getUserData(`${SERVER_URL}/${userType}?email=${loginInfoValue.login}`);
                 hasEffectRun.current = true;
             }, 350);
         }
@@ -70,9 +68,6 @@ function Profile(props) {
         }
     }, [props.userType, userInfo, setLoginInfo]);
 
-    console.log('userInfo:', userInfo);
-    console.log(userInfo);
-
     if (error) {
         return <div style={{ color: 'red' }}>Error: {error}</div>;
     }
@@ -80,7 +75,6 @@ function Profile(props) {
     if (!userInfo) {
         return <ProfileSkeleton />;
     } else {
-        console.log("userInfo", userInfo);
     }
 
     return (

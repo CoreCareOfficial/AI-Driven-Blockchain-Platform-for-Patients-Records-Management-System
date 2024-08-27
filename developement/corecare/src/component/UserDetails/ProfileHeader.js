@@ -4,13 +4,17 @@ import ProfileHeaderIcon from "./ProfileHeaderIcon"
 import "../../css/UserPageStyle/profile.css"
 import { useEffect, useState } from "react";
 
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function ProfileHeader(props) {
     const [userSocialmedia, setUserSocialmedia] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const getUserData = async (userId) => {
         try {
-            const response = await fetch(`http://127.0.0.1:4000/socialmedia/${userId}`, {
+            const response = await fetch(`${SERVER_URL}/socialmedia/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -23,7 +27,6 @@ function ProfileHeader(props) {
 
             const jsonData = await response.json();
             setUserSocialmedia(jsonData);
-            console.log("Success:", jsonData);
         } catch (err) {
             console.error("Error:", err);
         } finally {
@@ -31,15 +34,11 @@ function ProfileHeader(props) {
         }
     };
     useEffect(() => {
-        console.log('use effect 1');
         getUserData(props.userId);
-        console.log('use effect 2');
     }, [props.userId]);
 
     if (!isLoading && userSocialmedia.length > 0) {
-        console.log(userSocialmedia);
     }
-    // console.log("user socialmedia: " + userSocialmedia[0].link);
     return (
         <div className="profile-header">
             <ProfileHeaderIcon image={props.image} />

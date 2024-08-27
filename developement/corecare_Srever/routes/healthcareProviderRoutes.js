@@ -64,7 +64,6 @@ const initializeTransporter = async () => {
     try {
         transporter = await createTransporter();
         transporterReady = true;
-        console.log('Transporter initialized successfully');
     } catch (error) {
         console.error('Failed to initialize transporter:', error);
     }
@@ -80,9 +79,6 @@ const storage = multer.diskStorage({
         const type = file.fieldname;
         const userType = req.body.type ?? req.params.type;
         const username = req.body.username ?? req.params.username;
-
-        console.log(userType);
-        console.log(username);
 
         // Define paths based on the file type
         const basePath = `Users/${userType}/${username}`;
@@ -110,7 +106,6 @@ const upload = multer({
 
 const readFileContent = async (filePath) => {
     if (!filePath) {
-        console.log(`Skipping file read for null or undefined path`);
         return null;
     }
     try {
@@ -219,7 +214,6 @@ router.post('/addhealthcareprovider', upload.fields([
     const { username, name, phoneNumber, email, country, address, licenseNumber, publicWalletAddress, facility_id, facilityPhoto } = req.body;
 
     if (!transporterReady) {
-        console.log("Transporter not ready, waiting...");
         await new Promise((resolve, reject) => {
             const checkTransporter = setInterval(() => {
                 if (transporterReady) {
@@ -244,9 +238,6 @@ router.post('/addhealthcareprovider', upload.fields([
         const generatedPassword = Math.floor(1000 + Math.random() * 900000).toString(); // Generate a 6-digit code
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(generatedPassword, salt);
-        console.log(generatedPassword);
-        console.log(hashedPassword);
-
         const newHealthcareProvider = await pool.query(
             `INSERT INTO healthcare_provider (username, name, phoneNumber, email, country, address, licenseNumber, licensedocument, publicWalletAddress, facility_id, facilityphoto) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
@@ -469,7 +460,6 @@ router.put('/updatefacilityphoto/:username', upload.fields([
     { name: 'facilityPhoto', maxCount: 1 }
 ]), async (req, res) => {
     const { username } = req.params;
-    console.log(req.body);
     try {
         const facilityPhototPath = req.files.facilityPhoto ? req.files.facilityPhoto[0].path : null;
         const newPhoto = await pool.query('UPDATE healthcare_provider SET facilityphoto = $1 where username = $2 RETURNING *', [facilityPhototPath, username]);
@@ -489,8 +479,6 @@ router.put('/updatedepartments/:healthcareid', async (req, res) => {
     const { healthcareid } = req.params;
     const { departments, newDepartment } = req.body;
     let success = false;
-    console.log(req.body);
-    console.log(healthcareid);
     try {
 
         for (let index = 0; index < departments.length; index++) {
@@ -520,8 +508,6 @@ router.put('/updateservices/:healthcareid', async (req, res) => {
     const { healthcareid } = req.params;
     const { services, newService } = req.body;
     let success = false;
-    console.log(req.body);
-    console.log(healthcareid);
     try {
 
         for (let index = 0; index < services.length; index++) {

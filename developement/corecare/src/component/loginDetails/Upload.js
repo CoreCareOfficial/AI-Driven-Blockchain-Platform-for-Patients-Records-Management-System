@@ -51,8 +51,7 @@ function Upload(props) {
         //     .then((response) => response.json())
         //     .then((data) => {
         //         // Handle successful upload response (e.g., update user profile state)
-        //         console.log('Image uploaded successfully:', data);
-        //     })
+        //                 //     })
         //     .catch((error) => {
         //         console.error('Error uploading image:', error);
         //         // Handle upload error

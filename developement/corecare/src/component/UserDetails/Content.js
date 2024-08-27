@@ -14,6 +14,9 @@ import { loginInfo } from "../../Recoil/Atom";
 import { useEffect } from "react";
 
 
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function Content(props) {
     const setUserInfo = useSetRecoilState(loginInfo);
     const userInfoValue = useRecoilValue(loginInfo);
@@ -21,7 +24,7 @@ function Content(props) {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:4000/accesskey/getnotificationtoast/${userInfoValue.login}`, {
+                const response = await fetch(`${SERVER_URL}/accesskey/getnotificationtoast/${userInfoValue.login}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
@@ -31,7 +34,6 @@ function Content(props) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const jsonData = await response.json();
-                console.log(jsonData);
                 setUserInfo((prevUserInfo) => ({
                     ...prevUserInfo,
                     notificationsCount: jsonData

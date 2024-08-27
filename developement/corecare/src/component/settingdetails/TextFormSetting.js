@@ -15,6 +15,8 @@ import { updateUserInfo } from "../../Recoil/UpdateData";
 import { AiOutlineSearch } from "react-icons/ai";
 
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 export function UpdateImage(props) {
     const fileRef = useRef(null);
     const toast = useRef(null);
@@ -29,7 +31,6 @@ export function UpdateImage(props) {
     const featchImageFacility = async (imageFile) => {
         if (!props.username && !props.userType) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error Username User type health info' });
-            console.log(props.username);
             return;
         }
 
@@ -37,13 +38,11 @@ export function UpdateImage(props) {
         formData.append('facilityPhoto', imageFile);
         formData.append('type', props.userType)
         try {
-            const response = await fetch(`http://127.0.0.1:4000/healthcareproviders/updatefacilityphoto/${props.username}`, {
+            const response = await fetch(`${SERVER_URL}/healthcareproviders/updatefacilityphoto/${props.username}`, {
                 method: "PUT",
                 body: formData
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData);
             if (jsonData === "Facility Photo Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Facility Photo Updated Successfully' });
             } else {
@@ -64,13 +63,11 @@ export function UpdateImage(props) {
         const formData = new FormData();
         formData.append('personalPhoto', imageFile);
         try {
-            const response = await fetch(`http://127.0.0.1:4000/patients/personalphoto/${props.username}`, {
+            const response = await fetch(`${SERVER_URL}/patients/personalphoto/${props.username}`, {
                 method: "PUT",
                 body: formData
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData);
             if (jsonData === "Personal photo updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated' });
             } else {
@@ -166,7 +163,7 @@ export function DynamicForm(props) {
                 ],
             }));
             props.handleDiagnosisClick();
-            console.log(props.cards)
+
         } else {
             alert('Please fill all fields before adding a new card.');
         }
@@ -199,16 +196,14 @@ export function AddEmergency(props) {
             patientid: props.userid
         };
         try {
-            const response = await fetch(`http://127.0.0.1:4000/emergencycontacts`, {
+            const response = await fetch(`${SERVER_URL}/emergencycontacts`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Emergency Contact Added Successfully") {
                 props.handleAddContactSuccessful(true, 'Emergency Contact Added Successfully');
             } else {
@@ -382,8 +377,6 @@ export function SettingTimeInput(props) {
     const setUserInfo = useSetRecoilState(updateUserInfo);
     const [timeValue, setTimeValue] = useState(props.value1 ? props.value1 : "");
     const [timeValue2, setTimeValue2] = useState(props.value2 ? props.value2 : "");
-    console.log('from:', timeValue);
-    console.log('to:', timeValue2);
     const handleOnBlur = (e, name) => {
         const newValue = e.target.value;
         if (timeValue2) {
@@ -516,7 +509,7 @@ export function MedicalDegree(props) {
 
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
-        console.log(event.target.value)
+
     };
 
     const setUserInfo = useSetRecoilState(updateUserInfo);
@@ -546,7 +539,7 @@ export function SpecializationSelect(props) {
 
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
-        console.log(event.target.value)
+
     };
     const setUserInfo = useSetRecoilState(updateUserInfo);
     const handleOnBlur = (e) => {
@@ -909,7 +902,7 @@ export function AddAccountSpecialization(props) {
 
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
-        console.log(event.target.value)
+
     };
     const options = props.optionsList.map((option, index) => {
         return (
@@ -994,7 +987,7 @@ export function AddAccountMedicalDegree(props) {
 
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
-        console.log(event.target.value)
+
     };
 
 

@@ -8,6 +8,10 @@ import { Toast } from "primereact/toast";
 import { loginInfo } from "../../Recoil/Atom";
 import { useRecoilValue } from "recoil";
 
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     const toast = useRef(null);
     const hasEffectRun = useRef(false);
@@ -23,7 +27,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     useEffect(() => {
         const fetchProviders = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:4000/accesskey/getproviders', {
+                const response = await fetch(`${SERVER_URL}/accesskey/getproviders`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -35,7 +39,6 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
                 const jsonData = await response.json();
                 setProviders(jsonData);
                 setFilteredProviders(jsonData);
-                console.log('Success:', jsonData);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -52,7 +55,6 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
             const matchesName = provider.name && provider.name.toLowerCase().startsWith(searchTerm.toLowerCase());
             return matchesType && matchesName;
         });
-        console.log('filtered:', filtered);
         setFilteredProviders(filtered);
     }, [searchTerm, selectedType, providers]);
 
@@ -122,10 +124,6 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
     };
 
     const handleSubmit = async () => {
-        console.log('priod', period);
-        console.log('timeother', timeOther);
-        console.log('keyuser', keyuser);
-
         if (keyuser === '') {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please select the Provider' });
             return;
@@ -146,7 +144,7 @@ function CreateAccessKey({ handleCreateAccessKeyClick, selectedPatientId }) {
             specificDateTime: timeOther,
         }
         try {
-            const response = await fetch('http://127.0.0.1:4000/accesskey/create', {
+            const response = await fetch(`${SERVER_URL}/accesskey/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

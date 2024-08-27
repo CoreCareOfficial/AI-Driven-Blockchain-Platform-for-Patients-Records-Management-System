@@ -10,6 +10,9 @@ import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
 import { useRef, useState } from "react";
 
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 const useOptimistic = (initialValue, callback) => {
     const [value, setValue] = useState(initialValue);
 
@@ -64,14 +67,13 @@ function DoctorSignupPage() {
         toast.current.show({ severity: 'info', summary: 'Processing', detail: 'Checking your license Document and license Number, please wait...', life: 5000 });
 
         try {
-            const response = await fetch("http://127.0.0.1:4000/ai/checklicense", {
+            const response = await fetch(`${SERVER_URL}/ai/checklicense`, {
                 method: "POST",
                 body: formData,
             });
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 navigate('/signup/password-step');
                 // Optionally show a success toast
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'License Number check successful' });

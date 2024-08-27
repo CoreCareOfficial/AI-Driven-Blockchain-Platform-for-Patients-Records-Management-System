@@ -9,6 +9,9 @@ import { useRecoilValue } from "recoil";
 import { loginInfo } from "../Recoil/Atom";
 import { Toast } from "primereact/toast";
 
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function PatientSettingPage(props) {
     const [isOpen, setIsOpen] = useState(false);
     // const [isAdded, setIsAdded] = useState(false);
@@ -46,7 +49,6 @@ function PatientSettingPage(props) {
 
     const handleAddContact = () => {
         setIsOpen(!isOpen);
-        console.log(isOpen);
     };
     const handleAddContactSuccessful = (isAdded, message) => {
         // setIsAdded();
@@ -72,7 +74,6 @@ function PatientSettingPage(props) {
                 ...prevState,
                 [setStateKey]: jsonData,
             }));
-            console.log(`Success loading ${setStateKey}:`, jsonData);
         } catch (err) {
             console.error("Error:", err);
         }
@@ -80,9 +81,9 @@ function PatientSettingPage(props) {
 
     useEffect(() => {
         if (props.userType === 'Patient' || props.userType === 'Doctor') {
-            fetchData(`http://127.0.0.1:4000/patients/getpatientinfo/${loginInfoValue.login}`, "Info");
+            fetchData(`${SERVER_URL}/patients/getpatientinfo/${loginInfoValue.login}`, "Info");
         } else {
-            fetchData(`http://127.0.0.1:4000/healthcareproviders/gethealtcareinfo/${loginInfoValue.login}`, "facilityInfo");
+            fetchData(`${SERVER_URL}/healthcareproviders/gethealtcareinfo/${loginInfoValue.login}`, "facilityInfo");
         }
     }, [loginInfoValue.login, props.userType]);
 
@@ -102,9 +103,8 @@ function PatientSettingPage(props) {
 
     useEffect(() => {
         if (allInfo.patientInfo) {
-            console.log('allInfo.patientInfo.patientid', allInfo.patientInfo.patientid);
             if (props.userType === 'Doctor') {
-                fetchData(`http://127.0.0.1:4000/doctors/getdoctorinfo/${allInfo.patientInfo.patientid}`, "doctorInfo");
+                fetchData(`${SERVER_URL}/doctors/getdoctorinfo/${allInfo.patientInfo.patientid}`, "doctorInfo");
             }
         }
     }, [props.userType, allInfo.patientInfo]);

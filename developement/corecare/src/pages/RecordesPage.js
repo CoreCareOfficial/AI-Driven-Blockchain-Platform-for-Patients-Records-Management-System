@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import ProfileHeaderIcon from '../component/UserDetails/ProfileHeaderIcon';
 import RecordesSearch from "../component/recordesdetails/RecordesSearch";
@@ -12,6 +13,9 @@ import { loginInfo } from '../Recoil/Atom';
 import { Toast } from 'primereact/toast';
 import { LuFolderPlus } from 'react-icons/lu';
 import RecordesGride from '../component/recordesdetails/RecordesGride';
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 
 function RecordesPage(props) {
@@ -42,7 +46,6 @@ function RecordesPage(props) {
 
     const refreshComponent = () => {
         setCount(prevCount => prevCount + 1); // Change state to trigger re-render
-        console.log("Refreshed");
     };
 
     useEffect(() => {
@@ -52,7 +55,7 @@ function RecordesPage(props) {
                 return;
             }
             try {
-                const response = await fetch(`http://127.0.0.1:4000/records/${loginInfoValue.patientId}`, {
+                const response = await fetch(`${SERVER_URL}/records/${loginInfoValue.patientId}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
@@ -76,7 +79,7 @@ function RecordesPage(props) {
                 return;
             }
             try {
-                const response = await fetch(`http://127.0.0.1:4000/records/getsummary/${loginInfoValue.patientId}`, {
+                const response = await fetch(`${SERVER_URL}/records/getsummary/${loginInfoValue.patientId}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'

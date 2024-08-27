@@ -20,9 +20,12 @@ import respiratory from "../../assets/respiratory.png";
 import heart from "../../assets/heart.png";
 import allergiesImg from "../../assets/allergies.png";
 
+
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function PersonalInformation(props) {
     const userInfo = props.userInfo;
-    console.log(userInfo);
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -58,7 +61,6 @@ function PersonalInformation(props) {
                 ...prevState,
                 [setStateKey]: jsonData,
             }));
-            console.log(`Success loading ${setStateKey}:`, jsonData);
         } catch (err) {
             console.error("Error:", err);
         } finally {
@@ -71,11 +73,11 @@ function PersonalInformation(props) {
 
     useEffect(() => {
         const userId = userInfo.patientid;
-        fetchData(`http://127.0.0.1:4000/healthinfo/${userId}`, "healthInfo");
-        fetchData(`http://127.0.0.1:4000/allergies/${userId}`, "allergies");
-        fetchData(`http://127.0.0.1:4000/medications/${userId}`, "medications");
-        fetchData(`http://127.0.0.1:4000/pastconditions/${userId}`, "pastConditions");
-        fetchData(`http://127.0.0.1:4000/previousdoctors/${userId}`, "previousDoctors");
+        fetchData(`${SERVER_URL}/healthinfo/${userId}`, "healthInfo");
+        fetchData(`${SERVER_URL}/allergies/${userId}`, "allergies");
+        fetchData(`${SERVER_URL}/medications/${userId}`, "medications");
+        fetchData(`${SERVER_URL}/pastconditions/${userId}`, "pastConditions");
+        fetchData(`${SERVER_URL}/previousdoctors/${userId}`, "previousDoctors");
     }, [userInfo.patientid]);
 
     const { healthInfo, allergies, medications, pastConditions, previousDoctors, isLoading } = userData;

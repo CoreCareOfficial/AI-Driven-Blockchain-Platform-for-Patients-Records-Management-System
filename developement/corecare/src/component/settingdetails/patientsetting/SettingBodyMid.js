@@ -15,6 +15,9 @@ import bcrypt from 'bcryptjs';
 import ConfirmedDialog from "../../../utiles/ConfirmedDialog";
 
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+
 function SettingBodyMid(props) {
     const socialInfo = props.socialInfo ? props.socialInfo : [];
     const profissional = props.profissional ? props.profissional : {};
@@ -73,24 +76,20 @@ function SettingBodyMid(props) {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(updateUserInfoValue.newPassword, salt);
-        console.log("hashedPassword= " + hashedPassword);
-
         const data = {
             emailorusername: loginInfoValue.login,
             password: updateUserInfoValue.password,
             newPassword: hashedPassword,
         };
         try {
-            const response = await fetch("http://127.0.0.1:4000/login/change", {
+            const response = await fetch(`${SERVER_URL}/login/change`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Password Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Successfully Updated Password' });
                 resetUserInfo();
@@ -128,16 +127,14 @@ function SettingBodyMid(props) {
             whatsapp: updateUserInfoValue.whatsapp
         };
         try {
-            const response = await fetch(`http://127.0.0.1:4000/socialmedia/${loginInfoValue.login}`, {
+            const response = await fetch(`${SERVER_URL}/socialmedia/${loginInfoValue.login}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Socailmedia accounts updated successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Socailmedia accounts updated successfully' });
                 resetUserInfo();
@@ -174,18 +171,15 @@ function SettingBodyMid(props) {
             locationofwork: updateUserInfoValue.locationOfWork,
             clinicnumber: updateUserInfoValue.clinicNumber,
         };
-        console.log('data:', data);
         try {
-            const response = await fetch(`http://127.0.0.1:4000/doctors/updateprofissionalinfo/${profissional.doctorid}`, {
+            const response = await fetch(`${SERVER_URL}/doctors/updateprofissionalinfo/${profissional.doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Proffesional Info Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Proffesional Info Updated Successfully' });
                 resetUserInfo();
@@ -221,18 +215,15 @@ function SettingBodyMid(props) {
             residencies: updateUserInfoValue.residencies,
             fellowships: updateUserInfoValue.fellowships,
         };
-        console.log('data:', data);
         try {
-            const response = await fetch(`http://127.0.0.1:4000/doctors/updateeducationalinfo/${profissional.doctorid}`, {
+            const response = await fetch(`${SERVER_URL}/doctors/updateeducationalinfo/${profissional.doctorid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Updated Educational Info Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Updated Educational Info Successfully' });
                 resetUserInfo();
@@ -275,18 +266,15 @@ function SettingBodyMid(props) {
             departments: updateUserInfoValue.departments,
             newDepartment: updateUserInfoValue.newDepartment
         };
-        console.log('data:', data);
         try {
-            const response = await fetch(`http://127.0.0.1:4000/healthcareproviders/updatedepartments/${healthcareProviderInfo.id}`, {
+            const response = await fetch(`${SERVER_URL}/healthcareproviders/updatedepartments/${healthcareProviderInfo.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Departments Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Departments Updated Successfully' });
                 resetUserInfo();
@@ -320,18 +308,15 @@ function SettingBodyMid(props) {
             services: updateUserInfoValue.services,
             newService: updateUserInfoValue.newService
         };
-        console.log('data:', data);
         try {
-            const response = await fetch(`http://127.0.0.1:4000/healthcareproviders/updateservices/${healthcareProviderInfo.id}`, {
+            const response = await fetch(`${SERVER_URL}/healthcareproviders/updateservices/${healthcareProviderInfo.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Services Updated Successfully") {
                 toast.current.show({ severity: 'success', summary: 'Success', detail: 'Services Updated Successfully' });
                 resetUserInfo();

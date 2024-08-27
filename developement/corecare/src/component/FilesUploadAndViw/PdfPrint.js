@@ -13,13 +13,11 @@ export function PdfPrint() {
     if (!pdfUrl) {
         return <div>No PDF URL provided</div>;
     } else {
-        console.log('pdf', pdfUrl);
     }
 
     const handlePrint = (e) => {
         // e.preventDefault();
         // window.print();
-        console.log('print');
     }
     return (
         <section className="ReportPage-print">

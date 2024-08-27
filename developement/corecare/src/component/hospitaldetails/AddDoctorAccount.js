@@ -6,6 +6,9 @@ import ImageSignup from "../loginDetails/ImageSignup";
 import { userInfo } from "../../Recoil/Atom";
 import { Toast } from "primereact/toast";
 
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 function AddDoctorAccount(props) {
     const medicalSpecializations = [
         'Anesthetics',
@@ -74,19 +77,15 @@ function AddDoctorAccount(props) {
             email: v
         };
         try {
-            const response = await fetch("http://127.0.0.1:4000/login", {
+            const response = await fetch(`${SERVER_URL}/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(checkEmail)
             });
-            console.log("res = " + response);
             const jsonData = await response.json();
-            console.log('message from server: ' + jsonData.message);
             if (jsonData.message === "Email doesn't Exist") {
-                console.log(jsonData.message);
-
             } else {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: jsonData.message });
                 setUserInfo((prevUserInfo) => ({
@@ -102,12 +101,10 @@ function AddDoctorAccount(props) {
     };
 
     const handleOnSubmit = async () => {
-        console.log(userInfoValue);
         const username = userInfoValue.email.split('@')[0].toLocaleLowerCase().slice(0, 2) +
             userInfoValue.firstName.toLocaleLowerCase().slice(-2) +
             userInfoValue.lastName.toLocaleLowerCase()[0] +
             userInfoValue.phoneNumber.slice(-3);
-        console.log('username = ' + username);
         let email = '';
         let password = '';
         let successfulAddUser = false;
@@ -139,16 +136,13 @@ function AddDoctorAccount(props) {
         email = userInfoValue.email;
         // password = userInfoValue.password;
         try {
-            const response = await fetch("http://127.0.0.1:4000/patients/addpatient", {
+            const response = await fetch(`${SERVER_URL}/patients/addpatient`, {
                 method: "POST",
                 body: formData
             });
             if (response.ok) {
-                console.log("res = " + response);
-                console.log('Added Patient Successful');
                 const { patientID, hashedPassword } = await response.json();
                 password = hashedPassword;
-                console.log('patientId : ' + patientID);
                 const doctorFormData = new FormData();
                 doctorFormData.append('username', username);
                 doctorFormData.append('patientID', patientID);
@@ -158,12 +152,11 @@ function AddDoctorAccount(props) {
                 doctorFormData.append('licenseNumber', userInfoValue.licenseNumber);
                 doctorFormData.append('licenseDocument', userInfoValue.licenseDocument);
                 try {
-                    const doctorResponse = await fetch("http://127.0.0.1:4000/doctors", {
+                    const doctorResponse = await fetch(`${SERVER_URL}/doctors`, {
                         method: "POST",
                         body: doctorFormData
                     });
                     if (doctorResponse.ok) {
-                        console.log("res = " + doctorResponse);
                         // toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
                         successfulAddUser = true;
                     } else {
@@ -185,7 +178,6 @@ function AddDoctorAccount(props) {
             successfulAddUser = false;
         }
         if (successfulAddUser && email && password && username) {
-            console.log("save in login");
             const loginData = {
                 email: email,
                 password: password,
@@ -194,7 +186,7 @@ function AddDoctorAccount(props) {
             };
 
             try {
-                const userResponse = await fetch("http://127.0.0.1:4000/login/add", {
+                const userResponse = await fetch(`${SERVER_URL}/login/add`, {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'
@@ -202,7 +194,6 @@ function AddDoctorAccount(props) {
                     body: JSON.stringify(loginData)
                 });
                 if (userResponse.ok) {
-                    console.log("User Added Successful");
                     toast.current.show({ severity: 'success', summary: 'Success', detail: 'User Added Successfully' });
                 } else {
                     toast.current.show({ severity: 'error', summary: 'Error', detail: 'User could not be added' });
